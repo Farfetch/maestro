@@ -1,3 +1,3 @@
 # Maestro WEB
 
-React.js + Python Flask REST API
+Maestro WEB application based on React.js + Python Flask REST API
