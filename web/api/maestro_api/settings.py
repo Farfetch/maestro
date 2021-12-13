@@ -44,3 +44,5 @@ JMETER_BASE_IMAGE = "jmeter"
 SECRET_KEY = os.environ.get("SECRET_KEY", "SECRETKEY")
 
 FRONTEND_PUBLIC_DIR = os.path.join(ROOT_DIRECTORY, "frontend_build")
+
+HTTPS_REDIRECTS_ENABLED = parse_bool(os.environ.get("HTTPS_REDIRECTS_ENABLED", "False"))
