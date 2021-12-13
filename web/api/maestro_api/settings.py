@@ -35,7 +35,7 @@ SWAGGER = {
     "version": MAESTRO_API_VERSION,
 }
 
-SWAGGER_ENABLED = parse_bool(os.environ.get("SWAGGER_ENABLED", "False"))
+SWAGGER_ENABLED = parse_bool(os.environ.get("SWAGGER_ENABLED", "True"))
 
 SCHEDULER_ENABLED = parse_bool(os.environ.get("SCHEDULER_ENABLED", "True"))
 
