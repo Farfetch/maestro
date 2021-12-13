@@ -44,4 +44,3 @@ JMETER_BASE_IMAGE = "jmeter"
 SECRET_KEY = os.environ.get("SECRET_KEY", "SECRETKEY")
 
 FRONTEND_PUBLIC_DIR = os.path.join(ROOT_DIRECTORY, "frontend_build")
-
