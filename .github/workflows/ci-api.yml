@@ -1,4 +1,4 @@
-name: CI - Maestro API
+name: Maestro API
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  test:
+  ci:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     defaults:
@@ -27,10 +27,13 @@ jobs:
           pip install pipenv
 
       - name: Intall dependacies
-        run: pipenv install --system --dev
+        run: make deps
 
       - name: Run linting checks
         run: make lint
 
       - name: Run formatting checks
         run: make format
+
+      - name: Run tests
+        run: make test
