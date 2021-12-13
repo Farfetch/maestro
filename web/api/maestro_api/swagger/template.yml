@@ -1,0 +1,4 @@
+basePath: /api
+
+schemes:
+  - "http"
