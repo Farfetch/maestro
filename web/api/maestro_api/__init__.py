@@ -31,5 +31,5 @@ def create_frontend_app(settings):
     flask_app.config.from_object(settings)
 
     init_api_routes(flask_app)
-    
+
     return flask_app

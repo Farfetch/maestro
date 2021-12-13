@@ -14,5 +14,3 @@ maestro_api = create_app(settings)
 maestro_app.wsgi_app = DispatcherMiddleware(
     maestro_app.wsgi_app, {"/api": maestro_api.wsgi_app}
 )
-
-
