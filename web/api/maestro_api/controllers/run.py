@@ -1,10 +1,8 @@
-from maestro_api.db.models.event import Event, EventStatus, EventType
-from maestro_api.db.models.run import Run, RunStatus
+from maestro_api.db.models.run import Run
 from maestro_api.db.models.run_metric import RunMetric
 from maestro_api.db.models.run_configuration import RunConfiguration
 
 from maestro_api.libs.flask.utils import (
-    bad_request_response,
     get_obj_or_404,
     jsonify_list_of_docs,
     make_json_response,
@@ -85,73 +83,3 @@ class RunController:
         run = run.save()
 
         return make_json_response(run.to_json())
-
-    def start_one(self, run_id, user):
-        """
-        Start test run based on configuration
-        """
-        run = get_obj_or_404(Run, id=run_id)
-
-        if run.run_status == RunStatus.RUNNING.value:
-            return bad_request_response("Test Run is already running")
-
-        all_events = []
-        # Create Events to start slave daemons
-        for server_agent_id in run.server_agent_ids:
-            event = Event(
-                event_type=EventType.START_SERVER_AGENT.value,
-                run_id=run.id,
-                agent_id=server_agent_id,
-            ).save()
-            all_events.append(event)
-
-        # Create Event to start test
-        start_run_event = Event(
-            event_type=EventType.START_RUN.value,
-            run_id=run.id,
-            agent_id=run.master_agent_id,
-        ).save()
-
-        all_events.append(start_run_event)
-
-        # Update Test run status to avoid generating a lot of events
-        # The next status would be "RUNNING" setted up by daemons
-        run.run_status = RunStatus.PENDING.value
-        run.save()
-
-        return jsonify_list_of_docs(all_events)
-
-    def stop_one(self, run_id, user):
-        """
-        Start test run based on configuration
-        """
-        run = get_obj_or_404(Run, id=run_id)
-
-        if run.run_status == RunStatus.RUNNING.value:
-            return bad_request_response("Test Run is already running")
-
-        all_events = []
-        # Create Events to start slave daemons
-        for server_agent_id in run.server_agent_ids:
-            event = Event(
-                event_type=EventType.START_SERVER_AGENT.value,
-                run_id=run.id,
-                agent_id=server_agent_id,
-            ).save()
-            all_events.append(event)
-
-        # Create Event to start test
-        start_run_event = Event(
-            event_type=EventType.START_RUN.value,
-            run_id=run.id,
-            agent_id=run.master_agent_id,
-        ).save()
-
-        all_events.append(start_run_event)
-
-        # Update Test run status to avoid generating a lot of events
-        # The next status would be "RUNNING" setted up by daemons
-        run.run_status = RunStatus.PENDING.value
-        run.save()
-
-        return jsonify_list_of_docs(all_events)

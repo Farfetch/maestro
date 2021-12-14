@@ -1,7 +1,7 @@
 import json
 
 from maestro_api.db.models.run import Run, RunStatus
-from maestro_api.db.models.event import EventStatus, Event, EventType
+from maestro_api.db.models.event import EventType
 
 
 def test_start_run(client):
