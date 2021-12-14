@@ -1,7 +1,6 @@
 from maestro_api.db.models.agent import Agent
 
 from maestro_api.libs.flask.utils import (
-    bad_request_response,
     get_obj_or_404,
     jsonify_list_of_docs,
     make_json_response,
