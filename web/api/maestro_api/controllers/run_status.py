@@ -22,7 +22,7 @@ class RunStatusController:
             return bad_request_response("Run is already running")
 
         all_events = []
-        # Create Events to start slave daemons
+        # Create Events to start server agents
         for server_agent_id in run.server_agent_ids:
             event = Event(
                 event_type=EventType.START_SERVER_AGENT.value,
@@ -41,7 +41,7 @@ class RunStatusController:
         all_events.append(start_run_event)
 
         # Update Test run status to avoid generating a lot of events
-        # The next status would be "RUNNING" setted up by daemons
+        # The next status would be "RUNNING" setted up by agents
         run.run_status = RunStatus.PENDING.value
         run.save()
 
@@ -57,7 +57,7 @@ class RunStatusController:
             )
 
         all_events = []
-        # Create Event to stop slave daemons
+        # Create Event to stop server agents
         for server_agent_id in run.server_agent_ids:
             event = Event(
                 event_type=EventType.STOP_SERVER_AGENT.value,
@@ -92,7 +92,7 @@ class RunStatusController:
             )
 
         all_events = []
-        # Create Event to stop slave daemons
+        # Create Event to stop server agents
         for server_agent_id in run.server_agent_ids:
             event = Event(
                 event_type=EventType.STOP_SERVER_AGENT.value,
