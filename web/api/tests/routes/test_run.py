@@ -270,3 +270,44 @@ def test_create_run_with_custom_properties(client):
     assert "created_at" in res_json
     assert "updated_at" in res_json
     assert available_in_response.items() <= res_json.items()
+
+
+def test_delete_one(client):
+    run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    title = "some example title"
+    run_id = "6076d1e3a216ff15b6e95e1f"
+    run_plan_id = "6076d1e3a216ff15b6e95e9d"
+    client_agent_id = "6076d152b28b871d6bdb604f"
+    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+
+    data_to_create = {
+        "id": run_id,
+        "run_configuration_id": run_configuration_id,
+        "title": title,
+        "run_plan_id": run_plan_id,
+        "client_agent_id": client_agent_id,
+        "server_agent_ids": server_agent_ids,
+        "run_status": RunStatus.RUNNING.value,
+    }
+
+    run = Run(**data_to_create).save()
+
+    response = client.delete(
+        "/run/%s" % run.id,
+    )
+    res_json = json.loads(response.data)
+    runs_in_db = Run.objects()
+
+    assert response.status_code == 200
+    assert data_to_create.items() <= res_json.items()
+    assert 0 <= len(runs_in_db)
+
+
+def test_run_delete_with_run_not_found(client):
+    rund_id = "6326d1e3a216ff15b6e95e9d"
+
+    response = client.delete(
+        "/run/%s" % rund_id,
+    )
+
+    assert response.status_code == 404

@@ -106,6 +106,32 @@ def test_run_status_stop(client):
     assert client_agent_event.items() <= res_json[1].items()
 
 
+def test_run_status_stop_bad_response_for_not_running_runs(client):
+    run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    title = "some example title"
+    run_id = "6076d1e3a216ff15b6e95e1f"
+    run_plan_id = "6076d1e3a216ff15b6e95e9d"
+    client_agent_id = "6076d152b28b871d6bdb604f"
+    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+
+    Run(
+        id=run_id,
+        run_configuration_id=run_configuration_id,
+        title=title,
+        run_plan_id=run_plan_id,
+        client_agent_id=client_agent_id,
+        server_agent_ids=server_agent_ids,
+        run_status=RunStatus.PENDING.value,
+    ).save()
+
+    response = client.post("/run_status/%s/stop" % run_id)
+
+    response_text = response.data.decode("utf-8")
+
+    assert 400 == response.status_code
+    assert "Run status is not '%s'" % RunStatus.RUNNING.value == response_text
+
+
 def test_run_status_finish(client):
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"

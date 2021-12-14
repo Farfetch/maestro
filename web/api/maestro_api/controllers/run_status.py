@@ -53,7 +53,7 @@ class RunStatusController:
 
         if run.run_status != RunStatus.RUNNING.value:
             return bad_request_response(
-                "Run status is not '%s' " % RunStatus.RUNNING.value
+                "Run status is not '%s'" % RunStatus.RUNNING.value
             )
 
         all_events = []
