@@ -25,6 +25,12 @@ test:
 dev:
 	FLASK_ENV=development FLASK_APP=wsgi:maestro_app flask run
 
+coverage:
+	pytest --cov-report term-missing --cov=maestro_daemon tests
+
+coverage-html:
+	pytest --cov-report html --cov=maestro_api tests
+
 clean: dev-clean-pyc
 
 install-dev: dev-clean-pyc deps
