@@ -114,7 +114,6 @@ paths:
           description: "Returns single Run object"
         404:
           description: Run not found
-
     post:
       tags:
         - "Run"
@@ -148,7 +147,6 @@ paths:
           description: "Bad request"
         404:
           description: Run not found
-
   /runs:
     get:
       tags:
@@ -166,6 +164,79 @@ paths:
             $ref: "#/definitions/Runs"
           description: "Returns list of Run objects"
 
+  /run_status/{run_id}/start:
+    post:
+      tags:
+        - "Run Status"
+      summary: "Start running test"
+      description: ""
+      operationId: "startRunById"
+      parameters:
+        - in: path
+          name: run_id
+          description: "Run unique ID"
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Events"
+          description: "Returns list of created Events"
+        404:
+          description: Run not found
+  /run_status/{run_id}/finish:
+    post:
+      tags:
+        - "Run Status"
+      summary: "Finish running test"
+      description: ""
+      operationId: "finishRunById"
+      parameters:
+        - in: path
+          name: run_id
+          description: "Run unique ID"
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Events"
+          description: "Returns list of created Events"
+        404:
+          description: Run not found
+  /run_status/{run_id}/stop:
+    post:
+      tags:
+        - "Run Status"
+      summary: "Stop running test"
+      description: ""
+      operationId: "stopRunById"
+      parameters:
+        - in: path
+          name: run_id
+          description: "Run unique ID"
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Events"
+          description: "Returns list of created Events"
+        404:
+          description: Run not found
+
 components:
   schemas:
     RunStatus:
@@ -178,6 +249,39 @@ components:
         - FINISHED
 
 definitions:
+  Event:
+    type: object
+    properties:
+      id:
+        type: string
+      event_status:
+        type: string
+        enum:
+          - PENDING
+          - PROCESSING
+          - FINISHED
+      event_type:
+        type: string
+        enum:
+          - START_RUN
+          - STOP_RUN
+          - START_SERVER_AGENT
+          - STOP_SERVER_AGENT
+      agent_id:
+        type: string
+      test_run_id:
+        type: string
+      started_at:
+        type: string
+        format: date-time
+      finished_at:
+        type: string
+        format: date-time
+  Events:
+    type: array
+    description: List of Events.
+    items:
+      $ref: "#/definitions/Event"
   RunPlan:
     type: object
     properties:
