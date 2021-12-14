@@ -35,7 +35,7 @@ SWAGGER = {
     "version": MAESTRO_API_VERSION,
 }
 
-SWAGGER_ENABLED = parse_bool(os.environ.get("SWAGGER_ENABLED", "False"))
+SWAGGER_ENABLED = parse_bool(os.environ.get("SWAGGER_ENABLED", "True"))
 
 SCHEDULER_ENABLED = parse_bool(os.environ.get("SCHEDULER_ENABLED", "True"))
 
@@ -44,3 +44,5 @@ JMETER_BASE_IMAGE = "jmeter"
 SECRET_KEY = os.environ.get("SECRET_KEY", "SECRETKEY")
 
 FRONTEND_PUBLIC_DIR = os.path.join(ROOT_DIRECTORY, "frontend_build")
+
+HTTPS_REDIRECTS_ENABLED = parse_bool(os.environ.get("HTTPS_REDIRECTS_ENABLED", "False"))

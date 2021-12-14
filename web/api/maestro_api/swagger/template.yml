@@ -2,3 +2,292 @@ basePath: /api
 
 schemes:
   - "http"
+
+paths:
+  /run:
+    post:
+      tags:
+        - "Run"
+      summary: "Create new Run object"
+      description: ""
+      operationId: "getAllRuns"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Create Run object based on configuration"
+          required: true
+          schema:
+            properties:
+              test_configuration_id:
+                type: string
+                description: "Test Configuration identifier"
+            required:
+              - test_configuration_id
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Runs"
+          description: "Returns list of Run objects"
+        400:
+          description: "Bad request"
+  /run/{run_id}:
+    get:
+      tags:
+        - "Run"
+      summary: "Get Run object by ID"
+      description: ""
+      operationId: "getRunById"
+      parameters:
+        - in: path
+          name: run_id
+          description: "Run unique identifier"
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Run"
+          description: "Returns single Run object"
+        404:
+          description: Run not found
+    delete:
+      tags:
+        - "Run"
+      summary: "Delete Run object with all related entities"
+      description: ""
+      operationId: "deleteRunById"
+      parameters:
+        - in: path
+          name: run_id
+          description: "Run identifier"
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Run"
+          description: "Returns deleted Run object"
+        404:
+          description: Run not found
+    put:
+      tags:
+        - "Run"
+      summary: "Update Run object by ID"
+      description: ""
+      operationId: "updateRunById"
+      parameters:
+        - in: path
+          name: run_id
+          description: "Run unique identifier"
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "Run input params to be updated"
+          required: true
+          schema:
+            properties:
+              run_status:
+                $ref: "#/components/schemas/RunStatus"
+            required:
+              - run_status
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Run"
+          description: "Returns single Run object"
+        404:
+          description: Run not found
+
+    post:
+      tags:
+        - "Run"
+      summary: "Creates results of running test"
+      description: ""
+      operationId: "createRunResults"
+      consumes:
+        - "multipart/form-data"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: run_id
+          description: "Run unique identifier"
+          required: true
+          type: string
+        - in: formData
+          name: test_result
+          description: "Jmeter results .jtl file"
+          required: true
+          type: file
+      responses:
+        200:
+          schema:
+            type: object
+            properties:
+              metrics_count:
+                type: number
+          description: "Returns count of metrics where processed"
+        400:
+          description: "Bad request"
+        404:
+          description: Run not found
+
+  /runs:
+    get:
+      tags:
+        - "Run"
+      summary: "Returns single Run object by ID"
+      description: ""
+      operationId: "getAllRuns"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Runs"
+          description: "Returns list of Run objects"
+
+components:
+  schemas:
+    RunStatus:
+      type: string
+      enum:
+        - CREATING
+        - PENDING
+        - RUNNING
+        - STOPPED
+        - FINISHED
+
+definitions:
+  RunPlan:
+    type: object
+    properties:
+      id:
+        type: string
+      run_plan_file:
+        type: string
+      title:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+  RunPlans:
+    type: array
+    description: List of RunPlan objects.
+    items:
+      $ref: "#/definitions/RunPlan"
+  Run:
+    type: object
+    properties:
+      id:
+        type: string
+      test_run_status:
+        $ref: "#/components/schemas/RunStatus"
+      run_plan_id:
+        type: string
+      client_agent_id:
+        type: string
+      server_agent_ids:
+        type: array
+        items: string
+      custom_data_ids:
+        type: array
+        items: string
+      hosts:
+        type: array
+        items:
+          type: object
+          properties:
+            host:
+              type: string
+            ip:
+              type: string
+          required:
+            - host
+            - ip
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+  Runs:
+    type: array
+    description: List of Run objects.
+    items:
+      $ref: "#/definitions/Run"
+  RunConfiguration:
+    type: object
+    properties:
+      id:
+        type: string
+      run_plan_id:
+        type: string
+      client_agent_id:
+        type: string
+      server_agent_ids:
+        type: array
+        items: string
+      custom_data_ids:
+        type: array
+        items: string
+      hosts:
+        type: array
+        items:
+          type: object
+          properties:
+            host:
+              type: string
+            ip:
+              type: string
+          required:
+            - host
+            - ip
+      load_profile:
+        type: array
+        items:
+          type: object
+          properties:
+            start:
+              type: number
+            end:
+              type: number
+            duration:
+              type: number
+          required:
+            - start
+            - end
+            - duration
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+  RunConfigurations:
+    type: array
+    description: List of RunConfiguration objects.
+    items:
+      $ref: "#/definitions/RunConfiguration"
