@@ -4,6 +4,78 @@ schemes:
   - "http"
 
 paths:
+  /agent_log:
+    post:
+      tags:
+        - "AgentLog"
+      summary: "Create AgentLog object"
+      description: ""
+      operationId: "createAgentLog"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "AgentLog input params to creare object"
+          required: true
+          schema:
+            properties:
+              agent_id:
+                type: string
+                description: "Agent unique ID"
+              log_message:
+                type: string
+                description: "AgentLog message"
+              level:
+                $ref: "#/components/schemas/AgentLogLevel"
+            required:
+              - agent_id
+              - log_message
+            additionalProperties: False
+      responses:
+        "200":
+          schema:
+            $ref: "#/definitions/AgentLog"
+          description: "Returns single AgentLog object"
+        "400":
+          description: Bad request"
+
+  /agent_logs:
+    get:
+      tags:
+        - "AgentLog"
+      summary: "Get lif of AgentLog objects"
+      description: ""
+      operationId: "getAllAgentLogs"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "agent_ids"
+          in: "query"
+          description: "Filter by Agent ID"
+          collectionFormat: multi
+          type: array
+          items:
+            type: string
+        - name: "date_from"
+          in: "query"
+          description: "Filter by Date from"
+          required: true
+          type: string
+          format: datetime
+        - in: query
+          name: sort
+          description: "Sort by specific field. Default: `-created_at`"
+          type: string
+      responses:
+        "200":
+          schema:
+            $ref: "#/definitions/AgentLogs"
+          description: "Returns list of AgentLog objects"
+        "400":
+          description: "Bad request"
   /agent:
     put:
       tags:
@@ -357,6 +429,12 @@ components:
         - PROCESSING_EVENT
         - RUNNING_TEST
         - UNAVAILABLE
+    AgentLogLevel:
+      type: string
+      enum:
+        - DEBUG
+        - INFO
+        - ERROR
     RunStatus:
       type: string
       enum:
@@ -389,6 +467,28 @@ definitions:
     description: List of Agent objects.
     items:
       $ref: "#/definitions/Agent"
+  AgentLog:
+    type: object
+    properties:
+      id:
+        type: string
+      Agent_id:
+        type: string
+      log_message:
+        type: string
+      level:
+        $ref: "#/components/schemas/AgentLogLevel"
+      created_at:
+        type: string  
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+  AgentLogs:
+    type: array
+    description: List of AgentLog objects.
+    items:
+      $ref: "#/definitions/AgentLog"
   Event:
     type: object
     properties:
