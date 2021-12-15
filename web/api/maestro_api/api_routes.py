@@ -7,6 +7,7 @@ from maestro_api.validation_schemas import (
     agent_create_schema,
     agent_update_schema,
 )
+from maestro_api.validation_schemas import create_run_schema, update_run_schema
 from maestro_api.libs.flask.decorators import requires_auth, validate_request
 
 
