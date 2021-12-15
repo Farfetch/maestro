@@ -5,8 +5,9 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/web/api" # Maestro API service
+  # Python Flask API
+  - package-ecosystem: "pip"
+    directory: "/web/api"
     schedule:
       interval: "weekly"
     reviewers:
