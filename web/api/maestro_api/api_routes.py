@@ -3,6 +3,7 @@ from maestro_api.controllers.run_status import RunStatusController
 from maestro_api.controllers.agent import AgentController
 from maestro_api.controllers.custom_data import CustomDataController
 from maestro_api.controllers.agent_log import AgentLogController
+from maestro_api.controllers.event import EventController
 from maestro_api.validation_schemas import (
     create_run_schema,
     update_run_schema,
@@ -10,6 +11,8 @@ from maestro_api.validation_schemas import (
     agent_update_schema,
     agent_log_create_schema,
     agent_log_list_schema,
+    event_update_schema,
+    event_list_schema,
 )
 
 from maestro_api.libs.flask.decorators import requires_auth, validate_request
@@ -21,6 +24,7 @@ def init_api_routes(flask_app):
     agent_controller = AgentController(flask_app)
     custom_data_controller = CustomDataController(flask_app)
     agent_log_controller = AgentLogController(flask_app)
+    event_controller = EventController(flask_app)
 
     # /run routes
     @flask_app.route("/run/<run_id>", methods=["DELETE"])
@@ -123,3 +127,16 @@ def init_api_routes(flask_app):
     @requires_auth()
     def custom_data_download(*args, **kwargs):
         return custom_data_controller.all(*args, **kwargs)
+
+    # /event routes
+    @flask_app.route("/event/<event_id>", methods=["PUT"])
+    @requires_auth()
+    @validate_request(event_update_schema)
+    def event_update_one(*args, **kwargs):
+        return event_controller.update_one(*args, **kwargs)
+
+    @flask_app.route("/events", methods=["GET"])
+    @requires_auth()
+    @validate_request(event_list_schema)
+    def event_get_all(*args, **kwargs):
+        return event_controller.all(*args, **kwargs)
