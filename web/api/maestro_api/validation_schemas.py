@@ -26,6 +26,84 @@ update_run_schema = {
     "additionalProperties": False,
 }
 
+run_configuration_create_schema = {
+    "type": "object",
+    "properties": {
+        "title": {"type": "string"},
+        "run_plan_id": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 24,
+        },
+        "client_agent_id": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 24,
+        },
+        "server_agent_ids": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 12, "maxLength": 24},
+        },
+        "custom_data_ids": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 12, "maxLength": 24},
+        },
+        "hosts": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "host": {"type": "string"},
+                    "ip": {"type": "string"},
+                },
+                "required": [
+                    "host",
+                    "ip",
+                ],
+                "additionalProperties": False,
+            },
+        },
+        "custom_properties": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "value": {"type": "string"},
+                },
+                "required": [
+                    "name",
+                    "value",
+                ],
+                "additionalProperties": False,
+            },
+        },
+        "load_profile": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "start": {"type": "number"},
+                    "end": {"type": "number"},
+                    "duration": {"type": "number"},
+                },
+                "required": [
+                    "start",
+                    "end",
+                    "duration",
+                ],
+                "additionalProperties": False,
+            },
+        },
+    },
+    "required": [
+        "run_plan_id",
+        "client_agent_id",
+        "server_agent_ids",
+    ],
+    "additionalProperties": False,
+}
+
 agent_create_schema = {
     "type": "object",
     "properties": {

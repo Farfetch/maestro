@@ -467,6 +467,244 @@ paths:
           schema:
             $ref: "#/definitions/Runs"
           description: "Returns list of Run objects"
+  /run_configuration:
+    post:
+      tags:
+        - "Run Configuration"
+      summary: "Create RunConfiguration object"
+      description: ""
+      operationId: "creareRunConfiguration"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "RunConfiguration input params to create new object"
+          required: true
+          schema:
+            properties:
+              run_plan_id:
+                type: string
+                description: "Run Plan identifier"
+              client_agent_id:
+                type: string
+                description: "Client Agent identifier"
+              server_agent_ids:
+                type: array
+                description: "List of server Agents IDs should be used in test"
+                items:
+                  type: string
+              custom_data_ids:
+                type: array
+                description: "List of CustomData IDs should be used in test"
+                items:
+                  type: string
+              hosts:
+                type: array
+                description: "List of Hosts should be used in test"
+                items:
+                  type: object
+                  properties:
+                    host:
+                      type: string
+                    ip:
+                      type: string
+                  required:
+                    - host
+                    - ip
+              custom_properties:
+                type: array
+                description: "List of Custom Properties should be used in test"
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    value:
+                      type: string
+                  required:
+                    - host
+                    - ip
+              load_profile:
+                type: array
+                description: "List of Load profile configuration items"
+                items:
+                  type: object
+                  properties:
+                    start:
+                      type: number
+                    end:
+                      type: number
+                    duration:
+                      type: number
+                  required:
+                    - start
+                    - end
+                    - duration
+            required:
+              - run_plan_id
+              - client_agent_id
+              - server_agent_ids
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/RunConfiguration"
+          description: "Returns list of RunConfiguration objects"
+        400:
+          description: "Bad request"
+
+  /run_configuration/{run_configuration_id}:
+    get:
+      tags:
+        - "Run Configuration"
+      summary: "Get RunConfiguration object by ID"
+      description: ""
+      operationId: "getRunConfigurationById"
+      parameters:
+        - in: path
+          name: run_configuration_id
+          description: "RunConfiguration unique identifier"
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/RunConfiguration"
+          description: "Returns single RunConfiguration object"
+        404:
+          description: RunConfiguration not found
+    delete:
+      tags:
+        - "Run Configuration"
+      summary: "Delete RunConfiguration by ID"
+      description: ""
+      operationId: "deleteRunConfigurationById"
+      parameters:
+        - in: path
+          name: run_configuration_id
+          description: "RunConfiguration unique identifier"
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/RunConfiguration"
+          description: "Returns single RunConfiguration object"
+        404:
+          description: RunConfiguration not found
+    put:
+      tags:
+        - "Run Configuration"
+      summary: "Update RunConfiguration object based on ID"
+      description: ""
+      operationId: "creareRunConfiguration"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "RunConfiguration input params to update object"
+          required: true
+          schema:
+            properties:
+              run_plan_id:
+                type: string
+                description: "Run Plan ID"
+              client_agent_id:
+                type: string
+                description: "Client Agent ID"
+              server_agent_ids:
+                type: array
+                description: "List of server Agent identfiers to be used in the test"
+                items:
+                  type: string
+              custom_data_ids:
+                type: array
+                description: "List of CustomData IDs to be used in the test"
+                items:
+                  type: string
+              hosts:
+                type: array
+                description: "List of Hosts to be used in the test"
+                items:
+                  type: object
+                  properties:
+                    host:
+                      type: string
+                    ip:
+                      type: string
+                  required:
+                    - host
+                    - ip
+              custom_properties:
+                type: array
+                description: "List of CustomProperties objects to be used in the test"
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    value:
+                      type: string
+                  required:
+                    - host
+                    - ip
+              load_profile:
+                type: array
+                description: "List of LoadProfile objects"
+                items:
+                  type: object
+                  properties:
+                    start:
+                      type: number
+                    end:
+                      type: number
+                    duration:
+                      type: number
+                  required:
+                    - start
+                    - end
+                    - duration
+            required:
+              - run_plan_id
+              - client_agent_id
+              - server_agent_ids
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/RunConfiguration"
+          description: "Returns list of Run objects"
+        400:
+          description: "Bad request"
+
+  /run_configurations:
+    get:
+      tags:
+        - "Run Configuration"
+      summary: "Returns list of RunConfiguration objects"
+      description: ""
+      operationId: "getAllRunConfigurations"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/RunConfigurations"
+          description: "Returns list of RunConfiguration objects"
 
   /run_status/{run_id}/start:
     post:
@@ -558,20 +796,20 @@ components:
         - INFO
         - ERROR
     EventStatus:
-        name: event_status
-        type: string
-        enum:
-          - PENDING
-          - PROCESSING
-          - FINISHED
+      name: event_status
+      type: string
+      enum:
+        - PENDING
+        - PROCESSING
+        - FINISHED
     EventType:
-        name: event_type
-        type: string
-        enum:
-          - START_RUN
-          - STOP_RUN
-          - START_SERVER_AGENT
-          - STOP_SERVER_AGENT
+      name: event_type
+      type: string
+      enum:
+        - START_RUN
+        - STOP_RUN
+        - START_SERVER_AGENT
+        - STOP_SERVER_AGENT
     RunStatus:
       type: string
       enum:
@@ -616,7 +854,7 @@ definitions:
       level:
         $ref: "#/components/schemas/AgentLogLevel"
       created_at:
-        type: string  
+        type: string
         format: date-time
       updated_at:
         type: string
@@ -626,7 +864,7 @@ definitions:
     description: List of AgentLog objects.
     items:
       $ref: "#/definitions/AgentLog"
-    CustomDataSingle:
+  CustomDataSingle:
     type: object
     properties:
       id:
