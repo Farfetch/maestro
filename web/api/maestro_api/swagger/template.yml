@@ -113,7 +113,7 @@ paths:
     get:
       tags:
         - "Agent"
-      summary: "Get Agent by ID"
+      summary: "Get Agent object by ID"
       description: ""
       operationId: "getAgentById"
       consumes:
@@ -138,7 +138,7 @@ paths:
     put:
       tags:
         - "Agent"
-      summary: "Update Agent by ID"
+      summary: "Update Agent object by ID"
       description: ""
       operationId: "updateAgentById"
       consumes:
@@ -173,7 +173,7 @@ paths:
     get:
       tags:
         - "Agent"
-      summary: "Get all Agents"
+      summary: "Get all Agent objects"
       description: ""
       operationId: "getAllAgents"
       consumes:
@@ -186,11 +186,106 @@ paths:
             $ref: "#/definitions/Agents"
           description: "Returns list of Agent objects"
 
+  /custom_data:
+    get:
+      tags:
+        - "Custom Data"
+      summary: "Get all CustomData objects"
+      description: ""
+      operationId: "getAllCustomData"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          schema:
+            $ref: "#/definitions/CustomData"
+          description: "Returns list of CustomData objects"
+    post:
+      tags:
+        - "Custom Data"
+      summary: "Create new CustomData object"
+      description: ""
+      operationId: "createCustomData"
+      consumes:
+        - "multipart/form-data"
+      produces:
+        - "application/json"
+      parameters:
+        - in: formData
+          name: custom_data_file
+          description: "Custom data CSV file"
+          required: true
+          type: file
+        - in: formData
+          name: title
+          description: "Custom data file title"
+          required: true
+          type: string
+        - in: formData
+          name: name
+          description: "Unique custom data name"
+          required: true
+          type: string
+      responses:
+        "200":
+          schema:
+            $ref: "#/definitions/CustomDataSingle"
+          description: "Returns single CustomData object"
+  /custom_data/{custom_data_id}:
+    get:
+      tags:
+        - "Custom Data"
+      summary: "Get CustomData object by ID"
+      description: ""
+      operationId: "getCustomDataById"
+      parameters:
+        - in: path
+          name: custom_data_id
+          description: "Custom data ID"
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          schema:
+            $ref: "#/definitions/CustomDataSingle"
+          description: "Returns single CustomData object"
+    /custom_data/{custom_data_id}/download:
+      get:
+        tags:
+          - "Custom Data"
+        summary: "Download CustomData file by ID"
+        description: ""
+        operationId: "downloadCustomDataFileById"
+        consumes:
+          - "application/json"
+        produces:
+          - "application/json"
+        parameters:
+          - in: path
+            name: custom_data_id
+            description: CustomData object ID
+            required: true
+            type: string
+        responses:
+          "200":
+            description: CustomData CSV file
+            content:
+              application/csv:
+              schema:
+                type: string
+                format: binary
+
   /run:
     post:
       tags:
         - "Run"
-      summary: "Create new Run object"
+      summary: "Create Run object"
       description: ""
       operationId: "createRun"
       consumes:
@@ -296,44 +391,12 @@ paths:
           description: "Returns single Run object"
         404:
           description: Run not found
-    post:
-      tags:
-        - "Run"
-      summary: "Creates results of running test"
-      description: ""
-      operationId: "createRunResults"
-      consumes:
-        - "multipart/form-data"
-      produces:
-        - "application/json"
-      parameters:
-        - in: path
-          name: run_id
-          description: "Run unique identifier"
-          required: true
-          type: string
-        - in: formData
-          name: test_result
-          description: "Jmeter results .jtl file"
-          required: true
-          type: file
-      responses:
-        200:
-          schema:
-            type: object
-            properties:
-              metrics_count:
-                type: number
-          description: "Returns count of metrics where processed"
-        400:
-          description: "Bad request"
-        404:
-          description: Run not found
+
   /runs:
     get:
       tags:
         - "Run"
-      summary: "Returns single Run object by ID"
+      summary: "Get all Run objects"
       description: ""
       operationId: "getAllRuns"
       consumes:
@@ -489,6 +552,28 @@ definitions:
     description: List of AgentLog objects.
     items:
       $ref: "#/definitions/AgentLog"
+    CustomDataSingle:
+    type: object
+    properties:
+      id:
+        type: string
+      custom_data_file:
+        type: string
+      title:
+        type: string
+      name:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+  CustomData:
+    type: array
+    description: List of CustomData objects.
+    items:
+      $ref: "#/definitions/CustomDataSingle"
   Event:
     type: object
     properties:
