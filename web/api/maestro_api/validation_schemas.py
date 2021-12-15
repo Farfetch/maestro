@@ -1,6 +1,7 @@
 from maestro_api.db.models.run import RunStatus
 from maestro_api.db.models.agent import AgentStatus
 from maestro_api.db.models.agent_log import AgentLogLevel
+from maestro_api.db.models.event import EventStatus, EventType
 
 create_run_schema = {
     "type": "object",
@@ -86,5 +87,36 @@ agent_log_list_schema = {
         "level": {"type": "string", "enum": AgentLogLevel.list()},
     },
     "required": ["date_from"],
+    "additionalProperties": False,
+}
+
+event_update_schema = {
+    "type": "object",
+    "properties": {
+        "event_status": {
+            "type": "string",
+            "enum": EventStatus.list(),
+        },
+    },
+    "additionalProperties": False,
+}
+
+event_list_schema = {
+    "type": "object",
+    "properties": {
+        "event_status": {
+            "type": "string",
+            "enum": EventStatus.list(),
+        },
+        "event_type": {
+            "type": "string",
+            "enum": EventType.list(),
+        },
+        "agent_id": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 24,
+        },
+    },
     "additionalProperties": False,
 }
