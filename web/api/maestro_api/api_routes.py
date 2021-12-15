@@ -1,11 +1,14 @@
 from maestro_api.controllers.run import RunController
 from maestro_api.controllers.run_status import RunStatusController
 from maestro_api.controllers.agent import AgentController
+from maestro_api.controllers.agent_log import AgentLogController
 from maestro_api.validation_schemas import (
     create_run_schema,
     update_run_schema,
     agent_create_schema,
     agent_update_schema,
+    agent_log_create_schema,
+    agent_log_list_schema,
 )
 from maestro_api.libs.flask.decorators import requires_auth, validate_request
 
@@ -14,6 +17,7 @@ def init_api_routes(flask_app):
     run_controller = RunController(flask_app)
     run_status_controller = RunStatusController(flask_app)
     agent_controller = AgentController(flask_app)
+    agent_log_controller = AgentLogController(flask_app)
 
     # /run routes
     @flask_app.route("/run/<run_id>", methods=["DELETE"])
@@ -82,3 +86,16 @@ def init_api_routes(flask_app):
     @requires_auth()
     def agent_all(*args, **kwargs):
         return agent_controller.all(*args, **kwargs)
+
+    # /agent_log routes
+    @flask_app.route("/agent_log", methods=["POST"])
+    @requires_auth()
+    @validate_request(agent_log_create_schema)
+    def agent_log_create_one(*args, **kwargs):
+        return agent_log_controller.create_one(*args, **kwargs)
+
+    @flask_app.route("/agent_logs", methods=["GET"])
+    @requires_auth()
+    @validate_request(agent_log_list_schema)
+    def agent_log_all(*args, **kwargs):
+        return agent_log_controller.all(*args, **kwargs)
