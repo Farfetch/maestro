@@ -281,6 +281,65 @@ paths:
                 type: string
                 format: binary
 
+  /events:
+    get:
+      tags:
+        - "Event"
+      summary: "Get all Event objects"
+      description: ""
+      operationId: "getAllEvents"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "event_status"
+          in: "query"
+          description: "Filter by EventStatus"
+          required: false
+          $ref: "#/components/schemas/EventStatus"
+        - name: "event_type"
+          in: "query"
+          description: "Filter by EventType"
+          required: false
+          $ref: "#/components/schemas/EventType"
+        - name: "agent_id"
+          in: "query"
+          description: "Filter by Agent ID"
+          required: false
+          type: string
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Events"
+          description: "Returns list of Event objects"
+        400:
+          description: "Bad request"
+  /event/{event_id}:
+    put:
+      tags:
+        - "Event"
+      summary: "Update Event object by ID"
+      description: ""
+      operationId: "updateEventById"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "event_status"
+          in: "body"
+          required: true
+          schema:
+            properties:
+              event_status:
+                $ref: "#/components/schemas/EventStatus"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Events"
+          description: "Returns list of Event objects"
+        400:
+          description: "Bad request"
+
   /run:
     post:
       tags:
@@ -498,6 +557,21 @@ components:
         - DEBUG
         - INFO
         - ERROR
+    EventStatus:
+        name: event_status
+        type: string
+        enum:
+          - PENDING
+          - PROCESSING
+          - FINISHED
+    EventType:
+        name: event_type
+        type: string
+        enum:
+          - START_RUN
+          - STOP_RUN
+          - START_SERVER_AGENT
+          - STOP_SERVER_AGENT
     RunStatus:
       type: string
       enum:
@@ -580,18 +654,9 @@ definitions:
       id:
         type: string
       event_status:
-        type: string
-        enum:
-          - PENDING
-          - PROCESSING
-          - FINISHED
+        $ref: "#/components/schemas/EventStatus"
       event_type:
-        type: string
-        enum:
-          - START_RUN
-          - STOP_RUN
-          - START_SERVER_AGENT
-          - STOP_SERVER_AGENT
+        $ref: "#/components/schemas/EventType"
       agent_id:
         type: string
       test_run_id:
