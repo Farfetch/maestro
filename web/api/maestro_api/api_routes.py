@@ -1,6 +1,7 @@
 from maestro_api.controllers.run import RunController
 from maestro_api.controllers.run_status import RunStatusController
 from maestro_api.controllers.agent import AgentController
+from maestro_api.controllers.custom_data import CustomDataController
 from maestro_api.validation_schemas import (
     create_run_schema,
     update_run_schema,
@@ -15,6 +16,7 @@ def init_api_routes(flask_app):
     run_controller = RunController(flask_app)
     run_status_controller = RunStatusController(flask_app)
     agent_controller = AgentController(flask_app)
+    custom_data_controller = CustomDataController(flask_app)
 
     # /run routes
     @flask_app.route("/run/<run_id>", methods=["DELETE"])
@@ -83,3 +85,25 @@ def init_api_routes(flask_app):
     @requires_auth()
     def agent_all(*args, **kwargs):
         return agent_controller.all(*args, **kwargs)
+
+    # /custom_data routes
+
+    @flask_app.route("/custom_data", methods=["GET"])
+    @requires_auth()
+    def custom_data_all(*args, **kwargs):
+        return custom_data_controller.all(*args, **kwargs)
+
+    @flask_app.route("/custom_data/<custom_data_id>", methods=["GET"])
+    @requires_auth()
+    def custom_data_get_one(*args, **kwargs):
+        return custom_data_controller.get_one(*args, **kwargs)
+
+    @flask_app.route("/custom_data", methods=["POST"])
+    @requires_auth()
+    def custom_data_create_one(*args, **kwargs):
+        return custom_data_controller.create_one(*args, **kwargs)
+
+    @flask_app.route("/custom_data/<custom_data_id>/download", methods=["GET"])
+    @requires_auth()
+    def custom_data_download(*args, **kwargs):
+        return custom_data_controller.all(*args, **kwargs)
