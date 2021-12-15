@@ -4,13 +4,13 @@ schemes:
   - "http"
 
 paths:
-  /run:
-    post:
+  /agent:
+    put:
       tags:
-        - "Run"
-      summary: "Create new Run object"
+        - "Agent"
+      summary: "Create/Update Agent object by hostname"
       description: ""
-      operationId: "getAllRuns"
+      operationId: "createOrUpdateAgent"
       consumes:
         - "application/json"
       produces:
@@ -18,15 +18,125 @@ paths:
       parameters:
         - in: "body"
           name: "body"
-          description: "Create Run object based on configuration"
           required: true
           schema:
             properties:
-              test_configuration_id:
+              hostname:
                 type: string
-                description: "Test Configuration identifier"
+                description: "Agent hostanme"
+              ip:
+                type: string
+                description: "Agent IP"
             required:
-              - test_configuration_id
+              - hostname
+              - ip
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Agent"
+          description: "Returns single Agent object"
+        400:
+          description: "Bad request"
+  /agent/{agent_id}:
+    get:
+      tags:
+        - "Agent"
+      summary: "Get Agent by ID"
+      description: ""
+      operationId: "getAgentById"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: agent_id
+          description: "Agent unique identifier"
+          required: true
+          type: string
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Agent"
+          description: "Returns single Agent object"
+        400:
+          description: "Bad request"
+        404:
+          description: "Not found"
+    put:
+      tags:
+        - "Agent"
+      summary: "Update Agent by ID"
+      description: ""
+      operationId: "updateAgentById"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: agent_id
+          description: "Agent unique identifier"
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            properties:
+              agent_status:
+                $ref: "#/components/schemas/AgentStatus"
+            required:
+              - agent_status
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Agent"
+          description: "Returns single Agent object"
+        400:
+          description: "Bad request"
+        404:
+          description: "Not found"
+  /agents:
+    get:
+      tags:
+        - "Agent"
+      summary: "Get all Agents"
+      description: ""
+      operationId: "getAllAgents"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Agents"
+          description: "Returns list of Agent objects"
+
+  /run:
+    post:
+      tags:
+        - "Run"
+      summary: "Create new Run object"
+      description: ""
+      operationId: "createRun"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Create Run object based on configuration ID"
+          required: true
+          schema:
+            properties:
+              run_configuration_id:
+                type: string
+                description: "Run Configuration ID"
+            required:
+              - run_configuration_id
       responses:
         200:
           schema:
@@ -239,6 +349,14 @@ paths:
 
 components:
   schemas:
+    AgentStatus:
+      type: string
+      enum:
+        - CREATING
+        - AVAILABLE
+        - PROCESSING_EVENT
+        - RUNNING_TEST
+        - UNAVAILABLE
     RunStatus:
       type: string
       enum:
@@ -249,6 +367,28 @@ components:
         - FINISHED
 
 definitions:
+  Agent:
+    type: object
+    properties:
+      id:
+        type: string
+      agent_status:
+        $ref: "#/components/schemas/AgentStatus"
+      ip:
+        type: string
+      hostname:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+  Agents:
+    type: array
+    description: List of Agent objects.
+    items:
+      $ref: "#/definitions/Agent"
   Event:
     type: object
     properties:
