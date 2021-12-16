@@ -131,13 +131,13 @@ def init_api_routes(flask_app):
         return run_plan_controller.download(*args, **kwargs)
 
     # /run_metric routes
-    @flask_app.route("/run_metric/<run_id>", methods=["POST"])
+    @flask_app.route("/run_metrics/<run_id>", methods=["POST"])
     @requires_auth()
     @validate_request()
     def run_metric_create_many(*args, **kwargs):
         return run_metric_controller.create_many(*args, **kwargs)
 
-    @flask_app.route("/run_metric/<run_id>", methods=["GET"])
+    @flask_app.route("/run_metrics/<run_id>", methods=["GET"])
     @requires_auth()
     @validate_request(run_metric_all_schema)
     def run_metric_all(*args, **kwargs):

@@ -106,7 +106,7 @@ def test_run_metric_all(client):
         RunMetricLabel(run_id=run_id, **metric).save()
 
     response = client.get(
-        "/run_metric/%s?time_interval=10" % run_id,
+        "/run_metrics/%s?time_interval=10" % run_id,
     )
 
     assert 200 == response.status_code
@@ -182,7 +182,7 @@ def test_run_metric_all_with_show_labels_param(client):
         RunMetricLabel(run_id=run_id, **metric).save()
 
     response = client.get(
-        "/run_metric/%s?show_labels=1" % run_id,
+        "/run_metrics/%s?show_labels=1" % run_id,
     )
 
     assert 200 == response.status_code
@@ -222,7 +222,7 @@ def test_run_metric_all_with_show_labels_and_zero_time_interval(client):
         RunMetricLabel(run_id=run_id, **metric).save()
 
     response = client.get(
-        "/run_metric/%s?show_labels=1&time_interval=0" % run_id,
+        "/run_metrics/%s?show_labels=1&time_interval=0" % run_id,
     )
 
     assert 200 == response.status_code
@@ -296,7 +296,7 @@ def test_run_metrics_create_many(client):
     }
 
     response = client.post(
-        "/run_metric/%s" % run_id,
+        "/run_metrics/%s" % run_id,
         data=json.dumps(request_data),
         content_type="application/json",
     )
