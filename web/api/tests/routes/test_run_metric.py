@@ -2,7 +2,6 @@ import json
 from datetime import datetime, timedelta
 
 from maestro_api.db.models.run import Run, RunStatus
-from maestro_api.db.models.run_metric import RunMetric
 from maestro_api.db.models.run_metric_label import RunMetricLabel
 
 

@@ -1,8 +1,6 @@
 from datetime import datetime
 import numpy
-from mongoengine import Q
 
-from maestro_api.db.models.run_metric import RunMetric
 from maestro_api.db.models.run_metric_label import RunMetricLabel
 
 from maestro_api.libs.datetime import DEFAULT_DATTETIME_FORMAT
@@ -14,11 +12,8 @@ class MetricsAggregator:
     Raw metrics aggregator to group metrics by second and store in run_metric
     collection.
 
-    Works in two modes:
-    `aggregate_metrics_by_label` - receives dates to remove data that is already
-        aggreagted and do it again
-    `group_and_store_by_label` - aggregates and stores metrics based on
-        received data
+    `group_and_store_by_label` - aggregates RunMetric objects and
+        stores them separately to RunMetricLabel collection
     """
 
     INSERT_BULK = 100000
@@ -62,13 +57,12 @@ class MetricsAggregator:
 
         return responses_list
 
-    def group_and_store_by_label(self, run_id, metrics):
+    def group_and_store_by_label(self, run_id, run_metrics):
         """
-        Group received metrics based on `label`, `seconds` and insert
-        to `run_metric_label` collection that is used for fetching data
-        in dashboards
+        Group received RunMetric objects based on `label`, `seconds` and insert
+        to `run_metric_label` collection.
         """
-        metrics_by_date = self.group_by_label_date(metrics)
+        metrics_by_date = self.group_by_label_date(run_metrics)
 
         run_metric_labels = []
         for label in metrics_by_date:
@@ -114,29 +108,3 @@ class MetricsAggregator:
                 RunMetricLabel.objects.insert(insert_chunk)
 
         return run_metric_labels
-
-    def aggregate_metrics_by_label(self, run_id, from_datetime, to_datetime):
-        """
-        Fetch raw and sore aggrefated metrics
-
-        The method runs query over `run_metric` collection to get all needed data
-        and then inserts aggreagted data per second to `run_metric_collection`
-        """
-
-        # For proper aggregation we always start from the beginning of the second
-        from_datetime = from_datetime.replace(microsecond=0)
-        to_datetime = to_datetime.replace(microsecond=0)
-
-        filter_query = Q(
-            run_id=run_id,
-            datetime__gte=from_datetime,
-            datetime__lt=to_datetime,
-        )
-
-        metrics = RunMetric.objects.filter(filter_query).order_by("datetime")
-
-        RunMetricLabel.objects(filter_query).delete()
-
-        metric_labels = self.group_and_store_by_label(run_id, metrics)
-
-        return metric_labels

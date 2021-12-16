@@ -6,9 +6,7 @@ from maestro_api.db.repo.run_metric import RunMetricRepository
 from maestro_api.services.jmeter import JmeterService
 from maestro_api.db.aggregator.metrics import MetricsAggregator
 from maestro_api.libs.flask.utils import (
-    bad_request_response,
     get_obj_or_404,
-    jsonify_list_of_docs,
 )
 
 
@@ -22,16 +20,17 @@ class RunMetricController:
         """
         run = get_obj_or_404(Run, id=run_id)
 
-        metrics = JmeterService.format_metrics(data.get("metrics"))
+        input_metrics = data.get("metrics")
+        jmeter_metrics = JmeterService.format_metrics(input_metrics)
 
         metric_instances = [
-            RunMetric(run_id=run.id, **vars(metric)) for metric in metrics
+            RunMetric(run_id=run.id, **vars(metric)) for metric in jmeter_metrics
         ]
         MetricsAggregator().group_and_store_by_label(run_id, metric_instances)
 
         RunMetric.objects.insert(metric_instances)
 
-        return jsonify({"metrics_count": len(metrics)})
+        return jsonify({"metrics_count": len(jmeter_metrics)})
 
     def all(self, run_id, data, user):
         """
