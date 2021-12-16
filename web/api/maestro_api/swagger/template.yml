@@ -4,78 +4,6 @@ schemes:
   - "http"
 
 paths:
-  /agent_log:
-    post:
-      tags:
-        - "AgentLog"
-      summary: "Create AgentLog object"
-      description: ""
-      operationId: "createAgentLog"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          description: "AgentLog input params to create object"
-          required: true
-          schema:
-            properties:
-              agent_id:
-                type: string
-                description: "Agent unique ID"
-              log_message:
-                type: string
-                description: "AgentLog message"
-              level:
-                $ref: "#/components/schemas/AgentLogLevel"
-            required:
-              - agent_id
-              - log_message
-            additionalProperties: False
-      responses:
-        "200":
-          schema:
-            $ref: "#/definitions/AgentLog"
-          description: "Returns single AgentLog object"
-        "400":
-          description: Bad request"
-
-  /agent_logs:
-    get:
-      tags:
-        - "AgentLog"
-      summary: "Get lif of AgentLog objects"
-      description: ""
-      operationId: "getAllAgentLogs"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "agent_ids"
-          in: "query"
-          description: "Filter by Agent ID"
-          collectionFormat: multi
-          type: array
-          items:
-            type: string
-        - name: "date_from"
-          in: "query"
-          description: "Filter by Date from"
-          required: true
-          type: string
-          format: datetime
-        - in: query
-          name: sort
-          description: "Sort by specific field. Default: `-created_at`"
-          type: string
-      responses:
-        "200":
-          schema:
-            $ref: "#/definitions/AgentLogs"
-          description: "Returns list of AgentLog objects"
-        "400":
-          description: "Bad request"
   /agent:
     put:
       tags:
@@ -185,6 +113,78 @@ paths:
           schema:
             $ref: "#/definitions/Agents"
           description: "Returns list of Agent objects"
+
+  /agent_log:
+    post:
+      tags:
+        - "AgentLog"
+      summary: "Create AgentLog object"
+      description: ""
+      operationId: "createAgentLog"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "AgentLog input params to create object"
+          required: true
+          schema:
+            properties:
+              agent_id:
+                type: string
+                description: "Agent unique ID"
+              log_message:
+                type: string
+                description: "AgentLog message"
+              level:
+                $ref: "#/components/schemas/AgentLogLevel"
+            required:
+              - agent_id
+              - log_message
+            additionalProperties: False
+      responses:
+        "200":
+          schema:
+            $ref: "#/definitions/AgentLog"
+          description: "Returns single AgentLog object"
+        "400":
+          description: Bad request"
+  /agent_logs:
+    get:
+      tags:
+        - "AgentLog"
+      summary: "Get lif of AgentLog objects"
+      description: ""
+      operationId: "getAllAgentLogs"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "agent_ids"
+          in: "query"
+          description: "Filter by Agent ID"
+          collectionFormat: multi
+          type: array
+          items:
+            type: string
+        - name: "date_from"
+          in: "query"
+          description: "Filter by Date from"
+          required: true
+          type: string
+          format: datetime
+        - in: query
+          name: sort
+          description: "Sort by specific field. Default: `-created_at`"
+          type: string
+      responses:
+        "200":
+          schema:
+            $ref: "#/definitions/AgentLogs"
+          description: "Returns list of AgentLog objects"
+        "400":
+          description: "Bad request"
 
   /custom_data:
     get:
@@ -450,7 +450,6 @@ paths:
           description: "Returns single Run object"
         404:
           description: Run not found
-
   /runs:
     get:
       tags:
@@ -467,6 +466,7 @@ paths:
           schema:
             $ref: "#/definitions/Runs"
           description: "Returns list of Run objects"
+
   /run_configuration:
     post:
       tags:
@@ -554,7 +554,6 @@ paths:
           description: "Returns list of RunConfiguration objects"
         400:
           description: "Bad request"
-
   /run_configuration/{run_configuration_id}:
     get:
       tags:
@@ -688,7 +687,6 @@ paths:
           description: "Returns list of Run objects"
         400:
           description: "Bad request"
-
   /run_configurations:
     get:
       tags:
@@ -705,6 +703,98 @@ paths:
           schema:
             $ref: "#/definitions/RunConfigurations"
           description: "Returns list of RunConfiguration objects"
+
+  /run_plan:
+    post:
+      tags:
+        - "Run Plan"
+      summary: "Create RunPlan object"
+      description: ""
+      operationId: "createRunPlan"
+      consumes:
+        - "multipart/form-data"
+      produces:
+        - "application/json"
+      parameters:
+        - in: formData
+          name: run_plan
+          description: "RunPlan Jmeter JMX file"
+          required: true
+          type: file
+        - in: formData
+          name: title
+          description: "RunPlan file title"
+          required: true
+          type: string
+      responses:
+        "200":
+          schema:
+            $ref: "#/definitions/RunPlan"
+          description: "Returns single RunPlan object"
+  /run_plan/{run_plan_id}:
+    get:
+      tags:
+        - "Run Plan"
+      summary: "Get RunPlan object by ID"
+      description: ""
+      operationId: "getRunPlanById"
+      parameters:
+        - in: path
+          name: run_plan_id
+          description: "RunPlan unique ID"
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/RunPlan"
+          description: "Returns single RunPlan object"
+        404:
+          description: RunPlan not found
+  /run_plan/{run_plan_id}/download:
+    get:
+      tags:
+        - "Run Plan"
+      summary: "Download Jmeter JMX file by ID"
+      description: ""
+      operationId: "downloadRunPlanById"
+      parameters:
+        - in: path
+          name: run_plan_id
+          description: "RunPlan ID"
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/RunPlan"
+          description: "Returns RunPlan file to download"
+        404:
+          description: RunPlan not found
+  /run_plans:
+    get:
+      tags:
+        - "Run Plan"
+      summary: "Get list of RunPlan objects"
+      description: ""
+      operationId: "getAllRunPlans"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/RunPlans"
+          description: "Returns list of RunPlan objects"
 
   /run_status/{run_id}/start:
     post:
