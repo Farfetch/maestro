@@ -62,3 +62,6 @@ jobs:
 
       - name: Run formatting checks
         run: yarn format
+
+      - name: Run tests
+        run: CI=true yarn test
