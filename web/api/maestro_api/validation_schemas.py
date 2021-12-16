@@ -104,6 +104,14 @@ run_configuration_create_schema = {
     "additionalProperties": False,
 }
 
+run_metric_all_schema = {
+    "type": "object",
+    "properties": {
+        "time_interval": {"type": "string"},
+        "show_labels": {"type": "string"},
+    },
+}
+
 agent_create_schema = {
     "type": "object",
     "properties": {
