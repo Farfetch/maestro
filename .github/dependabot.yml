@@ -13,3 +13,12 @@ updates:
     reviewers:
       - "vitaliimelnychuk"
       - "Farfetch/team-maestro"
+
+  # React.js Frontend
+  - package-ecosystem: "npm"
+    directory: "/web/frontend"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "vitaliimelnychuk"
+      - "Farfetch/team-maestro"
