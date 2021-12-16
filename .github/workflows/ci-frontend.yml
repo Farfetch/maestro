@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: 16.13.1
           cache: "yarn"
-          cache-dependency-path: web/frontend/.yarn.lock
+          cache-dependency-path: web/frontend/yarn.lock
 
       - name: Intall dependacies
         run: yarn install
