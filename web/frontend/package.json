@@ -1,0 +1,56 @@
+{
+  "name": "maestro_frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ant-design/colors": "^6.0.0",
+    "@ant-design/icons": "^4.6.2",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "antd": "^4.15.5",
+    "axios": "^0.21.1",
+    "axios-mock-adapter": "^1.19.0",
+    "chart.js": "^3.3.2",
+    "chartjs-adapter-moment": "^1.0.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "moment": "^2.29.1",
+    "prettier": "^2.3.0",
+    "prop-types": "^15.7.2",
+    "qs": "^6.10.1",
+    "react": "^17.0.2",
+    "react-chartjs-2": "^3.0.3",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint --max-warnings=0 src",
+    "format": "prettier --check src/**/*.js",
+    "check": "yarn format && yarn lint",
+    "format-fix": "prettier --write src/**/*.js",
+    "coverage": "react-scripts test --coverage"
+  },
+  "proxy": "http://localhost:5000",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
