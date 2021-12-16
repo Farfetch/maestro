@@ -1,4 +1,4 @@
-name: Maestro API
+name: CI
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  ci:
+  api:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     defaults:
@@ -37,3 +37,28 @@ jobs:
 
       - name: Run tests
         run: make test
+
+  frontend:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./web/frontend
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16.13.1
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.13.1
+          cache: "yarn"
+          cache-dependency-path: web/frontend/yarn.lock
+
+      - name: Intall dependacies
+        run: yarn install
+
+      - name: Run linting checks
+        run: yarn lint
+
+      - name: Run formatting checks
+        run: yarn format
