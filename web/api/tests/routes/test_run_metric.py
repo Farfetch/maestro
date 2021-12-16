@@ -5,20 +5,8 @@ from maestro_api.db.models.run import Run, RunStatus
 from maestro_api.db.models.run_metric_label import RunMetricLabel
 
 
-def test_run_metric_all(client):
-    run_configuration_id = "6326d1e3a216ff15b6e95e9d"
-    title = "some example title"
-    run_id = "6076d1e3a216ff15b6e95e1f"
-    run_plan_id = "6076d1e3a216ff15b6e95e9d"
-    client_agent_id = "6076d152b28b871d6bdb604f"
-    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
-    min_datetime_str = "2019-01-01 10:00:00"
-
-    min_datetime = datetime.strptime(min_datetime_str, "%Y-%m-%d %H:%M:%S")
-    next_datetime = datetime.strptime(
-        min_datetime_str, "%Y-%m-%d %H:%M:%S"
-    ) + timedelta(seconds=11)
-    metrics = [
+def get_metrics(min_datetime, next_datetime):
+    return [
         dict(
             datetime=min_datetime,
             latency_avg=50,
@@ -27,18 +15,6 @@ def test_run_metric_all(client):
             latency_p95=50,
             latency_p75=50,
             latency_p50=50,
-            total_count=1,
-            success_count=1,
-            label="Google-1",
-        ),
-        dict(
-            datetime=min_datetime,
-            latency_avg=100,
-            latency_p99=100,
-            latency_p90=100,
-            latency_p95=100,
-            latency_p75=100,
-            latency_p50=100,
             total_count=1,
             success_count=1,
             label="Google-1",
@@ -53,6 +29,65 @@ def test_run_metric_all(client):
             latency_p50=50,
             total_count=1,
             success_count=1,
+            label="Google-2",
+        ),
+    ]
+
+
+def test_run_metric_all(client):
+    run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    title = "some example title"
+    run_id = "6076d1e3a216ff15b6e95e1f"
+    run_plan_id = "6076d1e3a216ff15b6e95e9d"
+    client_agent_id = "6076d152b28b871d6bdb604f"
+    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    min_datetime_str = "2019-01-01 10:00:00"
+
+    min_datetime = datetime.strptime(min_datetime_str, "%Y-%m-%d %H:%M:%S")
+    next_datetime = datetime.strptime(
+        min_datetime_str, "%Y-%m-%d %H:%M:%S"
+    ) + timedelta(seconds=11)
+    responses = [dict(response_code=200, total_count=1, success_count=1, messages=[])]
+    metrics = [
+        dict(
+            datetime=min_datetime,
+            latency_avg=50,
+            latency_p99=50,
+            latency_p90=50,
+            latency_p95=50,
+            latency_p75=50,
+            latency_p50=50,
+            total_count=1,
+            success_count=1,
+            responses=responses,
+            label="Google-1",
+        ),
+        dict(
+            datetime=min_datetime,
+            latency_avg=100,
+            latency_p99=100,
+            latency_p90=100,
+            latency_p95=100,
+            latency_p75=100,
+            latency_p50=100,
+            total_count=1,
+            success_count=1,
+            responses=[
+                dict(response_code=201, total_count=1, success_count=1, messages=[])
+            ],
+            label="Google-1",
+        ),
+        dict(
+            datetime=next_datetime,
+            latency_avg=50,
+            latency_p99=50,
+            latency_p90=50,
+            latency_p95=50,
+            latency_p75=50,
+            latency_p50=50,
+            total_count=1,
+            success_count=1,
+            responses=responses,
             label="Google-2",
         ),
     ]
@@ -88,6 +123,10 @@ def test_run_metric_all(client):
     assert 0.1 == res_json[1].get("total_count")
     assert 0.1 == res_json[1].get("success_count")
 
+    assert [
+        {"response_code": 200, "messages": [], "success_count": 0.1, "total_count": 0.1}
+    ] == res_json[1].get("responses")
+
     assert None is res_json[0].get("label")
     assert 75 == res_json[0].get("latency_avg")
     assert 75 == res_json[0].get("latency_p99")
@@ -97,6 +136,21 @@ def test_run_metric_all(client):
     assert 75 == res_json[0].get("latency_p50")
     assert 0.2 == res_json[0].get("total_count")
     assert 0.2 == res_json[0].get("success_count")
+
+    assert [
+        {
+            "response_code": 200,
+            "messages": [],
+            "success_count": 0.1,
+            "total_count": 0.1,
+        },
+        {
+            "response_code": 201,
+            "messages": [],
+            "success_count": 0.1,
+            "total_count": 0.1,
+        },
+    ] == res_json[0].get("responses")
 
 
 def test_run_metric_all_with_show_labels_param(client):
@@ -112,32 +166,7 @@ def test_run_metric_all_with_show_labels_param(client):
     next_datetime = datetime.strptime(
         min_datetime_str, "%Y-%m-%d %H:%M:%S"
     ) + timedelta(seconds=5)
-    metrics = [
-        dict(
-            datetime=min_datetime,
-            latency_avg=50,
-            latency_p99=50,
-            latency_p90=50,
-            latency_p95=50,
-            latency_p75=50,
-            latency_p50=50,
-            total_count=1,
-            success_count=1,
-            label="Google-1",
-        ),
-        dict(
-            datetime=next_datetime,
-            latency_avg=50,
-            latency_p99=50,
-            latency_p90=50,
-            latency_p95=50,
-            latency_p75=50,
-            latency_p50=50,
-            total_count=1,
-            success_count=1,
-            label="Google-2",
-        ),
-    ]
+    metrics = get_metrics(min_datetime, next_datetime)
 
     Run(
         id=run_id,
@@ -154,6 +183,46 @@ def test_run_metric_all_with_show_labels_param(client):
 
     response = client.get(
         "/run_metric/%s?show_labels=1" % run_id,
+    )
+
+    assert 200 == response.status_code
+    res_json = json.loads(response.data)
+
+    assert 2 == len(res_json)
+    assert "Google-1" == res_json[0].get("label")
+    assert "Google-2" == res_json[1].get("label")
+
+
+def test_run_metric_all_with_show_labels_and_zero_time_interval(client):
+    run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    title = "some example title"
+    run_id = "6076d1e3a216ff15b6e95e1f"
+    run_plan_id = "6076d1e3a216ff15b6e95e9d"
+    client_agent_id = "6076d152b28b871d6bdb604f"
+    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    min_datetime_str = "2019-01-01 10:00:00"
+
+    min_datetime = datetime.strptime(min_datetime_str, "%Y-%m-%d %H:%M:%S")
+    next_datetime = datetime.strptime(
+        min_datetime_str, "%Y-%m-%d %H:%M:%S"
+    ) + timedelta(hours=5)
+    metrics = get_metrics(min_datetime, next_datetime)
+
+    Run(
+        id=run_id,
+        title=title,
+        run_configuration_id=run_configuration_id,
+        run_plan_id=run_plan_id,
+        client_agent_id=client_agent_id,
+        server_agent_ids=server_agent_ids,
+        run_status=RunStatus.RUNNING.value,
+    ).save()
+
+    for metric in metrics:
+        RunMetricLabel(run_id=run_id, **metric).save()
+
+    response = client.get(
+        "/run_metric/%s?show_labels=1&time_interval=0" % run_id,
     )
 
     assert 200 == response.status_code
