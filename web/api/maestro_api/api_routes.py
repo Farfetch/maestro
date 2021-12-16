@@ -1,6 +1,7 @@
 from maestro_api.controllers.run import RunController
 from maestro_api.controllers.run_status import RunStatusController
 from maestro_api.controllers.run_configuration import RunConfigurationController
+from maestro_api.controllers.run_metric import RunMetricController
 from maestro_api.controllers.run_plan import RunPlanController
 from maestro_api.controllers.agent import AgentController
 from maestro_api.controllers.custom_data import CustomDataController
@@ -12,6 +13,7 @@ from maestro_api.validation_schemas import (
     create_run_schema,
     update_run_schema,
     run_configuration_create_schema,
+    run_metric_all_schema,
     agent_create_schema,
     agent_update_schema,
     agent_log_create_schema,
@@ -28,6 +30,7 @@ def init_api_routes(flask_app):
     run_status_controller = RunStatusController(flask_app)
     run_configuration_controller = RunConfigurationController(flask_app)
     run_plan_controller = RunPlanController(flask_app)
+    run_metric_controller = RunMetricController(flask_app)
     agent_controller = AgentController(flask_app)
     custom_data_controller = CustomDataController(flask_app)
     agent_log_controller = AgentLogController(flask_app)
@@ -126,6 +129,19 @@ def init_api_routes(flask_app):
     @requires_auth()
     def run_plan_download(*args, **kwargs):
         return run_plan_controller.download(*args, **kwargs)
+
+    # /run_metric routes
+    @flask_app.route("/run_metrics/<run_id>", methods=["POST"])
+    @requires_auth()
+    @validate_request()
+    def run_metric_create_many(*args, **kwargs):
+        return run_metric_controller.create_many(*args, **kwargs)
+
+    @flask_app.route("/run_metrics/<run_id>", methods=["GET"])
+    @requires_auth()
+    @validate_request(run_metric_all_schema)
+    def run_metric_all(*args, **kwargs):
+        return run_metric_controller.all(*args, **kwargs)
 
     # /agent routes
     @flask_app.route("/agent", methods=["PUT"])

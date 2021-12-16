@@ -869,6 +869,127 @@ paths:
         404:
           description: Run not found
 
+  /run_metrics/{run_id}:
+    post:
+      tags:
+        - "Run Metric"
+      summary: "Create list of RunMetric objects"
+      description: ""
+      operationId: "createRunMetrics"
+      parameters:
+        - in: path
+          name: run_id
+          description: "Run unique ID"
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "RunMetric input params to be updated"
+          required: true
+          schema:
+            properties:
+              metrics:
+                type: object
+                properties:
+                  datetime:
+                    type: string
+                    format: date-time
+                  elapsed:
+                    type: number
+                  label:
+                    type: string
+                  responseCode:
+                    type: number
+                  responseMessage:
+                    type: string
+                  threadName:
+                    type: string
+                  dataType:
+                    type: string
+                  success:
+                    type: boolean
+                  failureMessage:
+                    type: string
+                  bytes:
+                    type: number
+                  sentBytes:
+                    type: number
+                  grpThreads:
+                    type: number
+                  allThreads:
+                    type: number
+                  url:
+                    type: string
+                  latency:
+                    type: number
+                  idleTime:
+                    type: number
+                  connect:
+                    type: number
+              required:
+                - datetime
+                - elapsed
+                - label
+                - responseCode
+                - responseMessage
+                - threadName
+                - success
+                - failureMessage
+                - bytes
+                - sentBytes
+                - grpThreads
+                - allThreads
+                - url
+                - latency
+                - idleTime
+                - connect
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            type: object
+            properties:
+              metrics_count:
+                type: number
+          description: "Returns count of metrics that where created"
+        404:
+          description: Run not found
+    get:
+      tags:
+        - "Run Metric"
+      summary: "Get list of RunMetric objects"
+      description: ""
+      operationId: "getAllRunMetrics"
+      parameters:
+        - in: path
+          name: run_id
+          description: "Run unique ID"
+          required: true
+          type: string
+        - in: "query"
+          name: time_interval
+          description: "Interval to group metric values"
+          default: 15
+          required: false
+        - in: "query"
+          name: show_labels
+          description: "Flag to return results based on label"
+          required: false
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/RunMetrics"
+          description: "Returns list of RunMetric objects"
+        404:
+          description: Run not found
+
 components:
   schemas:
     AgentStatus:
@@ -987,7 +1108,7 @@ definitions:
         $ref: "#/components/schemas/EventType"
       agent_id:
         type: string
-      test_run_id:
+      run_id:
         type: string
       started_at:
         type: string
@@ -1025,7 +1146,7 @@ definitions:
     properties:
       id:
         type: string
-      test_run_status:
+      run_status:
         $ref: "#/components/schemas/RunStatus"
       run_plan_id:
         type: string
@@ -1113,3 +1234,50 @@ definitions:
     description: List of RunConfiguration objects.
     items:
       $ref: "#/definitions/RunConfiguration"
+  RunMetric:
+    type: object
+    properties:
+      label:
+        type: string
+      latency_avg:
+        type: number
+      latency_p99:
+        type: number
+      latency_p95:
+        type: number
+      latency_p90:
+        type: number
+      latency_p75:
+        type: number
+      latency_p50:
+        type: number
+      min_datetime:
+        type: string
+        format: date-time
+      max_datetime:
+        type: string
+        format: date-time
+      success_count:
+        type: number
+      total_count:
+        type: number
+      responses:
+        type: array
+        items:
+          type: object
+          properties:
+            response_code:
+              type: number
+            total_count:
+              type: number
+            success_count:
+              type: number
+            messages:
+              type: array
+              items:
+                type: string
+  RunMetrics:
+    type: array
+    description: List of RunMetric objects.
+    items:
+      $ref: "#/definitions/RunMetric"
