@@ -13,7 +13,7 @@
     "axios-mock-adapter": "^1.19.0",
     "chart.js": "^3.3.2",
     "chartjs-adapter-moment": "^1.0.0",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^4.0.0",
