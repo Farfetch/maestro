@@ -10,7 +10,7 @@ on:
     branches: [master]
 
 jobs:
-  build:
+  ci:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     defaults:
