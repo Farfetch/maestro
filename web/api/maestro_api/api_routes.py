@@ -1,6 +1,7 @@
 from maestro_api.controllers.run import RunController
 from maestro_api.controllers.run_status import RunStatusController
 from maestro_api.controllers.run_configuration import RunConfigurationController
+from maestro_api.controllers.run_plan import RunPlanController
 from maestro_api.controllers.agent import AgentController
 from maestro_api.controllers.custom_data import CustomDataController
 from maestro_api.controllers.agent_log import AgentLogController
@@ -26,6 +27,7 @@ def init_api_routes(flask_app):
     run_controller = RunController(flask_app)
     run_status_controller = RunStatusController(flask_app)
     run_configuration_controller = RunConfigurationController(flask_app)
+    run_plan_controller = RunPlanController(flask_app)
     agent_controller = AgentController(flask_app)
     custom_data_controller = CustomDataController(flask_app)
     agent_log_controller = AgentLogController(flask_app)
@@ -77,7 +79,6 @@ def init_api_routes(flask_app):
         return run_status_controller.finish_one(*args, **kwargs)
 
     # /run_configuration routes
-    # TODO: change to single endpoint from where we can change run status
     @flask_app.route("/run_configuration/<run_configuration_id>", methods=["GET"])
     @requires_auth()
     def run_configuration_get_one(*args, **kwargs):
@@ -104,6 +105,27 @@ def init_api_routes(flask_app):
     @requires_auth()
     def run_configuration_all(*args, **kwargs):
         return run_configuration_controller.all(*args, **kwargs)
+
+    # /run_plan routes
+    @flask_app.route("/run_plans", methods=["GET"])
+    @requires_auth()
+    def run_plan_all(*args, **kwargs):
+        return run_plan_controller.all(*args, **kwargs)
+
+    @flask_app.route("/run_plan/<run_plan_id>", methods=["GET"])
+    @requires_auth()
+    def run_plan_get_one(*args, **kwargs):
+        return run_plan_controller.get_one(*args, **kwargs)
+
+    @flask_app.route("/run_plan", methods=["POST"])
+    @requires_auth()
+    def run_plan_create_one(*args, **kwargs):
+        return run_plan_controller.create_one(*args, **kwargs)
+
+    @flask_app.route("/run_plan/<run_plan_id>/download", methods=["GET"])
+    @requires_auth()
+    def run_plan_download(*args, **kwargs):
+        return run_plan_controller.download(*args, **kwargs)
 
     # /agent routes
     @flask_app.route("/agent", methods=["PUT"])
@@ -160,7 +182,7 @@ def init_api_routes(flask_app):
     @flask_app.route("/custom_data/<custom_data_id>/download", methods=["GET"])
     @requires_auth()
     def custom_data_download(*args, **kwargs):
-        return custom_data_controller.all(*args, **kwargs)
+        return custom_data_controller.download_one(*args, **kwargs)
 
     # /event routes
     @flask_app.route("/event/<event_id>", methods=["PUT"])
