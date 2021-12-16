@@ -18,7 +18,7 @@ paths:
       parameters:
         - in: "body"
           name: "body"
-          description: "AgentLog input params to creare object"
+          description: "AgentLog input params to create object"
           required: true
           schema:
             properties:
@@ -473,7 +473,7 @@ paths:
         - "Run Configuration"
       summary: "Create RunConfiguration object"
       description: ""
-      operationId: "creareRunConfiguration"
+      operationId: "createRunConfiguration"
       consumes:
         - "application/json"
       produces:
@@ -607,7 +607,7 @@ paths:
         - "Run Configuration"
       summary: "Update RunConfiguration object based on ID"
       description: ""
-      operationId: "creareRunConfiguration"
+      operationId: "updateRunConfiguration"
       consumes:
         - "application/json"
       produces:
