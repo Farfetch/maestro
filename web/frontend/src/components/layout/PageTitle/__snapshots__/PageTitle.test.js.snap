@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/PageTitle should render PageTitle component 1`] = `"<div><div class=\\"ant-row\\" style=\\"margin-bottom: 1rem;\\"><div style=\\"flex-basis: auto;\\" class=\\"ant-col\\"><h1 class=\\"ant-typography\\" style=\\"margin-bottom: 0px;\\">Test title</h1></div></div></div>"`;
+
+exports[`components/PageTitle should render PageTitle component 2`] = `"<div><div class=\\"ant-row\\" style=\\"margin-bottom: 1rem;\\"><div style=\\"flex-basis: auto;\\" class=\\"ant-col\\"><h1 class=\\"ant-typography\\" style=\\"margin-bottom: 0px;\\">Test title</h1></div><div style=\\"flex: 0 0 100px; align-items: center; display: flex; justify-content: right;\\" class=\\"ant-col\\"><a href=\\"/button-test-link\\"><button type=\\"button\\" class=\\"ant-btn ant-btn-primary ant-btn-lg\\"><span>Button title</span></button></a></div></div></div>"`;

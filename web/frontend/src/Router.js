@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Layout from "./Layout";
 import HomePage from "./pages/Home";
+import Layout from "./pages/Layout";
 import NotFoundPage from "./pages/NotFound";
 import TestsPage from "./pages/Tests";
 import TestsNewPage from "./pages/TestsNew";
@@ -13,7 +13,8 @@ const Router = () => (
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
-        <Route path="tests" element={<TestsPage />}>
+        <Route path="tests">
+          <Route index element={<TestsPage />} />
           <Route path="new" element={<TestsNewPage />} />
           <Route path=":runConfigurationId" element={<TestsSinglePage />} />
         </Route>
