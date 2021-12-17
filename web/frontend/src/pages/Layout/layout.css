@@ -1,3 +1,5 @@
+@import "~antd/dist/antd.css";
+
 /* https://ant.design/components/layout/ */
 :root {
   --breakpoint-xs: 480px;
@@ -21,4 +23,16 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+main {
+  padding: 1em;
+  max-width: var(--breakpoint-xl);
+  margin: 0 auto;
+}
+
+@media (max-width: var(--breakpoint-lg)) {
+  main {
+    max-width: none;
+  }
 }
