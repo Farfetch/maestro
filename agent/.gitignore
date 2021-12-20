@@ -140,3 +140,6 @@ mnt/*
 
 # Python virtualenv
 venv
+
+# Editorconfig
+.vscode
