@@ -9,7 +9,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.15.5",
-    "axios": "^0.21.1",
+    "axios": "^0.24.0",
     "axios-mock-adapter": "^1.19.0",
     "chart.js": "^3.3.2",
     "chartjs-adapter-moment": "^1.0.0",
