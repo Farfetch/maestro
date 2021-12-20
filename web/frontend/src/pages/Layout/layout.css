@@ -1,8 +1,5 @@
 @import "~antd/dist/antd.css";
 
-/* Override some antd styles */
-
-
 /* https://ant.design/components/layout/ */
 :root {
   --breakpoint-xs: 480px;
