@@ -1,0 +1,50 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Single Run",
+            "type": "python",
+            "request": "launch",
+            "program": "single_run.py",
+            "console": "integratedTerminal"
+        },
+
+        {
+            "name": "Signle Run: Master Daemon",
+            "type": "python",
+            "request": "launch",
+            "program": "single_run.py",
+            "console": "integratedTerminal",
+            "env": {
+                "JMETER_CONTAINER_NAME": "maestro-jmeter-master",
+                "CUSTOM_DAEMON_HOST": "master.ff.net"
+            }
+        },
+
+        {
+            "name": "Run: Master Daemon",
+            "type": "python",
+            "request": "launch",
+            "program": "run.py",
+            "console": "integratedTerminal",
+            "env": {
+                "JMETER_CONTAINER_NAME": "maestro-jmeter-master",
+                "CUSTOM_DAEMON_HOST": "master.ff.net"
+            }
+        },
+        {
+            "name": "Run: Slave Daemon",
+            "type": "python",
+            "request": "launch",
+            "program": "run.py",
+            "console": "integratedTerminal",
+            "env": {
+                "JMETER_CONTAINER_NAME": "maestro-jmeter-slave1",
+                "CUSTOM_DAEMON_HOST": "slave1.ff.net"
+            }
+        }
+    ]
+}

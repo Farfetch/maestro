@@ -1,0 +1,6 @@
+[
+    {
+        "key": "shift+alt+d",
+        "command": "python.sortImports"
+    }
+]
