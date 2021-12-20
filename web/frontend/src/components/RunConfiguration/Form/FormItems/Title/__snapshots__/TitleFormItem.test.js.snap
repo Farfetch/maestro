@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/RunConfiguration/Form/TitleFormItem should render TitleFormItem component 1`] = `"<div><form class=\\"ant-form ant-form-horizontal\\"><div class=\\"ant-row ant-form-item\\"><div class=\\"ant-col ant-form-item-label\\"><label class=\\"\\" title=\\"Title\\">Title</label></div><div class=\\"ant-col ant-form-item-control\\"><div class=\\"ant-form-item-control-input\\"><div class=\\"ant-form-item-control-input-content\\"><input type=\\"text\\" id=\\"title\\" class=\\"ant-input\\" value=\\"\\"></div></div></div></div></form></div>"`;
