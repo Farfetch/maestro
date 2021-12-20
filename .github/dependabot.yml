@@ -5,7 +5,16 @@
 
 version: 2
 updates:
-  # Python Flask API
+  # Python Agent
+  - package-ecosystem: "pip"
+    directory: "/agent"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "vitaliimelnychuk"
+      - "Farfetch/team-maestro"
+
+  # Python Flask WEB API
   - package-ecosystem: "pip"
     directory: "/web/api"
     schedule:
@@ -14,7 +23,7 @@ updates:
       - "vitaliimelnychuk"
       - "Farfetch/team-maestro"
 
-  # React.js Frontend
+  # React.js WEB Frontend
   - package-ecosystem: "npm"
     directory: "/web/frontend"
     schedule:
