@@ -3,9 +3,11 @@ import os
 from maestro_agent.settings import (
     DEFAULT_LOGGER_NAME,
     LOG_LEVEL,
+    ENABLE_MAESTRO_API_HANDLER,
 )
 
 from maestro_agent.enums import LogLevel
+from maestro_agent.services.logging.handlers import MaestroApiHandler
 
 
 class Logger:
@@ -48,3 +50,8 @@ class Logger:
         Logger.error = Logger.instance.error
         Logger.warn = Logger.instance.warn
         Logger.debug = Logger.instance.debug
+
+    def register_maestro_api_logging(agent_id):
+
+        if ENABLE_MAESTRO_API_HANDLER:
+            Logger.instance.addHandler(MaestroApiHandler(agent_id=agent_id))

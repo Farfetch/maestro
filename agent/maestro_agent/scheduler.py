@@ -3,11 +3,13 @@ from apscheduler.schedulers.background import BlockingScheduler
 from maestro_agent.jobs.handler import update_agent_status
 from maestro_agent.app_state import ApplicationState
 
+from pytz import UTC
+
 
 def start_scheduler():
     ApplicationState.start()
 
-    scheduler = BlockingScheduler()
+    scheduler = BlockingScheduler(timezone=UTC)
 
     register_shutdown_events(scheduler)
 
