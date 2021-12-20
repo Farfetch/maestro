@@ -6,7 +6,7 @@
     "@ant-design/colors": "^6.0.0",
     "@ant-design/icons": "^4.6.2",
     "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
+    "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.15.5",
     "axios": "^0.24.0",
