@@ -49,16 +49,6 @@ class MaestroApiClient:
         open(to_url, "wb").write(r.content)
 
     @staticmethod
-    def upload_file(url, file_path):
-
-        with open(file_path, "rb") as test_result_file:
-            requests.post(
-                url="%s%s" % (MAESTRO_API_HOST, url),
-                headers=MaestroApiClient.headers,
-                files={"test_result": test_result_file},
-            )
-
-    @staticmethod
     def handle_response(response, mapper):
         # 2xx
         if response.status_code < 300:
