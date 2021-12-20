@@ -24,7 +24,7 @@ flasgger = "0.9.5"
 python-dotenv = "0.17.1"
 python-jose = "1.16.0"
 typing-extensions = "3.10.0.0"
-numpy = "1.21.4"
+numpy = "1.21.5"
 
 [requires]
 python_version = "3.9.5"
