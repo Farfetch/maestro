@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import AgentsPage from "./pages/Agents";
+import AgentSingleLogsPage from "./pages/AgentSingleLogs";
 import HomePage from "./pages/Home";
 import Layout from "./pages/Layout";
 import NotFoundPage from "./pages/NotFound";
@@ -17,6 +19,13 @@ const Router = () => (
           <Route index element={<TestsPage />} />
           <Route path="new" element={<TestsNewPage />} />
           <Route path=":runConfigurationId" element={<TestsSinglePage />} />
+        </Route>
+        <Route path="agents">
+          <Route index element={<AgentsPage />} />
+          <Route path=":agentId">
+            <Route index element={<NotFoundPage />} />
+            <Route path="logs" element={<AgentSingleLogsPage />} />
+          </Route>
         </Route>
       </Route>
 
