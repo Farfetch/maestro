@@ -1,3 +1,0 @@
-{
-  "jestrunner.jestCommand": "CI=true yarn test"
-}

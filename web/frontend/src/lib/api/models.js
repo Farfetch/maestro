@@ -13,3 +13,11 @@ export const agentStatus = {
   RUNNING_TEST: "RUNNING_TEST",
   UNAVAILABLE: "UNAVAILABLE"
 };
+
+export const agentLogLevel = {
+  DEBUG: "DEBUG",
+  INFO: "INFO",
+  WARNING: "WARNING",
+  ERROR: "ERROR",
+  CRITICAL: "CRITICAL"
+};
