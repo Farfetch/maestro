@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import AgentsPage from "./pages/Agents";
 import AgentSingleLogsPage from "./pages/AgentSingleLogs";
+import HistoryPage from "./pages/History";
 import HomePage from "./pages/Home";
 import Layout from "./pages/Layout";
 import NotFoundPage from "./pages/NotFound";
@@ -30,6 +31,9 @@ const Router = () => (
           <Route path=":agentId">
             <Route path="logs" element={<AgentSingleLogsPage />} />
           </Route>
+        </Route>
+        <Route path="history">
+          <Route index element={<HistoryPage />} />
         </Route>
       </Route>
 

@@ -11,3 +11,5 @@ export const testNewUrl = "/tests/new";
 
 export const agentLogsUrl = (runConfigurationId) =>
   `/agent/${runConfigurationId}/logs`;
+
+export const runSingleUrl = (runId) => `/run/${runId}`;
