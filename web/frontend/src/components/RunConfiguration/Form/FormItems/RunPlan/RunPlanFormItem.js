@@ -29,6 +29,7 @@ const RunPlanFormItem = () => (
         <UploadDragger
           name="runPlans"
           multiple={false}
+          maxCount={1}
           description="Select your Jmeter JMX test plan"
         />
       </Form.Item>

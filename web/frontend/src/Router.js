@@ -18,12 +18,16 @@ const Router = () => (
         <Route path="tests">
           <Route index element={<TestsPage />} />
           <Route path="new" element={<TestsNewPage />} />
+        </Route>
+        <Route path="test">
           <Route path=":runConfigurationId" element={<TestsSinglePage />} />
         </Route>
         <Route path="agents">
           <Route index element={<AgentsPage />} />
+        </Route>
+        <Route path="agent">
+          <Route index element={<NotFoundPage />} />
           <Route path=":agentId">
-            <Route index element={<NotFoundPage />} />
             <Route path="logs" element={<AgentSingleLogsPage />} />
           </Route>
         </Route>

@@ -23,12 +23,18 @@ describe("components/form/select/AgentsSelect", () => {
       updatedAt: moment("2018-05-24T13:48:04.313000")
     }
   ];
-  ["single", "multiple"].map((mode) =>
-    test(`should render AgentsSelect component with mode=${mode}`, async () => {
-      const rendered = render(<AgentsSelect agents={agents} mode={mode} />);
+  test(`should render AgentsSelect component with mode=single`, async () => {
+    const rendered = render(<AgentsSelect agents={agents} mode="single" />);
 
-      const badgeComponent = rendered.container;
-      expect(badgeComponent.outerHTML).toMatchSnapshot();
-    })
-  );
+    const badgeComponent = rendered.container;
+    expect(badgeComponent.outerHTML).toMatchSnapshot();
+  });
+  test(`should render AgentsSelect component with mode=multiple`, async () => {
+    const rendered = render(
+      <AgentsSelect agents={agents} mode="multiple" value={[]} />
+    );
+
+    const badgeComponent = rendered.container;
+    expect(badgeComponent.outerHTML).toMatchSnapshot();
+  });
 });

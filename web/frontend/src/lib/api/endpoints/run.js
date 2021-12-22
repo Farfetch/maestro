@@ -32,12 +32,12 @@ export const fetchRunById = async (runId) => {
 
 /**
  *
- * @param {String} testConfigurationId configuration to create a test
+ * @param {String} runConfigurationId configuration to create a test
  * @returns run object
  */
-export const createRun = async (testConfigurationId) => {
+export const createRun = async (runConfigurationId) => {
   const res = await maestroClient.post(`/api/run`, {
-    test_configuration_id: testConfigurationId
+    run_configuration_id: runConfigurationId
   });
 
   const run = runObjectMapper(res.data);

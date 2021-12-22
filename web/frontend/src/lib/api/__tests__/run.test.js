@@ -72,15 +72,15 @@ describe("libs/api/endpoints/run", () => {
 
   describe("createRun", () => {
     test("should return single object", async () => {
-      const testConfigurationId = "6076d210a216ff15b6e95ea0";
+      const runConfigurationId = "6076d210a216ff15b6e95ea0";
 
       axiosMock
         .onPost(`/api/run`, {
-          test_configuration_id: testConfigurationId
+          run_configuration_id: runConfigurationId
         })
         .reply(200, apiResponse);
 
-      const data = await createRun(testConfigurationId);
+      const data = await createRun(runConfigurationId);
 
       expect(data).toStrictEqual(expectedData);
     });

@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { testSingleUrl } from "../../../lib/routes";
+
 const columns = [
   {
     title: "Title",
@@ -39,7 +41,7 @@ const columns = [
     render: (text, record) => (
       <>
         <Space size="middle">
-          <Link to={`/test/${record.key}`}>Open</Link>
+          <Link to={testSingleUrl(record.key)}>Open</Link>
         </Space>
       </>
     )

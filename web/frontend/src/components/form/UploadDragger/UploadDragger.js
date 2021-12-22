@@ -4,9 +4,12 @@ import PropTypes from "prop-types";
 
 const UploadDragger = ({
   name,
+  fileList,
   description,
-  multiple = false,
-  beforeUpload = () => false
+  multiple,
+  beforeUpload,
+  onChange,
+  maxCount = 0
 }) => (
   <>
     <Upload.Dragger
@@ -16,6 +19,9 @@ const UploadDragger = ({
       style={{
         marginBottom: "0"
       }}
+      fileList={fileList}
+      onChange={onChange}
+      maxCount={maxCount}
     >
       <div
         style={{
@@ -38,9 +44,21 @@ const UploadDragger = ({
   </>
 );
 
+UploadDragger.defaultProps = {
+  multiple: false,
+  fileList: [],
+  beforeUpload: () => false,
+  onChange: () => {},
+  maxCount: 0
+};
+
 UploadDragger.propTypes = {
   name: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired
+  description: PropTypes.string.isRequired,
+  multiple: PropTypes.bool.isRequired,
+  maxCount: PropTypes.number.isRequired,
+  beforeUpload: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired
 };
 
 export default UploadDragger;

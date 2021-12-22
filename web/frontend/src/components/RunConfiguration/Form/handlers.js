@@ -34,7 +34,7 @@ export const uploadRunPlan = async (runPlan) => {
   return runPlan.uid;
 };
 
-export const saveTestConfiguration = async (
+export const saveRunConfiguration = async (
   runConfigurationId,
   {
     title,

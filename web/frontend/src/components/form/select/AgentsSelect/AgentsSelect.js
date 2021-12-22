@@ -6,12 +6,14 @@ import AgentStatusBadge from "../../../badge/AgentStatusBadge";
 
 const { Option } = Select;
 
-const AgentsSelect = ({ agents, mode = "single" }) => (
+const AgentsSelect = ({ value, agents, mode, onChange }) => (
   <Select
     mode={mode}
     allowClear
     style={{ width: "100%" }}
     placeholder="Select Agent from the list"
+    onChange={onChange}
+    value={value}
   >
     {agents.map((agent) => (
       <Option key={agent.id}>
@@ -24,6 +26,12 @@ const AgentsSelect = ({ agents, mode = "single" }) => (
   </Select>
 );
 
+AgentsSelect.defaultProps = {
+  onChange: () => {},
+  mode: "single",
+  value: ""
+};
+
 AgentsSelect.propTypes = {
   mode: PropTypes.oneOf(["single", "multiple"]).isRequired,
   agents: PropTypes.arrayOf(
@@ -32,7 +40,8 @@ AgentsSelect.propTypes = {
       hostname: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired
     })
-  ).isRequired
+  ).isRequired,
+  onChange: PropTypes.func.isRequired
 };
 
 export default AgentsSelect;
