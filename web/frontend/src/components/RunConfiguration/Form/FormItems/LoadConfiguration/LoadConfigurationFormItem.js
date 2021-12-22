@@ -1,5 +1,5 @@
 import { Col, Row } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import LoadConfigurationChart from "./LoadConfigurationChart";
 import LoadConfigurationForm from "./LoadConfigurationForm";

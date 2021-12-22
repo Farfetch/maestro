@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import PageTitle from "../components/layout/PageTitle";
 import RunConfigurationTable from "../components/RunConfiguration/Table";
 import { fetchRunConfigurations } from "../lib/api/endpoints/runConfiguration";
+import { testNewUrl } from "../lib/routes";
 
 const TestsPage = () => {
   const [runConfigurations, setRunConfigurations] = useState([]);
@@ -27,7 +28,7 @@ const TestsPage = () => {
     <>
       <PageTitle
         title={"Tests"}
-        button={{ link: "/tests/new", title: "Create" }}
+        button={{ link: testNewUrl, title: "Create" }}
       />
       <Row>
         <Col span={24}>

@@ -1,5 +1,5 @@
 import { Button, Card, Col, Form, message, Row, Typography } from "antd";
-import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
 import { createRun, startRun } from "../../../lib/api/endpoints/run";
@@ -12,22 +12,20 @@ import RunHostsFormItem from "./FormItems/RunHosts";
 import RunPlanFormItem from "./FormItems/RunPlan";
 import TitleFormItem from "./FormItems/Title";
 import {
-  saveTestConfiguration,
+  saveRunConfiguration,
   uploadCustomData,
   uploadRunPlan
 } from "./handlers";
 
 const { Title, Text } = Typography;
 
-const TestConfigurationForm = ({
-  runConfigurationId = null,
-  initialValues = {
-    loadProfile: []
-  }
+const RunConfigurationForm = ({
+  runConfigurationId,
+  initialValues,
+  agents
 }) => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const [isLoading, setIsLoading] = useState(false);
 
   const onFinish = async ({
     title,
@@ -40,7 +38,7 @@ const TestConfigurationForm = ({
     loadProfile
   }) => {
     const loadingMessageKey = "runConfigurationFormLoading";
-    setIsLoading(true);
+
     message.loading({ content: "Loading...", key: loadingMessageKey });
     // TODO: error handling
     // Need to add handling when something goes with files upload and we can't continue creating test
@@ -50,7 +48,7 @@ const TestConfigurationForm = ({
     const runPlanId = await uploadRunPlan(runPlans[0]);
     const customDataIds = await uploadCustomData(customData || []);
 
-    const newRunConfigurationId = await saveTestConfiguration(
+    const newRunConfigurationId = await saveRunConfiguration(
       runConfigurationId,
       {
         title,
@@ -65,9 +63,8 @@ const TestConfigurationForm = ({
     );
 
     message.success({ content: "Saved!", key: loadingMessageKey });
-    setIsLoading(false);
 
-    // Redirect to TestConfiguration single page once configuration is created
+    // Redirect to RunConfiguration single page once configuration is created
     if (newRunConfigurationId !== runConfigurationId)
       navigate(`/test/${newRunConfigurationId}`);
   };
@@ -79,9 +76,7 @@ const TestConfigurationForm = ({
     navigate(`/run/${runId}`);
   };
 
-  const onFinishFailed = async () => {
-    setIsLoading(false);
-  };
+  const onFinishFailed = async () => {};
 
   const FormBlock = ({ left, right }) => (
     <Col span={24}>
@@ -134,7 +129,7 @@ const TestConfigurationForm = ({
                 </FormBlockText>
               </>
             }
-            right={<AvailableAgentsFormItem />}
+            right={<AvailableAgentsFormItem agents={agents} />}
           />
 
           <FormBlock
@@ -225,7 +220,6 @@ const TestConfigurationForm = ({
               type="primary"
               size="large"
               key="submit"
-              loading={isLoading}
               onClick={() => form.submit()}
             >
               Save
@@ -237,4 +231,62 @@ const TestConfigurationForm = ({
   );
 };
 
-export default TestConfigurationForm;
+RunConfigurationForm.defaultProps = {
+  runConfigurationId: null,
+  initialValues: {
+    serverAgentIds: [],
+    runPlans: [],
+    customData: [],
+    hosts: [],
+    customProperties: [],
+    loadProfile: []
+  },
+  agents: []
+};
+
+RunConfigurationForm.propTypes = {
+  runConfigurationId: PropTypes.string,
+  initialValues: PropTypes.shape({
+    title: PropTypes.string,
+    clientAgentId: PropTypes.string,
+    serverAgentIds: PropTypes.arrayOf(PropTypes.string),
+    hosts: PropTypes.arrayOf(
+      PropTypes.shape({
+        host: PropTypes.string.isRequired,
+        ip: PropTypes.string.isRequired
+      })
+    ),
+    customProperties: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired
+      })
+    ),
+    runPlans: PropTypes.arrayOf(
+      PropTypes.shape({
+        uid: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        status: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired
+      })
+    ),
+    customData: PropTypes.arrayOf(
+      PropTypes.shape({
+        uid: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        status: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired
+      })
+    ),
+    loadProfile: PropTypes.any.isRequired
+  }).isRequired,
+  agents: PropTypes.arrayOf(
+    PropTypes.shape({
+      agentStatus: PropTypes.string.isRequired,
+      hostname: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired
+    })
+  ).isRequired
+};
+
+export default RunConfigurationForm;
