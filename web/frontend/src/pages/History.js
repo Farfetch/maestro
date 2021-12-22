@@ -7,7 +7,7 @@ import { fetchAgents } from "../lib/api/endpoints/agent";
 import { fetchRuns } from "../lib/api/endpoints/run";
 import { fetchRunPlans } from "../lib/api/endpoints/runPlan";
 
-const TestsPage = () => {
+const HistoryPage = () => {
   const [runs, setRuns] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -52,4 +52,4 @@ const TestsPage = () => {
   );
 };
 
-export default TestsPage;
+export default HistoryPage;
