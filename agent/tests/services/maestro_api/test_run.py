@@ -97,7 +97,7 @@ def test_maestro_run_update(mocker):
     RunApi.update(run_id, run_status)
 
     put_mock.assert_called_with(
-        "/api/run_status/1-2-3-4",
+        "/api/run/1-2-3-4",
         data=data,
         mapper=RunApi.run_json_to_object,
     )
