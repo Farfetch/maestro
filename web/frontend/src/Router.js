@@ -7,6 +7,7 @@ import HistoryPage from "./pages/History";
 import HomePage from "./pages/Home";
 import Layout from "./pages/Layout";
 import NotFoundPage from "./pages/NotFound";
+import RunSinglePage from "./pages/RunSingle";
 import TestsPage from "./pages/Tests";
 import TestsNewPage from "./pages/TestsNew";
 import TestsSinglePage from "./pages/TestsSingle";
@@ -34,6 +35,10 @@ const Router = () => (
         </Route>
         <Route path="history">
           <Route index element={<HistoryPage />} />
+        </Route>
+        <Route path="run">
+          <Route index element={<NotFoundPage />} />
+          <Route path=":runId" element={<RunSinglePage />} />
         </Route>
       </Route>
 
