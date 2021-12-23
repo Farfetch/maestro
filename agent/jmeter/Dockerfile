@@ -1,0 +1,18 @@
+ARG JMETER_IMAGE_BASE_REPO=
+ARG JMETER_IMAGE_BASE_VERSION=
+
+FROM ${JMETER_IMAGE_BASE_REPO}:${JMETER_IMAGE_BASE_VERSION}
+
+# temp solution to have access to shared volumes
+USER root
+
+# JAVA JMETER heap configuration
+ENV HEAP="-Xms2g -Xmx16g -XX:MaxMetaspaceSize=256m"
+
+### MAESTRO STEPS
+
+# COPY RUN SPECIFIC DATA
+ARG JMETER_RUN_DIR
+
+COPY $JMETER_RUN_DIR /srv/run
+

@@ -103,7 +103,7 @@ class RunApi:
     def update(run_id, run_status):
 
         return MaestroApiClient.put(
-            "/api/run_status/%s" % run_id,
+            "/api/run/%s" % run_id,
             data={"run_status": run_status},
             mapper=RunApi.run_json_to_object,
         )

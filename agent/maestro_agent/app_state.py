@@ -1,4 +1,4 @@
-from maestro_agent.services.maestro_api.agent import AgentApi, agentStatus
+from maestro_agent.services.maestro_api.agent import AgentApi, AgentStatus
 
 from maestro_agent.services.host import HostService
 from maestro_agent.services.jmeter.container import JmeterContainerStateManager
@@ -31,26 +31,26 @@ class ApplicationState:
     def processing_event():
         agent = AgentApi.update_status(
             agent_id=ApplicationState.agent.id,
-            agent_status=agentStatus.PROCESSING_EVENT.value,
+            agent_status=AgentStatus.PROCESSING_EVENT.value,
         )
 
-        Logger.info(f"agent status changed to {agentStatus.PROCESSING_EVENT.value}")
+        Logger.info(f"agent status changed to {AgentStatus.PROCESSING_EVENT.value}")
         ApplicationState.agent = agent
 
     @staticmethod
     def running_test():
         agent = AgentApi.update_status(
             agent_id=ApplicationState.agent.id,
-            agent_status=agentStatus.RUNNING_TEST.value,
+            agent_status=AgentStatus.RUNNING_TEST.value,
         )
-        Logger.info(f"agent status changed to {agentStatus.RUNNING_TEST.value}")
+        Logger.info(f"agent status changed to {AgentStatus.RUNNING_TEST.value}")
         ApplicationState.agent = agent
 
     @staticmethod
     def available():
         agent = AgentApi.update_status(
             agent_id=ApplicationState.agent.id,
-            agent_status=agentStatus.AVAILABLE.value,
+            agent_status=AgentStatus.AVAILABLE.value,
         )
         ApplicationState.agent = agent
         Logger.info("Maestro agent available")
@@ -59,7 +59,7 @@ class ApplicationState:
     def close():
         agent = AgentApi.update_status(
             agent_id=ApplicationState.agent.id,
-            agent_status=agentStatus.UNAVAILABLE.value,
+            agent_status=AgentStatus.UNAVAILABLE.value,
         )
         ApplicationState.agent = agent
         Logger.info("Maestro agent exited")
