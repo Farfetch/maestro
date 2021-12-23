@@ -170,7 +170,7 @@ describe("libs/api/endpoints/runMetric", () => {
       const timeInterval = 15;
 
       axiosMock
-        .onGet(`/api/test_run/${runId}/metrics`, {
+        .onGet(`/api/run_metrics/${runId}`, {
           time_interval: timeInterval
         })
         .reply(200, apiResponse);
@@ -187,7 +187,7 @@ describe("libs/api/endpoints/runMetric", () => {
       const testLabel = "some label";
 
       axiosMock
-        .onGet(`/api/test_run/${runId}/metrics`, {
+        .onGet(`/api/run_metrics/${runId}`, {
           time_interval: timeInterval,
           show_metrics: 1
         })
