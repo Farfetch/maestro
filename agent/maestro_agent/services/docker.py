@@ -4,6 +4,7 @@ from maestro_agent.logging import Logger
 from maestro_agent.settings import (
     JMETER_BASE_IMAGE,
     JMETER_IMAGE_BASE_REPO,
+    JMETER_IMAGE_BASE_VERSION,
     JMETER_CONTAINER_NAME,
     JMETER_DIR,
     JMETER_DOCKER_MOUNT_DIR,
@@ -72,8 +73,9 @@ class JmeterDocker:
             tag=JmeterDocker.get_jmeter_image_name(self.run.id),
             path=JMETER_DIR,
             buildargs={
+                "JMETER_IMAGE_BASE_REPO": JMETER_IMAGE_BASE_REPO,
+                "JMETER_IMAGE_BASE_VERSION": JMETER_IMAGE_BASE_VERSION,
                 "JMETER_RUN_DIR": run_dir_path,
-                "FROM_REPO": JMETER_IMAGE_BASE_REPO,
             },
         )
 

@@ -3,7 +3,7 @@ import dateutil.parser
 from maestro_agent.services.maestro_api import MaestroApiClient
 
 
-class agentStatus(Enum):
+class AgentStatus(Enum):
     CREATING = "CREATING"
     AVAILABLE = "AVAILABLE"
     PROCESSING_EVENT = "PROCESSING_EVENT"

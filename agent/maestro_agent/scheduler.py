@@ -1,6 +1,6 @@
 import atexit
 from apscheduler.schedulers.background import BlockingScheduler
-from maestro_agent.jobs.handler import update_agent_status
+from maestro_agent.jobs.handler import update_agent_status, handle_new_events
 from maestro_agent.app_state import ApplicationState
 
 from pytz import UTC
@@ -16,6 +16,13 @@ def start_scheduler():
     ApplicationState.available()
 
     scheduler.add_job(
+        func=handle_new_events,
+        trigger="interval",
+        seconds=5,
+        replace_existing=True,
+        max_instances=1,
+    )
+    scheduler.add_job(
         func=update_agent_status,
         trigger="interval",
         seconds=30,
@@ -24,8 +31,6 @@ def start_scheduler():
     )
 
     scheduler.start()
-
-    ApplicationState.available()
 
 
 def register_shutdown_events(scheduler):
