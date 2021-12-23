@@ -1,4 +1,4 @@
-export const RunStatus = {
+export const runStatus = {
   CREATING: "CREATING",
   PENDING: "PENDING",
   RUNNING: "RUNNING",
