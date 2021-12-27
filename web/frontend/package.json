@@ -8,7 +8,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
-    "antd": "^4.17.4",
+    "antd": "^4.18.0",
     "axios": "^0.24.0",
     "axios-mock-adapter": "^1.19.0",
     "chart.js": "^3.3.2",
