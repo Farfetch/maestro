@@ -30,10 +30,14 @@ services:
       MAESTRO_API_HOST: http://maestroweb:5000
       JMETER_CONTAINER_NAME: maestrojmeter_client
       AGENT_HOST: client.maestro.net
+      HOST_MOUNT_DIR: /tmp/maestrojmeter
     volumes:
       - type: bind
         source: /var/run/docker.sock
         target: /var/run/docker.sock
+      - type: bind
+        source: /tmp/maestrojmeter
+        target: /tmp/maestrojmeter
     networks:
       - default
     depends_on:
@@ -49,10 +53,14 @@ services:
       MAESTRO_API_HOST: http://maestroweb:5000
       JMETER_CONTAINER_NAME: maestrojmeter_server1
       AGENT_HOST: server1.maestro.net
+      HOST_MOUNT_DIR: /tmp/maestrojmeter
     volumes:
       - type: bind
         source: /var/run/docker.sock
         target: /var/run/docker.sock
+      - type: bind
+        source: /tmp/maestrojmeter
+        target: /tmp/maestrojmeter
     networks:
       - default
     depends_on:

@@ -9,6 +9,8 @@ The commands bellow would help to get application up and running. It also will g
 > docker >=20.10, docker-compose >=2.2.1 are required to continue
 
 ```bash
+# All Jmeter artifacts would be stored in the following folder
+mkdir -p /tmp/maestrojmeter
 docker-compose up
 ```
 
