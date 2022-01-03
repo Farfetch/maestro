@@ -1,0 +1,11 @@
+.vscode
+logs
+docker-compose.yml
+Makefile
+deploy
+
+# Python build files
+__pycache__/
+venv
+.coverage
+.pytest_cache

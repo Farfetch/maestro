@@ -1,0 +1,10 @@
+# Frontend build files
+frotend/node_modules
+frotend/build
+
+# Python build files
+__pycache__/
+env
+.coverage
+.pytest_cache
+api/frontend_build
