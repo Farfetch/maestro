@@ -42,3 +42,8 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 html[data-theme="dark"] main img {
   filter: invert(1);
 }
+
+
+html[data-theme="dark"] .menu__link:hover {
+  color: var(--ifm-menu-color-active);
+}
