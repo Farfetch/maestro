@@ -3,6 +3,7 @@ from flask import Flask
 
 from maestro_api.db.mongo import init_db
 from maestro_api.api_routes import init_api_routes
+from maestro_api.frontend_routes import init_frontend_routes
 
 
 def create_app(settings):
@@ -30,6 +31,6 @@ def create_frontend_app(settings):
 
     flask_app.config.from_object(settings)
 
-    init_api_routes(flask_app)
+    init_frontend_routes(flask_app)
 
     return flask_app

@@ -1,0 +1,82 @@
+version: "3.4"
+services:
+  web:
+    image: maestroweb
+    container_name: maestroweb
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    environment:
+      MAESTRO_PORT: 5000
+      LOG_LEVEL: INFO
+      SCHEDULER_ENABLED: True
+      GUNICORN_WORKERS: 4
+      GUNICORN_THREADS: 16
+      MONGODB_HOST: maestromongodb
+    ports:
+      - 5000:5000
+    networks:
+      - default
+    depends_on:
+      - maestromongodb
+
+  agent_client:
+    image: maestroagent
+    container_name: maestroagent_client
+    build:
+      context: ./agent
+      dockerfile: Dockerfile
+    environment:
+      MAESTRO_API_HOST: http://maestroweb:5000
+      JMETER_CONTAINER_NAME: maestrojmeter_client
+      AGENT_HOST: client.maestro.net
+      HOST_MOUNT_DIR: /tmp/maestrojmeter
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: bind
+        source: /tmp/maestrojmeter
+        target: /tmp/maestrojmeter
+    networks:
+      - default
+    depends_on:
+      - maestroweb
+
+  agent_server1:
+    image: maestroagent
+    container_name: maestroagent_server1
+    build:
+      context: ./agent
+      dockerfile: Dockerfile
+    environment:
+      MAESTRO_API_HOST: http://maestroweb:5000
+      JMETER_CONTAINER_NAME: maestrojmeter_server1
+      AGENT_HOST: server1.maestro.net
+      HOST_MOUNT_DIR: /tmp/maestrojmeter
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: bind
+        source: /tmp/maestrojmeter
+        target: /tmp/maestrojmeter
+    networks:
+      - default
+    depends_on:
+      - maestroweb
+
+  mongodb:
+    image: mongo:4.4
+    container_name: maestromongodb
+    volumes:
+      - mongodata:/data/db
+    restart: always
+    networks:
+      - default
+
+volumes:
+  mongodata: null
+
+networks:
+  default: null
