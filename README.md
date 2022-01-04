@@ -1,4 +1,4 @@
-# Maestro
+![Maestro](./site/static/img/logo-full.png)
 
 **Maestro** is a load testing tool, building on our years of experience in the load and performance testing industry. It provides a clean, approachable way of running Jmeter based tests.
 
