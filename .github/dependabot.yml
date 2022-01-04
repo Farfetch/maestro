@@ -31,3 +31,12 @@ updates:
     reviewers:
       - "vitaliimelnychuk"
       - "Farfetch/team-maestro"
+
+  # Website
+  - package-ecosystem: "npm"
+    directory: "/site"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "vitaliimelnychuk"
+      - "Farfetch/team-maestro"

@@ -26,7 +26,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install pipenv
 
-      - name: Intall dependacies
+      - name: Install dependacies
         run: make deps
 
       - name: Run linting checks
@@ -57,7 +57,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install pipenv
 
-      - name: Intall dependacies
+      - name: Install dependacies
         run: make deps
 
       - name: Run linting checks
@@ -96,3 +96,28 @@ jobs:
 
       - name: Run tests
         run: CI=true yarn test
+
+  site:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./site
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16.13.1
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.13.1
+          cache: "yarn"
+          cache-dependency-path: site/yarn.lock
+
+      - name: Install dependacies
+        run: yarn install
+
+      - name: Run formatting checks
+        run: yarn format
+
+      - name: Build static
+        run: yarn build
