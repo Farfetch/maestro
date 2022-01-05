@@ -119,5 +119,8 @@ jobs:
       - name: Run formatting checks
         run: yarn format
 
+      - name: Run Docs formarring checks
+        run: prettier --check ../docs
+
       - name: Build static
         run: yarn build

@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import clsx from "clsx";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
@@ -26,6 +27,9 @@ function HomepageHeader() {
 }
 
 export default function Home() {
+  // TODO: enable this page once it's designed and ready to be show
+  return <Redirect to="/docs/intro" />;
+
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
