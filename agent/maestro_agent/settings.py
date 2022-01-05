@@ -33,11 +33,10 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "SECRET_KEY")
 
 JMETER_DIR = os.path.join(ROOT_DIRECTORY, "jmeter")
 
-JMETER_MOUNT_DIR = os.path.join(ROOT_DIRECTORY, "mnt")
 
 # HOST MACHINE DIRECTORIES
 
-HOST_MOUNT_DIR = os.environ.get("HOST_MOUNT_DIR", JMETER_MOUNT_DIR)
+HOST_MOUNT_DIR = os.environ.get("HOST_MOUNT_DIR", "/tmp/maestrojmeter")
 
 # RUN DIRECTORIES
 
