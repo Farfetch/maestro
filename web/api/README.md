@@ -18,13 +18,13 @@ source venv/bin/activate
 
 > All following commands should be executed inside virtual environment
 
-- Use the package manager [pip](https://pip.pypa.io/en/stable/) to install pipenv.
+- Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Pipenv.
 
 ```bash
 pip install pipenv
 ```
 
-- Install dev environment
+- Install Dev environment
 
 ```bash
 make install-dev
@@ -34,13 +34,13 @@ make install-dev
 
 ### Running application
 
-`make dev` - Run application in development mode. In this mode application will be run with debugged attached and reload once any of files changed. The command should not be used in production.
+`make dev` - Run application in Development mode. In this mode application will be run with debugged attached and reload once any of files changed. The command should not be used in production.
 
 ### Linting & Formatting
 
 `make check` - - Run linting and formatting checks
 
-`make lint` - Run **pytlint** linting checks
+`make lint` - Run **Pylint** linting checks
 
 `make format` - Run **black** formatting checks
 

@@ -20,7 +20,7 @@ This command starts a local development server and opens up a browser window. Mo
 
 Mostly all diagrams that are used inside documentation are created with [Tldraw](https://github.com/tldraw/tldraw). The sources can be found in the `./src/draws`.
 
-To update the image simply edit the file by using [VSCode extention](https://github.com/tldraw/tldraw/tree/main/apps/vscode) or from website https://www.tldraw.com and store SVG to `./static/img/docs/`.
+To update the image simply edit the file by using [VSCode extension](https://github.com/tldraw/tldraw/tree/main/apps/vscode) or from website https://www.tldraw.com and store SVG to `./static/img/docs/`.
 
 ## Build
 
