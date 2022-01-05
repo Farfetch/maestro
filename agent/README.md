@@ -18,13 +18,13 @@ source venv/bin/activate
 
 > All following commands should be executed inside virtual environment
 
--   Use the package manager [pip](https://pip.pypa.io/en/stable/) to install pipenv.
+-   Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Pipenv.
 
 ```bash
 pip install pipenv
 ```
 
--   Install dev environment
+-   Install Dev environment
 
 ```bash
 make install-dev
