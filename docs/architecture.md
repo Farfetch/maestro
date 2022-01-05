@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Architecture
 
 ![Diagram](./assets/architecture.svg)
