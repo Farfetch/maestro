@@ -124,6 +124,10 @@ jobs:
 
   docs:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./docs
+
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -134,6 +138,6 @@ jobs:
           styles: |
             https://github.com/errata-ai/Microsoft/releases/latest/download/Microsoft.zip
             https://github.com/errata-ai/write-good/releases/latest/download/write-good.zip
-          files: docs/
+          files: /
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
