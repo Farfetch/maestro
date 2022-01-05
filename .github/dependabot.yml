@@ -40,3 +40,12 @@ updates:
     reviewers:
       - "vitaliimelnychuk"
       - "Farfetch/team-maestro"
+
+  # Github actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "vitaliimelnychuk"
+      - "Farfetch/team-maestro"
