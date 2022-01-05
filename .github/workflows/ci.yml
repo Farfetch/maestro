@@ -122,7 +122,7 @@ jobs:
       - name: Build static
         run: yarn build
 
-  docs:
+  prose:
     runs-on: ubuntu-latest
     defaults:
       run:
