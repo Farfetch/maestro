@@ -60,14 +60,17 @@ This project has built based on [Carbon design system](https://ant.design/). The
 
 ### Project Structure
 
-Here is a few levels of the project that components should be located
 
-- `/components` - responsible for storing all components that is relative to the React application
+Here are a few levels of the project that components should be located
+
+- `/components` - responsible for storing all components that are relative to the React application
+
 - `/components/layout` - pure components that might be reused through the application. They shouldn't include any dependencies from other services. As far as we are using design system, count of these components would be low.
 
 ### Components structure
 
-On the Components based architecture each of components should be isolated. Here is recommended structure that should following to have application components consistency
+
+On the Components based architecture, each component should be isolated. It is the recommended structure to follow in order to have the application component's consistency. Here is the basic example:
 
 - `components/ComponentName/ComponentName.js` - where 'Component' is the name of the component that should be camelCased.
 - `components/ComponentName/ComponentName.test.js` - tests for specific component
