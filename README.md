@@ -4,7 +4,7 @@
 
 ## Getting started
 
-The commands bellow would help to get application up and running. It also will give generall feeling how it works.
+The commands bellow would help to get application up and running. It also will give general feeling how it works.
 
 > docker >=20.10, docker-compose >=2.2.1 are required to continue
 

@@ -4,12 +4,12 @@ Python Application to manage Apache Jmeter tests execution.
 
 ## Requirements
 
-- Python [v3.9.5](https://www.python.org/downloads/release/python-395/)
-- MongoDB v4.2
+-   Python [v3.9.5](https://www.python.org/downloads/release/python-395/)
+-   MongoDB v4.2
 
 ## Installation
 
-- Create Python Virtual environment
+-   Create Python Virtual environment
 
 ```bash
 python3.9 -m venv venv
@@ -18,13 +18,13 @@ source venv/bin/activate
 
 > All following commands should be executed inside virtual environment
 
-- Use the package manager [pip](https://pip.pypa.io/en/stable/) to install pipenv.
+-   Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Pipenv.
 
 ```bash
 pip install pipenv
 ```
 
-- Install dev environment
+-   Install Dev environment
 
 ```bash
 make install-dev
@@ -40,11 +40,11 @@ make install-dev
 
 `make check` - - Run linting and formatting checks
 
-`make lint` - Run **pytlint** linting checks
+`make lint` - Run **Pylint** linting checks
 
-`make format` - Run **black** formatting checks
+`make format` - Run **Black** formatting checks
 
-`make format-fix` - Run **black** to fix files formatting automatically
+`make format-fix` - Run **Black** to fix files formatting automatically
 
 ### Testing
 
