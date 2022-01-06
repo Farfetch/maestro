@@ -14,7 +14,8 @@ enable_gridfs_integration()
 def app():
 
     settings.TESTING = True
-    settings.AUTH_ENABLED = False
+    settings.AUTH_API_ENABLED = False
+    settings.OAUTH_ENABLED = False
     settings.MONGODB_SETTINGS = {
         "db": "test",
         "host": "mongomock://localhost",
