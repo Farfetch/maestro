@@ -1,5 +1,4 @@
-import json
-from flask import request, redirect, make_response, render_template
+from flask import request, redirect, make_response
 
 from maestro_api.services.auth.oauth import OauthClient
 from maestro_api.logging import Logger

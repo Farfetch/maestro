@@ -1,6 +1,7 @@
 import requests
 from urllib.parse import urlencode
 
+
 class OauthClient:
     client_id = None
     client_secret = None
