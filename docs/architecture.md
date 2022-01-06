@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ![Diagram](./assets/architecture.svg)
 
-The core idea of the using infrastructure above is to have ability to have distributed performance tests execution. Agents have important role to provide level of scaling as far you need.
+The core idea to use the above mentioned infrastructure is to have the ability to execute distributed performance tests. Agents have important role to provide level of scaling as far you need.
 
 ## Services
 
