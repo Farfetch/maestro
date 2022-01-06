@@ -25,6 +25,18 @@ test:
 dev:
 	FLASK_ENV=development FLASK_APP=wsgi:maestro_app flask run
 
+db-start:
+	docker start maestromongodb
+
+db-destroy:
+	docker stop maestromongodb
+	docker rm maestromongodb
+
+db-create:
+	docker run --name maestromongodb -p 27017:27017 -d mongo:4.4
+
+db-rebuild: db-destroy db-create
+
 coverage:
 	pytest --cov-report term-missing --cov=maestro_api tests
 
