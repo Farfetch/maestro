@@ -33,7 +33,7 @@ db-destroy:
 	docker rm maestromongodb
 
 db-create:
-	docker run --name maestromongodb -p 27017:27017 -d mongo:4.4
+	docker run --name maestromongodb -v maestro_mongodata:/data/db -p 27017:27017 -d mongo:4.4
 
 db-rebuild: db-destroy db-create
 

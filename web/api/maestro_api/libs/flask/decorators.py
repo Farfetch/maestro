@@ -1,10 +1,16 @@
 from functools import wraps
 
 import mongoengine
-from flask import request
+from flask import request, redirect, current_app, jsonify
 from jsonschema import ValidationError, validate
 
 from maestro_api.libs.flask.utils import bad_request_response
+from maestro_api.logging import Logger
+from maestro_api.services.auth.request_validator import (
+    AuthRequestValidator,
+    UnauthorizedAccessError,
+)
+from maestro_api.settings import AUTH_API_USER, AUTH_API_TOKEN
 
 
 def validate_request(schema=None):
@@ -72,7 +78,49 @@ def requires_auth(redirect_to_login=False):
         @wraps(f)
         def wrapper(*args, **kwargs):
 
-            return f(*args, **kwargs, user=None)
+            user_agent = request.headers.get("User-Agent", None)
+            req_auth_header = request.headers.get("Authorization", None)
+            access_token = request.cookies.get("access_token", None)
+            refresh_token = request.cookies.get("refresh_token", None)
+
+            try:
+
+                auth_validator = AuthRequestValidator()
+                if user_agent == AUTH_API_USER:
+                    if current_app.config["AUTH_API_ENABLED"] is False:
+                        return f(*args, **kwargs, user=None)
+
+                    user = auth_validator.validate_auth_header(
+                        req_auth_header, AUTH_API_TOKEN
+                    )
+                    return f(*args, **kwargs, user=user)
+                else:
+                    if current_app.config["OAUTH_ENABLED"] is False:
+                        return f(*args, **kwargs, user=None)
+
+                    auth_data = auth_validator.validate_tokens(
+                        access_token, refresh_token
+                    )
+                    route_response = f(*args, **kwargs, user=auth_data.get("user"))
+
+                    if auth_data.get("update_tokens"):
+                        route_response.set_cookie(
+                            "access_token", auth_data.get("access_token")
+                        )
+                        route_response.set_cookie(
+                            "refresh_token", auth_data.get("refresh_token")
+                        )
+                    return route_response
+
+            except UnauthorizedAccessError as e:
+                Logger.error(e.error_msg)
+                if redirect_to_login:
+                    response = redirect("/login")
+                    response.set_cookie("access_token", "", expires=0)
+                    response.set_cookie("refresh_token", "", expires=0)
+                    return response
+                else:
+                    return jsonify({"error": e.error_msg}), e.status_code
 
         return wrapper
 
