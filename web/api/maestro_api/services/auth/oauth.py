@@ -40,7 +40,11 @@ class OauthClient:
         }
         query_params = urlencode(params)
 
-        return f"{self.issuer}/{self.configuration['authorization_endpoint']}?{query_params}"
+        return "%s/%s?%s" % (
+            self.issuer,
+            self.configuration["authorization_endpoint"],
+            query_params,
+        )
 
     def make_token_access(self, code: str) -> dict:
         """
@@ -69,8 +73,7 @@ class OauthClient:
 
     def make_token_refresh(self, refresh_roken: str) -> dict:
         """
-        Update tokens by using refresh_roken.
-        NOTE: previously used access and refresh tokens will not be working after this request
+        Update tokens by using refresh_token.
         """
 
         payload = {

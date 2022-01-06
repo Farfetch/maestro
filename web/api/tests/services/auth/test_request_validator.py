@@ -92,7 +92,10 @@ class TestRequestValidator:
                 raise AssertionError("should not be called more than 2 times")
 
         mocker.patch(
-            "maestro_api.services.auth.request_validator.AuthRequestValidator.create_oauth_client",
+            (
+                "maestro_api.services.auth.request_validator"
+                ".AuthRequestValidator.create_oauth_client"
+            ),
             return_value=OauthClientMock(),
         )
         mocker.patch(
