@@ -6,7 +6,6 @@ sidebar_position: 3
 
 ![Diagram](./assets/architecture.svg)
 
-
 The core idea to use the above mentioned infrastructure is to have the ability to execute distributed performance tests. Agents have important role to provide level of scaling as far you need.
 
 ## Services
