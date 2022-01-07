@@ -10,6 +10,7 @@ const runObjectMapper = (run) => ({
   serverAgentIds: run.server_agent_ids,
   runPlanId: run.run_plan_id,
   runStatus: run.run_status,
+  runConfigurationId: run.run_configuration_id,
   customProperties: run.custom_properties,
   loadProfile: run.load_profile,
   createdAt: toLocalDate(run.created_at),

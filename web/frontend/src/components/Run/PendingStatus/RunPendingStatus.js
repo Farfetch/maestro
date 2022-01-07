@@ -9,8 +9,10 @@ import {
   Typography
 } from "antd";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { fetchAgents } from "../../../lib/api/endpoints/agent";
+import { historyUrl, testSingleUrl } from "../../../lib/routes";
 import CircleSpinner from "../../layout/CircleSpinner";
 import PageSpinner from "../../layout/PageSpinner";
 
@@ -35,6 +37,31 @@ const RunPendingStatus = ({ run }) => {
     loadAgentsData();
   }, []);
 
+  const routes = [
+    {
+      path: historyUrl,
+      breadcrumbName: "History"
+    },
+
+    {
+      path: testSingleUrl(run.runConfigurationId),
+      breadcrumbName: "Configuration"
+    },
+    {
+      path: "index",
+      breadcrumbName: "Running"
+    }
+  ];
+
+  function itemRender(route, params, routesToRender) {
+    const last = routesToRender.indexOf(route) === routesToRender.length - 1;
+    return last ? (
+      <span>{route.breadcrumbName}</span>
+    ) : (
+      <Link to={route.path}>{route.breadcrumbName}</Link>
+    );
+  }
+
   return (
     <PageHeader
       ghost={false}
@@ -46,6 +73,7 @@ const RunPendingStatus = ({ run }) => {
           Stop Execution
         </Button>
       ]}
+      breadcrumb={{ routes, itemRender }}
     >
       {isLoading ? (
         <PageSpinner />
