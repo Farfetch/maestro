@@ -1,7 +1,7 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 
-import { getNextColor } from "../../../../lib/colors";
+import { getNextColor } from "../../../../../lib/colors";
 
 const HitsErrorsLabelLine = ({ metrics, labelsToShow = [] }) => {
   const options = {

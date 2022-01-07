@@ -2,8 +2,8 @@
 import { Button, Col, Row, Select, Space } from "antd";
 import React, { useEffect, useState } from "react";
 
-import { fetchMetrics } from "../../../lib/api/endpoints/runMetric";
-import PageSpinner from "../../layout/PageSpinner";
+import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
+import PageSpinner from "../../../layout/PageSpinner";
 import HitsErrorsLabelLine from "./HitsErrorsLabelLine";
 
 const RunEndpointsCharts = ({ runId }) => {
