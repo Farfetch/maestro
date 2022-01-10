@@ -26,14 +26,14 @@ dev:
 	FLASK_ENV=development FLASK_APP=wsgi:maestro_app flask run
 
 db-start:
-	docker start maestromongodb
+	docker start maestromongodbdev
 
 db-destroy:
-	docker stop maestromongodb
-	docker rm maestromongodb
+	docker stop maestromongodbdev
+	docker rm maestromongodbdev
 
 db-create:
-	docker run --name maestromongodb -v maestro_mongodata:/data/db -p 27017:27017 -d mongo:4.4
+	docker run --name maestromongodbdev -v maestro_mongodata:/data/db -p 27017:27017 -d mongo:4.4
 
 db-rebuild: db-destroy db-create
 
