@@ -155,7 +155,7 @@ paths:
     get:
       tags:
         - "AgentLog"
-      summary: "Get lif of AgentLog objects"
+      summary: "Get list of AgentLog objects"
       description: ""
       operationId: "getAllAgentLogs"
       produces:
@@ -466,6 +466,84 @@ paths:
           schema:
             $ref: "#/definitions/Runs"
           description: "Returns list of Run objects"
+
+  /run_agent:
+    put:
+      tags:
+        - "RunAgent"
+      summary: "Update RunAgent object"
+      description: ""
+      operationId: "updateRunObject"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "RunAgent input data to update"
+          required: true
+          schema:
+            properties:
+              run_id:
+                type: string
+                description: "Run ID"
+              agent_id:
+                type: string
+                description: "Agent ID"
+              error_message:
+                type: string
+                description: "Error message during test execution"
+              agent_status:
+                $ref: "#/components/schemas/RunAgentStatus"
+            required:
+              - run_id
+              - agent_id
+              - agent_status
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/RunAgent"
+          description: "Returns Updated RunAgent object "
+        400:
+          description: "Bad request"
+
+  /run_agents:
+    get:
+      tags:
+        - "RunAgent"
+      summary: "Get list of RunAgent objects"
+      description: ""
+      operationId: "getAllRunAgents"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "run_id"
+          in: "query"
+          description: "Filter by Run ID"
+          required: False
+          type: string
+        - name: "agent_id"
+          in: "query"
+          description: "Filter by Agent ID"
+          required: False
+          type: string
+        - name: "agent_status"
+          in: "query"
+          description: "Filter by RunAgentStatus"
+          required: False
+          type: string
+          $ref: "#/components/schemas/RunAgentStatus"
+
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/RunAgents"
+          description: "Returns Updated RunAgent object "
+        400:
+          description: "Bad request"
 
   /run_configuration:
     post:
@@ -1030,6 +1108,14 @@ components:
         - STOPPED
         - FINISHED
 
+    RunAgentStatus:
+      type: string
+      enum:
+        - PROCESSING
+        - RUNNING
+        - FINISHED
+        - ERROR
+
 definitions:
   Agent:
     type: object
@@ -1181,6 +1267,33 @@ definitions:
     description: List of Run objects.
     items:
       $ref: "#/definitions/Run"
+
+  RunAgent:
+    type: object
+    properties:
+      id:
+        type: string
+      run_id:
+        type: string
+      agent_id:
+        type: string
+      agent_status:
+        $ref: "#/components/schemas/RunAgentStatus"
+      error_message:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+
+  RunAgents:
+    type: array
+    description: List of RunAgent objects.
+    items:
+      $ref: "#/definitions/RunAgent"
+
   RunConfiguration:
     type: object
     properties:

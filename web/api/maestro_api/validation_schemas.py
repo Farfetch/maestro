@@ -1,4 +1,5 @@
 from maestro_api.db.models.run import RunStatus
+from maestro_api.db.models.run_agent import RunAgentStatus
 from maestro_api.db.models.agent import AgentStatus
 from maestro_api.db.models.agent_log import AgentLogLevel
 from maestro_api.db.models.event import EventStatus, EventType
@@ -110,6 +111,53 @@ run_metric_all_schema = {
         "time_interval": {"type": "string"},
         "show_labels": {"type": "string"},
     },
+}
+
+
+run_agent_update_schema = {
+    "type": "object",
+    "properties": {
+        "run_id": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 24,
+        },
+        "agent_id": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 24,
+        },
+        "agent_status": {
+            "type": "string",
+        },
+        "error_message": {
+            "type": "string",
+        },
+    },
+    "required": ["run_id", "agent_id", "agent_status"],
+    "additionalProperties": False,
+}
+
+run_agent_all_schema = {
+    "type": "object",
+    "properties": {
+        "run_id": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 24,
+        },
+        "agent_id": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 24,
+        },
+        "agent_status": {
+            "type": "string",
+            "enum": RunAgentStatus.list(),
+        },
+    },
+    "required": [],
+    "additionalProperties": False,
 }
 
 agent_create_schema = {

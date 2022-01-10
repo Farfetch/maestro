@@ -49,6 +49,7 @@ class Run(CreatedUpdatedDocumentMixin, gj.Document):
         required=True,
         field=ObjectIdField(),
     )
+
     hosts = ListField(field=EmbeddedDocumentField(RunHosts), default=[])
     custom_data_ids = ListField(field=ObjectIdField(), default=[])
     custom_properties = ListField(
