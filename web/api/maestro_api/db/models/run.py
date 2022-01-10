@@ -19,6 +19,24 @@ class RunStatus(ExtendedEnum):
     FINISHED = "FINISHED"
 
 
+class AgentStatusEnum(ExtendedEnum):
+    PROCESSING = "PROCESSING"  # Bulding assets and preparing to start a test
+    RUNNING = "RUNNING"  # Test execution started
+    FINISHED = "FINISHED"  # Test execution successfully finished
+    ERROR = "ERROR"  # Some error during at any of the following stages happened
+
+
+class RunAgentStatus(EmbeddedDocument):
+    agent_id: ObjectIdField(required=True)
+    agent_host: StringField(required=True)
+    agent_status: StringField(
+        required=True,
+        default=AgentStatusEnum.PROCESSING.value,
+        choices=AgentStatusEnum.list(),
+    )
+    error_message: StringField()
+
+
 class RunHosts(EmbeddedDocument):
     host = StringField(required=True)
     ip = StringField(required=True)
@@ -48,6 +66,9 @@ class Run(CreatedUpdatedDocumentMixin, gj.Document):
     server_agent_ids = ListField(
         required=True,
         field=ObjectIdField(),
+    )
+    agent_statuses = ListField(
+        required=True, field=EmbeddedDocumentField(RunAgentStatus)
     )
     hosts = ListField(field=EmbeddedDocumentField(RunHosts), default=[])
     custom_data_ids = ListField(field=ObjectIdField(), default=[])
