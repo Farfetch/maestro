@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 
 import PageSpinner from "../components/layout/PageSpinner";
+import RunErrorStatus from "../components/Run/ErrorStatus";
 import RunPendingStatus from "../components/Run/PendingStatus";
 import RunRunningStatus from "../components/Run/RunningStatus";
 import RunStatusMonitor from "../components/Run/StatusMonitor";
@@ -12,7 +13,9 @@ const getRunSinglePageByStatus = (run) => {
   switch (run.runStatus) {
     case runStatusModel.PENDING:
     case runStatusModel.CREATING:
+      // TODO: add ERROR status for run model
       return <RunPendingStatus run={run} />;
+    // return <RunErrorStatus run={run} />;
     default:
       return <RunRunningStatus runId={run.id} run={run} />;
   }

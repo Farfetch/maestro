@@ -9,16 +9,19 @@ import {
   Typography
 } from "antd";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { fetchAgents } from "../../../lib/api/endpoints/agent";
 import { historyUrl, testSingleUrl } from "../../../lib/routes";
+import Breadcrumb from "../../layout/Breadcrumb";
 import CircleSpinner from "../../layout/CircleSpinner";
 import PageSpinner from "../../layout/PageSpinner";
 
 const { Step } = Steps;
 
 const RunPendingStatus = ({ run }) => {
+  const navigate = useNavigate();
+
   // TODO: fetch agents per test
   const [agents, setAgents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,19 +56,10 @@ const RunPendingStatus = ({ run }) => {
     }
   ];
 
-  function itemRender(route, params, routesToRender) {
-    const last = routesToRender.indexOf(route) === routesToRender.length - 1;
-    return last ? (
-      <span>{route.breadcrumbName}</span>
-    ) : (
-      <Link to={route.path}>{route.breadcrumbName}</Link>
-    );
-  }
-
   return (
     <PageHeader
       ghost={false}
-      onBack={() => window.history.back()}
+      onBack={() => navigate(-1)}
       title={run.title}
       subTitle=""
       extra={[
@@ -73,7 +67,12 @@ const RunPendingStatus = ({ run }) => {
           Stop Execution
         </Button>
       ]}
-      breadcrumb={{ routes, itemRender }}
+      breadcrumb={{
+        routes,
+        itemRender: (route, params, routesToRender) => (
+          <Breadcrumb route={route} routes={routesToRender} />
+        )
+      }}
     >
       {isLoading ? (
         <PageSpinner />
