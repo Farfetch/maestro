@@ -6,6 +6,13 @@ export const runStatus = {
   FINISHED: "FINISHED"
 };
 
+export const runAgentStatus = {
+  PROCESSING: "PROCESSING",
+  RUNNING: "RUNNING",
+  FINISHED: "FINISHED",
+  ERROR: "ERROR"
+};
+
 export const agentStatus = {
   CREATING: "CREATING",
   AVAILABLE: "AVAILABLE",

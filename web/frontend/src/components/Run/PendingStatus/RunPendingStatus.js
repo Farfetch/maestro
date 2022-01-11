@@ -1,44 +1,34 @@
-import {
-  Button,
-  Col,
-  PageHeader,
-  // Progress,
-  Row,
-  Space,
-  Steps,
-  Typography
-} from "antd";
-import { useEffect, useState } from "react";
+import { Button, Col, PageHeader, Row, Steps } from "antd";
 import { useNavigate } from "react-router-dom";
 
-import { fetchAgents } from "../../../lib/api/endpoints/agent";
+import { runStatus as runStatusModel } from "../../../lib/api/models";
 import { historyUrl, testSingleUrl } from "../../../lib/routes";
 import Breadcrumb from "../../layout/Breadcrumb";
-import CircleSpinner from "../../layout/CircleSpinner";
-import PageSpinner from "../../layout/PageSpinner";
+import RunPendingStatusAgentsList from "./AgentsList";
 
 const { Step } = Steps;
 
 const RunPendingStatus = ({ run }) => {
   const navigate = useNavigate();
 
-  // TODO: fetch agents per test
-  const [agents, setAgents] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const calculateCurrentStep = (currentRunStatus) => {
+    switch (currentRunStatus) {
+      case runStatusModel.CREATING:
+        return 0;
+      case runStatusModel.PENDING:
+        return 1;
+      case runStatusModel.RUNNING:
+        return 2;
+      case runStatusModel.STOPPED:
+      case runStatusModel.FINISHED:
+        return 3;
 
-  const loadAgentsData = async () => {
-    setIsLoading(true);
-
-    const agentsRes = await fetchAgents();
-
-    setAgents(agentsRes);
-
-    setIsLoading(false);
+      default:
+        throw new Error(
+          `${currentRunStatus} test running status step is not defined`
+        );
+    }
   };
-
-  useEffect(() => {
-    loadAgentsData();
-  }, []);
 
   const routes = [
     {
@@ -74,51 +64,41 @@ const RunPendingStatus = ({ run }) => {
         )
       }}
     >
-      {isLoading ? (
-        <PageSpinner />
-      ) : (
-        <>
-          <Row
-            gutter={[80, 0]}
-            align="middle"
-            justify="center"
-            style={{ paddingTop: "40px" }}
-          >
-            <Col span={12}>
-              <Steps current={1} direction="vertical" percent={60}>
-                <Step
-                  title="Waiting"
-                  description="Some of agents might be busy of others tests."
-                />
-                <Step
-                  title="Preparing"
-                  description="Agents started building assets that are needed to start a test. We're alsomost there!"
-                />
+      <>
+        <Row
+          gutter={[80, 0]}
+          align="middle"
+          justify="center"
+          style={{ paddingTop: "40px" }}
+        >
+          <Col span={12}>
+            <Steps
+              current={calculateCurrentStep(run.runStatus)}
+              direction="vertical"
+              percent={60}
+            >
+              <Step
+                title="Waiting"
+                description="Some of agents might be busy of others tests."
+              />
+              <Step
+                title="Preparing"
+                description="Agents started building assets that are needed to start a test. We're alsomost there!"
+              />
 
-                <Step
-                  title="Running"
-                  description="Real time metrics would be available to monitor the execution."
-                />
-              </Steps>
-            </Col>
-            <Col span={12}>
-              <Row gutter={[0, 15]}>
-                {agents.map(({ hostname }) => (
-                  <Col span={24}>
-                    <Space>
-                      {/* <Progress type="circle" percent={100} width={20} /> */}
-                      <CircleSpinner size={20} />
-                      <Typography.Text strong={true}>
-                        {hostname}
-                      </Typography.Text>
-                    </Space>
-                  </Col>
-                ))}
-              </Row>
-            </Col>
-          </Row>
-        </>
-      )}
+              <Step
+                title="Running"
+                description="Real time metrics would be available to monitor the execution."
+              />
+            </Steps>
+          </Col>
+          <Col span={12}>
+            <Row gutter={[0, 15]}>
+              <RunPendingStatusAgentsList runId={run.id} />
+            </Row>
+          </Col>
+        </Row>
+      </>
     </PageHeader>
   );
 };

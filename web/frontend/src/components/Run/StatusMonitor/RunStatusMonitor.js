@@ -27,13 +27,11 @@ const RunStatusStepsMonitor = ({ runId, children }) => {
 
   // Monitors runStatus to give real-time montoring about running test
   useEffect(() => {
-    // console.log("interval effect");
     const interval = setInterval(() => {
       // Checks is there any request that is made to API that should be finished before
       if (!isIntervalLoading) updateRunData(runId);
     }, updateRunInterval);
 
-    // updateRunData(runId);
     return () => clearInterval(interval);
   }, [runId, isIntervalLoading]);
 
