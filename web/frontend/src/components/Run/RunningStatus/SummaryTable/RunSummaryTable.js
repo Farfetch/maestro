@@ -124,6 +124,7 @@ const RunSummaryTable = ({ runId }) => {
         const rpm = getRpm(minDatetime, maxDatetime, totalCount);
 
         return {
+          key: label,
           errorsCount,
           successCount,
           errorRate,
