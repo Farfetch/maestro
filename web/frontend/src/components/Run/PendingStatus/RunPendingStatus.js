@@ -42,7 +42,7 @@ const RunPendingStatus = ({ run }) => {
     },
     {
       path: "index",
-      breadcrumbName: "Running"
+      breadcrumbName: "Run"
     }
   ];
 
