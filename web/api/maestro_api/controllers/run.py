@@ -1,4 +1,5 @@
 from maestro_api.db.models.run import Run
+from maestro_api.db.models.run_agent import RunAgent
 from maestro_api.db.models.run_metric import RunMetric
 from maestro_api.db.models.run_configuration import RunConfiguration
 
@@ -19,6 +20,7 @@ class RunController:
         run = get_obj_or_404(Run, id=run_id)
 
         RunMetric.objects(run_id=run.id).delete()
+        RunAgent.objects(run_id=run.id).delete()
         run.delete()
 
         return make_json_response(run.to_json())
@@ -71,6 +73,16 @@ class RunController:
             hosts=hosts,
             custom_properties=custom_properties,
         ).save()
+
+        run_agents = [
+            RunAgent(run_id=new_run.id, agent_id=agent_id)
+            for agent_id in configuration.server_agent_ids
+        ]
+        run_agents.append(
+            RunAgent(run_id=new_run.id, agent_id=configuration.client_agent_id)
+        )
+
+        RunAgent.objects.insert(run_agents)
 
         return make_json_response(new_run.to_json())
 
