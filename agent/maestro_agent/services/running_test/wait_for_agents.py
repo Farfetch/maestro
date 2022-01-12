@@ -29,7 +29,7 @@ def wait_for_server_agents(run):
         if elapsed_time > timeout:
             # TODO: have better error handling to keep the process alive
             #  even if agents unavailable
-            raise TimeoutError("Server agents unavailbale")
+            raise TimeoutError(f"Couldn't connect to server agents. Timeout {timeout}s")
         server_agents.append(server_agent)
 
     return server_agents

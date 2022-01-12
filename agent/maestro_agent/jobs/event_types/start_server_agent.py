@@ -1,5 +1,6 @@
-from maestro_agent.app_state import ApplicationState
 from maestro_agent.services.maestro_api.run import RunApi
+from maestro_agent.services.agent.hooks import AgentHooks
+
 from maestro_agent.logging import Logger
 from maestro_agent.services.running_test import (
     RunningTestThreadsManager,
@@ -8,19 +9,21 @@ from maestro_agent.services.running_test import (
 
 
 def handler(event, agent):
-    Logger.info("Start running test")
     run = RunApi.get(event.run_id)
+    agent_hooks = AgentHooks(run.id, agent.id)
 
-    Logger.info("Preparing all needed resources to start a test")
-    prepare_for_running(run)
+    try:
+        Logger.info(f"Preparing prerequisites to start a test run_id={run.id}")
+        agent_hooks.preparation_started()
+        prepare_for_running(run)
 
-    Logger.debug(f"Creating running test threads manager for run={run.id}")
+        Logger.info("Starting a test")
+        running_test_threads = RunningTestThreadsManager.instance()
+        running_test_threads.start_server_agents(run=run, agent=agent)
+        AgentHooks.running()
+        Logger.info("Test is running")
 
-    ApplicationState.running_test()
-
-    running_test_threads = RunningTestThreadsManager.instance()
-    running_test_threads.start_server_agents(run=run, agent=agent)
-
-    Logger.debug(f"Running test threads started run={run.id}")
-
-    Logger.info("Test is running...")
+    except Exception as e:
+        # Log errors with specific event type based logic
+        agent_hooks.error(str(e))
+        raise e
