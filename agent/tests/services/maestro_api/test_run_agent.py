@@ -1,5 +1,5 @@
 import dateutil.parser
-
+import pytest
 from maestro_agent.services.maestro_api.run_agent import (
     RunAgentApi,
     RunAgent,
@@ -51,22 +51,29 @@ class TestRunAgentApi:
         assert expected.created_at == actual.created_at
         assert expected.updated_at == actual.updated_at
 
-    def test_maestro_run_update(self, mocker):
+    @pytest.mark.parametrize(
+        "agent_status,error_message",
+        [
+            (RunAgentStatus.RUNNING.value, ""),
+            (RunAgentStatus.FINISHED.value, ""),
+            (RunAgentStatus.ERROR.value, "Some error message"),
+        ],
+    )
+    def test_maestro_run_update(self, agent_status, error_message, mocker):
         run_id = "run_id_1"
         agent_id = "agent_id_1"
-        agent_status = RunAgentStatus.RUNNING.value
         data = {
             "run_id": run_id,
             "agent_id": agent_id,
             "agent_status": agent_status,
-            "error_message": "",
+            "error_message": error_message,
         }
 
         put_mock = mocker.patch(
             "maestro_agent.services.maestro_api.MaestroApiClient.put",
         )
 
-        RunAgentApi.update_status(run_id, agent_id, agent_status)
+        RunAgentApi.update_status(run_id, agent_id, agent_status, error_message)
 
         put_mock.assert_called_with(
             "/api/run_agent",
