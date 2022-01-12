@@ -11,42 +11,42 @@ from maestro_api.db.models.run_agent import RunAgent, RunAgentStatus
                 id="6076d69ba216ff15b6e95ea2",
                 run_id="6076d1bfb28b871d6bdb6095",
                 agent_id="6076d1c5b28b871d6bdb6091",
-                agent_host="server1.maestro.net",
+                agent_hostname="server1.maestro.net",
                 agent_status=RunAgentStatus.RUNNING.value,
             ),
             dict(
                 id="6076d69ba216ff15b6e95ea3",
                 run_id="6076d1bfb28b871d6bdb6095",
                 agent_id="6076d152b28b871d6bdb6042",
-                agent_host="server2.maestro.net",
+                agent_hostname="server2.maestro.net",
                 agent_status=RunAgentStatus.RUNNING.value,
             ),
             dict(
                 id="6076d69ba216ff15b6e95ea4",
                 run_id="6076d1bfb28b871d6bdb6095",
                 agent_id="6076d1cbb28b871d6bdb60a3",
-                agent_host="server3.maestro.net",
+                agent_hostname="server3.maestro.net",
                 agent_status=RunAgentStatus.ERROR.value,
             ),
             dict(
                 id="6076d69ba216ff15b6e95ea5",
                 run_id="6076d1bfb28b871d6bdb6095",
                 agent_id="6076d1cbb28b871d6bdb60a4",
-                agent_host="server4.maestro.net",
+                agent_hostname="server4.maestro.net",
                 agent_status=RunAgentStatus.ERROR.value,
             ),
             dict(
                 id="6076d69ba216ff15b6e95ea6",
                 run_id="6076d1e3a216ff15b6e95e9d",
                 agent_id="6076d1cbb28b871d6bdb60a5",
-                agent_host="server5.maestro.net",
+                agent_hostname="server5.maestro.net",
                 agent_status=RunAgentStatus.FINISHED.value,
             ),
             dict(
                 id="6076d69ba216ff15b6e95ea7",
                 run_id="6076d1e3a216ff15b6e95e9d",
                 agent_id="6076d1cbb28b871d6bdb60a6",
-                agent_host="server6.maestro.net",
+                agent_hostname="server6.maestro.net",
                 agent_status=RunAgentStatus.PROCESSING.value,
             ),
         ]
@@ -142,7 +142,7 @@ def test_run_agent_update(client, agent_status, error_message):
         id=run_agent_id,
         run_id=run_id,
         agent_id=agent_id,
-        agent_host="server1.maestro.net",
+        agent_hostname="server1.maestro.net",
     ).save()
 
     request_data = {
@@ -157,8 +157,11 @@ def test_run_agent_update(client, agent_status, error_message):
         content_type="application/json",
     )
 
+    updated_agent = RunAgent.objects(run_id=run_id, agent_id=agent_id)
+
     res_json = json.loads(response.data)
 
-    if agent_status:
-        assert res_json["agent_status"] == agent_status
-        assert res_json["error_message"] == error_message
+    assert error_message == updated_agent[0].error_message
+    assert agent_status == updated_agent[0].agent_status
+    assert agent_status == res_json["agent_status"]
+    assert error_message == res_json["error_message"]

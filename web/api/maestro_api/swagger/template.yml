@@ -1107,6 +1107,7 @@ components:
         - RUNNING
         - STOPPED
         - FINISHED
+        - ERROR
 
     RunAgentStatus:
       type: string
@@ -1279,6 +1280,8 @@ definitions:
         type: string
       agent_status:
         $ref: "#/components/schemas/RunAgentStatus"
+      agent_hostname:
+        type: string
       error_message:
         type: string
       created_at:

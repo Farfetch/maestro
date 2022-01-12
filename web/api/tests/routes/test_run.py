@@ -1,5 +1,6 @@
 import json
 
+from maestro_api.db.models.agent import Agent
 from maestro_api.db.models.run_configuration import RunConfiguration
 from maestro_api.db.models.run import Run, RunStatus
 from maestro_api.db.models.run_agent import RunAgent, RunAgentStatus
@@ -9,11 +10,15 @@ def test_create_run(client):
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     client_agent_id = "6076d152b28b871d6bdb604f"
+    client_agent_hostname = "client_masestro.net"
+    client_agent_ip = "127.0.0.4"
     server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    server_agent_hostname = "server1.net"
+    server_agent_ip = "127.0.0.5"
     title = "Example test plan"
 
     available_in_response = {
-        "run_status": RunStatus.CREATING.value,
+        "run_status": RunStatus.PENDING.value,
         "title": title,
         "run_configuration_id": run_configuration_id,
         "run_plan_id": run_plan_id,
@@ -27,6 +32,11 @@ def test_create_run(client):
         run_plan_id=run_plan_id,
         client_agent_id=client_agent_id,
         server_agent_ids=server_agent_ids,
+    ).save()
+
+    Agent(id=client_agent_id, ip=client_agent_ip, hostname=client_agent_hostname).save()
+    Agent(
+        id=server_agent_ids[0], ip=server_agent_ip, hostname=server_agent_hostname
     ).save()
 
     request_data = {
@@ -50,7 +60,11 @@ def test_create_run_with_agent_runs(client):
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     client_agent_id = "6076d152b28b871d6bdb604f"
+    client_agent_hostname = "client_masestro.net"
+    client_agent_ip = "127.0.0.4"
     server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    server_agent_hostname = "server1.net"
+    server_agent_ip = "127.0.0.5"
     title = "Example test plan"
 
     RunConfiguration(
@@ -59,6 +73,11 @@ def test_create_run_with_agent_runs(client):
         run_plan_id=run_plan_id,
         client_agent_id=client_agent_id,
         server_agent_ids=server_agent_ids,
+    ).save()
+
+    Agent(id=client_agent_id, ip=client_agent_ip, hostname=client_agent_hostname).save()
+    Agent(
+        id=server_agent_ids[0], ip=server_agent_ip, hostname=server_agent_hostname
     ).save()
 
     request_data = {
@@ -75,10 +94,13 @@ def test_create_run_with_agent_runs(client):
 
     assert response.status_code == 200
     assert 2 == len(agent_runs)
-    assert server_agent_ids[0] == str(agent_runs[0].agent_id)
+    assert client_agent_id == str(agent_runs[0].agent_id)
+    assert client_agent_hostname == str(agent_runs[0].agent_hostname)
     assert res_json["id"] == str(agent_runs[0].run_id)
     assert RunAgentStatus.PROCESSING.value == str(agent_runs[0].agent_status)
-    assert client_agent_id == str(agent_runs[1].agent_id)
+
+    assert server_agent_ids[0] == str(agent_runs[1].agent_id)
+    assert server_agent_hostname == str(agent_runs[1].agent_hostname)
     assert res_json["id"] == str(agent_runs[1].run_id)
     assert RunAgentStatus.PROCESSING.value == str(agent_runs[1].agent_status)
 
@@ -86,7 +108,11 @@ def test_create_run_with_agent_runs(client):
 def test_create_run_with_hosts(client):
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
     client_agent_id = "6076d152b28b871d6bdb604f"
+    client_agent_hostname = "client_masestro.net"
+    client_agent_ip = "127.0.0.4"
     server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    server_agent_hostname = "server1.net"
+    server_agent_ip = "127.0.0.5"
     hosts = [{"host": "test", "ip": "127.0.0.3"}]
     title = "Example test plan"
     load_profile = [{"start": 1, "end": 10, "duration": 5}]
@@ -95,7 +121,7 @@ def test_create_run_with_hosts(client):
     available_in_response = {
         "title": title,
         "run_configuration_id": run_configuration_id,
-        "run_status": RunStatus.CREATING.value,
+        "run_status": RunStatus.PENDING.value,
         "run_plan_id": run_plan_id,
         "client_agent_id": client_agent_id,
         "server_agent_ids": server_agent_ids,
@@ -111,6 +137,11 @@ def test_create_run_with_hosts(client):
         server_agent_ids=server_agent_ids,
         load_profile=load_profile,
         hosts=hosts,
+    ).save()
+
+    Agent(id=client_agent_id, ip=client_agent_ip, hostname=client_agent_hostname).save()
+    Agent(
+        id=server_agent_ids[0], ip=server_agent_ip, hostname=server_agent_hostname
     ).save()
 
     request_data = {
@@ -273,11 +304,15 @@ def test_create_run_with_custom_properties(client):
     title = "some example title"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
     client_agent_id = "6076d152b28b871d6bdb604f"
+    client_agent_hostname = "client_masestro.net"
+    client_agent_ip = "127.0.0.4"
     server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    server_agent_hostname = "server1.net"
+    server_agent_ip = "127.0.0.5"
     custom_properties = [{"name": "testProperty", "value": "123"}]
 
     available_in_response = {
-        "run_status": RunStatus.CREATING.value,
+        "run_status": RunStatus.PENDING.value,
         "run_plan_id": run_plan_id,
         "client_agent_id": client_agent_id,
         "server_agent_ids": server_agent_ids,
@@ -291,6 +326,10 @@ def test_create_run_with_custom_properties(client):
         client_agent_id=client_agent_id,
         server_agent_ids=server_agent_ids,
         custom_properties=custom_properties,
+    ).save()
+    Agent(id=client_agent_id, ip=client_agent_ip, hostname=client_agent_hostname).save()
+    Agent(
+        id=server_agent_ids[0], ip=server_agent_ip, hostname=server_agent_hostname
     ).save()
 
     request_data = {
