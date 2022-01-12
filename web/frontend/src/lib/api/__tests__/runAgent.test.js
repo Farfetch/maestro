@@ -15,6 +15,7 @@ describe("libs/api/endpoints/runAgent", () => {
     const id = "1-2-3";
     const agentId = "4-5-6";
     const runId = "7-8-9";
+    const errorMessage = "tsome error message";
     const agentHostname = "test-host";
     const createdAtString = "2019-05-01 04:00:00";
     const updatedAtString = "2019-05-04 04:00:00";
@@ -33,6 +34,7 @@ describe("libs/api/endpoints/runAgent", () => {
           agent_id: agentId,
           agent_hostname: agentHostname,
           agent_status: agentStatus,
+          error_message: errorMessage,
           created_at: createdAtString,
           updated_at: updatedAtString
         }
@@ -41,7 +43,16 @@ describe("libs/api/endpoints/runAgent", () => {
     const data = await fetchRunAgents({ runId });
 
     expect(data).toStrictEqual([
-      { id, agentId, runId, agentHostname, agentStatus, createdAt, updatedAt }
+      {
+        id,
+        agentId,
+        runId,
+        agentHostname,
+        agentStatus,
+        errorMessage,
+        createdAt,
+        updatedAt
+      }
     ]);
   });
 });
