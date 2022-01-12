@@ -898,6 +898,32 @@ paths:
           description: "Returns list of created Events"
         404:
           description: Run not found
+
+  /run_status/{run_id}/restart:
+    post:
+      tags:
+        - "Run Status"
+      summary: "Restart running test"
+      description: ""
+      operationId: "restartRunById"
+      parameters:
+        - in: path
+          name: run_id
+          description: "Run unique ID"
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Events"
+          description: "Returns list of created Events"
+        404:
+          description: Run not found
+
   /run_status/{run_id}/finish:
     post:
       tags:
@@ -1096,8 +1122,10 @@ components:
       type: string
       enum:
         - START_RUN
+        - RESTART_RUN
         - STOP_RUN
         - START_SERVER_AGENT
+        - RESTART_SERVER_AGENT
         - STOP_SERVER_AGENT
     RunStatus:
       type: string
