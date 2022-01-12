@@ -1,15 +1,23 @@
 import { CloseCircleOutlined } from "@ant-design/icons";
-import { Button, PageHeader, Result, Typography } from "antd";
+import { Button, PageHeader, Result, Space, Typography } from "antd";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { fetchRunAgents } from "../../../lib/api/endpoints/runAgent";
+import { runAgentStatus as runAgentStatusModel } from "../../../lib/api/models";
 import { colors } from "../../../lib/colors";
-import { historyUrl, testSingleUrl } from "../../../lib/routes";
+import { agentLogsUrl, historyUrl, testSingleUrl } from "../../../lib/routes";
 import Breadcrumb from "../../layout/Breadcrumb";
+import PageSpinner from "../../layout/PageSpinner";
 
 const { Paragraph, Text } = Typography;
 
 const RunErrorStatus = ({ run }) => {
   const navigate = useNavigate();
+
+  const [runAgents, setRunAgents] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   const routes = [
     {
       path: historyUrl,
@@ -25,6 +33,20 @@ const RunErrorStatus = ({ run }) => {
     }
   ];
 
+  const loadAgentsData = async (runIdToLoad) => {
+    const runAgentsData = await fetchRunAgents({ runId: runIdToLoad });
+
+    const runAgentsWithError = runAgentsData.filter(
+      ({ agentStatus }) => agentStatus === runAgentStatusModel.ERROR
+    );
+    setRunAgents(runAgentsWithError);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    loadAgentsData(run.id);
+  }, [run]);
+
   return (
     <PageHeader
       ghost={false}
@@ -38,41 +60,50 @@ const RunErrorStatus = ({ run }) => {
         )
       }}
     >
-      <Result
-        status="error"
-        title="Execution Failed"
-        subTitle="Please check the configuration and logs before making a retry"
-        extra={[
-          <Link to={testSingleUrl(run.runConfigurationId)} key="configuration">
-            <Button type="primary">Go Configuration</Button>
-          </Link>,
-
-          <Button key="buy">Try Again</Button>
-        ]}
-      >
-        <div className="desc">
-          <Paragraph>
-            <Text
-              strong
-              style={{
-                fontSize: 16
-              }}
+      {isLoading ? (
+        <PageSpinner />
+      ) : (
+        <Result
+          status="error"
+          title="Execution Failed"
+          subTitle="Please check the configuration and logs before making a retry"
+          extra={[
+            <Link
+              to={testSingleUrl(run.runConfigurationId)}
+              key="configuration"
             >
-              There are some unexpected errors from agents:
-            </Text>
-          </Paragraph>
-          <Paragraph>
-            <CloseCircleOutlined style={{ color: colors.red[5] }} />{" "}
-            <Link to="/agents">client1.maestro.net</Link> There is not file with
-            metrics. Please, check the the path for metrics CSV file
-          </Paragraph>
-          <Paragraph>
-            <CloseCircleOutlined style={{ color: colors.red[5] }} />{" "}
-            <Link to="/agents">client1.maestro.net</Link> Couldn't find
-            `Jmeter:6.1.5` container to start
-          </Paragraph>
-        </div>
-      </Result>
+              <Button type="primary">Go Configuration</Button>
+            </Link>,
+
+            <Button key="buy">Try Again</Button>
+          ]}
+        >
+          <div className="desc">
+            <Paragraph>
+              <Text
+                strong
+                style={{
+                  fontSize: 16
+                }}
+              >
+                There are some unexpected errors from agents:
+              </Text>
+            </Paragraph>
+
+            {runAgents.map(({ agentId, agentHostname, errorMessage }) => (
+              <Paragraph key={`agentError-${agentId}`}>
+                <Space>
+                  <CloseCircleOutlined style={{ color: colors.red[5] }} />
+
+                  <Link to={agentLogsUrl(agentId)}>{agentHostname}</Link>
+
+                  {errorMessage}
+                </Space>
+              </Paragraph>
+            ))}
+          </div>
+        </Result>
+      )}
     </PageHeader>
   );
 };

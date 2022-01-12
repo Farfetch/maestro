@@ -13,9 +13,9 @@ const RunPendingStatus = ({ run }) => {
 
   const calculateCurrentStep = (currentRunStatus) => {
     switch (currentRunStatus) {
-      case runStatusModel.CREATING:
-        return 0;
       case runStatusModel.PENDING:
+        return 0;
+      case runStatusModel.CREATING:
         return 1;
       case runStatusModel.RUNNING:
         return 2;

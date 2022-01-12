@@ -7,6 +7,7 @@ const runAgentObjectMapper = (runAgent) => ({
   runId: runAgent.run_id,
   agentHostname: runAgent.agent_hostname,
   agentStatus: runAgent.agent_status,
+  errorMessage: runAgent.error_message,
   createdAt: toLocalDate(runAgent.created_at),
   updatedAt: toLocalDate(runAgent.updated_at)
 });
