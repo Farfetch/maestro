@@ -11,6 +11,7 @@ class RunStatus(Enum):
     RUNNING = "RUNNING"
     STOPPED = "STOPPED"
     FINISHED = "FINISHED"
+    ERROR = "ERROR"
 
 
 class RunHost:

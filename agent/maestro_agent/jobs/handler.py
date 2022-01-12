@@ -41,7 +41,7 @@ def handle_new_events():
             event_id=current_event.id, event_status=EventStatus.PROCESSING.value
         )
         Logger.info(
-            "Starting processing an event"
+            "Starting processing an event "
             f"event_status={EventStatus.PROCESSING.value}, event_id={current_event.id}"
         )
 
@@ -64,6 +64,7 @@ def handle_new_events():
             # TODO: update event status to failing
             Logger.info("Event processing failed. %s" % f"event_id={current_event.id}")
             Logger.error(e)
+            ApplicationState.available()
 
 
 def update_agent_status():
