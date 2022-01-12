@@ -1,4 +1,5 @@
 from maestro_api.db.models.run import Run
+from maestro_api.db.models.agent import Agent
 from maestro_api.db.models.run_agent import RunAgent
 from maestro_api.db.models.run_metric import RunMetric
 from maestro_api.db.models.run_configuration import RunConfiguration
@@ -74,13 +75,15 @@ class RunController:
             custom_properties=custom_properties,
         ).save()
 
+        agent_ids = configuration.server_agent_ids + [configuration.client_agent_id]
+
+        agents = Agent.objects(id__in=agent_ids)
         run_agents = [
-            RunAgent(run_id=new_run.id, agent_id=agent_id)
-            for agent_id in configuration.server_agent_ids
+            RunAgent(
+                run_id=new_run.id, agent_id=agent.id, agent_hostname=agent.hostname
+            )
+            for agent in agents
         ]
-        run_agents.append(
-            RunAgent(run_id=new_run.id, agent_id=configuration.client_agent_id)
-        )
 
         RunAgent.objects.insert(run_agents)
 

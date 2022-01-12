@@ -12,11 +12,12 @@ from maestro_api.db.mixins import CreatedUpdatedDocumentMixin
 
 
 class RunStatus(ExtendedEnum):
-    CREATING = "CREATING"
     PENDING = "PENDING"
+    CREATING = "CREATING"
     RUNNING = "RUNNING"
     STOPPED = "STOPPED"
     FINISHED = "FINISHED"
+    ERROR = "ERROR"
 
 
 class RunHosts(EmbeddedDocument):
@@ -40,7 +41,7 @@ class Run(CreatedUpdatedDocumentMixin, gj.Document):
     run_configuration_id = ObjectIdField(required=True)
     run_status = StringField(
         required=True,
-        default=RunStatus.CREATING.value,
+        default=RunStatus.PENDING.value,
         choices=RunStatus.list(),
     )
     run_plan_id = ObjectIdField(required=True)

@@ -6,7 +6,7 @@ class CreatedUpdatedDocumentMixin(Document):
     meta = {
         "abstract": True,
     }
-    created_at = DateTimeField()
+    created_at = DateTimeField(default=now)
     updated_at = DateTimeField(default=now)
 
     def save(self, *args, **kwargs):
