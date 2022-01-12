@@ -29,6 +29,7 @@ describe("libs/api/endpoints/run", () => {
       "6076d1cbb28b871d6bdb60a1"
     ],
     run_plan_id: "6076d1e3a216ff15b6e95e9d",
+    run_configuration_id: "6076d1e3a216ff15b6e95e2q",
     run_status: "PENDING",
     custom_properties: [
       {
@@ -53,6 +54,7 @@ describe("libs/api/endpoints/run", () => {
     clientAgentId: apiResponse.client_agent_id,
     serverAgentIds: apiResponse.server_agent_ids,
     runPlanId: apiResponse.run_plan_id,
+    runConfigurationId: apiResponse.run_configuration_id,
     runStatus: apiResponse.run_status,
     loadProfile: apiResponse.load_profile,
     customProperties: apiResponse.custom_properties,

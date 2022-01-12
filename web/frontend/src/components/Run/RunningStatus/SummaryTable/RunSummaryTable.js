@@ -2,7 +2,7 @@ import { Table } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 
-import { fetchMetrics } from "../../../lib/api/endpoints/runMetric";
+import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
 
 const columns = [
   {
@@ -124,6 +124,7 @@ const RunSummaryTable = ({ runId }) => {
         const rpm = getRpm(minDatetime, maxDatetime, totalCount);
 
         return {
+          key: label,
           errorsCount,
           successCount,
           errorRate,

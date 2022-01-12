@@ -3,7 +3,15 @@ export const runStatus = {
   PENDING: "PENDING",
   RUNNING: "RUNNING",
   STOPPED: "STOPPED",
-  FINISHED: "FINISHED"
+  FINISHED: "FINISHED",
+  ERROR: "ERROR"
+};
+
+export const runAgentStatus = {
+  PROCESSING: "PROCESSING",
+  RUNNING: "RUNNING",
+  FINISHED: "FINISHED",
+  ERROR: "ERROR"
 };
 
 export const agentStatus = {

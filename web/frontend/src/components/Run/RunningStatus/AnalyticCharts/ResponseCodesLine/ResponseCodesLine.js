@@ -2,7 +2,7 @@ import { Typography } from "antd";
 import React from "react";
 import { Line } from "react-chartjs-2";
 
-import { colors, getNextColor } from "../../../../lib/colors";
+import { colors, getNextColor } from "../../../../../lib/colors";
 
 const { Title } = Typography;
 

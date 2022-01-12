@@ -13,3 +13,5 @@ export const agentLogsUrl = (runConfigurationId) =>
   `/agent/${runConfigurationId}/logs`;
 
 export const runSingleUrl = (runId) => `/run/${runId}`;
+
+export const historyUrl = "/history";
