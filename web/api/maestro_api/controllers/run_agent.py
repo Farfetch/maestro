@@ -26,6 +26,7 @@ class RunAgentController:
 
         run_agent.agent_status = agent_status
         run_agent.error_message = error_message
+        run_agent.save()
 
         return make_json_response(run_agent.to_json())
 

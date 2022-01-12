@@ -19,7 +19,7 @@ class RunAgent(CreatedUpdatedDocumentMixin, gj.Document):
 
     run_id = ObjectIdField(required=True)
     agent_id = ObjectIdField(required=True)
-    agent_host = StringField(required=True)
+    agent_hostname = StringField(required=True)
     agent_status = StringField(
         required=True,
         default=RunAgentStatus.PROCESSING.value,
