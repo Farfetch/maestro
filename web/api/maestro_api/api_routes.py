@@ -69,11 +69,15 @@ def init_api_routes(flask_app):
         return run_controller.all(*args, **kwargs)
 
     # /run_status routes
-    # TODO: change to single endpoint from where we can change run status
     @flask_app.route("/run_status/<run_id>/start", methods=["POST"])
     @requires_auth()
     def run_status_start(*args, **kwargs):
         return run_status_controller.start_one(*args, **kwargs)
+
+    @flask_app.route("/run_status/<run_id>/restart", methods=["POST"])
+    @requires_auth()
+    def run_status_restart(*args, **kwargs):
+        return run_status_controller.restart_one(*args, **kwargs)
 
     @flask_app.route("/run_status/<run_id>/stop", methods=["POST"])
     @requires_auth()
