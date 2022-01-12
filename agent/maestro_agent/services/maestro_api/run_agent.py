@@ -33,21 +33,19 @@ class RunAgent:
         self.updated_at = updated_at
 
 
-def run_agent_json_to_object(run_agent_json):
-
-    return RunAgent(
-        id=run_agent_json.get("id"),
-        run_id=run_agent_json.get("run_id"),
-        agent_id=run_agent_json.get("agent_id"),
-        agent_hostname=run_agent_json.get("agent_hostname"),
-        agent_status=run_agent_json.get("agent_status"),
-        error_message=run_agent_json.get("error_message"),
-        created_at=dateutil.parser.parse(run_agent_json.get("created_at")),
-        updated_at=dateutil.parser.parse(run_agent_json.get("updated_at")),
-    )
-
-
 class RunAgentApi:
+    def json_to_object(run_agent_json):
+        return RunAgent(
+            id=run_agent_json.get("id"),
+            run_id=run_agent_json.get("run_id"),
+            agent_id=run_agent_json.get("agent_id"),
+            agent_hostname=run_agent_json.get("agent_hostname"),
+            agent_status=run_agent_json.get("agent_status"),
+            error_message=run_agent_json.get("error_message"),
+            created_at=dateutil.parser.parse(run_agent_json.get("created_at")),
+            updated_at=dateutil.parser.parse(run_agent_json.get("updated_at")),
+        )
+
     def update_status(run_id, agent_id, agent_status, error_message=""):
         return MaestroApiClient.put(
             "/api/run_agent",
@@ -57,5 +55,5 @@ class RunAgentApi:
                 "agent_status": agent_status,
                 "error_message": error_message,
             },
-            mapper=run_agent_json_to_object,
+            mapper=RunAgentApi.json_to_object,
         )
