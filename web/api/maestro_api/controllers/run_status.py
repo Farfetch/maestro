@@ -1,4 +1,4 @@
-from maestro_api.db.models.event import Event, EventType
+from maestro_api.db.models.event import Event, EventType, EventStatus
 from maestro_api.db.models.run import Run, RunStatus
 
 from maestro_api.libs.flask.utils import (
@@ -87,12 +87,19 @@ class RunStatusController:
         """
         run = get_obj_or_404(Run, id=run_id)
 
-        # if pending events should be removed
-        # for running test new event should be generated
-        if run.run_status != RunStatus.RUNNING.value:
+        available_statuses = [
+            RunStatus.PENDING.value,
+            RunStatus.CREATING.value,
+            RunStatus.RUNNING.value,
+        ]
+
+        if run.run_status not in available_statuses:
             return bad_request_response(
-                "Run status is not '%s'" % RunStatus.RUNNING.value
+                "Run status should be one of %s" % str(available_statuses)
             )
+
+        # New Events to stop test would be created
+        Event.objects(run_id=run_id, event_status=EventStatus.PENDING.value).delete()
 
         server_agents = {
             "ids": run.server_agent_ids,

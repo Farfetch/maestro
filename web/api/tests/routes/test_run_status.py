@@ -1,5 +1,5 @@
 import json
-
+import pytest
 from maestro_api.db.models.run import Run, RunStatus
 from maestro_api.db.models.event import EventType
 
@@ -144,7 +144,11 @@ def test_run_status_stop(client):
     assert client_agent_event.items() <= res_json[1].items()
 
 
-def test_run_status_stop_bad_response_for_not_running_runs(client):
+@pytest.mark.parametrize(
+    "run_status",
+    [RunStatus.FINISHED.value, RunStatus.STOPPED.value, RunStatus.ERROR.value],
+)
+def test_run_status_stop_with_bad_request_response(client, run_status):
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
@@ -159,7 +163,7 @@ def test_run_status_stop_bad_response_for_not_running_runs(client):
         run_plan_id=run_plan_id,
         client_agent_id=client_agent_id,
         server_agent_ids=server_agent_ids,
-        run_status=RunStatus.PENDING.value,
+        run_status=run_status,
     ).save()
 
     response = client.post("/run_status/%s/stop" % run_id)
@@ -167,7 +171,10 @@ def test_run_status_stop_bad_response_for_not_running_runs(client):
     response_text = response.data.decode("utf-8")
 
     assert 400 == response.status_code
-    assert "Run status is not '%s'" % RunStatus.RUNNING.value == response_text
+    assert (
+        "Run status should be one of ['PENDING', 'CREATING', 'RUNNING']"
+        == response_text
+    )
 
 
 def test_run_status_finish(client):
