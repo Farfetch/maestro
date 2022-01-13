@@ -1122,10 +1122,8 @@ components:
       type: string
       enum:
         - START_RUN
-        - RESTART_RUN
         - STOP_RUN
         - START_SERVER_AGENT
-        - RESTART_SERVER_AGENT
         - STOP_SERVER_AGENT
     RunStatus:
       type: string
