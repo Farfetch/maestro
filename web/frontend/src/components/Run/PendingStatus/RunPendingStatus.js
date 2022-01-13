@@ -1,6 +1,8 @@
-import { Button, Col, PageHeader, Row, Steps } from "antd";
+import { Button, Col, PageHeader, Popconfirm, Row, Steps } from "antd";
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { stopRun } from "../../../lib/api/endpoints/run";
 import { runStatus as runStatusModel } from "../../../lib/api/models";
 import { historyUrl, testSingleUrl } from "../../../lib/routes";
 import Breadcrumb from "../../layout/Breadcrumb";
@@ -46,6 +48,10 @@ const RunPendingStatus = ({ run }) => {
     }
   ];
 
+  const onStop = useCallback(() => {
+    stopRun(run.id);
+  }, [run]);
+
   return (
     <PageHeader
       ghost={false}
@@ -53,9 +59,23 @@ const RunPendingStatus = ({ run }) => {
       title={run.title}
       subTitle=""
       extra={[
-        <Button key="1" type="primary" danger={true}>
-          Stop Execution
-        </Button>
+        <Popconfirm
+          placement="left"
+          key="restart"
+          title={
+            <>
+              <p>Are you sure you want to stop the test?</p>
+              <p>You will not be able to resume the test.</p>
+            </>
+          }
+          okText="Yes"
+          cancelText="No"
+          onConfirm={onStop}
+        >
+          <Button key="stop" type="primary" danger={true}>
+            Stop Execution
+          </Button>
+        </Popconfirm>
       ]}
       breadcrumb={{
         routes,

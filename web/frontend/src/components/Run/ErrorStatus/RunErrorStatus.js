@@ -1,8 +1,9 @@
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { Button, PageHeader, Result, Space, Typography } from "antd";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { restartRun } from "../../../lib/api/endpoints/run";
 import { fetchRunAgents } from "../../../lib/api/endpoints/runAgent";
 import { runAgentStatus as runAgentStatusModel } from "../../../lib/api/models";
 import { colors } from "../../../lib/colors";
@@ -43,6 +44,11 @@ const RunErrorStatus = ({ run }) => {
     setIsLoading(false);
   };
 
+  const onTryAgain = useCallback(() => {
+    setIsLoading(true);
+    restartRun(run.id);
+  }, [run]);
+
   useEffect(() => {
     loadAgentsData(run.id);
   }, [run]);
@@ -75,7 +81,9 @@ const RunErrorStatus = ({ run }) => {
               <Button type="primary">Go Configuration</Button>
             </Link>,
 
-            <Button key="buy">Try Again</Button>
+            <Button key="try-again" onClick={onTryAgain}>
+              Try Again
+            </Button>
           ]}
         >
           <div className="desc">

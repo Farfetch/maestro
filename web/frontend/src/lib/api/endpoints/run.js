@@ -62,6 +62,14 @@ export const stopRun = async (runId) => {
   return run;
 };
 
+export const restartRun = async (runId) => {
+  const res = await maestroClient.post(`/api/run_status/${runId}/restart`);
+
+  const run = runObjectMapper(res.data);
+
+  return run;
+};
+
 export const fetchRuns = async () => {
   const res = await maestroClient.get(`/api/runs`);
 
