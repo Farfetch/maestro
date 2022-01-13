@@ -8,6 +8,27 @@ from maestro_api.libs.flask.utils import (
 )
 
 
+def required_statuses(available_statuses):
+    "Skip the event if status doesn't match"
+
+    def decorator(func):
+        def wrapper(self, run_id, user, *args):
+            run = get_obj_or_404(Run, id=run_id)
+
+            if run.run_status not in available_statuses:
+                return bad_request_response(
+                    "Run status should be one of %s" % str(available_statuses)
+                )
+
+            val = func(self, run, user, *args)
+
+            return val
+
+        return wrapper
+
+    return decorator
+
+
 class RunStatusController:
     def __init__(self, flask_app):
         self.flask_app = flask_app
@@ -27,19 +48,14 @@ class RunStatusController:
 
         return all_events
 
-    def start_one(self, run_id, user):
+    @required_statuses([RunStatus.PENDING.value])
+    def start_one(self, run, user):
         """
         Start test run based on ID
 
         Available only for Runs with status: PENDING
         """
-        run = get_obj_or_404(Run, id=run_id)
 
-        # Only tests in PENDING state can be started
-        if run.run_status != RunStatus.PENDING.value:
-            return bad_request_response(
-                "Run status is not '%s'" % RunStatus.PENDING.value
-            )
         server_agents = {
             "ids": run.server_agent_ids,
             "event_type": EventType.START_SERVER_AGENT.value,
@@ -55,13 +71,19 @@ class RunStatusController:
 
         return jsonify_list_of_docs(all_events)
 
-    def restart_one(self, run_id, user):
+    @required_statuses(
+        [
+            RunStatus.FINISHED.value,
+            RunStatus.STOPPED.value,
+            RunStatus.ERROR.value,
+        ]
+    )
+    def restart_one(self, run, user):
         """
         Restart test run based on RunId.
 
         Execution metrics would be removed by client agent.
         """
-        run = get_obj_or_404(Run, id=run_id)
 
         server_agents = {
             "ids": run.server_agent_ids,
@@ -78,28 +100,23 @@ class RunStatusController:
 
         return jsonify_list_of_docs(all_events)
 
-    def stop_one(self, run_id, user):
+    @required_statuses(
+        [
+            RunStatus.PENDING.value,
+            RunStatus.CREATING.value,
+            RunStatus.RUNNING.value,
+        ]
+    )
+    def stop_one(self, run, user):
         """
         Stop execution of Run
 
         Available only for Runs with status: PENDING CREATING, RUNNING
         Update RunStatus to STOPPED
         """
-        run = get_obj_or_404(Run, id=run_id)
-
-        available_statuses = [
-            RunStatus.PENDING.value,
-            RunStatus.CREATING.value,
-            RunStatus.RUNNING.value,
-        ]
-
-        if run.run_status not in available_statuses:
-            return bad_request_response(
-                "Run status should be one of %s" % str(available_statuses)
-            )
 
         # New Events to stop test would be created
-        Event.objects(run_id=run_id, event_status=EventStatus.PENDING.value).delete()
+        Event.objects(run_id=run.id, event_status=EventStatus.PENDING.value).delete()
 
         server_agents = {
             "ids": run.server_agent_ids,
@@ -119,20 +136,18 @@ class RunStatusController:
 
         return jsonify_list_of_docs(all_events)
 
-    def finish_one(self, run_id, user):
+    @required_statuses(
+        [
+            RunStatus.RUNNING.value,
+        ]
+    )
+    def finish_one(self, run, user):
         """
         Send event that test is finished to server agents.
 
         Available only for Runs with status: RUNNING
         Update RunStatus to FINISHED
         """
-        run = get_obj_or_404(Run, id=run_id)
-
-        # Only running tests can go to the FINISHED state
-        if run.run_status != RunStatus.RUNNING.value:
-            return bad_request_response(
-                "Run status is not '%s'" % RunStatus.RUNNING.value
-            )
 
         server_agents = {
             "ids": run.server_agent_ids,

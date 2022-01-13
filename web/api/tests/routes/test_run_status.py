@@ -42,7 +42,11 @@ def test_run_status_start(client):
     assert client_agent_event.items() <= res_json[1].items()
 
 
-def test_run_status_restart(client):
+@pytest.mark.parametrize(
+    "run_status",
+    [RunStatus.FINISHED.value, RunStatus.STOPPED.value, RunStatus.ERROR.value],
+)
+def test_run_status_restart(client, run_status):
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
@@ -55,6 +59,7 @@ def test_run_status_restart(client):
         run_configuration_id=run_configuration_id,
         title=title,
         run_plan_id=run_plan_id,
+        run_status=run_status,
         client_agent_id=client_agent_id,
         server_agent_ids=server_agent_ids,
     ).save()
@@ -80,6 +85,37 @@ def test_run_status_restart(client):
     assert client_agent_event.items() <= res_json[1].items()
 
 
+@pytest.mark.parametrize(
+    "run_status",
+    [RunStatus.CREATING.value, RunStatus.PENDING.value, RunStatus.RUNNING.value],
+)
+def test_run_status_restart_with_bad_request(client, run_status):
+    run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    title = "some example title"
+    run_id = "6076d1e3a216ff15b6e95e1f"
+    run_plan_id = "6076d1e3a216ff15b6e95e9d"
+    client_agent_id = "6076d152b28b871d6bdb604f"
+    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+
+    Run(
+        id=run_id,
+        run_configuration_id=run_configuration_id,
+        title=title,
+        run_plan_id=run_plan_id,
+        client_agent_id=client_agent_id,
+        server_agent_ids=server_agent_ids,
+        run_status=run_status,
+    ).save()
+
+    response = client.post("/run_status/%s/restart" % run_id)
+    response_text = response.data.decode("utf-8")
+
+    assert 400 == response.status_code
+    assert (
+        "Run status should be one of ['FINISHED', 'STOPPED', 'ERROR']" == response_text
+    )
+
+
 def test_run_status_start_with_running_status(client):
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"
@@ -102,7 +138,7 @@ def test_run_status_start_with_running_status(client):
     response_text = response.data.decode("utf-8")
 
     assert 400 == response.status_code
-    assert "Run status is not 'PENDING'" == response_text
+    assert "Run status should be one of ['PENDING']" == response_text
 
 
 def test_run_status_stop(client):
@@ -235,7 +271,7 @@ def test_run_status_finish_bad_response_for_not_running_runs(client):
     response_text = response.data.decode("utf-8")
 
     assert 400 == response.status_code
-    assert "Run status is not '%s'" % RunStatus.RUNNING.value == response_text
+    assert "Run status should be one of ['RUNNING']" == response_text
 
 
 def test_run_finish_no_found_error(client):
