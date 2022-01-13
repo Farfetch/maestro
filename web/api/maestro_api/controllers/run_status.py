@@ -1,5 +1,8 @@
 from maestro_api.db.models.event import Event, EventType, EventStatus
 from maestro_api.db.models.run import Run, RunStatus
+from maestro_api.db.models.run_metric import RunMetric
+from maestro_api.db.models.run_agent import RunAgent, RunAgentStatus
+from maestro_api.db.models.run_metric_label import RunMetricLabel
 
 from maestro_api.libs.flask.utils import (
     bad_request_response,
@@ -82,16 +85,27 @@ class RunStatusController:
         """
         Restart test run based on RunId.
 
-        Execution metrics would be removed by client agent.
+        Endpoint would reset RunStatus and RunAgentStatus to default one
+            and remove all metrics that were available.
+        Agents will receive general START_RUN, START_SERVER_RUN events
+            to start a test.
         """
 
+        run.run_status = RunStatus.PENDING.value
+        run.save()
+
+        RunMetric.objects(run_id=run.id).delete()
+        RunMetricLabel.objects(run_id=run.id).delete()
+        RunAgent.objects(run_id=run.id).update(
+            set__agent_status=RunAgentStatus.PROCESSING.value, set__error_message=""
+        )
         server_agents = {
             "ids": run.server_agent_ids,
-            "event_type": EventType.RESTART_SERVER_AGENT.value,
+            "event_type": EventType.START_SERVER_AGENT.value,
         }
         client_agents = {
             "ids": [run.client_agent_id],
-            "event_type": EventType.RESTART_RUN.value,
+            "event_type": EventType.START_RUN.value,
         }
         all_events = self.create_agent_events(
             run.id,
