@@ -3,10 +3,12 @@ from time import sleep
 from maestro_agent.services.maestro_api.agent import AgentApi, AgentStatus
 from maestro_agent.logging import Logger
 
+from maestro_agent.settings import MAESTRO_METRICS_PROCESSING_BULK_SIZE
+
 
 def wait_for_server_agents(run):
     server_agents = []
-    timeout = 20
+    timeout = MAESTRO_METRICS_PROCESSING_BULK_SIZE
     sleep_time = 3
     elapsed_time = 0
 
