@@ -13,16 +13,7 @@ from maestro_agent.services.event.handlers import (
 
 
 class TestEventHandlerFactory:
-    @pytest.mark.parametrize(
-        "event_type,instance_class",
-        [
-            (EventType.START_RUN.value, StartRunEventHandler),
-            (EventType.STOP_RUN.value, StopRunEventHandler),
-            (EventType.START_SERVER_AGENT.value, StartServerAgentEventHandler),
-            (EventType.STOP_SERVER_AGENT.value, StopServerAgentEventHandler),
-        ],
-    )
-    def test_build(self, event_type, instance_class):
+    def get_event(self, event_type):
         id = "some value"
         event_status = EventStatus.PENDING.value
         agent_id = "agent_id_1"
@@ -40,6 +31,12 @@ class TestEventHandlerFactory:
             updated_at=updated_at,
         )
 
+        return event
+
+    def get_agent(self):
+        agent_id = "agent_id_1"
+        created_at = "2021-05-19T17:31:47.560000"
+        updated_at = "2021-06-19T17:31:47.560000"
         ip = "127.0.0.4"
         agent_status = AgentStatus.AVAILABLE.value
         hostname = "test.maestro.net"
@@ -53,9 +50,31 @@ class TestEventHandlerFactory:
             updated_at=dateutil.parser.parse(updated_at),
         )
 
+        return agent
+
+    @pytest.mark.parametrize(
+        "event_type,instance_class",
+        [
+            (EventType.START_RUN.value, StartRunEventHandler),
+            (EventType.STOP_RUN.value, StopRunEventHandler),
+            (EventType.START_SERVER_AGENT.value, StartServerAgentEventHandler),
+            (EventType.STOP_SERVER_AGENT.value, StopServerAgentEventHandler),
+        ],
+    )
+    def test_build(self, event_type, instance_class):
+        event = self.get_event(event_type)
+        agent = self.get_agent()
+
         event_handler = EventHandlerFactory.build(event, agent)
 
         assert isinstance(event_handler, instance_class)
         assert isinstance(event_handler.agent_hooks, AgentHooks)
         assert agent == event_handler.agent
         assert event == event_handler.event
+
+    def test_build_with_exception(self):
+        event = self.get_event("custom_type")
+        agent = self.get_agent()
+
+        with pytest.raises(NotImplementedError):
+            EventHandlerFactory.build(event, agent)
