@@ -2,7 +2,7 @@ import moment from "moment";
 
 import loadProfileToTimeframe from "../loadProfileToTimeframe";
 
-describe("libs/formatters", () => {
+describe("lib/charts/datasets", () => {
   describe("loadProfileToTimeframe", () => {
     test("should return list of custom data elements", async () => {
       const loadProfileData = [

@@ -3,7 +3,7 @@ import moment from "moment";
 import React from "react";
 import { Line } from "react-chartjs-2";
 
-import laodProfileToTimeframe from "../../../../../../lib/formatters/loadProfileToTimeframe";
+import laodProfileToTimeframe from "../../../../../../lib/charts/datasets/loadProfileToTimeframe";
 
 const LoadConfigurationChart = ({ data }) => {
   // Skip items if they are not valid

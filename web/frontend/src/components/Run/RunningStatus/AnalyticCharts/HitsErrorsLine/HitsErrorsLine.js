@@ -6,36 +6,14 @@ import moment from "moment";
 import React from "react";
 import { Line } from "react-chartjs-2";
 
-import laodProfileToTimeframe from "../../../../../lib/formatters/loadProfileToTimeframe";
+import laodProfileToTimeframe from "../../../../../lib/charts/datasets/loadProfileToTimeframe";
+import { defaultChartOptions } from "../../../../../lib/charts/defaultOptions";
 
 const { Title } = Typography;
 
 const HitsErrorsLine = ({ metrics, loadProfile }) => {
-  const timeFormat = {
-    millisecond: "HH:mm",
-    second: "HH:mm",
-    minute: "HH:mm",
-    hour: "HH:mm",
-    day: "HH:mm",
-    week: "HH:mm",
-    month: "HH:mm",
-    quarter: "HH:mm",
-    year: "HH:mm"
-  };
-
   const options = {
-    scales: {
-      x: {
-        type: "time",
-        time: {
-          unit: "minute",
-          displayFormats: timeFormat
-        }
-      }
-    },
-    animation: {
-      duration: 0
-    }
+    ...defaultChartOptions()
   };
 
   const buildChartData = (dataToRender, loadProfileToRender) => {
