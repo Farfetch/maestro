@@ -6,8 +6,8 @@ from maestro_agent.logging import Logger
 
 def wait_for_server_agents(run):
     server_agents = []
-    timeout = 120
-    stop_time = 3
+    timeout = 20
+    sleep_time = 3
     elapsed_time = 0
 
     for server_agent_id in run.server_agent_ids:
@@ -22,8 +22,8 @@ def wait_for_server_agents(run):
             Logger.debug(
                 f"server agent status is '{server_agent.agent_status}'",
             )
-            sleep(stop_time)
-            elapsed_time += stop_time
+            sleep(sleep_time)
+            elapsed_time += sleep_time
             server_agent = AgentApi.get(agent_id=server_agent_id)
             continue
         if elapsed_time > timeout:

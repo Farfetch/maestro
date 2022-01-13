@@ -34,7 +34,6 @@ class AgentHooks:
 
     def error(self, error_message):
 
-        res = RunAgentApi.update_status(
+        RunAgentApi.update_status(
             self.run_id, self.agent_id, RunAgentStatus.ERROR.value, error_message
         )
-        print(res.error_message)
