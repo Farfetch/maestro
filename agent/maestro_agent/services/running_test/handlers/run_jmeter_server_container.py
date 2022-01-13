@@ -4,6 +4,7 @@ from maestro_agent.services.docker import DockerContainerStatus, JmeterDocker
 from maestro_agent.logging import Logger
 from maestro_agent.services.jmeter.container import JmeterContainerStateManager
 from maestro_agent.app_state import ApplicationState
+from maestro_agent.services.running_test.files import RunningTestFiles
 
 
 def run_jmeter_server_container_handler(finish, finished, failed, run, agent):
@@ -31,6 +32,10 @@ def run_jmeter_server_container_handler(finish, finished, failed, run, agent):
                     % running_container.status
                 )
                 finished("Test run is finished")
+
+        # Clean up all data that was created during test execution
+        running_test_files = RunningTestFiles(run_id=run.id)
+        running_test_files.clean_up_files()
 
         Logger.info(f"Test is finished. run_id={run.id}")
 

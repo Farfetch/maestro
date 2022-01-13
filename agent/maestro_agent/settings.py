@@ -69,7 +69,7 @@ JMETER_RUN_DIR_RELATIVE_PATH = os.path.relpath(JMETER_RUN_DIR, JMETER_DIR)
 
 JMETER_RUN_METRICS_FILENAME = "run_metrics.csv"
 
-JMETER_RUN_MOUNT_DIR = os.path.join(HOST_MOUNT_DIR, "%s")  # jmeter/run/{id}/mnt
+JMETER_RUN_MOUNT_DIR = os.path.join(HOST_MOUNT_DIR, "%s")  # /tmp/maestrojmeter/{id}
 
 
 JMETER_RUN_METRICS_PATH = os.path.join(
