@@ -116,27 +116,3 @@ class StopRunEventHandler(EventHandlerBase):
 
 class StopServerAgentEventHandler(StopRunEventHandler):
     pass
-
-
-class RestartRunEventHandler(EventHandlerBase):
-    @required_statuses(
-        [
-            RunStatus.RUNNING.value,
-            RunStatus.FINISHED.value,
-            RunStatus.STOPPED.value,
-            RunStatus.ERROR.value,
-        ]
-    )
-    def event_type_process(self):
-        Logger.info(f"Restart test execution. run_id={self.run.id}")
-        # Stop test
-        # Delete metrics
-        # Waiting for all servers to stop
-
-
-class RestartServerAgentEventHandler(EventHandlerBase):
-    def event_type_process(self):
-        Logger.info(f"Restart test execution. run_id={self.run.id}")
-
-        # Stop
-        # Start
