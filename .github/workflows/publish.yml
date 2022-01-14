@@ -35,15 +35,16 @@ jobs:
 
       - name: Set Env Variables
         run: |
+          echo ${GITHUB_REF#refs/tags/}
           echo ${{ steps.get_version.outputs.VERSION }}
           echo "DOCKER_HUB_TAG=${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_REPOSITORY }}:${{ env.DOCKER_HUB_VERSION }}" >> $GITHUB_ENV
 
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: ./web
-          push: true
-          tags: ${{ env.DOCKER_HUB_TAG }}
-          # cache-from: type=registry,ref=${{ env.DOCKER_HUB_TAG }}
-          # cache-to: type=inline
+      # - name: Build and push
+      #   id: docker_build
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: ./web
+      #     push: true
+      #     tags: ${{ env.DOCKER_HUB_TAG }}
+      # cache-from: type=registry,ref=${{ env.DOCKER_HUB_TAG }}
+      # cache-to: type=inline
