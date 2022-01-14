@@ -9,6 +9,7 @@ on:
 
 jobs:
   web:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     env:
       DOCKER_HUB_REPOSITORY: maestro
@@ -33,7 +34,6 @@ jobs:
       - name: Set Env Variables
         run: |
           echo "DOCKER_HUB_VERSION=${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_ENV
-
           echo "DOCKER_HUB_TAG=${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_REPOSITORY }}:${{ env.DOCKER_HUB_VERSION }}" >> $GITHUB_ENV
 
       - name: Build and push
@@ -43,5 +43,5 @@ jobs:
           context: ./web
           push: true
           tags: ${{ env.DOCKER_HUB_TAG }}
-      cache-from: type=registry,ref=${{ env.DOCKER_HUB_TAG }}
-      cache-to: type=inline
+        cache-from: type=registry,ref=${{ env.DOCKER_HUB_TAG }}
+        cache-to: type=inline
