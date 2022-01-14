@@ -6,6 +6,7 @@ on:
       - "v*.*.*"
     branches:
       - release-*
+    workflow_dispatch:
 
 jobs:
   web:
@@ -42,7 +43,7 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_REPOSITORY }}:${{ DOCKER_HUB_TAG }}
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_REPOSITORY }}:${{ env.DOCKER_HUB_TAG }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Image digest
