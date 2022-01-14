@@ -3,6 +3,7 @@ import { Button, Checkbox, Col, Row, Select, Space } from "antd";
 import React, { useEffect, useState } from "react";
 
 import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
+import { runStatus as runStatusModel } from "../../../../lib/api/models";
 import PageSpinner from "../../../layout/PageSpinner";
 import HitsErrorsLine from "./HitsErrorsLine";
 import ResponseCodesLine from "./ResponseCodesLine";
@@ -71,7 +72,8 @@ const RunningTestAnalytics = ({
 
   if (isLoading) return <PageSpinner />;
 
-  if (runMetrics.length === 0) return <WaitingForMetricsResult run={run} />;
+  if ((run.runStatus === runStatusModel.RUNNING && runMetrics.length) === 0)
+    return <WaitingForMetricsResult run={run} />;
 
   return (
     <Row type="flex" gutter={[0, 24]}>
