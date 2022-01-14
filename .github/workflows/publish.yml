@@ -14,7 +14,7 @@ jobs:
     env:
       DOCKER_HUB_REPOSITORY: maestro
       # TODO: Get version from tag that triggered workflow
-      DOCKER_HUB_TAG: latest
+      DOCKER_HUB_VERSION: latest
 
     steps:
       - name: Checkout
@@ -24,29 +24,21 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
-      # - name: Cache Docker layers
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: /tmp/.buildx-cache
-      #     key: ${{ runner.os }}-buildx-${{ github.sha }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-buildx-
-
       - uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Set Env Variables
+        run: |
+          echo "DOCKER_HUB_TAG=${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_REPOSITORY }}:${{ env.DOCKER_HUB_VERSION }}" >> $GITHUB_ENV
 
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           context: ./web
-          # file: ./Dockerfile
-          # builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_REPOSITORY }}:${{ env.DOCKER_HUB_TAG }}
-          # cache-from: type=local,src=/tmp/.buildx-cache
-          # cache-to: type=local,dest=/tmp/.buildx-cache
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+          tags: ${{ env.DOCKER_HUB_TAG }}
+          # cache-from: type=registry,ref=${{ env.DOCKER_HUB_TAG }}
+          # cache-to: type=inline
