@@ -43,5 +43,5 @@ jobs:
           context: ./web
           push: true
           tags: ${{ env.DOCKER_HUB_TAG }}
-        cache-from: type=registry,ref=${{ env.DOCKER_HUB_TAG }}
-        cache-to: type=inline
+          cache-from: type=registry,ref=${{ env.DOCKER_HUB_TAG }}
+          cache-to: type=inline
