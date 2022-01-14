@@ -1,11 +1,10 @@
-name: Release
+name: Beta Release
 
 on:
   push:
-    # TODO: move to on release https://github.com/softprops/action-gh-release
-    # TODO: test workflow once more with first publishing version
-    tags:
-      - "v*.*.*"
+    branches: 
+      - master
+      - release-*
 
 jobs:
   web:
@@ -28,12 +27,11 @@ jobs:
 
       - name: Get the version
         id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/heads/}
+        run: echo "::set-output name=VERSION::$(git rev-parse --short HEAD)"
 
       - name: Set Env Variables
         run: |
-          echo "DOCKER_HUB_VERSION=${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_ENV
-
+          echo "DOCKER_HUB_VERSION=beta-${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_ENV
           echo "DOCKER_HUB_TAG=${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_REPOSITORY }}:${{ env.DOCKER_HUB_VERSION }}" >> $GITHUB_ENV
 
       - name: Build and push
