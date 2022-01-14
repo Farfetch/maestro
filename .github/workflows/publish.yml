@@ -6,15 +6,12 @@ on:
       - "v*.*.*"
     branches:
       - release-*
-    workflow_dispatch:
 
 jobs:
   web:
     runs-on: ubuntu-latest
     env:
       DOCKER_HUB_REPOSITORY: maestro
-      # TODO: Get version from tag that triggered workflow
-      DOCKER_HUB_VERSION: latest
 
     steps:
       - name: Checkout
@@ -35,8 +32,7 @@ jobs:
 
       - name: Set Env Variables
         run: |
-          echo ${GITHUB_REF#refs/tags/}
-          echo ${{ steps.get_version.outputs.VERSION }}
+          echo "DOCKER_HUB_VERSION=${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_ENV
           echo "DOCKER_HUB_TAG=${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_REPOSITORY }}:${{ env.DOCKER_HUB_VERSION }}" >> $GITHUB_ENV
 
       # - name: Build and push
