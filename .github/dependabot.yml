@@ -12,7 +12,6 @@ updates:
       interval: "weekly"
     reviewers:
       - "vitaliimelnychuk"
-      - "Farfetch/team-maestro"
 
   # Python Flask WEB API
   - package-ecosystem: "pip"
@@ -21,7 +20,6 @@ updates:
       interval: "weekly"
     reviewers:
       - "vitaliimelnychuk"
-      - "Farfetch/team-maestro"
 
   # React.js WEB Frontend
   - package-ecosystem: "npm"
@@ -30,7 +28,6 @@ updates:
       interval: "weekly"
     reviewers:
       - "vitaliimelnychuk"
-      - "Farfetch/team-maestro"
 
   # Website
   - package-ecosystem: "npm"
@@ -39,7 +36,6 @@ updates:
       interval: "weekly"
     reviewers:
       - "vitaliimelnychuk"
-      - "Farfetch/team-maestro"
 
   # Github actions
   - package-ecosystem: "github-actions"
@@ -48,4 +44,3 @@ updates:
       interval: "weekly"
     reviewers:
       - "vitaliimelnychuk"
-      - "Farfetch/team-maestro"
