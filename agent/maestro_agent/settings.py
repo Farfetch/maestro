@@ -21,6 +21,9 @@ MAESTRO_API_TOKEN = os.environ.get("MAESTRO_API_TOKEN", "")
 MAESTRO_METRICS_PROCESSING_BULK_SIZE = int(
     os.environ.get("MAESTRO_METRICS_PROCESSING_BULK_SIZE", 100)
 )
+MAESTRO_CLIENT_AGENT_WAITING_SERVERS_TIMEOUT = int(
+    os.environ.get("MAESTRO_METRICS_PROCESSING_BULK_SIZE", 120)
+)
 
 JMETER_BASE_IMAGE = "maestrojmeter:%s"
 JMETER_IMAGE_BASE_REPO = os.environ.get("JMETER_IMAGE_BASE_REPO", "")
@@ -66,7 +69,7 @@ JMETER_RUN_DIR_RELATIVE_PATH = os.path.relpath(JMETER_RUN_DIR, JMETER_DIR)
 
 JMETER_RUN_METRICS_FILENAME = "run_metrics.csv"
 
-JMETER_RUN_MOUNT_DIR = os.path.join(HOST_MOUNT_DIR, "%s")  # jmeter/run/{id}/mnt
+JMETER_RUN_MOUNT_DIR = os.path.join(HOST_MOUNT_DIR, "%s")  # /tmp/maestrojmeter/{id}
 
 
 JMETER_RUN_METRICS_PATH = os.path.join(

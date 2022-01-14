@@ -4,25 +4,13 @@ from maestro_agent.services.maestro_api.custom_data import CustomDataApi
 from maestro_agent.services.maestro_api.run_plan import RunPlanApi
 from maestro_agent.services.docker import JmeterDocker
 from maestro_agent.services.jmeter.properties import JmeterProperties
+from maestro_agent.services.running_test.files import RunningTestFiles
 from maestro_agent.logging import Logger
 
 from maestro_agent.settings import (
     JMETER_DIR,
-    JMETER_RUN_CUSTOM_DATA_DIR,
-    JMETER_RUN_MOUNT_DIR,
     JMETER_RUN_PROPERTIES_FILE,
 )
-
-
-def create_directories(run_id):
-    Logger.debug(f"Creating required directories, run_id={run_id}")
-    run_custom_data_dir = JMETER_RUN_CUSTOM_DATA_DIR % run_id
-    run_mount_dir = JMETER_RUN_MOUNT_DIR % run_id
-
-    os.makedirs(run_custom_data_dir, exist_ok=True)
-    Logger.debug(f"Created custom_data directory {run_custom_data_dir}")
-    os.makedirs(run_mount_dir, exist_ok=True)
-    Logger.debug(f"Created test run mount directory {run_mount_dir}")
 
 
 def create_properties_file(run):
@@ -47,7 +35,11 @@ def create_properties_file(run):
 def prepare_for_running(run):
     jmeter_docker = JmeterDocker(run=run)
 
-    create_directories(run.id)
+    # Before test started there are some directories that should be created
+    # Any files inside those dirs would be removed
+    running_test_files = RunningTestFiles(run_id=run.id)
+    running_test_files.create_directories()
+    running_test_files.clean_up_files()
 
     create_properties_file(run)
 

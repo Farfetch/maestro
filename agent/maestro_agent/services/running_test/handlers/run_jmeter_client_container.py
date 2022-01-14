@@ -6,6 +6,7 @@ from maestro_agent.services.docker import DockerContainerStatus, JmeterDocker
 from maestro_agent.logging import Logger
 from maestro_agent.services.jmeter.container import JmeterContainerStateManager
 from maestro_agent.app_state import ApplicationState
+from maestro_agent.services.running_test.files import RunningTestFiles
 
 
 def run_jmeter_client_container_handler(finish, finished, failed, run, server_agents):
@@ -35,6 +36,10 @@ def run_jmeter_client_container_handler(finish, finished, failed, run, server_ag
             except docker.errors.NotFound:
                 Logger.error("Jmter container is unexpectedly killed. Exiting...")
                 finished("Jmter container killed")
+
+        # Clean up all data that was created during test execution
+        running_test_files = RunningTestFiles(run_id=run.id)
+        running_test_files.clean_up_files()
 
         Logger.debug("Updating test run status to FINISHED")
         RunApi.finish(run.id)

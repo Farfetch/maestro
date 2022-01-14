@@ -6,8 +6,8 @@ from maestro_agent.services.maestro_api import MaestroApiClient
 
 
 class RunStatus(Enum):
-    CREATING = "CREATING"
     PENDING = "PENDING"
+    CREATING = "CREATING"
     RUNNING = "RUNNING"
     STOPPED = "STOPPED"
     FINISHED = "FINISHED"

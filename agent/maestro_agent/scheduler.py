@@ -1,6 +1,6 @@
 import atexit
 from apscheduler.schedulers.background import BlockingScheduler
-from maestro_agent.jobs.handler import update_agent_status, handle_new_events
+from maestro_agent.job_handlers import update_agent_status, handle_new_events
 from maestro_agent.app_state import ApplicationState
 
 from pytz import UTC
