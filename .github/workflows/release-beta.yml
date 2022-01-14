@@ -32,8 +32,8 @@ jobs:
 
       - name: Set Env Variables
         run: |
-          echo "DOCKER_HUB_VERSION=${{ secrets.DOCKER_HUB_TAG_PREFIX }}-${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_ENV
-          echo "DOCKER_HUB_TAG=${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_REPOSITORY }}:${{ secrets.DOCKER_HUB_TAG_PREFIX }}-${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_ENV
+          echo "DOCKER_HUB_VERSION=${{ env.DOCKER_HUB_TAG_PREFIX }}-${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_ENV
+          echo "DOCKER_HUB_TAG=${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.DOCKER_HUB_REPOSITORY }}:${{ env.DOCKER_HUB_TAG_PREFIX }}-${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_ENV
 
       - name: Build and push
         id: docker_build
