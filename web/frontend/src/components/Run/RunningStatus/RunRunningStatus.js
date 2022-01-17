@@ -4,19 +4,21 @@ import {
   SyncOutlined
 } from "@ant-design/icons";
 import { Button, Col, PageHeader, Popconfirm, Row, Tabs, Tag } from "antd";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { restartRun, stopRun } from "../../../lib/api/endpoints/run";
+import { restartRun } from "../../../lib/api/endpoints/run";
 import { runStatus as runStatusModel } from "../../../lib/api/models";
 import { historyUrl, testSingleUrl } from "../../../lib/routes";
 import Breadcrumb from "../../layout/Breadcrumb";
 import RunAnalyticCharts from "./AnalyticCharts";
 import RunEndpointCharts from "./EndpointCharts";
+import StopExecutionButton from "./StopExecutionButton";
 import RunSummaryTable from "./SummaryTable";
 
 const RunRunningStatus = ({ run }) => {
   const navigate = useNavigate();
+  const [isRunMetricsAvailable, setIsRunMetricsAvailable] = useState(false);
 
   const routes = [
     {
@@ -33,10 +35,6 @@ const RunRunningStatus = ({ run }) => {
       breadcrumbName: "Run"
     }
   ];
-
-  const onStop = useCallback(() => {
-    stopRun(run.id);
-  }, [run]);
 
   const onRestart = useCallback(() => {
     restartRun(run.id);
@@ -64,25 +62,8 @@ const RunRunningStatus = ({ run }) => {
           </Popconfirm>
         ];
       default:
-        return [
-          <Popconfirm
-            placement="left"
-            key="restart"
-            title={
-              <>
-                <p>Are you sure you want to stop the test?</p>
-                <p>You will not be able to resume the test.</p>
-              </>
-            }
-            okText="Yes"
-            cancelText="No"
-            onConfirm={onStop}
-          >
-            <Button key="stop" type="primary" danger={true}>
-              Stop Execution
-            </Button>
-          </Popconfirm>
-        ];
+        if (!isRunMetricsAvailable) return [];
+        return [<StopExecutionButton runId={run.id} key="stopExecution" />];
     }
   };
 
@@ -130,12 +111,25 @@ const RunRunningStatus = ({ run }) => {
         <Col span={24}>
           <Tabs defaultActiveKey="analytics">
             <Tabs.TabPane tab="Overview" key="overview">
-              <RunAnalyticCharts runId={run.id} loadProfile={run.loadProfile} />
+              <RunAnalyticCharts
+                run={run}
+                loadProfile={run.loadProfile}
+                isRunMetricsAvailable={isRunMetricsAvailable}
+                setIsRunMetricsAvailable={setIsRunMetricsAvailable}
+              />
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Summary" key="summary">
+            <Tabs.TabPane
+              tab="Summary"
+              key="summary"
+              disabled={!isRunMetricsAvailable}
+            >
               <RunSummaryTable runId={run.id} />
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Endpoints" key="endpoints">
+            <Tabs.TabPane
+              tab="Endpoints"
+              key="endpoints"
+              disabled={!isRunMetricsAvailable}
+            >
               <RunEndpointCharts runId={run.id} />
             </Tabs.TabPane>
           </Tabs>
