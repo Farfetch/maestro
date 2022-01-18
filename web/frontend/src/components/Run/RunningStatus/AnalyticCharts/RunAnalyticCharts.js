@@ -27,7 +27,7 @@ const RunningTestAnalytics = ({
   const updateRunMetrics = async (runIdToFetch) => {
     setIsLoading(true);
     setIsIntervalLoading(true);
-    const metrics = await fetchMetrics(runIdToFetch);
+    const metrics = await fetchMetrics(runIdToFetch, timeInterval);
 
     setRunMetrics(metrics);
 
