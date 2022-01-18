@@ -43,7 +43,9 @@ describe("libs/api/endpoints/run", () => {
       duration: 100
     },
     created_at: "2021-04-14 12:29:20",
-    updated_at: "2021-04-14 12:51:25"
+    updated_at: "2021-04-14 12:51:25",
+    started_at: "2021-04-14 12:29:20",
+    finished_at: "2021-04-14 12:51:25"
   };
 
   const expectedData = {
@@ -59,7 +61,9 @@ describe("libs/api/endpoints/run", () => {
     loadProfile: apiResponse.load_profile,
     customProperties: apiResponse.custom_properties,
     createdAt: toLocalDate(apiResponse.created_at),
-    updatedAt: toLocalDate(apiResponse.updated_at)
+    updatedAt: toLocalDate(apiResponse.updated_at),
+    startedAt: toLocalDate(apiResponse.started_at),
+    finishedAt: toLocalDate(apiResponse.finished_at)
   };
   describe("fetchRunById", () => {
     test("should return single object", async () => {

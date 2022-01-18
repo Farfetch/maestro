@@ -59,7 +59,7 @@ const DashboardCard = ({ run }) => {
           <CircleSpinner />
         ) : (
           <>
-            <Timer startTime={run.createdAt} defaultTime={run.createdAt}>
+            <Timer startTime={run.startedAt} defaultTime={run.startedAt}>
               {(time, loading) => (
                 <>
                   <Statistic

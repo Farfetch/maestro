@@ -12,7 +12,7 @@ const WaitingForMetricsResult = ({ run }) => (
       <>
         Test is already started and running. Usualy is takes takes 1-2 minutes,
         please wait...
-        <Timer startTime={run.createdAt} defaultTime={run.createdAt}>
+        <Timer startTime={run.startedAt} defaultTime={run.startedAt}>
           {(time, loading) => (
             <Statistic title="" value={time} loading={loading} />
           )}
