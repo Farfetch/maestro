@@ -1,4 +1,6 @@
 import json
+import pytest
+from freezegun import freeze_time
 
 from maestro_api.db.models.agent import Agent
 from maestro_api.db.models.run_configuration import RunConfiguration
@@ -214,7 +216,44 @@ def test_get_run_with_not_found_response(client):
     assert response.status_code == 404
 
 
-def test_udpate_run_status(client):
+@freeze_time("2012-01-01 10:00:00")
+@pytest.mark.parametrize(
+    "run_status,started_at,finished_at",
+    [
+        (
+            RunStatus.PENDING.value,
+            "2012-01-01T10:00:00+00:00",
+            "2012-01-01T10:00:00+00:00",
+        ),
+        (
+            RunStatus.CREATING.value,
+            "2012-01-01T10:00:00+00:00",
+            "2012-01-01T10:00:00+00:00",
+        ),
+        (
+            RunStatus.RUNNING.value,
+            "2012-01-01T10:00:00+00:00",
+            "2012-01-01T10:00:00+00:00",
+        ),
+        (
+            RunStatus.ERROR.value,
+            "2011-01-01T10:00:00",
+            "2012-01-01T10:00:00+00:00",
+        ),
+        (
+            RunStatus.FINISHED.value,
+            "2011-01-01T10:00:00",
+            "2012-01-01T10:00:00+00:00",
+        ),
+        (
+            RunStatus.STOPPED.value,
+            "2011-01-01T10:00:00",
+            "2012-01-01T10:00:00+00:00",
+        ),
+    ],
+)
+def test_udpate_run_status(client, run_status, started_at, finished_at):
+
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
@@ -230,10 +269,12 @@ def test_udpate_run_status(client):
         client_agent_id=client_agent_id,
         server_agent_ids=server_agent_ids,
         run_status=RunStatus.PENDING.value,
+        started_at="2011-01-01 10:00:00",
+        finished_at="2011-01-01 10:00:00",
     ).save()
 
     run_id = "6076d1e3a216ff15b6e95e1f"
-    request_data = {"run_status": RunStatus.RUNNING.value}
+    request_data = {"run_status": run_status}
 
     response = client.put(
         "/run/%s" % run_id,
@@ -241,10 +282,15 @@ def test_udpate_run_status(client):
         content_type="application/json",
     )
 
+    updated_run = Run.objects.get(id=run_id)
+
     res_json = json.loads(response.data)
 
     assert response.status_code == 200
-    assert RunStatus.RUNNING.value == res_json["run_status"]
+    assert run_status == res_json["run_status"]
+    assert run_status == updated_run.run_status
+    assert started_at == res_json["started_at"]
+    assert finished_at == res_json["finished_at"]
 
 
 def test_update_run_with_not_found_response(client):

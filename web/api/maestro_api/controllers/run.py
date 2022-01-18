@@ -94,7 +94,9 @@ class RunController:
 
         run = get_obj_or_404(Run, id=run_id)
 
-        run.run_status = data["run_status"]
-        run = run.save()
+        run_status = data["run_status"]
+
+        run.update_status(run_status)
+        run.save()
 
         return make_json_response(run.to_json())

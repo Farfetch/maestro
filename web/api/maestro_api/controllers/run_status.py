@@ -91,7 +91,7 @@ class RunStatusController:
             to start a test.
         """
 
-        run.run_status = RunStatus.PENDING.value
+        run.update_status(RunStatus.PENDING.value)
         run.save()
 
         RunMetric.objects(run_id=run.id).delete()
@@ -145,7 +145,7 @@ class RunStatusController:
             [server_agents, client_agents],
         )
 
-        run.run_status = RunStatus.STOPPED.value
+        run.update_status(RunStatus.STOPPED.value)
         run.save()
 
         return jsonify_list_of_docs(all_events)
@@ -173,7 +173,7 @@ class RunStatusController:
             [server_agents],
         )
 
-        run.run_status = RunStatus.FINISHED.value
+        run.update_status(RunStatus.FINISHED.value)
         run.save()
 
         return jsonify_list_of_docs(all_events)

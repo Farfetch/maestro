@@ -3,11 +3,13 @@ from mongoengine import (
     IntField,
     StringField,
     ObjectIdField,
+    DateTimeField,
     ListField,
     EmbeddedDocument,
     EmbeddedDocumentField,
 )
 from maestro_api.libs.extended.enum import ExtendedEnum
+from maestro_api.libs.datetime import now
 from maestro_api.db.mixins import CreatedUpdatedDocumentMixin
 
 
@@ -57,3 +59,28 @@ class Run(CreatedUpdatedDocumentMixin, gj.Document):
         field=EmbeddedDocumentField(RunCustomProperty), default=[]
     )
     load_profile = ListField(field=EmbeddedDocumentField(RunLoadProfile), default=[])
+
+    started_at = DateTimeField(default=now)
+    finished_at = DateTimeField(default=now)
+
+    def update_status(self, run_status):
+        self.run_status = run_status
+        finished_statuses = [
+            RunStatus.FINISHED.value,
+            RunStatus.ERROR.value,
+            RunStatus.STOPPED.value,
+        ]
+        started_statuses = [
+            RunStatus.PENDING.value,
+            RunStatus.CREATING.value,
+            RunStatus.RUNNING.value,
+        ]
+
+        if run_status in started_statuses:
+            self.started_at = now()
+            self.finished_at = now()
+
+        if run_status in finished_statuses:
+            self.finished_at = now()
+
+        return self
