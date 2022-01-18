@@ -22,7 +22,7 @@ const DashboardCard = ({ run }) => {
       (firstEl, secondEl) => firstEl.minDatetime - secondEl.minDatetime
     );
 
-    // Last metrics object can be misleading because metrics are still comming
+    // Last metrics object can be misleading because metrics are still coming
     const lastMetric = sortedMetrics[1] || sortedMetrics[0];
 
     const errors =
