@@ -1,9 +1,4 @@
-import {
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  SyncOutlined
-} from "@ant-design/icons";
-import { Button, Col, PageHeader, Popconfirm, Row, Tabs, Tag } from "antd";
+import { Button, Col, PageHeader, Popconfirm, Row, Tabs } from "antd";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -11,6 +6,7 @@ import { restartRun } from "../../../lib/api/endpoints/run";
 import { runStatus as runStatusModel } from "../../../lib/api/models";
 import { historyUrl, testSingleUrl } from "../../../lib/routes";
 import Breadcrumb from "../../layout/Breadcrumb";
+import RunStatusTag from "../../tag/RunStatusTag";
 import RunAnalyticCharts from "./AnalyticCharts";
 import RunEndpointCharts from "./EndpointCharts";
 import StopExecutionButton from "./StopExecutionButton";
@@ -67,31 +63,6 @@ const RunRunningStatus = ({ run }) => {
     }
   };
 
-  const getTagByStatus = (runStatus) => {
-    switch (runStatus) {
-      case runStatusModel.RUNNING:
-        return (
-          <Tag key="processing" icon={<SyncOutlined spin />} color="processing">
-            {runStatus}
-          </Tag>
-        );
-      case runStatusModel.STOPPED:
-        return (
-          <Tag key="error" icon={<CloseCircleOutlined />} color="error">
-            {runStatus}
-          </Tag>
-        );
-      case runStatusModel.FINISHED:
-        return (
-          <Tag key="success" icon={<CheckCircleOutlined />} color="success">
-            {runStatus}
-          </Tag>
-        );
-      default:
-        return <Tag key="default">{runStatus}</Tag>;
-    }
-  };
-
   return (
     <PageHeader
       ghost={false}
@@ -105,7 +76,12 @@ const RunRunningStatus = ({ run }) => {
           <Breadcrumb route={route} routes={routesToRender} />
         )
       }}
-      tags={[getTagByStatus(run.runStatus)]}
+      tags={[
+        <RunStatusTag
+          runStatus={run.runStatus}
+          key={`tag-${run.id}-${run.runStatus}`}
+        />
+      ]}
     >
       <Row gutter={[0, 24]}>
         <Col span={24}>
