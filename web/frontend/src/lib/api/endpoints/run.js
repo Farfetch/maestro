@@ -14,7 +14,9 @@ const runObjectMapper = (run) => ({
   customProperties: run.custom_properties,
   loadProfile: run.load_profile,
   createdAt: toLocalDate(run.created_at),
-  updatedAt: toLocalDate(run.updated_at)
+  updatedAt: toLocalDate(run.updated_at),
+  startedAt: toLocalDate(run.started_at),
+  finishedAt: toLocalDate(run.finished_at)
 });
 
 /**
