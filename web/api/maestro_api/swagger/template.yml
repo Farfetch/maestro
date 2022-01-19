@@ -1289,6 +1289,12 @@ definitions:
       updated_at:
         type: string
         format: date-time
+      started_at:
+        type: string
+        format: date-time
+      finished_at:
+        type: string
+        format: date-time
   Runs:
     type: array
     description: List of Run objects.
