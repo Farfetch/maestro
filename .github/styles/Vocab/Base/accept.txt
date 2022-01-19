@@ -1,5 +1,6 @@
 Eslint
 Pylint
+GitHub
 Dev
 Pipenv
 Tldraw
@@ -8,6 +9,11 @@ Jmeter
 http
 Enum
 
+Wermelinger
+Dyego
+Nuno
+Melnychuk
+Vitalii
 
 maestrojmeter
 tmp

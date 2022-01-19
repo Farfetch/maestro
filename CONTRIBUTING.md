@@ -26,11 +26,11 @@ PRs are always welcome and can be a quick way to get your fix or improvement sla
 
 In general, we follow the ["fork-and-pull" Git workflow](https://github.com/susam/gitpr)
 
-1. Fork the repository to your own Github account
+1. Fork the repository to your own GitHub account
 2. Clone the project to your machine
 3. Create a branch locally with a succinct but descriptive name
 4. Commit changes to the branch
-5. Follow any guidelines specific to this repo
+5. Follow any guidelines specific to this repository
 6. Push changes to your fork
 7. Open a PR in our repository and follow the PR template so that we can efficiently review the changes.
 
@@ -58,14 +58,14 @@ The same principle applies to the commit body.
 
 ## Workflow
 
-As a main branch we use `master` branch. All chnages directly go to the main branch from where we have `beta` build per each commit.
+As a main branch we use `master` branch. All changes directly go to the main branch from where we have `beta` build per each commit.
 
 ### Code review and approval process
 
 Our maintainers look at pull requests on a regular basis, and the process follows some simple steps:
 
 1. Assign `Farfetch/maestro` team for review
-2. Wait for comments/suggestion from auto asigned reviewers. (It generally done within few workdays)
+2. Wait for comments/suggestion from auto assigned reviewers. (It generally done within few workdays)
 3. Get 2 approvals to get PR merged
 
 > Note: We close Pull requests without any activities within 2 weeks.
@@ -76,7 +76,7 @@ Releases are made in bi-weekly basics from the `master` branch by our maintainer
 
 For release preparation we have [milestones](https://github.com/Farfetch/maestro/milestones) created to have visibility on what is in progress right now.
 
-If you are interested in testing out any features that are still not part of release, we do publish of `Beta` per each commit to main branch. Piblish is generally made to Docker registry by using tag `beta-<shot-commit-sha>`
+If you are interested in testing out any features that are still not part of release, we do publish of `Beta` per each commit to main branch. Publish is generally made to Docker registry by using tag `beta-<shot-commit-sha>`
 
 ## Your First Contribution
 
