@@ -14,7 +14,7 @@ To create a test, you should go to `/tests/new` or `/tests` and click on the `Cr
 
 ## Agents
 
-![Agents confgiuration](../assets/getting_started/agents.webp)
+![Agents configuration](../assets/getting_started/agents.webp)
 
 Once Agent started, it will be registered and shown on the API side along with status if there any test running on specific agent.
 
@@ -37,17 +37,17 @@ There also a few other options of how you can control test execution:
 
 ### Custom Data
 
-Custom data will be available with the same same as you have during upload. For easy access we have `maestro.run.custom_data_dir` that can be used as Jmeter property: `${__P('maestro.run.custom_data_dir')}`. By default maestro uses `/srv/run/custom_data` path inside Jmeter container to store all files there. **We highly recommend to use Jmeter properties to access your custom data from the test.**
+Custom data will be available with the same as you have during upload. For easy access we have `maestro.run.custom_data_dir` that can be used as Jmeter property: `${__P('maestro.run.custom_data_dir')}`. By default maestro uses `/srv/run/custom_data` path inside Jmeter container to store all files there. **We highly recommend to use Jmeter properties to access your custom data from the test.**
 
 ### Hosts override
 
-Hosts configuration could be usefull for testing internal APIs. If for any reason you need to change the IP address behind specific field, just add them here and they all will be passed to running Jmeter container.
+Hosts configuration could be useful for testing internal APIs. If for any reason you need to change the IP address behind specific field, just add them here and they all will be passed to running Jmeter container.
 
 ### Custom properties
 
-As in example above, custom properties could be used to configure count of users or test duration. Using them is convenient if you don't need to change test plan behaviour but there are a few things that could have been chnaged from environment to environment.
+As in example above, custom properties could be used to configure count of users or test duration. Using them is convenient if you don't need to change test plan behaviour but there are a few things that could have been changed from environment to environment.
 
-## Load profiler
+## Load Profiler
 
 ![Jmeter Test Configuration](../assets/getting_started/load_profiler.webp)
 
