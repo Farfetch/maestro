@@ -8,7 +8,7 @@ Once you have environment up & running, it's time to run the test.
 
 Before you start exploring Maestro, let's create Jmeter test that needs to be executed. You can download just smoke test to see Maestro from action from [here](../assets/jmx/dummy_sampler.jmx).
 
-Maestro test is reusable configuration from where you can start test. The configuration is connected to all runs that makes possible to run the test quickly and know which configuration was used.
+Maestro test is a reusable configuration from where you can start the test. The configuration is connected to all runs which makes it possible to run the test quickly and know which configuration was used.
 
 To create a test, you should go to `/tests/new` or `/tests` and click on the `Create` button.
 
@@ -18,7 +18,7 @@ To create a test, you should go to `/tests/new` or `/tests` and click on the `Cr
 
 Once Agent started, it will be registered and shown on the API side along with status if there any test running on specific agent.
 
-There two types of agents that used by Maestro. Client agent can be only one host and responsible for:
+There are two types of agents used by Maestro. Client agent can be only one host and responsible for:
 
 - Sending real-time metrics to the API
 - Controlling state of Server agents once something goes wrong.
