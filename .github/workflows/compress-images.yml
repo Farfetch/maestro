@@ -10,7 +10,7 @@ on:
       - "**.webp"
 jobs:
   compress:
-    name: calibreapp/image-actions
+    name: compress
     runs-on: ubuntu-latest
     defaults:
       run:
