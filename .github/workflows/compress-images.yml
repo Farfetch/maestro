@@ -12,6 +12,10 @@ jobs:
   compress:
     name: calibreapp/image-actions
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./docs
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
