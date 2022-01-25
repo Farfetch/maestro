@@ -8,10 +8,10 @@ changelog:
       labels:
         - "bug"
 
-    - title: Other Changes
-      labels:
-        - "*"
-
     - title: Package Dependencies 🛠
       labels:
         - dependencies
+
+    - title: Other Changes
+      labels:
+        - "*"
