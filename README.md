@@ -2,9 +2,11 @@
 
 **Maestro** is a load testing tool, building on our years of experience in the load and performance testing industry. It provides a clean, approachable way of running Jmeter based tests.
 
+> **NOTICE:** Maestro is under development and there might be some breaking changes over versions. We do have regular releases and are really welcome to get feedback.
+
 ## Features
 
-####  WEB-based UI
+#### WEB-based UI
 
 Maestro provides a list of endpoints from where you can analyze your test execution in real-time. There is a full overview of all charts and use cases available in the [Introduction section](./docs/intro.md)
 
@@ -12,11 +14,11 @@ Maestro provides a list of endpoints from where you can analyze your test execut
 
 #### Distributed & Scalable
 
-The core concept of having agents deployed inside your infrastructure gives a lot of flexibility to make the tests stable, secure, and able to ***support the simulation of thousands requests/second***. 
+The core concept of having agents deployed inside your infrastructure gives a lot of flexibility to make the tests stable, secure, and able to **_support the simulation of thousands requests/second_**.
 
 #### Collaborative environment
 
-*Real-time monitoring*, *Collaboration over results*, *Programmability* are core things that Maestro focused on to make sure you can collaborate with your teams and improve over time. 
+_Real-time monitoring_, _Collaboration over results_, _Programmability_ are core things that Maestro focused on to make sure you can collaborate with your teams and improve over time.
 
 ## Getting started
 
