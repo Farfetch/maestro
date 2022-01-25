@@ -18,7 +18,15 @@ services:
     networks:
       - default
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - 'curl http://maestroweb:5000'
+      interval: 2s
+      timeout: 3s
+      retries: 10
 
   agent_client:
     image: maestroagent
@@ -41,7 +49,8 @@ services:
     networks:
       - default
     depends_on:
-      - web
+      web:
+        condition: service_healthy
 
   agent_server1:
     image: maestroagent
@@ -64,7 +73,8 @@ services:
     networks:
       - default
     depends_on:
-      - web
+      web:
+        condition: service_healthy
 
   mongodb:
     image: mongo:4.4
@@ -74,6 +84,14 @@ services:
     restart: always
     networks:
       - default
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - mongo --eval 'db.runCommand("ping").ok' localhost:27017 --quiet
+      interval: 2s
+      timeout: 5s
+      retries: 10
+
 
 volumes:
   mongodata: null
