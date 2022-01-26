@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/Run/RunningStatus/DownloadMetricsButton should render DownloadMetricsButton component 1`] = `"<div><a href=\\"http://api.maestro.io/api/run_metrics/1-2-3/download\\" target=\\"_blank\\" download=\\"\\" rel=\\"noreferrer\\"><button type=\\"button\\" class=\\"ant-btn ant-btn-primary\\"><span>Download metrics</span></button></a></div>"`;
