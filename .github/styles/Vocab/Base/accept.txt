@@ -9,6 +9,7 @@ Jmeter
 http
 Enum
 Profiler
+Nodemon
 
 Wermelinger
 Dyego
