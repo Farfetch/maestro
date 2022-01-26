@@ -5,6 +5,7 @@ Python Application to manage Apache Jmeter tests execution.
 ## Requirements
 
 -   Python [v3.9.5](https://www.python.org/downloads/release/python-395/)
+-   Nodemon [2.0.15](https://github.com/remy/nodemon/releases/tag/v2.0.15)
 -   MongoDB v4.2
 
 ## Installation
@@ -14,6 +15,12 @@ Python Application to manage Apache Jmeter tests execution.
 ```bash
 python3.9 -m venv venv
 source venv/bin/activate
+```
+
+-   Install Nodemon
+
+```bash
+npm i -g nodemon@2.0.15
 ```
 
 > All following commands should be executed inside virtual environment
@@ -34,7 +41,17 @@ make install-dev
 
 ### Running application
 
-`make dev` - Run application in development mode. In this mode application will be run with debugged attached and reload once any of files changed. The command should not be used in production.
+Development:
+
+`make run-client` - Run client.maestro.net agent with watch mode enabled.
+
+`make run-server1` - Run client.maestro.net agent with watch mode enabled.
+
+`make run-server2` - Run client.maestro.net agent with watch mode enabled.
+
+Production:
+
+`python run.py` - Run Maestro Agent application.
 
 ### Linting & Formatting
 
