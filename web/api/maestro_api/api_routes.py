@@ -151,6 +151,12 @@ def init_api_routes(flask_app):
     def run_metric_all(*args, **kwargs):
         return run_metric_controller.all(*args, **kwargs)
 
+    @flask_app.route("/run_metrics/<run_id>/download", methods=["GET"])
+    @requires_auth()
+    @validate_request(run_metric_all_schema)
+    def run_metric_download(*args, **kwargs):
+        return run_metric_controller.download(*args, **kwargs)
+
     # /run_metric routes
     @flask_app.route("/run_agent", methods=["PUT"])
     @requires_auth()
