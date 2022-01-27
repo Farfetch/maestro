@@ -8,6 +8,7 @@ import { historyUrl, testSingleUrl } from "../../../lib/routes";
 import Breadcrumb from "../../layout/Breadcrumb";
 import RunStatusTag from "../../tag/RunStatusTag";
 import RunAnalyticCharts from "./AnalyticCharts";
+import DownloadMetricsButton from "./DownloadMetricsButton";
 import RunEndpointCharts from "./EndpointCharts";
 import StopExecutionButton from "./StopExecutionButton";
 import RunSummaryTable from "./SummaryTable";
@@ -55,7 +56,8 @@ const RunRunningStatus = ({ run }) => {
             onConfirm={onRestart}
           >
             <Button type="secondary">Restart</Button>
-          </Popconfirm>
+          </Popconfirm>,
+          <DownloadMetricsButton runId={run.id} key="downloadmetrics" />
         ];
       default:
         if (!isRunMetricsAvailable) return [];
