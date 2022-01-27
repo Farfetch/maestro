@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 from maestro_api.db.models.run import Run, RunStatus
 from maestro_api.db.models.run_metric_label import RunMetricLabel
+from maestro_api.db.models.run_metric import RunMetric
 
 
 def get_metrics(min_datetime, next_datetime):
@@ -305,3 +306,68 @@ def test_run_metrics_create_many(client):
 
     assert 200 == response.status_code
     assert 2 == res_json["metrics_count"]
+
+
+def test_run_metrics_download(client):
+    run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    title = "some example title"
+    run_id = "6076d1e3a216ff15b6e95e1f"
+    run_plan_id = "6076d1e3a216ff15b6e95e9d"
+    client_agent_id = "6076d152b28b871d6bdb604f"
+    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    min_datetime_str = "2019-01-01 10:00:00"
+
+    min_datetime = datetime.strptime(min_datetime_str, "%Y-%m-%d %H:%M:%S")
+    next_datetime = datetime.strptime(
+        min_datetime_str, "%Y-%m-%d %H:%M:%S"
+    ) + timedelta(seconds=2)
+    default_args = dict(
+        elapsed=100,
+        label="HTTP Request-1",
+        response_code=200,
+        response_message="OK",
+        thread_name="127.0.0.1-Thread Group 1-1",
+        data_type="text",
+        success=True,
+        failure_message="",
+        bytes=10000,
+        sent_bytes=110,
+        grp_threads=1,
+        all_threads=1,
+        url="https://www.google.com/",
+        idle_time=0,
+        connect=104,
+    )
+    metrics = [
+        dict(datetime=min_datetime, latency=50, **default_args),
+        dict(datetime=next_datetime, latency=100, **default_args),
+    ]
+
+    Run(
+        id=run_id,
+        title=title,
+        run_configuration_id=run_configuration_id,
+        run_plan_id=run_plan_id,
+        client_agent_id=client_agent_id,
+        server_agent_ids=server_agent_ids,
+        run_status=RunStatus.RUNNING.value,
+    ).save()
+
+    for metric in metrics:
+        RunMetric(run_id=run_id, **metric).save()
+
+    response = client.get(
+        "/run_metrics/%s/download" % run_id,
+    )
+    file_content = (
+        "timeStamp,elapsed,label,responseCode,responseMessage,threadName,"
+        + "dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,"
+        + "Latency,IdleTime,Connect\r\n1546336800000,100,HTTP Request-1,200,OK,"
+        + "127.0.0.1-Thread Group 1-1,text,true,,10000,110,1,1,"
+        + "https://www.google.com/,50,0,104\r\n1546336802000,100,HTTP Request-1,200,OK,"
+        + "127.0.0.1-Thread Group 1-1,text,true,,10000,110,1,1,https://www.google.com/,"
+        + "100,0,104\r\n"
+    )
+
+    assert 200 == response.status_code
+    assert file_content == response.data.decode("utf-8")

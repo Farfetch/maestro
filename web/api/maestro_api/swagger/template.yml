@@ -1093,6 +1093,28 @@ paths:
           description: "Returns list of RunMetric objects"
         404:
           description: Run not found
+  /run_metrics/{run_id}/download:
+    get:
+      tags:
+        - "Run Metric"
+      summary: "Download file with Run metrics"
+      description: ""
+      operationId: "downloadRunMetricsById"
+      parameters:
+        - in: path
+          name: run_id
+          description: "Run unique ID"
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Returns 'metrics_{run_id}.csv' file"
+        404:
+          description: Run not found
 
 components:
   schemas:

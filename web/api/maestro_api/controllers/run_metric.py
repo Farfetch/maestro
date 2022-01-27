@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request, jsonify, send_file
 
 from maestro_api.db.models.run import Run
 from maestro_api.db.models.run_metric import RunMetric
@@ -8,6 +8,7 @@ from maestro_api.db.aggregator.metrics import MetricsAggregator
 from maestro_api.libs.flask.utils import (
     get_obj_or_404,
 )
+from maestro_api.libs.csv import CsvBytesIO
 
 
 class RunMetricController:
@@ -31,6 +32,51 @@ class RunMetricController:
         RunMetric.objects.insert(metric_instances)
 
         return jsonify({"metrics_count": len(jmeter_metrics)})
+
+    def download(self, run_id, data, user):
+        """
+        Return Jmeter compatible file with Run metrics
+        """
+
+        run = get_obj_or_404(Run, id=run_id)
+
+        metrics = RunMetric.objects(run_id=run.id)
+        jmeter_metrics = JmeterService.format_to_jmeter_format(metrics)
+
+        headers = [
+            "timeStamp",
+            "elapsed",
+            "label",
+            "responseCode",
+            "responseMessage",
+            "threadName",
+            "dataType",
+            "success",
+            "failureMessage",
+            "bytes",
+            "sentBytes",
+            "grpThreads",
+            "allThreads",
+            "URL",
+            "Latency",
+            "IdleTime",
+            "Connect",
+        ]
+
+        filename = f"metrics_{run.id}.csv"
+        content_type = "text/csv"
+
+        binary_file = CsvBytesIO.create_from_dict(headers, jmeter_metrics)
+
+        return (
+            send_file(
+                binary_file,
+                as_attachment=True,
+                attachment_filename=filename,
+                mimetype=content_type,
+            ),
+            200,
+        )
 
     def all(self, run_id, data, user):
         """
