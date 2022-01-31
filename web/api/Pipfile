@@ -11,7 +11,7 @@ mongomock = "3.22.1"
 pre-commit = "2.17.0"
 pytest = "6.2.2"
 pytest-cov = "2.12.1"
-pytest_mock = "3.5.1"
+pytest_mock = "3.7.0"
 wheel = "0.37.1"
 
 [packages]
