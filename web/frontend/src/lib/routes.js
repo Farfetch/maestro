@@ -1,8 +1,13 @@
+import { maestroApiUrl } from "../config";
+
 export const runPlanDownloadUrl = (runPlanId) =>
-  `/api/run_plan/${runPlanId}/download`;
+  `${maestroApiUrl}/api/run_plan/${runPlanId}/download`;
 
 export const customDataDownloadUrl = (customDataId) =>
-  `/api/custom_data/${customDataId}/download`;
+  `${maestroApiUrl}/api/custom_data/${customDataId}/download`;
+
+export const runMetricsDownloadUrl = (runId) =>
+  `${maestroApiUrl}/api/run_metrics/${runId}/download`;
 
 export const testSingleUrl = (runConfigurationId) =>
   `/test/${runConfigurationId}`;
