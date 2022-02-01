@@ -1,5 +1,7 @@
+/* eslint-disable max-lines */
 import { Button, Card, Col, Form, message, Row, Typography } from "antd";
 import PropTypes from "prop-types";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { createRun, startRun } from "../../../lib/api/endpoints/run";
@@ -12,6 +14,7 @@ import RunHostsFormItem from "./FormItems/RunHosts";
 import RunPlanFormItem from "./FormItems/RunPlan";
 import TitleFormItem from "./FormItems/Title";
 import {
+  isAgentsStatusValid,
   saveRunConfiguration,
   uploadCustomData,
   uploadRunPlan
@@ -26,6 +29,7 @@ const RunConfigurationForm = ({
 }) => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const [savedData, setSavedData] = useState({});
 
   const onFinish = async ({
     title,
@@ -48,19 +52,22 @@ const RunConfigurationForm = ({
     const runPlanId = await uploadRunPlan(runPlans[0]);
     const customDataIds = await uploadCustomData(customData || []);
 
+    const dataToSave = {
+      title,
+      runPlanId,
+      clientAgentId,
+      serverAgentIds,
+      hosts,
+      customDataIds,
+      customProperties,
+      loadProfile
+    };
     const newRunConfigurationId = await saveRunConfiguration(
       runConfigurationId,
-      {
-        title,
-        runPlanId,
-        clientAgentId,
-        serverAgentIds,
-        hosts,
-        customDataIds,
-        customProperties,
-        loadProfile
-      }
+      dataToSave
     );
+
+    setSavedData(dataToSave);
 
     message.success({ content: "Saved!", key: loadingMessageKey });
 
@@ -70,10 +77,26 @@ const RunConfigurationForm = ({
   };
 
   const startTest = async () => {
-    const { id: runId } = await createRun(runConfigurationId);
-    await startRun(runId);
+    const { clientAgentId, serverAgentIds } = {
+      ...initialValues,
+      ...savedData
+    };
 
-    navigate(`/run/${runId}`);
+    const agentsValid = isAgentsStatusValid(agents, [
+      clientAgentId,
+      ...serverAgentIds
+    ]);
+    if (agentsValid) {
+      const { id: runId } = await createRun(runConfigurationId);
+      await startRun(runId);
+      navigate(`/run/${runId}`);
+    } else {
+      message.error({
+        content:
+          "Can't start a test! Selected agents are not available, check your agents status and try again.",
+        duration: 4
+      });
+    }
   };
 
   const onFinishFailed = async () => {};
