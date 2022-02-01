@@ -10,6 +10,7 @@ import RunStatusTag from "../../tag/RunStatusTag";
 import RunAnalyticCharts from "./AnalyticCharts";
 import DownloadMetricsButton from "./DownloadMetricsButton";
 import RunEndpointCharts from "./EndpointCharts";
+import NotesEditor from "./NotesEditor";
 import StopExecutionButton from "./StopExecutionButton";
 import RunSummaryTable from "./SummaryTable";
 
@@ -109,6 +110,13 @@ const RunRunningStatus = ({ run }) => {
               disabled={!isRunMetricsAvailable}
             >
               <RunEndpointCharts runId={run.id} />
+            </Tabs.TabPane>
+            <Tabs.TabPane
+              tab="Notes"
+              key="notes"
+              disabled={!isRunMetricsAvailable}
+            >
+              <NotesEditor runId={run.id} />
             </Tabs.TabPane>
           </Tabs>
         </Col>
