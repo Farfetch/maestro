@@ -1,4 +1,3 @@
-import { maestroApiUrl } from "../../../config";
 import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 
@@ -40,6 +39,3 @@ export const fetchMetrics = async (
 
   return metrics;
 };
-
-export const downloadMetricsUrl = (runId) =>
-  `${maestroApiUrl}/api/run_metrics/${runId}/download`;
