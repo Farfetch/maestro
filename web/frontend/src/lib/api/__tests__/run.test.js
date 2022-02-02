@@ -5,7 +5,8 @@ import {
   fetchRunById,
   fetchRuns,
   startRun,
-  stopRun
+  stopRun,
+  updateRun
 } from "../endpoints/run";
 
 const MockAdapter = require("axios-mock-adapter");
@@ -42,6 +43,7 @@ describe("libs/api/endpoints/run", () => {
       end: 20,
       duration: 100
     },
+    notes: "Running test notes",
     created_at: "2021-04-14 12:29:20",
     updated_at: "2021-04-14 12:51:25",
     started_at: "2021-04-14 12:29:20",
@@ -60,6 +62,7 @@ describe("libs/api/endpoints/run", () => {
     runStatus: apiResponse.run_status,
     loadProfile: apiResponse.load_profile,
     customProperties: apiResponse.custom_properties,
+    notes: apiResponse.notes,
     createdAt: toLocalDate(apiResponse.created_at),
     updatedAt: toLocalDate(apiResponse.updated_at),
     startedAt: toLocalDate(apiResponse.started_at),
@@ -124,6 +127,21 @@ describe("libs/api/endpoints/run", () => {
       const data = await fetchRuns();
 
       expect(data).toStrictEqual([expectedData]);
+    });
+  });
+
+  describe("updateRun", () => {
+    test("should update run notes", async () => {
+      const runId = "1-2-3";
+      const params = {
+        notes: "Some new notes"
+      };
+
+      axiosMock.onPut(`/api/run/${runId}`, params).reply(200, apiResponse);
+
+      const data = await updateRun(runId, params);
+
+      expect(data).toStrictEqual(expectedData);
     });
   });
 });

@@ -13,6 +13,7 @@ const runObjectMapper = (run) => ({
   runConfigurationId: run.run_configuration_id,
   customProperties: run.custom_properties,
   loadProfile: run.load_profile,
+  notes: run.notes,
   createdAt: toLocalDate(run.created_at),
   updatedAt: toLocalDate(run.updated_at),
   startedAt: toLocalDate(run.started_at),
@@ -78,4 +79,18 @@ export const fetchRuns = async () => {
   const runs = res.data.map(runObjectMapper);
 
   return runs;
+};
+
+/**
+ * NOTE: at least one of params is required
+ * @param {RunStatus} run_status optional param to update status
+ * @param {String} notes optional param to update notes
+ * @returns {Run}
+ */
+export const updateRun = async (runId, params) => {
+  const res = await maestroClient.put(`/api/run/${runId}`, params);
+
+  const run = runObjectMapper(res.data);
+
+  return run;
 };

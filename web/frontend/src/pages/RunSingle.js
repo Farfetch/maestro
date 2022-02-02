@@ -7,7 +7,6 @@ import RunPendingStatus from "../components/Run/PendingStatus";
 import RunRunningStatus from "../components/Run/RunningStatus";
 import RunStatusMonitor from "../components/Run/StatusMonitor";
 import { runStatus as runStatusModel } from "../lib/api/models";
-import { toUtcString } from "../lib/date";
 
 const getRunSinglePageByStatus = (run) => {
   switch (run.runStatus) {
@@ -21,12 +20,13 @@ const getRunSinglePageByStatus = (run) => {
   }
 };
 
-// Page would be rendered only if run.updatedAt changed
+// The whole page would be updated once run_status changed.
+// There is no other field that would update the page, consider
+// using update_at once we just need to update page if anything inside run changed
 const PageContainer = React.memo(
   ({ run }) => getRunSinglePageByStatus(run),
   (prevProps, nextProps) =>
-    toUtcString(prevProps.run.updatedAt) ===
-    toUtcString(nextProps.run.updatedAt)
+    prevProps.run.run_status === nextProps.run.run_status
 );
 
 const RunSinglePage = () => {
