@@ -293,6 +293,44 @@ def test_udpate_run_status(client, run_status, started_at, finished_at):
     assert finished_at == res_json["finished_at"]
 
 
+def test_udpate_run_notes(client):
+
+    run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    title = "some example title"
+    run_id = "6076d1e3a216ff15b6e95e1f"
+    run_plan_id = "6076d1e3a216ff15b6e95e9d"
+    client_agent_id = "6076d152b28b871d6bdb604f"
+    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    notes = "Notes after update..."
+
+    Run(
+        id=run_id,
+        run_configuration_id=run_configuration_id,
+        title=title,
+        run_plan_id=run_plan_id,
+        client_agent_id=client_agent_id,
+        server_agent_ids=server_agent_ids,
+        notes="Some default value",
+    ).save()
+
+    run_id = "6076d1e3a216ff15b6e95e1f"
+    request_data = {"notes": notes}
+
+    response = client.put(
+        "/run/%s" % run_id,
+        data=json.dumps(request_data),
+        content_type="application/json",
+    )
+
+    updated_run = Run.objects.get(id=run_id)
+
+    res_json = json.loads(response.data)
+
+    assert response.status_code == 200
+    assert notes == res_json["notes"]
+    assert RunStatus.PENDING.value == updated_run.run_status
+
+
 def test_update_run_with_not_found_response(client):
     run_id = "6076d1e3a216ff15b6e95e1f"
 

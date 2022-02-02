@@ -59,7 +59,7 @@ class Run(CreatedUpdatedDocumentMixin, gj.Document):
         field=EmbeddedDocumentField(RunCustomProperty), default=[]
     )
     load_profile = ListField(field=EmbeddedDocumentField(RunLoadProfile), default=[])
-
+    notes =  StringField(required=True, default="")
     started_at = DateTimeField(default=now)
     finished_at = DateTimeField(default=now)
 

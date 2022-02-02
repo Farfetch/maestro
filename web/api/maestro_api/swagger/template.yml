@@ -421,7 +421,7 @@ paths:
       tags:
         - "Run"
       summary: "Update Run object by ID"
-      description: ""
+      description: "At least of the input params is required."
       operationId: "updateRunById"
       parameters:
         - in: path
@@ -437,8 +437,9 @@ paths:
             properties:
               run_status:
                 $ref: "#/components/schemas/RunStatus"
-            required:
-              - run_status
+              notes:
+                type: string
+                description: "Run Notes"
       consumes:
         - "application/json"
       produces:
@@ -1305,6 +1306,23 @@ definitions:
           required:
             - host
             - ip
+      load_profile:
+        type: array
+        items:
+          type: object
+          properties:
+            start:
+              type: number
+            end:
+              type: number
+            duration:
+              type: number
+          required:
+            - start
+            - end
+            - duration
+      notes:
+        type: string
       created_at:
         type: string
         format: date-time
