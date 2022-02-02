@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # Docker images
 
-Images are available per each release with the same tag. The build is done by using Github Actions and hosted in Docker Registry.
+Images are available per each release with the same tag. The build is done by using GitHub Actions and hosted in Docker Registry.
 
 We highly recommend using the same version of all components to make sure all features are working as expected.
 
