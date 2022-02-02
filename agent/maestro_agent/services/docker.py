@@ -70,7 +70,6 @@ class JmeterDocker:
 
         run_dir_path = JMETER_RUN_DIR_RELATIVE_PATH % self.run.id
 
-        print(JMETER_IMAGE_HEAP)
         jmeter_image = DockerService.client().images.build(
             tag=JmeterDocker.get_jmeter_image_name(self.run.id),
             path=JMETER_DIR,
