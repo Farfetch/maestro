@@ -1,13 +1,14 @@
 ARG JMETER_IMAGE_BASE_REPO=
 ARG JMETER_IMAGE_BASE_VERSION=
+ARG JMETER_IMAGE_HEAP=
 
 FROM ${JMETER_IMAGE_BASE_REPO}:${JMETER_IMAGE_BASE_VERSION}
 
 # temp solution to have access to shared volumes
 USER root
 
-# JAVA JMETER heap configuration
-ENV HEAP="-Xms2g -Xmx16g -XX:MaxMetaspaceSize=256m"
+# Configure JAVA HEAP. Configuration should be based on the machine where test is executed
+ENV HEAP=${JMETER_IMAGE_HEAP}
 
 ### MAESTRO STEPS
 
