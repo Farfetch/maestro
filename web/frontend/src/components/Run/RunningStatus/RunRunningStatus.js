@@ -10,6 +10,7 @@ import RunStatusTag from "../../tag/RunStatusTag";
 import RunAnalyticCharts from "./AnalyticCharts";
 import DownloadMetricsButton from "./DownloadMetricsButton";
 import RunEndpointCharts from "./EndpointCharts";
+import RunNotesInput from "./NotesInput";
 import StopExecutionButton from "./StopExecutionButton";
 import RunSummaryTable from "./SummaryTable";
 
@@ -85,7 +86,13 @@ const RunRunningStatus = ({ run }) => {
         />
       ]}
     >
-      <Row gutter={[0, 24]}>
+      <Row gutter={[0, 0]}>
+        <Col span={24}>
+          <RunNotesInput
+            runId={run.id}
+            defaultValue={run.notes || "Add running test execution notes..."}
+          />
+        </Col>
         <Col span={24}>
           <Tabs defaultActiveKey="analytics">
             <Tabs.TabPane tab="Overview" key="overview">
