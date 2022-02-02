@@ -14,7 +14,7 @@ WORKDIR /home/maestro/app
 
 ENV PATH="/home/maestro/.local/bin:${PATH}"
 
-RUN python -m pip install --upgrade pip==21.1.3
+RUN python -m pip install --upgrade pip==21.3.1
 RUN python -m pip install pipenv==2020.11.15
 
 COPY --chown=maestro:maestro api .
