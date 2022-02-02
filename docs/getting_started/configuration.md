@@ -1,15 +1,15 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # Configuration
 
 ## Environment Variables
 
-Maestro application services could be configured by using Environment variable. There are two ways of passing the configuration to the service:
+Maestro application services could be configured by using the Environment variable. There are two ways of passing the configuration to the service:
 
 - Create `.env` file in the project root directory
-- Make variable available in the environment where the application starts. There are a lot of ways how you define and use them, here the link to [How to Set and List Environment Variables in Linux](https://linuxize.com/post/how-to-set-and-list-environment-variables-in-linux/).
+- Make variables available in the environment where the application starts. There are a lot of ways how you define and use them, here is the link to [How to Set and List Environment Variables in Linux](https://linuxize.com/post/how-to-set-and-list-environment-variables-in-linux/).
 
 ### API
 
