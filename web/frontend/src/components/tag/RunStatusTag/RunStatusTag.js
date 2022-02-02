@@ -23,7 +23,7 @@ const getTagByStatus = (runStatus) => {
           {runStatus}
         </Tag>
       );
-    case runStatusModel.STOPPED:
+    case runStatusModel.ERROR:
       return (
         <Tag key="error" icon={<CloseCircleOutlined />} color="error">
           {runStatus}

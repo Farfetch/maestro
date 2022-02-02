@@ -10,12 +10,8 @@ describe("components/RunConfiguration/Table", () => {
     {
       id: "run-configuration-id",
       title: "Confgiuration title",
-      runPlan: {
-        id: "run plan id",
-        title: "run plan title"
-      },
-      runStatus: "status",
-      agents: [{ hostname: "test", id: "id" }],
+      runStatus: "RUNNING",
+      notes: "Test notes field",
       createdAt: moment("2018-05-24T13:48:04.313000"),
       updatedAt: moment("2018-05-24T13:48:04.313000")
     }
