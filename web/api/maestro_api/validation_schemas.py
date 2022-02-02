@@ -22,8 +22,12 @@ update_run_schema = {
     "type": "object",
     "properties": {
         "run_status": {"type": "string", "enum": RunStatus.list()},
+        "notes": {"type": "string"},
     },
-    "required": ["run_status"],
+    "oneOf": [
+        {"required": ["run_status"]},
+        {"required": ["notes"]},
+    ],
     "additionalProperties": False,
 }
 

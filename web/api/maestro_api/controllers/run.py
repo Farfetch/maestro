@@ -94,9 +94,14 @@ class RunController:
 
         run = get_obj_or_404(Run, id=run_id)
 
-        run_status = data["run_status"]
+        run_status = data.get("run_status", None)
+        run_notes = data.get("notes", None)
 
-        run.update_status(run_status)
+        if run_status is not None:
+            run.update_status(run_status)
+        if run_notes is not None:
+            run.notes = run_notes
+
         run.save()
 
         return make_json_response(run.to_json())
