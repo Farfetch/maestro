@@ -25,16 +25,8 @@ update_run_schema = {
         "notes": {"type": "string"},
     },
     "oneOf": [
-        {
-            "required": [
-                "run_status"
-            ]
-        },
-        {
-            "required": [
-                "notes"
-            ]
-        },
+        {"required": ["run_status"]},
+        {"required": ["notes"]},
     ],
     "additionalProperties": False,
 }
