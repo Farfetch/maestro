@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 import { runSingleUrl } from "../../../lib/routes";
+import RunStatusTag from "../../tag/RunStatusTag";
 
 const columns = [
   {
@@ -11,27 +12,16 @@ const columns = [
     key: "title"
   },
   {
-    title: "Plan",
-    dataIndex: "runPlan",
-    key: "runPlan"
-  },
-  {
-    title: "Agents",
-    dataIndex: "agents",
-    key: "agents",
-    render: (text, record) => (
-      <Space direction="vertical">
-        {record.agents.map(({ hostname }) => (
-          <span key={`${record.id}-${hostname}`}>{hostname}</span>
-        ))}
-      </Space>
-    )
+    title: "Notes",
+    dataIndex: "notes",
+    key: "notes"
   },
   {
     title: "Status",
     dataIndex: "runStatus",
     key: "runStatus",
-    width: 180
+    width: 180,
+    render: (text) => <RunStatusTag runStatus={text} />
   },
   {
     title: "Started at",
@@ -58,12 +48,11 @@ const columns = [
   }
 ];
 
-const runMapper = ({ id, title, runPlan, runStatus, agents, createdAt }) => ({
+const runMapper = ({ id, title, runStatus, notes, createdAt }) => ({
   key: id,
   title,
-  runPlan: runPlan.title,
   runStatus,
-  agents,
+  notes,
   createdAt
 });
 
@@ -95,17 +84,7 @@ RunListTable.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
-      runPlan: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired
-      }).isRequired,
       runStatus: PropTypes.string.isRequired,
-      agents: PropTypes.arrayOf(
-        PropTypes.shape({
-          hostname: PropTypes.string.isRequired,
-          ip: PropTypes.string.isRequired
-        })
-      ),
       createdAt: PropTypes.object.isRequired,
       updatedAt: PropTypes.object.isRequired
     })
