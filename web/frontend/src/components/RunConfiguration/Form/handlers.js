@@ -4,6 +4,7 @@ import {
   updateRunConfiguration
 } from "../../../lib/api/endpoints/runConfiguration";
 import { createRunPlan } from "../../../lib/api/endpoints/runPlan";
+import { agentStatus as agentStatusModel } from "../../../lib/api/models";
 
 export const uploadCustomData = async (customData) => {
   const customDataIds = await Promise.all(
@@ -72,4 +73,13 @@ export const saveRunConfiguration = async (
     loadProfile
   });
   return runConfigurationId;
+};
+
+export const isAgentsStatusValid = (agents, selectedIds) => {
+  const availableAgents = agents.filter(
+    ({ id, agentStatus }) =>
+      selectedIds.includes(id) && agentStatus === agentStatusModel.AVAILABLE
+  );
+
+  return selectedIds.length === availableAgents.length;
 };
