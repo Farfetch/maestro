@@ -6,10 +6,10 @@ sidebar_position: 2
 
 ## Environment Variables
 
-Maestro application services could be configured by using Environment variable. There are two ways of passing the configuration to the service:
+Maestro application services could be configured by using the Environment variable. There are two ways of passing the configuration to the service:
 
 - Create `.env` file in the project root directory
-- Make variable available in the environment where the application starts. There are a lot of ways how you define and use them, here the link to [How to Set and List Environment Variables in Linux](https://linuxize.com/post/how-to-set-and-list-environment-variables-in-linux/).
+- Make variables available in the environment where the application starts. There are a lot of ways how you define and use them, here is the link to [How to Set and List Environment Variables in Linux](https://linuxize.com/post/how-to-set-and-list-environment-variables-in-linux/).
 
 ### API
 
@@ -24,13 +24,13 @@ Maestro application services could be configured by using Environment variable. 
 
 ### Agent
 
-| Variable                               | Description                                                                   | Value     | Default                                    |
-| -------------------------------------- | ----------------------------------------------------------------------------- | --------- | ------------------------------------------ |
-| `ENABLE_MAESTRO_API_HANDLER`           | Send messages to Maestro API and make them available on the frontend.         | _Boolean_ | True                                       |
-| `MAESTRO_API_HOST`                     | Provide Maestro API host                                                      | _String_  | http://localhost:5000                      |
-| `MAESTRO_METRICS_PROCESSING_BULK_SIZE` | Number of Jmeter metrics in each request to API                               | _Number_  | 100                                        |
-| `JMETER_IMAGE_BASE_REPO`               | Repository from where Jmeter image should be pulled                           | _String_  | ''                                         |
-| `JMETER_IMAGE_BASE_VERSION`            | Jmeter version to run the test. It also used as tag for pulling repository    | _String_  | ''                                         |
-| `JMETER_IMAGE_HEAP`                    | JAVA HEAP configuration. Could be different based on machine resources        | _String_  | '-Xms2g -Xmx16g -XX:MaxMetaspaceSize=256m' |
-| `JMETER_CONTAINER_NAME`                | Container name that would be built per each test run                          | _String_  | 'maestrojmeter'                            |
-| `HOST_MOUNT_DIR`                       | Host machine temporary directory to share the data between running containers | _String_  | '/tmp/maestrojmeter'                       |
+| Variable                               | Description                                                                   | Value     | Default                                   |
+| -------------------------------------- | ----------------------------------------------------------------------------- | --------- | ----------------------------------------- |
+| `ENABLE_MAESTRO_API_HANDLER`           | Send messages to Maestro API and make them available on the frontend.         | _Boolean_ | True                                      |
+| `MAESTRO_API_HOST`                     | Provide Maestro API host                                                      | _String_  | http://localhost:5000                     |
+| `MAESTRO_METRICS_PROCESSING_BULK_SIZE` | Number of Jmeter metrics in each request to API                               | _Number_  | 100                                       |
+| `JMETER_IMAGE_BASE_REPO`               | Repository from where Jmeter image should be pulled                           | _String_  | ''                                        |
+| `JMETER_IMAGE_BASE_VERSION`            | Jmeter version to run the test. It also used as tag for pulling repository    | _String_  | ''                                        |
+| `JMETER_IMAGE_HEAP`                    | JAVA HEAP configuration. Could be different based on machine resources        | _String_  | '-Xms1g -Xmx1g -XX:MaxMetaspaceSize=256m' |
+| `JMETER_CONTAINER_NAME`                | Container name that would be built per each test run                          | _String_  | 'maestrojmeter'                           |
+| `HOST_MOUNT_DIR`                       | Host machine temporary directory to share the data between running containers | _String_  | '/tmp/maestrojmeter'                      |
