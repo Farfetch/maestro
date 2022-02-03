@@ -61,6 +61,3 @@ If you have a need to use it outside the maestro management scope please follow 
 ## Credits
 This plugin contains modified code from the official [JMeter backend listener plugin](
 https://github.com/apache/jmeter/blob/master/src/components/src/main/java/org/apache/jmeter/visualizers/backend/influxdb/).
-
-
-
