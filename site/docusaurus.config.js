@@ -8,13 +8,13 @@ const config = {
   title: "Maestro",
   tagline:
     "Load testing tool, building on our years of experience in the load and performance testing industry. It provides a clean, approachable way of running Jmeter based tests",
-  url: "https://maestro.farfetch.io",
+  url: "https://Farfetch.github.io",
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "throw",
   favicon: "img/favicon.ico",
-  organizationName: "Farfetch", // Usually your GitHub org/user name.
-  projectName: "maestro", // Usually your repo name.
+  organizationName: "Farfetch",
+  projectName: "maestro",
 
   presets: [
     [
