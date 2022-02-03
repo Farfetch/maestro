@@ -10,6 +10,8 @@ http
 Enum
 Profiler
 Nodemon
+Dockerfile
+farfetchoss
 
 Wermelinger
 Dyego

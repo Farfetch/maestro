@@ -20,20 +20,13 @@ The core concept of having agents deployed inside your infrastructure gives a lo
 
 _Real-time monitoring_, _Collaboration over results_, _Programmability_ are core things that Maestro focused on to make sure you can collaborate with your teams and improve over time.
 
-## Getting started
+## Usage
 
-The commands below would help to get the application up and running. It also will give a general feeling of how it works.
+See our documentation in the [docs](./docs) folder.
 
-**Requirements**:
+Explore already published [Docker images](./docs/docker_images.md)
 
-- docker >=20.10
-- docker-compose >=2.2.1
-
-```bash
-# All Jmeter artifacts would be stored in the following folder
-mkdir -p /tmp/maestrojmeter
-docker-compose up
-```
+Start application locally by following up [Setup Environment](./docs/setup_environment.md) guide.
 
 ## Contributing
 
