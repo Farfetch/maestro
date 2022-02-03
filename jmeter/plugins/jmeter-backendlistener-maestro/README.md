@@ -18,6 +18,7 @@ mvn package
 - Put JMeter BackendListener Maestro plugin JAR file into JMeter's lib/ext directory.
 
 ## Usage
+The plugin relies on the Jmeter properties that are automatically passed by Maestro Agent. The plugin still could be used separately without maestro if you find a use case for it.
 
 ![JMeter backendlistener maestro window](./docs/img/jmeter_backend_listener.png)
 
