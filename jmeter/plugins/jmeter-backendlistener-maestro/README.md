@@ -7,7 +7,7 @@ Maestro Backend Listener is a JMeter plugins that sends sample results to Maestr
 - JDK 1.8
 - Maven 3.8.x
 
-## Instalation
+## Installation
 
 - Create the JMeter BackendListener Maestro plugin JAR package
 
