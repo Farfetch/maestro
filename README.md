@@ -8,7 +8,7 @@
 
 #### WEB-based UI
 
-Maestro provides a list of endpoints from where you can analyze your test execution in real-time. There is a full overview of all charts and use cases available in the [Introduction section](./docs/intro.md)
+Maestro provides a list of endpoints from where you can analyze your test execution in real-time. There is a full overview of all charts and use cases available in the [Introduction section](https://farfetch.github.io/maestro/docs/intro)
 
 ![hits_vs_errors](./docs/assets/hits_vs_errors.webp)
 
