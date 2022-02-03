@@ -9,13 +9,13 @@ const config = {
   tagline:
     "Load testing tool, building on our years of experience in the load and performance testing industry. It provides a clean, approachable way of running Jmeter based tests",
   url: "https://Farfetch.github.io",
-  baseUrl: "/",
+  baseUrl: "/maestro/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "throw",
   favicon: "img/favicon.ico",
   organizationName: "Farfetch",
   projectName: "maestro",
-
+  trailingSlash: false,
   presets: [
     [
       "classic",
