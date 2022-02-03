@@ -16,7 +16,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/intro"
+            to="/maestro/docs/intro"
           >
             Maestro Tutorial - 5min ⏱️
           </Link>
@@ -28,7 +28,7 @@ function HomepageHeader() {
 
 export default function Home() {
   // TODO: enable this page once it's designed and ready to be show
-  return <Redirect to="/docs/intro" />;
+  return <Redirect to="/maestro/docs/intro" />;
 
   const { siteConfig } = useDocusaurusContext();
   return (
