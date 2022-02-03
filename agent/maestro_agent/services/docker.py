@@ -5,6 +5,7 @@ from maestro_agent.settings import (
     JMETER_BASE_IMAGE,
     JMETER_IMAGE_BASE_REPO,
     JMETER_IMAGE_BASE_VERSION,
+    JMETER_IMAGE_HEAP,
     JMETER_CONTAINER_NAME,
     JMETER_DIR,
     JMETER_DOCKER_MOUNT_DIR,
@@ -75,6 +76,7 @@ class JmeterDocker:
             buildargs={
                 "JMETER_IMAGE_BASE_REPO": JMETER_IMAGE_BASE_REPO,
                 "JMETER_IMAGE_BASE_VERSION": JMETER_IMAGE_BASE_VERSION,
+                "JMETER_IMAGE_HEAP": JMETER_IMAGE_HEAP,
                 "JMETER_RUN_DIR": run_dir_path,
             },
         )
