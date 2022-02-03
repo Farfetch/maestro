@@ -29,7 +29,7 @@ JMETER_BASE_IMAGE = "maestrojmeter:%s"
 JMETER_IMAGE_BASE_REPO = os.environ.get("JMETER_IMAGE_BASE_REPO", "")
 JMETER_IMAGE_BASE_VERSION = os.environ.get("JMETER_IMAGE_BASE_VERSION", "")
 JMETER_IMAGE_HEAP = os.environ.get(
-    "JMETER_IMAGE_HEAP", "-Xms2g -Xmx16g -XX:MaxMetaspaceSize=256m"
+    "JMETER_IMAGE_HEAP", "-Xms1g -Xmx1g -XX:MaxMetaspaceSize=256m"
 )
 
 JMETER_CONTAINER_NAME = os.environ.get("JMETER_CONTAINER_NAME", "maestrojmeter")
