@@ -22,11 +22,11 @@ _Real-time monitoring_, _Collaboration over results_, _Programmability_ are core
 
 ## Usage
 
-See our documentation in the [docs](./docs) folder.
+See our documentation in the [https://farfetch.github.io/maestro](https://farfetch.github.io/maestro).
 
-Explore already published [Docker images](./docs/docker_images.md)
+Explore already published [Docker images](https://farfetch.github.io/maestro/docs/docker_images)
 
-Start application locally by following up [Setup Environment](./docs/setup_environment.md) guide.
+Start application locally by following up [Setup Environment](https://farfetch.github.io/maestro/docs/getting_started/setup_environment) guide.
 
 ## Contributing
 
