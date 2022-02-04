@@ -24,8 +24,7 @@ const config = {
         docs: {
           path: "../docs",
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl:
-            "https://github.com/Farfetch/maestro/tree/master/docs",
+          editUrl: "https://github.com/Farfetch/maestro/tree/master/docs",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
