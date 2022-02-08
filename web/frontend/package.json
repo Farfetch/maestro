@@ -43,7 +43,7 @@
     "format": "prettier --check src/**/*.js",
     "check": "yarn format && yarn lint",
     "format-fix": "prettier --write src/**/*.js",
-    "coverage": "react-scripts test --coverage"
+    "coverage": "react-scripts test --coverage --watchAll=false"
   },
   "proxy": "http://localhost:5000",
   "browserslist": {
