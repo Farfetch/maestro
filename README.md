@@ -1,4 +1,4 @@
-![Maestro](./site/static/img/logo-full.png)
+![Maestro](https://github.com/Farfetch/maestro/blob/master/site/static/img/logo-full.png?raw=true)
 
 <p align="center">
 <a href="https://github.com/Farfetch/maestro/blob/master/LICENSE"><img src="https://img.shields.io/github/license/Farfetch/maestro" alt="LICENSE" /></a>
@@ -19,7 +19,7 @@
 
 Maestro provides a list of endpoints from where you can analyze your test execution in real-time. There is a full overview of all charts and use cases available in the [Introduction section](https://farfetch.github.io/maestro/docs/intro)
 
-![hits_vs_errors](./docs/assets/hits_vs_errors.webp)
+![hits_vs_errors](https://github.com/Farfetch/maestro/blob/master/docs/assets/hits_vs_errors.webp?raw=true)
 
 #### Distributed & Scalable
 
