@@ -43,25 +43,24 @@ jobs:
           publish_dir: ./site/build
 
   dockerhub:
-    site:
-      timeout-minutes: 10
-      runs-on: ubuntu-latest
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
 
-      steps:
-        - uses: actions/checkout@v2
+    steps:
+      - uses: actions/checkout@v2
 
-        - name: Maestro Web Docker Hub Description
-          uses: peter-evans/dockerhub-description@v2
-          with:
-            username: ${{ secrets.DOCKERHUB_USERNAME }}
-            password: ${{ secrets.DOCKERHUB_PASSWORD }}
-            repository: ${{ secrets.DOCKER_HUB_USERNAME }}/maestro
-            readme-filepath: ./README.md
+      - name: Maestro Web Docker Hub Description
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: ${{ secrets.DOCKER_HUB_USERNAME }}/maestro
+          readme-filepath: ./README.md
 
-        - name: Maestro Agent Docker Hub Description
-          uses: peter-evans/dockerhub-description@v2
-          with:
-            username: ${{ secrets.DOCKERHUB_USERNAME }}
-            password: ${{ secrets.DOCKERHUB_PASSWORD }}
-            repository: ${{ secrets.DOCKER_HUB_USERNAME }}/maestro-agent
-            readme-filepath: ./README.md
+      - name: Maestro Agent Docker Hub Description
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: ${{ secrets.DOCKER_HUB_USERNAME }}/maestro-agent
+          readme-filepath: ./README.md
