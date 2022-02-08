@@ -1,5 +1,14 @@
 ![Maestro](./site/static/img/logo-full.png)
 
+<p align="center">
+<a href="https://github.com/Farfetch/maestro/blob/master/LICENSE"><img src="https://img.shields.io/github/license/Farfetch/maestro" alt="LICENSE" /></a>
+<a href="https://github.com/Farfetch/maestro/releases"><img src="https://img.shields.io/github/release-date/Farfetch/maestro" alt="LICENSE" /></a>
+<a href="https://github.com/Farfetch/maestro/actions/workflows/ci.yml"><img src="https://img.shields.io/github/workflow/status/Farfetch/maestro/CI/master?label=ci" alt="GitHub Actions CI" /></a>
+<a href="https://github.com/Farfetch/maestro/actions/workflows/release.yml"><img src="https://img.shields.io/github/workflow/status/Farfetch/maestro/Release?label=release" alt="GitHub Actions Release" /></a>
+<a href="https://github.com/Farfetch/maestro/actions/workflows/deploy.yml"><img src="https://img.shields.io/github/workflow/status/Farfetch/maestro/Deploy?event=push&label=website" alt="GitHub Actions Deploy" /></a>
+<a href="https://hub.docker.com/r/farfetchoss/maestro"><img src="https://img.shields.io/docker/v/farfetchoss/maestro?label=version&logo=Docker&sort=semver" alt="Docker Image" /></a>
+</p>									
+
 **Maestro** is a load testing tool, building on our years of experience in the load and performance testing industry. It provides a clean, approachable way of running Jmeter based tests.
 
 > **NOTICE:** Maestro is under development and there might be some breaking changes over versions. We do have regular releases and are really welcome to get feedback.
