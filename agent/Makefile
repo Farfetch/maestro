@@ -36,6 +36,9 @@ coverage:
 coverage-html:
 	pytest --cov-report html --cov=maestro_agent tests
 
+coverage-xml:
+	pytest --cov-report xml --cov=maestro_agent tests
+
 clean: dev-clean-pyc
 
 install-dev: dev-clean-pyc deps
