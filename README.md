@@ -4,8 +4,8 @@
 <a href="https://github.com/Farfetch/maestro/blob/master/LICENSE"><img src="https://img.shields.io/github/license/Farfetch/maestro" alt="LICENSE" /></a>
 <a href="https://github.com/Farfetch/maestro/releases"><img src="https://img.shields.io/github/release-date/Farfetch/maestro" alt="LICENSE" /></a>
 <a href="https://github.com/Farfetch/maestro/actions/workflows/ci.yml"><img src="https://img.shields.io/github/workflow/status/Farfetch/maestro/CI/master?label=ci" alt="GitHub Actions CI" /></a>
-<a href="https://github.com/Farfetch/maestro/actions/workflows/release.yml"><img src="https://img.shields.io/github/workflow/status/Farfetch/maestro/Release?label=release" alt="Github Actions CI" /></a>
-<a href="https://github.com/Farfetch/maestro/actions/workflows/deploy.yml"><img src="https://img.shields.io/github/workflow/status/Farfetch/maestro/Deploy?event=push&label=website" alt="Github Actions CI" /></a>
+<a href="https://github.com/Farfetch/maestro/actions/workflows/release.yml"><img src="https://img.shields.io/github/workflow/status/Farfetch/maestro/Release?label=release" alt="GitHub Actions Release" /></a>
+<a href="https://github.com/Farfetch/maestro/actions/workflows/deploy.yml"><img src="https://img.shields.io/github/workflow/status/Farfetch/maestro/Deploy?event=push&label=website" alt="GitHub Actions Deploy" /></a>
 <a href="https://hub.docker.com/r/farfetchoss/maestro"><img src="https://img.shields.io/docker/v/farfetchoss/maestro?label=version&logo=Docker&sort=semver" alt="Docker Image" /></a>
 </p>									
 
