@@ -38,6 +38,16 @@ jobs:
       - name: Run tests
         run: make test
 
+      - name: Generate coverage
+        run: make coverage-xml
+
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: ./web/api/coverage.xml
+          language: python
+
   agent:
     timeout-minutes: 10
     runs-on: ubuntu-latest
@@ -69,6 +79,16 @@ jobs:
       - name: Run tests
         run: make test
 
+      - name: Generate coverage
+        run: make coverage-xml
+
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: ./agent/coverage.xml
+          language: python
+
   frontend:
     timeout-minutes: 10
     runs-on: ubuntu-latest
@@ -96,6 +116,16 @@ jobs:
 
       - name: Run tests
         run: CI=true yarn test
+
+      - name: Generate coverage
+        run: yarn coverage
+
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: ./web/frontend/coverage/lcov.info
+          language: javascript
 
   site:
     timeout-minutes: 10
