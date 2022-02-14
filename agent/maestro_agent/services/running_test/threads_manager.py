@@ -29,11 +29,13 @@ class RunningTestThreadsManager:
 
         collect_metrics = []
         if MAESTRO_CSV_WRITER_ENABLED is True:
-            collect_metrics.append(ControledThreadInstance(
-                name=RunningTestThreadsManager.COLLECT_METRICS,
-                args=(run,),
-                target=collect_metrics_handler,
-            ))
+            collect_metrics.append(
+                ControledThreadInstance(
+                    name=RunningTestThreadsManager.COLLECT_METRICS,
+                    args=(run,),
+                    target=collect_metrics_handler,
+                )
+            )
 
         running_test = ControledThreadInstance(
             name=RunningTestThreadsManager.RUNNING_TEST,
