@@ -4,6 +4,7 @@ from maestro_agent.services.running_test.handlers import (
     run_jmeter_client_container_handler,
     run_jmeter_server_container_handler,
 )
+from maestro_agent.settings import MAESTRO_CSV_WRITER_ENABLED
 
 
 class RunningTestThreadsManager:
@@ -25,18 +26,24 @@ class RunningTestThreadsManager:
     def start_test(self, run, server_agents):
         if self.is_running():
             raise Exception("Test is already running, try to stop current one before")
-        collect_metrics = ControledThreadInstance(
-            name=RunningTestThreadsManager.COLLECT_METRICS,
-            args=(run,),
-            target=collect_metrics_handler,
-        )
+
+        collect_metrics = []
+        if MAESTRO_CSV_WRITER_ENABLED is True:
+            collect_metrics.append(
+                ControledThreadInstance(
+                    name=RunningTestThreadsManager.COLLECT_METRICS,
+                    args=(run,),
+                    target=collect_metrics_handler,
+                )
+            )
+
         running_test = ControledThreadInstance(
             name=RunningTestThreadsManager.RUNNING_TEST,
             target=run_jmeter_client_container_handler,
             args=(run, server_agents),
-            children_threads=[collect_metrics],
+            children_threads=collect_metrics,
         )
-        pool = ControlledThreadsPool(pool=[running_test, collect_metrics])
+        pool = ControlledThreadsPool(pool=[running_test])
         pool.start_all()
         self.pool = pool
 
