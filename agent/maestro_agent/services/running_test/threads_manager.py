@@ -1,4 +1,3 @@
-from agent.maestro_agent.services.running_test.handlers import collect_metrics
 from maestro_agent.libs.threading import ControledThreadInstance, ControlledThreadsPool
 from maestro_agent.services.running_test.handlers import (
     collect_metrics_handler,
