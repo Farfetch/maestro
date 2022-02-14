@@ -21,7 +21,7 @@ public class MaestroBackendClient extends AbstractBackendListenerClient {
     // Maestro Backend Listener Parameters
     private String maestroUrl;
     private String maestroAuthToken;
-    private int maestroRunId;
+    private String maestroRunId;
 
     public MaestroHttpMetricsSender maestroHttpSender = new MaestroHttpMetricsSender();
 
@@ -31,9 +31,9 @@ public class MaestroBackendClient extends AbstractBackendListenerClient {
 
     private static final Map<String, String> DEFAULT_ARGS = new LinkedHashMap<>();
     static {
-        DEFAULT_ARGS.put("maestroUrl", "http://localhost:5000/run_metrics");
-        DEFAULT_ARGS.put("maestroAuthToken", "Maestro Authentication Token");
-        DEFAULT_ARGS.put("maestroRunId", "0");
+        DEFAULT_ARGS.put("maestroUrl", "${__P(maestro.api.host)}");
+        DEFAULT_ARGS.put("maestroAuthToken", "${__P(maestro.api.token)}");
+        DEFAULT_ARGS.put("maestroRunId", "${__P(maestro.run.id)}");
     }
 
     @Override
@@ -46,9 +46,9 @@ public class MaestroBackendClient extends AbstractBackendListenerClient {
     // Constructs Maestro Url for a Specific test
     private String testMaestroUrl(){
         if (maestroUrl.endsWith("/")) {
-            return maestroUrl + Integer.toString(maestroRunId);
+            return maestroUrl + maestroRunId;
         }
-        return maestroUrl + "/" + Integer.toString(maestroRunId);
+        return maestroUrl + "/" + maestroRunId;
     }
 
     // Do initialization required by this client.
@@ -56,7 +56,7 @@ public class MaestroBackendClient extends AbstractBackendListenerClient {
     public void setupTest(BackendListenerContext context) throws Exception {
         maestroUrl = context.getParameter("maestroUrl", "");
         maestroAuthToken = context.getParameter("maestroAuthToken", "");
-        maestroRunId = context.getIntParameter("maestroRunId", 0);
+        maestroRunId = context.getParameter("maestroRunId", "");
 
         maestroHttpSender.setup(testMaestroUrl(), maestroAuthToken);
     }
@@ -65,26 +65,23 @@ public class MaestroBackendClient extends AbstractBackendListenerClient {
     private JSONObject sampleToJSON(SampleResult sr) {
         // Doc: https://jmeter.apache.org/api/org/apache/jmeter/visualizers/backend/SamplerMetric.html
         JSONObject srObj = new JSONObject();
-        srObj.put("datetime", sr.getTimeStamp());
-        srObj.put("elapsed", sr.getTime());
+        srObj.put("timeStamp", sr.getTimeStamp() + "");
+        srObj.put("elapsed", sr.getTime() + "");
         srObj.put("label", sr.getSampleLabel());
-        srObj.put("datetime", sr.getTimeStamp());
-        srObj.put("elapsed", sr.getTime());
-        srObj.put("label", sr.getSampleLabel());
-        srObj.put("response_code", sr.getResponseCode());
-        srObj.put("response_message", sr.getResponseMessage());
-        srObj.put("thread_name", sr.getThreadName());
-        srObj.put("data_type", sr.getDataType());
-        srObj.put("success", sr.isSuccessful());
-        srObj.put("failure_message", Optional.ofNullable(sr.getFirstAssertionFailureMessage()).orElse(""));
-        srObj.put("bytes", sr.getBytesAsLong());
-        srObj.put("sent_bytes", sr.getSentBytes());
-        srObj.put("grp_threads", sr.getGroupThreads());
-        srObj.put("all_threads", sr.getAllThreads());
-        srObj.put("url", sr.getUrlAsString());
-        srObj.put("latency", sr.getLatency());
-        srObj.put("idle_time", sr.getIdleTime());
-        srObj.put("connect", sr.getConnectTime());
+        srObj.put("responseCode", sr.getResponseCode());
+        srObj.put("responseMessage", sr.getResponseMessage());
+        srObj.put("threadName", sr.getThreadName());
+        srObj.put("dataType", sr.getDataType());
+        srObj.put("success", sr.isSuccessful() + "");
+        srObj.put("failureMessage", Optional.ofNullable(sr.getFirstAssertionFailureMessage()).orElse(""));
+        srObj.put("bytes", sr.getBytesAsLong() + "");
+        srObj.put("sentBytes", sr.getSentBytes() + "");
+        srObj.put("grpThreads", sr.getGroupThreads() + "");
+        srObj.put("allThreads", sr.getAllThreads() + "");
+        srObj.put("URL", sr.getUrlAsString());
+        srObj.put("Latency", sr.getLatency() + "");
+        srObj.put("IdleTime", sr.getIdleTime() + "");
+        srObj.put("Connect", sr.getConnectTime() + "");
         return srObj;
     }
 
@@ -102,13 +99,19 @@ public class MaestroBackendClient extends AbstractBackendListenerClient {
                 allSamplesResults.add(sampleToJSON(sampleResult));
             }
         }
-        maestroHttpSender.writeAndSendMetrics(allSamplesResults.toJSONString());
+
+        // Format request body accordingly to the Maestro API Interface
+        JSONObject request_body = new JSONObject();
+        request_body.put("metrics", allSamplesResults);
+
+        maestroHttpSender.writeAndSendMetrics(request_body.toJSONString());
     }
 
     // Do any clean-up required at the end of a test run.
     @Override
     public void teardownTest(BackendListenerContext context) throws Exception {
         log.info("Sending final metrics.");
+        maestroHttpSender.destroy();
         super.teardownTest(context);
     }
 

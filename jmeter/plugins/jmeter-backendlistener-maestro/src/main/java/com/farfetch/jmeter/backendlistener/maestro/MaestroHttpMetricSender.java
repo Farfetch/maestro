@@ -119,6 +119,9 @@ class MaestroHttpMetricsSender {
 
         HttpPost currentHttpRequest = new HttpPost(url.toURI());
         currentHttpRequest.setConfig(defaultRequestConfig);
+
+        currentHttpRequest.setHeader("Content-Type", "application/json");
+
         if (StringUtils.isNotBlank(token)) {
             currentHttpRequest.setHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE + token);
         }

@@ -23,7 +23,7 @@ test:
 	pytest
 
 dev:
-	FLASK_ENV=development FLASK_APP=wsgi:maestro_app flask run
+	FLASK_ENV=development FLASK_APP=wsgi:maestro_app flask run --host=0.0.0.0
 
 db-start:
 	docker start maestromongodbdev
