@@ -7,6 +7,11 @@ from maestro_agent.enums import LogLevel
 
 load_dotenv()
 
+
+def parse_bool(str_value):
+    return str_value.lower() in ["true", "1"]
+
+
 AGENT_HOST = os.environ.get("AGENT_HOST", False)
 
 DEFAULT_LOGGER_NAME = "maestro_logger"
@@ -17,6 +22,10 @@ ROOT_DIRECTORY = pathlib.Path().absolute()
 
 MAESTRO_API_HOST = os.environ.get("MAESTRO_API_HOST", "http://localhost:5000")
 MAESTRO_API_TOKEN = os.environ.get("MAESTRO_API_TOKEN", "")
+
+MAESTRO_CSV_WRITER_ENABLED = parse_bool(
+    os.environ.get("MAESTRO_CSV_WRITER_ENABLED", "True")
+)
 
 MAESTRO_METRICS_PROCESSING_BULK_SIZE = int(
     os.environ.get("MAESTRO_METRICS_PROCESSING_BULK_SIZE", 100)
