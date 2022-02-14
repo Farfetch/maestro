@@ -9,7 +9,7 @@ from maestro_agent.settings import (
     JMETER_DOCKER_METRICS_FILE,
     JMETER_DOCKER_CUSTOM_DATA_DIR,
     MAESTRO_API_HOST,
-    MAESTRO_API_TOKEN
+    MAESTRO_API_TOKEN,
 )
 
 
@@ -88,7 +88,7 @@ class JmeterProperties:
         run_properties = {
             "maestro.api.host": MAESTRO_API_HOST + "/api/run_metrics",
             "maestro.api.token": MAESTRO_API_TOKEN,
-            "maestro.run.id": self.run.id
+            "maestro.run.id": self.run.id,
         }
         return run_properties
 
