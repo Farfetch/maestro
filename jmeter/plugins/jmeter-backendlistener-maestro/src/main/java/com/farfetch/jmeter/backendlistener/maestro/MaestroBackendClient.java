@@ -29,6 +29,12 @@ public class MaestroBackendClient extends AbstractBackendListenerClient {
         super();
     }
 
+    public MaestroBackendClient(String url, String runId) {
+        super();
+        maestroUrl = url;
+        maestroRunId = runId;
+    }
+
     private static final Map<String, String> DEFAULT_ARGS = new LinkedHashMap<>();
     static {
         DEFAULT_ARGS.put("maestroUrl", "${__P(maestro.api.host)}");
@@ -43,8 +49,7 @@ public class MaestroBackendClient extends AbstractBackendListenerClient {
         return arguments;
     }
 
-    // Constructs Maestro Url for a Specific test
-    private String testMaestroUrl(){
+    public String getTestMaestroUrl(){
         if (maestroUrl.endsWith("/")) {
             return maestroUrl + maestroRunId;
         }
@@ -58,40 +63,38 @@ public class MaestroBackendClient extends AbstractBackendListenerClient {
         maestroAuthToken = context.getParameter("maestroAuthToken", "");
         maestroRunId = context.getParameter("maestroRunId", "");
 
-        maestroHttpSender.setup(testMaestroUrl(), maestroAuthToken);
+        maestroHttpSender.setup(getTestMaestroUrl(), maestroAuthToken);
     }
 
     // Converts JMeter Sample Result to JSON Object
     private JSONObject sampleToJSON(SampleResult sr) {
         // Doc: https://jmeter.apache.org/api/org/apache/jmeter/visualizers/backend/SamplerMetric.html
         JSONObject srObj = new JSONObject();
-        srObj.put("timeStamp", sr.getTimeStamp() + "");
-        srObj.put("elapsed", sr.getTime() + "");
+        srObj.put("timeStamp", Long.toString(sr.getTimeStamp()));
+        srObj.put("elapsed", Long.toString(sr.getTime()));
         srObj.put("label", sr.getSampleLabel());
         srObj.put("responseCode", sr.getResponseCode());
         srObj.put("responseMessage", sr.getResponseMessage());
         srObj.put("threadName", sr.getThreadName());
         srObj.put("dataType", sr.getDataType());
-        srObj.put("success", sr.isSuccessful() + "");
+        srObj.put("success", Boolean.toString(sr.isSuccessful()));
         srObj.put("failureMessage", Optional.ofNullable(sr.getFirstAssertionFailureMessage()).orElse(""));
-        srObj.put("bytes", sr.getBytesAsLong() + "");
-        srObj.put("sentBytes", sr.getSentBytes() + "");
-        srObj.put("grpThreads", sr.getGroupThreads() + "");
-        srObj.put("allThreads", sr.getAllThreads() + "");
+        srObj.put("bytes", Long.toString((sr.getBytesAsLong())));
+        srObj.put("sentBytes", Long.toString(sr.getSentBytes()));
+        srObj.put("grpThreads", Integer.toString(sr.getGroupThreads()));
+        srObj.put("allThreads", Integer.toString(sr.getAllThreads()));
         srObj.put("URL", sr.getUrlAsString());
-        srObj.put("Latency", sr.getLatency() + "");
-        srObj.put("IdleTime", sr.getIdleTime() + "");
-        srObj.put("Connect", sr.getConnectTime() + "");
+        srObj.put("Latency", Long.toString(sr.getLatency()));
+        srObj.put("IdleTime", Long.toString(sr.getIdleTime()));
+        srObj.put("Connect", Long.toString(sr.getConnectTime()));
         return srObj;
     }
 
-    // Handle sampleResults, send to maestro API
-    @Override
-    public void handleSampleResults(List<SampleResult> results, BackendListenerContext context) {
-
+    public String processSampleResults(List<SampleResult> results){
         JSONArray allSamplesResults = new JSONArray();
 
-        // Adds all JMeter test sample and subsamples results to allow us to rebuild the csv file.
+        // Adds all JMeter test sample and subsamples results to allow us to
+        // recreate the csv file.
         for (SampleResult sr : results) {
             allSamplesResults.add(sampleToJSON(sr));
             SampleResult[] sampleResults = sr.getSubResults();
@@ -103,8 +106,13 @@ public class MaestroBackendClient extends AbstractBackendListenerClient {
         // Format request body accordingly to the Maestro API Interface
         JSONObject request_body = new JSONObject();
         request_body.put("metrics", allSamplesResults);
+        return request_body.toJSONString();
+    }
 
-        maestroHttpSender.writeAndSendMetrics(request_body.toJSONString());
+    // Handle sampleResults, send them to maestro API
+    @Override
+    public void handleSampleResults(List<SampleResult> results, BackendListenerContext context) {
+        maestroHttpSender.writeAndSendMetrics(processSampleResults(results));
     }
 
     // Do any clean-up required at the end of a test run.
