@@ -4,7 +4,7 @@ FROM maven:3.8-openjdk-8-slim as jmeter-backendlistener-maestro-build
 
 COPY ./plugins/jmeter-backendlistener-maestro/ .
 
-RUN mvn -Dmaven.test.skip=true clean install --batch-mode
+RUN mvn clean install --batch-mode
 
 # BUILD IMAGE
 
@@ -31,7 +31,6 @@ COPY --from=jmeter-backendlistener-maestro-build  /root/.m2/repository/com/farfe
 
 
 # Install JMeter Plugins Manager
-
 RUN curl -L -o ${JMETER_PLUGINS_FOLDER}/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar "https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/${JMETER_PLUGINS_MANAGER_VERSION}/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar"
 RUN curl -L -o ${JMETER_LIB_FOLDER}/cmdrunner-${CMDRUNNER_VERSION}.jar "https://repo1.maven.org/maven2/kg/apc/cmdrunner/${CMDRUNNER_VERSION}/cmdrunner-${CMDRUNNER_VERSION}.jar"
 RUN java -cp ${JMETER_PLUGINS_FOLDER}/jmeter-plugins-manager-${JMETER_PLUGINS_MANAGER_VERSION}.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
@@ -44,8 +43,6 @@ COPY jmeter_plugins.txt .
 RUN while read line; do ${JMETER_BIN_FOLDER}/PluginsManagerCMD.sh install $line; done < jmeter_plugins.txt
 
 WORKDIR ${JMETER_BIN_FOLDER}
-
-RUN echo server.rmi.ssl.disable=true >> user.properties && echo server.rmi.localport=50000 >> user.properties
 
 
 # RUNTIME IMAGE
