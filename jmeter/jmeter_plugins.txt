@@ -1,0 +1,2 @@
+jpgc-dummy=0.4
+jpgc-standard=2.0
