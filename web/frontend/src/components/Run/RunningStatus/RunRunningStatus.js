@@ -85,7 +85,7 @@ const RunRunningStatus = ({ run }) => {
           <Breadcrumb route={route} routes={routesToRender} />
         )
       }}
-      tags={<RunEditableLabelsGroup runId={run.id} initialValue={run.labels} />}
+      tags={<RunEditableLabelsGroup runId={run.id} defaultValue={run.labels} />}
     >
       <Row gutter={[0, 0]}>
         <Col span={24}>

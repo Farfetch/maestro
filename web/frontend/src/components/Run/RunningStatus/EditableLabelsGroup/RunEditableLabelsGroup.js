@@ -1,11 +1,12 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Input, message, Tag, Tooltip } from "antd";
+import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 
 import { updateRun } from "../../../../lib/api/endpoints/run";
 
-const RunEditableLabelsGroup = ({ runId, initialValue }) => {
-  const [labels, setLabels] = useState(initialValue);
+const RunEditableLabelsGroup = ({ runId, defaultValue = [] }) => {
+  const [labels, setLabels] = useState(defaultValue);
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const input = useRef(null);
@@ -84,6 +85,11 @@ const RunEditableLabelsGroup = ({ runId, initialValue }) => {
       )}
     </>
   );
+};
+
+RunEditableLabelsGroup.propTypes = {
+  runId: PropTypes.string.isRequired,
+  defaultValue: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default RunEditableLabelsGroup;
