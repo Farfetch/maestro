@@ -440,6 +440,11 @@ paths:
               notes:
                 type: string
                 description: "Run Notes"
+              labels:
+                type: array
+                items:
+                  type: string
+                description: "List of Run Labels"
       consumes:
         - "application/json"
       produces:
@@ -622,6 +627,11 @@ paths:
                     - start
                     - end
                     - duration
+              labels:
+                type: array
+                items:
+                  type: string
+                description: "List of Run Labels"
             required:
               - run_plan_id
               - client_agent_id
@@ -755,6 +765,11 @@ paths:
                     - start
                     - end
                     - duration
+              labels:
+                type: array
+                items:
+                  type: string
+                description: "List of Run Labels"
             required:
               - run_plan_id
               - client_agent_id
@@ -1323,6 +1338,10 @@ definitions:
             - duration
       notes:
         type: string
+      labels:
+        type: array
+        items:
+          type: string
       created_at:
         type: string
         format: date-time
@@ -1411,6 +1430,10 @@ definitions:
             - start
             - end
             - duration
+      labels:
+        type: array
+        items:
+          type: string
       created_at:
         type: string
         format: date-time
