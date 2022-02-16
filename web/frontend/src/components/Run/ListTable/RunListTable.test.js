@@ -10,6 +10,7 @@ describe("components/RunConfiguration/Table", () => {
     {
       id: "run-configuration-id",
       title: "Confgiuration title",
+      labels: ["label1"],
       runStatus: "RUNNING",
       notes: "Test notes field",
       createdAt: moment("2018-05-24T13:48:04.313000"),
