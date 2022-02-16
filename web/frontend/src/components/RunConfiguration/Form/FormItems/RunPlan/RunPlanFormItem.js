@@ -30,7 +30,7 @@ const RunPlanFormItem = () => (
           name="runPlans"
           multiple={false}
           maxCount={1}
-          description="Select your Jmeter JMX test plan"
+          description="Select your JMeter JMX test plan"
         />
       </Form.Item>
     </Form.Item>

@@ -10,7 +10,7 @@ Maestro provides you with an easy way of managing your performance tests, collab
 
 ## Real-time metrics
 
-In-house Jmeter integration makes it possible to monitor the execution of your tests since they started.
+In-house JMeter integration makes it possible to monitor the execution of your tests since they started.
 
 ### Hits vs Errors
 

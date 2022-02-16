@@ -160,7 +160,7 @@ const RunConfigurationForm = ({
               <>
                 <Title level={5}>Test Plan</Title>
                 <FormBlockText>
-                  Select Jmeter JMX script. The script will be copied to all
+                  Select JMeter JMX script. The script will be copied to all
                   agents and executed from there.
                 </FormBlockText>
               </>
@@ -201,7 +201,7 @@ const RunConfigurationForm = ({
                 <Title level={5}>Custom Properties</Title>
                 <FormBlockText>
                   Custom properties will be overriden for all agents and also
-                  available as Jmeter properties inside Jmeter Test Plan.
+                  available as JMeter properties inside JMeter Test Plan.
                 </FormBlockText>
               </>
             }

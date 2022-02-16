@@ -10,7 +10,7 @@ RUN useradd -ms /bin/bash maestro
 RUN mkdir /home/maestro/app
 WORKDIR /home/maestro/app
 
-# Jmeter files that are available during test execution
+# JMeter files that are available during test execution
 VOLUME /tmp/maestrojmeter
 
 ENV PATH="/home/maestro/.local/bin:${PATH}"
