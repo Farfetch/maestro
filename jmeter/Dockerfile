@@ -22,7 +22,7 @@ ENV JMETER_DOWNLOAD_URL=${JMETER_MIRROR}/apache-jmeter-${JMETER_VERSION}.tgz
 ENV JMETER_PLUGINS_MANAGER_VERSION 1.7
 ENV CMDRUNNER_VERSION 2.2
 
-RUN apt update && apt install -y curl
+RUN apt-get update && apt-get install --no-install-recommends -y curl
 
 # Download and Unpack JMeter
 RUN curl -s ${JMETER_DOWNLOAD_URL} | tar zxv -C /opt && mv /opt/apache-jmeter-${JMETER_VERSION} ${JMETER_HOME_FOLDER}
@@ -40,7 +40,7 @@ WORKDIR ${JMETER_HOME_FOLDER}
 COPY jmeter_plugins.txt .
 
 # Install JMeter Plugins
-RUN while read line; do ${JMETER_BIN_FOLDER}/PluginsManagerCMD.sh install $line; done < jmeter_plugins.txt
+RUN while read -r line; do "${JMETER_BIN_FOLDER}/PluginsManagerCMD.sh" install "${line}"; done < jmeter_plugins.txt
 
 WORKDIR ${JMETER_BIN_FOLDER}
 
