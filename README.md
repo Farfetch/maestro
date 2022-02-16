@@ -9,7 +9,7 @@
 <a href="https://hub.docker.com/r/farfetchoss/maestro"><img src="https://img.shields.io/docker/v/farfetchoss/maestro?label=version&logo=Docker&sort=semver" alt="Docker Image" /></a>
 </p>									
 
-**Maestro** is a load testing tool, building on our years of experience in the load and performance testing industry. It provides a clean, approachable way of running Jmeter based tests.
+**Maestro** is a load testing tool, building on our years of experience in the load and performance testing industry. It provides a clean, approachable way of running JMeter based tests.
 
 > **NOTICE:** Maestro is under development and there might be some breaking changes over versions. We do have regular releases and are really welcome to get feedback.
 

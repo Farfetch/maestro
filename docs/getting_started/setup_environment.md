@@ -17,7 +17,7 @@ We do have some environment requirements that you have to check manually to make
 
 The commands below would help to get the application up and running. It also will give a general feeling of how it works.
 
-Before you continue, make sure the `/tmp/maestrojmeter` folder is created and exists. The folder would be used to store all temporary data from Jmeter and mostly used as the shared volume between Maestro containers and Jmeter ones.
+Before you continue, make sure the `/tmp/maestrojmeter` folder is created and exists. The folder would be used to store all temporary data from JMeter and mostly used as the shared volume between Maestro containers and JMeter ones.
 
 ```bash
 mkdir -p /tmp/maestrojmeter
@@ -31,8 +31,8 @@ docker-compose up
 
 As a result, you can navigate to `http://localhost:3000` and explore the [list of features we have](../intro.md).
 
-## Jmeter image
+## JMeter image
 
-Maestro doesn't provide any default Jmeter image and allows the use of the one you already have.
+Maestro doesn't provide any default JMeter image and allows the use of the one you already have.
 
-To use your own docker image, open `docker-compose.yml` file to add `JMETER_IMAGE_BASE_REPO`and `JMETER_IMAGE_BASE_VERSION` to the Maestro agent application. The image would be used as a based one and allow you to have the same Jmeter version along with all needed plugins that you already used. Maestro is only responsible for adding more data, such as test plans, custom data, etc there. The Dockerfile is available in [GitHub](https://github.com/Farfetch/maestro/blob/master/agent/jmeter/Dockerfile).
+To use your own docker image, open `docker-compose.yml` file to add `JMETER_IMAGE_BASE_REPO`and `JMETER_IMAGE_BASE_VERSION` to the Maestro agent application. The image would be used as a based one and allow you to have the same JMeter version along with all needed plugins that you already used. Maestro is only responsible for adding more data, such as test plans, custom data, etc there. The Dockerfile is available in [GitHub](https://github.com/Farfetch/maestro/blob/master/agent/jmeter/Dockerfile).

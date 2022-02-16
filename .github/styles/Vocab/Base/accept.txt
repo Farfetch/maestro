@@ -5,7 +5,7 @@ Dev
 Pipenv
 Tldraw
 Docusaurus
-Jmeter
+JMeter
 http
 Enum
 Profiler

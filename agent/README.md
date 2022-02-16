@@ -1,6 +1,6 @@
 # Maestro Agent
 
-Python Application to manage Apache Jmeter tests execution.
+Python Application to manage Apache JMeter tests execution.
 
 ## Requirements
 

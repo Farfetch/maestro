@@ -7,7 +7,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const config = {
   title: "Maestro",
   tagline:
-    "Load testing tool, building on our years of experience in the load and performance testing industry. It provides a clean, approachable way of running Jmeter based tests",
+    "Load testing tool, building on our years of experience in the load and performance testing industry. It provides a clean, approachable way of running JMeter based tests",
   url: "https://Farfetch.github.io",
   baseUrl: "/maestro/",
   onBrokenLinks: "throw",

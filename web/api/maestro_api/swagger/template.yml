@@ -797,7 +797,7 @@ paths:
       parameters:
         - in: formData
           name: run_plan
-          description: "RunPlan Jmeter JMX file"
+          description: "RunPlan JMeter JMX file"
           required: true
           type: file
         - in: formData
@@ -838,7 +838,7 @@ paths:
     get:
       tags:
         - "Run Plan"
-      summary: "Download Jmeter JMX file by ID"
+      summary: "Download JMeter JMX file by ID"
       description: ""
       operationId: "downloadRunPlanById"
       parameters:
