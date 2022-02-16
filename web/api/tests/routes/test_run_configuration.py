@@ -162,6 +162,7 @@ def test_update_run_configuration(client):
         "hosts": hosts,
         "custom_data_ids": [],
         "load_profile": load_profile,
+        "labels": labels
     }
     response = client.put(
         f"/run_configuration/{run_configuration_id}",
