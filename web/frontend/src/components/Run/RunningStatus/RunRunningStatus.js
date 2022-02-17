@@ -9,6 +9,7 @@ import Breadcrumb from "../../layout/Breadcrumb";
 import RunStatusTag from "../../tag/RunStatusTag";
 import RunAnalyticCharts from "./AnalyticCharts";
 import DownloadMetricsButton from "./DownloadMetricsButton";
+import RunEditableLabelsGroup from "./EditableLabelsGroup";
 import RunEndpointCharts from "./EndpointCharts";
 import RunNotesInput from "./NotesInput";
 import StopExecutionButton from "./StopExecutionButton";
@@ -71,7 +72,12 @@ const RunRunningStatus = ({ run }) => {
       ghost={false}
       onBack={() => navigate(-1)}
       title={run.title}
-      subTitle=""
+      subTitle={
+        <RunStatusTag
+          runStatus={run.runStatus}
+          key={`tag-${run.id}-${run.runStatus}`}
+        />
+      }
       extra={getButtonsByStatus(run.runStatus)}
       breadcrumb={{
         routes,
@@ -79,12 +85,7 @@ const RunRunningStatus = ({ run }) => {
           <Breadcrumb route={route} routes={routesToRender} />
         )
       }}
-      tags={[
-        <RunStatusTag
-          runStatus={run.runStatus}
-          key={`tag-${run.id}-${run.runStatus}`}
-        />
-      ]}
+      tags={<RunEditableLabelsGroup runId={run.id} defaultValue={run.labels} />}
     >
       <Row gutter={[0, 0]}>
         <Col span={24}>

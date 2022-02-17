@@ -23,6 +23,7 @@ describe("libs/api/endpoints/run", () => {
     title: "Some test title",
     custom_data_ids: [],
     hosts: [],
+    labels: ["label1"],
     client_agent_id: "6076d152b28b871d6bdb604f",
     server_agent_ids: [
       "6076d1bfb28b871d6bdb6095",
@@ -53,6 +54,7 @@ describe("libs/api/endpoints/run", () => {
   const expectedData = {
     id: apiResponse.id,
     title: apiResponse.title,
+    labels: ["label1"],
     customDataIds: apiResponse.custom_data_ids,
     hosts: apiResponse.hosts,
     clientAgentId: apiResponse.client_agent_id,
@@ -135,6 +137,19 @@ describe("libs/api/endpoints/run", () => {
       const runId = "1-2-3";
       const params = {
         notes: "Some new notes"
+      };
+
+      axiosMock.onPut(`/api/run/${runId}`, params).reply(200, apiResponse);
+
+      const data = await updateRun(runId, params);
+
+      expect(data).toStrictEqual(expectedData);
+    });
+
+    test("should update run labels", async () => {
+      const runId = "1-2-3";
+      const params = {
+        labels: ["label 2"]
       };
 
       axiosMock.onPut(`/api/run/${runId}`, params).reply(200, apiResponse);

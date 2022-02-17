@@ -1,4 +1,4 @@
-import { Form, Input } from "antd";
+import { Form, Input, Select } from "antd";
 import React from "react";
 
 const TitleFormItem = () => (
@@ -15,6 +15,16 @@ const TitleFormItem = () => (
         ]}
       >
         <Input />
+      </Form.Item>
+    </Form.Item>
+    <Form.Item label="Labels">
+      <Form.Item name="labels" noStyle rules={[]}>
+        <Select
+          mode="tags"
+          allowClear
+          style={{ width: "100%" }}
+          placeholder="Select default labels"
+        />
       </Form.Item>
     </Form.Item>
   </>

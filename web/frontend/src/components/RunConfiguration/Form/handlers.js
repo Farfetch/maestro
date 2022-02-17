@@ -39,6 +39,7 @@ export const saveRunConfiguration = async (
   runConfigurationId,
   {
     title,
+    labels,
     runPlanId,
     clientAgentId,
     serverAgentIds,
@@ -51,6 +52,7 @@ export const saveRunConfiguration = async (
   if (runConfigurationId === null) {
     const { id: newRunConfigurationId } = await createRunConfiguration({
       title,
+      labels,
       runPlanId,
       clientAgentId,
       serverAgentIds,
@@ -64,6 +66,7 @@ export const saveRunConfiguration = async (
   }
   await updateRunConfiguration(runConfigurationId, {
     title,
+    labels,
     runPlanId,
     clientAgentId,
     serverAgentIds,
