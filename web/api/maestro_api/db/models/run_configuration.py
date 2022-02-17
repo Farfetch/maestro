@@ -42,3 +42,4 @@ class RunConfiguration(CreatedUpdatedDocumentMixin, gj.Document):
     load_profile = ListField(
         field=EmbeddedDocumentField(RunConfigurationLoadProfile), default=[]
     )
+    labels = ListField(field=StringField(), default=[])

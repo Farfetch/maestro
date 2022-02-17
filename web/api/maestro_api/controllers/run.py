@@ -70,6 +70,7 @@ class RunController:
             server_agent_ids=configuration.server_agent_ids,
             run_plan_id=configuration.run_plan_id,
             custom_data_ids=configuration.custom_data_ids,
+            labels=configuration.labels,
             load_profile=load_profile,
             hosts=hosts,
             custom_properties=custom_properties,
@@ -96,11 +97,14 @@ class RunController:
 
         run_status = data.get("run_status", None)
         run_notes = data.get("notes", None)
+        run_labels = data.get("labels", None)
 
         if run_status is not None:
             run.update_status(run_status)
         if run_notes is not None:
             run.notes = run_notes
+        if run_labels is not None:
+            run.labels = run_labels
 
         run.save()
 
