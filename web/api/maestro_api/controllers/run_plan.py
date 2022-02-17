@@ -48,12 +48,11 @@ class RunPlanController:
 
         return jsonify_list_of_docs(run_plans)
 
-    def download(self, run_plan_id, user):
+    def download(self, run_plan_id, user, data):
         """
         Download RunPlan file by ID
         """
-        args = request.args
-        original_plan = args.get("original_plan", "true")
+        original_plan = data.get("original_plan", "true")
 
         run_plan = get_obj_or_404(RunPlan, id=run_plan_id)
 
