@@ -18,6 +18,7 @@ def test_create_run(client):
     server_agent_hostname = "server1.net"
     server_agent_ip = "127.0.0.5"
     title = "Example test plan"
+    labels = ["label1", "label2"]
 
     available_in_response = {
         "run_status": RunStatus.PENDING.value,
@@ -26,6 +27,7 @@ def test_create_run(client):
         "run_plan_id": run_plan_id,
         "client_agent_id": client_agent_id,
         "server_agent_ids": server_agent_ids,
+        "labels": labels,
     }
 
     RunConfiguration(
@@ -34,6 +36,7 @@ def test_create_run(client):
         run_plan_id=run_plan_id,
         client_agent_id=client_agent_id,
         server_agent_ids=server_agent_ids,
+        labels=labels,
     ).save()
 
     Agent(id=client_agent_id, ip=client_agent_ip, hostname=client_agent_hostname).save()
@@ -328,6 +331,43 @@ def test_udpate_run_notes(client):
 
     assert response.status_code == 200
     assert notes == res_json["notes"]
+    assert RunStatus.PENDING.value == updated_run.run_status
+
+
+def test_udpate_run_labels(client):
+    run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    title = "some example title"
+    run_id = "6076d1e3a216ff15b6e95e1f"
+    run_plan_id = "6076d1e3a216ff15b6e95e9d"
+    client_agent_id = "6076d152b28b871d6bdb604f"
+    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    labels = ["label1", "label2"]
+
+    Run(
+        id=run_id,
+        run_configuration_id=run_configuration_id,
+        title=title,
+        run_plan_id=run_plan_id,
+        client_agent_id=client_agent_id,
+        server_agent_ids=server_agent_ids,
+        labels=["label3"],
+    ).save()
+
+    run_id = "6076d1e3a216ff15b6e95e1f"
+    request_data = {"labels": labels}
+
+    response = client.put(
+        "/run/%s" % run_id,
+        data=json.dumps(request_data),
+        content_type="application/json",
+    )
+
+    updated_run = Run.objects.get(id=run_id)
+
+    res_json = json.loads(response.data)
+
+    assert response.status_code == 200
+    assert labels == res_json["labels"]
     assert RunStatus.PENDING.value == updated_run.run_status
 
 

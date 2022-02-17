@@ -23,10 +23,15 @@ update_run_schema = {
     "properties": {
         "run_status": {"type": "string", "enum": RunStatus.list()},
         "notes": {"type": "string"},
+        "labels": {
+            "type": "array",
+            "items": {"type": "string"},
+        },
     },
     "oneOf": [
         {"required": ["run_status"]},
         {"required": ["notes"]},
+        {"required": ["labels"]},
     ],
     "additionalProperties": False,
 }
@@ -99,6 +104,10 @@ run_configuration_create_schema = {
                 ],
                 "additionalProperties": False,
             },
+        },
+        "labels": {
+            "type": "array",
+            "items": {"type": "string"},
         },
     },
     "required": [
