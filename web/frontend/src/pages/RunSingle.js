@@ -25,8 +25,7 @@ const getRunSinglePageByStatus = (run) => {
 // using update_at once we just need to update page if anything inside run changed
 const PageContainer = React.memo(
   ({ run }) => getRunSinglePageByStatus(run),
-  (prevProps, nextProps) =>
-    prevProps.run.run_status === nextProps.run.run_status
+  (prevProps, nextProps) => prevProps.run.runStatus === nextProps.run.runStatus
 );
 
 const RunSinglePage = () => {
