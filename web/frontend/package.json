@@ -19,6 +19,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
+    "mockdate": "^3.0.5",
     "moment": "^2.29.1",
     "prettier": "^2.3.0",
     "prop-types": "^15.8.1",
