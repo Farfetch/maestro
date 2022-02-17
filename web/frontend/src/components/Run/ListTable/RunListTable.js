@@ -1,4 +1,4 @@
-import { Col, Row, Space, Table } from "antd";
+import { Col, Row, Space, Table, Tag } from "antd";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
@@ -17,10 +17,18 @@ const columns = [
     key: "notes"
   },
   {
+    title: "Labels",
+    dataIndex: "labels",
+    key: "labels",
+    width: 180,
+    render: (text, record) =>
+      record.labels.map((label) => <Tag key={record.key + label}>{label}</Tag>)
+  },
+  {
     title: "Status",
     dataIndex: "runStatus",
     key: "runStatus",
-    width: 180,
+    width: 100,
     render: (text) => <RunStatusTag runStatus={text} />
   },
   {
@@ -38,7 +46,7 @@ const columns = [
   {
     title: "Action",
     key: "action",
-    width: 100,
+    width: 80,
     render: (text, record) => (
       <Space size="middle">
         <Link to={runSingleUrl(record.key)}>Open</Link>
@@ -48,11 +56,12 @@ const columns = [
   }
 ];
 
-const runMapper = ({ id, title, runStatus, notes, createdAt }) => ({
+const runMapper = ({ id, title, runStatus, notes, labels, createdAt }) => ({
   key: id,
   title,
   runStatus,
   notes,
+  labels,
   createdAt
 });
 

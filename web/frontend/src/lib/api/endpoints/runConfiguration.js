@@ -4,6 +4,7 @@ import { maestroClient } from "../../services/maestroApi";
 const runConfigurationObjectMapper = (runConfiguration) => ({
   id: runConfiguration.id,
   title: runConfiguration.title,
+  labels: runConfiguration.labels,
   customDataIds: runConfiguration.custom_data_ids,
   hosts: runConfiguration.hosts,
   clientAgentId: runConfiguration.client_agent_id,
@@ -27,6 +28,7 @@ const runConfigurationObjectMapper = (runConfiguration) => ({
  */
 export const createRunConfiguration = async ({
   title,
+  labels,
   runPlanId,
   hosts,
   clientAgentId,
@@ -37,6 +39,7 @@ export const createRunConfiguration = async ({
 }) => {
   const res = await maestroClient.post(`/api/run_configuration`, {
     title,
+    labels,
     run_plan_id: runPlanId,
     client_agent_id: clientAgentId,
     server_agent_ids: serverAgentIds,
@@ -65,6 +68,7 @@ export const updateRunConfiguration = async (
   runConfigurationId,
   {
     title,
+    labels,
     runPlanId,
     hosts,
     clientAgentId,
@@ -78,6 +82,7 @@ export const updateRunConfiguration = async (
     `/api/run_configuration/${runConfigurationId}`,
     {
       title,
+      labels,
       run_plan_id: runPlanId,
       client_agent_id: clientAgentId,
       server_agent_ids: serverAgentIds,

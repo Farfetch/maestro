@@ -1,6 +1,7 @@
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
+  StopOutlined,
   SyncOutlined
 } from "@ant-design/icons";
 import { Tag } from "antd";
@@ -32,6 +33,12 @@ const getTagByStatus = (runStatus) => {
     case runStatusModel.FINISHED:
       return (
         <Tag key="success" icon={<CheckCircleOutlined />} color="success">
+          {runStatus}
+        </Tag>
+      );
+    case runStatusModel.STOPPED:
+      return (
+        <Tag key="success" icon={<StopOutlined />} color="orange">
           {runStatus}
         </Tag>
       );

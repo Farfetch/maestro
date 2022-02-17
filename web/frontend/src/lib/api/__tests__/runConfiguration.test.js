@@ -21,6 +21,7 @@ describe("libs/api/endpoints/runConfiguration", () => {
     title: "Some test title",
     custom_data_ids: [],
     hosts: [],
+    labels: ["label1"],
     client_agent_id: "6076d152b28b871d6bdb604f",
     server_agent_ids: [
       "6076d1bfb28b871d6bdb6095",
@@ -46,6 +47,7 @@ describe("libs/api/endpoints/runConfiguration", () => {
   const expectedData = {
     id: apiResponse.id,
     title: apiResponse.title,
+    labels: ["label1"],
     customDataIds: apiResponse.custom_data_ids,
     hosts: apiResponse.hosts,
     clientAgentId: apiResponse.client_agent_id,

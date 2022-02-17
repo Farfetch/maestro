@@ -20,6 +20,7 @@ const CreateTestPage = () => {
     setLoading(true);
     const {
       title,
+      labels,
       clientAgentId,
       serverAgentIds,
       runPlanId,
@@ -39,6 +40,7 @@ const CreateTestPage = () => {
 
     setTestFormItialValues({
       title,
+      labels,
       clientAgentId,
       serverAgentIds,
       hosts,
