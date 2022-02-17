@@ -12,6 +12,7 @@ import DownloadMetricsButton from "./DownloadMetricsButton";
 import RunEditableLabelsGroup from "./EditableLabelsGroup";
 import RunEndpointCharts from "./EndpointCharts";
 import RunNotesInput from "./NotesInput";
+import RunRunningTime from "./RunningTime";
 import StopExecutionButton from "./StopExecutionButton";
 import RunSummaryTable from "./SummaryTable";
 
@@ -88,12 +89,25 @@ const RunRunningStatus = ({ run }) => {
       tags={<RunEditableLabelsGroup runId={run.id} defaultValue={run.labels} />}
     >
       <Row gutter={[0, 0]}>
-        <Col span={24}>
+        <Col flex="auto">
           <RunNotesInput
             runId={run.id}
             defaultValue={run.notes || "Add running test execution notes..."}
           />
         </Col>
+        <Col flex="200px">
+          {run.runStatus === runStatusModel.RUNNING || (
+            <RunRunningTime
+              startedAt={run.startedAt}
+              finishedAt={
+                run.runStatus !== runStatusModel.RUNNING
+                  ? run.finishedAt
+                  : false
+              }
+            />
+          )}
+        </Col>
+
         <Col span={24}>
           <Tabs defaultActiveKey="analytics">
             <Tabs.TabPane tab="Overview" key="overview">
