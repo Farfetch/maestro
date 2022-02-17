@@ -135,8 +135,8 @@ const RunConfigurationForm = ({
                 <Title level={5}>General</Title>
                 <FormBlockText style={{ color: colors.grey[3] }}>
                   Fields would be copied to all new started tests. Use this
-                  block as short test identification to be able quickly
-                  understand difference between running tests.
+                  block as short test identification to quickly understand
+                  difference between running tests.
                 </FormBlockText>
               </>
             }
