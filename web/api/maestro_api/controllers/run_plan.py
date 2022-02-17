@@ -8,6 +8,7 @@ from maestro_api.libs.flask.utils import (
     jsonify_list_of_docs,
     make_json_response,
 )
+from maestro_api.libs.jmx import inject_backendlistener
 
 
 class RunPlanController:
@@ -51,10 +52,16 @@ class RunPlanController:
         """
         Download RunPlan file by ID
         """
+        args = request.args
+        original_plan = args.get("original_plan", "true")
+
         run_plan = get_obj_or_404(RunPlan, id=run_plan_id)
 
         image = run_plan.run_plan_file.read()
         content_type = run_plan.run_plan_file.content_type
+
+        if original_plan == "false":
+            image = inject_backendlistener(image)
 
         filename = "%s_%s" % (run_plan_id, "run_plan.jmx")
 
