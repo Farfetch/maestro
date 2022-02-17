@@ -135,6 +135,7 @@ def init_api_routes(flask_app):
 
     @flask_app.route("/run_plan/<run_plan_id>/download", methods=["GET"])
     @requires_auth()
+    @validate_request()
     def run_plan_download(*args, **kwargs):
         return run_plan_controller.download(*args, **kwargs)
 
