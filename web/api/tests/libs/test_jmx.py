@@ -16,7 +16,7 @@ RUN_PLAN_XML = """
     <hashTree />
   </hashTree>
 </jmeterTestPlan>
-"""
+"""  # noqa: E501
 
 
 class TestJmx:
