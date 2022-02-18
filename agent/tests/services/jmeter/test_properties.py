@@ -4,7 +4,7 @@ from maestro_agent.services.jmeter.properties import JmeterProperties
 from maestro_agent.app_state import ApplicationState
 from maestro_agent.services.maestro_api.agent import Agent
 from maestro_agent.services.maestro_api.run import Run
-
+from maestro_agent.settings import MAESTRO_API_HOST, MAESTRO_API_TOKEN
 
 default_properties = {
     "server.rmi.ssl.disable": "true",
@@ -12,6 +12,9 @@ default_properties = {
     "maestro.run.metrics_file": "/mnt/run_metrics.csv",
     "maestro.run.custom_data_dir": "/srv/run/custom_data",
     "maestro.agent_number": "",
+    "maestro.api.host": MAESTRO_API_HOST + "/api/run_metrics",
+    "maestro.api.token": MAESTRO_API_TOKEN,
+    "maestro.run.id": None,
 }
 
 
@@ -129,6 +132,7 @@ def test_build_properties_dict_with_override_host_value():
         **default_properties,
         **{
             "maestro.agent_number": agent_number,
+            "maestro.run.id": run.id
         },
     }
 
