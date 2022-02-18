@@ -26,13 +26,18 @@ BACKENDLISTENER_XML = """
     """
 
 
-def inject_backendlistener(original_plan):
-    test_plan = ElementTree.fromstring(original_plan)
-    bl_et = ElementTree.fromstring(BACKENDLISTENER_XML)
+class Jmx:
+    def __init__(self, run_plan):
+        self.run_plan = ElementTree.fromstring(run_plan)
 
-    ht = test_plan.find("hashTree/hashTree")
-    ht.append(bl_et)
+    def add_backend_listener(self):
+        bl_et = ElementTree.fromstring(BACKENDLISTENER_XML)
 
-    ElementTree.SubElement(ht, "hashTree")
+        ht = self.run_plan.find("hashTree/hashTree")
+        ht.append(bl_et)
 
-    return ElementTree.tostring(test_plan)
+        ElementTree.SubElement(ht, "hashTree")
+        return self
+
+    def to_bytes(self):
+        return ElementTree.tostring(self.run_plan)
