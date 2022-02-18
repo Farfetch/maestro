@@ -27,23 +27,26 @@ class RunningTestThreadsManager:
         if self.is_running():
             raise Exception("Test is already running, try to stop current one before")
 
-        collect_metrics = []
+        children_threads = []
+        all_threads = []
         if MAESTRO_CSV_WRITER_ENABLED is True:
-            collect_metrics.append(
-                ControledThreadInstance(
-                    name=RunningTestThreadsManager.COLLECT_METRICS,
-                    args=(run,),
-                    target=collect_metrics_handler,
-                )
+            collect_metrics = ControledThreadInstance(
+                name=RunningTestThreadsManager.COLLECT_METRICS,
+                args=(run,),
+                target=collect_metrics_handler,
             )
+            children_threads.append(collect_metrics)
+            all_threads.append(collect_metrics)
 
         running_test = ControledThreadInstance(
             name=RunningTestThreadsManager.RUNNING_TEST,
             target=run_jmeter_client_container_handler,
             args=(run, server_agents),
-            children_threads=collect_metrics,
+            children_threads=children_threads,
         )
-        pool = ControlledThreadsPool(pool=[running_test])
+        all_threads.append(running_test)
+
+        pool = ControlledThreadsPool(pool=all_threads)
         pool.start_all()
         self.pool = pool
 

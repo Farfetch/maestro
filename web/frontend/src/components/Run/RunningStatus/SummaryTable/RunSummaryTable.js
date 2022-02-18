@@ -1,8 +1,9 @@
-import { Table } from "antd";
+import { Table, Typography } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 
 import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
+import { avg } from "../../../../lib/utils";
 
 const columns = [
   {
@@ -153,11 +154,64 @@ const RunSummaryTable = ({ runId }) => {
         loading={isLoading}
         dataSource={urlMetrics}
         columns={columns}
-        pagination={{
-          defaultPageSize: 200,
-          hideOnSinglePage: true,
-          pageSizeOptions: [50, 100, 200, 1000],
-          position: ["bottomRight"]
+        pagination={false}
+        summary={(pageData) => {
+          let total = 0;
+          let totalLatencyP50 = 0;
+          let totalSuccessCount = 0;
+          let totalRpm = 0;
+          let totalErrorRate = 0;
+          const itemsCount = pageData.length;
+
+          pageData.forEach(
+            ({ totalCount, latencyP50, successCount, rpm, errorRate }) => {
+              total += totalCount;
+              totalLatencyP50 += latencyP50;
+              totalSuccessCount += successCount;
+              totalRpm += parseFloat(rpm);
+              totalErrorRate += parseFloat(errorRate);
+            }
+          );
+
+          return (
+            <>
+              <Table.Summary.Row>
+                <Table.Summary.Cell>
+                  <Typography.Text strong>Total</Typography.Text>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell>
+                  <Typography.Text>
+                    <Typography.Text strong>
+                      {avg(totalLatencyP50, itemsCount).toFixed(2)}
+                    </Typography.Text>
+                    <span style={{ fontSize: 11 }}> ms</span>
+                  </Typography.Text>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell>
+                  <Table.Summary.Cell>
+                    <Typography.Text strong>
+                      {totalSuccessCount}
+                    </Typography.Text>
+                  </Table.Summary.Cell>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell>
+                  <Typography.Text strong>{total}</Typography.Text>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell>
+                  <Typography.Text strong>
+                    {avg(totalRpm, itemsCount).toFixed(0)}
+                  </Typography.Text>
+                  <span style={{ fontSize: 11 }}> req/min</span>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell>
+                  <Typography.Text strong>
+                    {avg(totalErrorRate, itemsCount).toFixed(2)}
+                  </Typography.Text>
+                  <span style={{ fontSize: 11 }}> %</span>
+                </Table.Summary.Cell>
+              </Table.Summary.Row>
+            </>
+          );
         }}
       />
     </>
