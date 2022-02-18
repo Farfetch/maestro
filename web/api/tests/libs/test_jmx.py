@@ -1,5 +1,3 @@
-from operator import contains
-
 from maestro_api.libs.jmx import BACKENDLISTENER_XML, Jmx
 
 RUN_PLAN_XML = """
