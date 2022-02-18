@@ -130,10 +130,7 @@ def test_build_properties_dict_with_override_host_value():
 
     assert properties == {
         **default_properties,
-        **{
-            "maestro.agent_number": agent_number,
-            "maestro.run.id": run.id
-        },
+        **{"maestro.agent_number": agent_number, "maestro.run.id": run.id},
     }
 
 
