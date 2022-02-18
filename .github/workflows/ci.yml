@@ -152,6 +152,20 @@ jobs:
       - name: Build static
         run: yarn build
 
+  backendlistener:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./jmeter/plugins/jmeter-backendlistener-maestro
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - run: mvn --batch-mode --update-snapshots verify
+
   prose:
     runs-on: ubuntu-latest
     defaults:
