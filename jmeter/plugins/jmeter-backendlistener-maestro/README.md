@@ -19,7 +19,7 @@ Maestro Backend Listener is a JMeter plugins that sends sample results to Maestr
 
 ## Usage
 
-The plugin relies on the Jmeter properties that are automatically passed by Maestro Agent. The plugin still could be used separately without maestro if you find a use case for it.
+The plugin relies on the JMeter properties that are automatically passed by Maestro Agent. The plugin still could be used separately without maestro if you find a use case for it.
 
 ![JMeter backend listener maestro window](./docs/img/jmeter_backend_listener.png)
 
