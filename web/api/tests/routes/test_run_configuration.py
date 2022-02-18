@@ -17,6 +17,7 @@ def test_create_run_configuration(client):
     custom_properties = [{"name": "testProperty", "value": "123"}]
     custom_data_ids = ["6086d152b28b871d6bdb604f"]
     load_profile = [{"start": 1, "end": 10, "duration": 5}]
+    labels = ["label1", "label2"]
 
     available_in_response = {
         "title": run_configuration_title,
@@ -27,6 +28,7 @@ def test_create_run_configuration(client):
         "hosts": hosts,
         "custom_data_ids": custom_data_ids,
         "load_profile": load_profile,
+        "labels": labels,
     }
 
     Agent(id=client_agent_id, hostname="test", ip="test_ip").save()
@@ -47,6 +49,7 @@ def test_create_run_configuration(client):
         "hosts": hosts,
         "custom_data_ids": custom_data_ids,
         "load_profile": load_profile,
+        "labels": labels,
     }
     response = client.post(
         "/run_configuration",
@@ -116,6 +119,7 @@ def test_update_run_configuration(client):
     hosts = [{"host": "test", "ip": "127.0.0.3"}]
     custom_properties = [{"name": "testProperty", "value": "123"}]
     load_profile = [{"start": 1, "end": 10, "duration": 5}]
+    labels = ["label1", "label2"]
 
     available_in_response = {
         "title": run_configuration_title,
@@ -126,6 +130,7 @@ def test_update_run_configuration(client):
         "hosts": hosts,
         "custom_data_ids": [],
         "load_profile": load_profile,
+        "labels": labels,
     }
 
     Agent(id=client_agent_id, hostname="test", ip="test_ip").save()
@@ -145,6 +150,7 @@ def test_update_run_configuration(client):
         custom_data_ids=[],
         custom_properties=[],
         load_profile=[],
+        labels=["label1"],
     ).save()
 
     request_data = {
@@ -156,6 +162,7 @@ def test_update_run_configuration(client):
         "hosts": hosts,
         "custom_data_ids": [],
         "load_profile": load_profile,
+        "labels": labels,
     }
     response = client.put(
         f"/run_configuration/{run_configuration_id}",

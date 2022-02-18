@@ -60,6 +60,8 @@ class Run(CreatedUpdatedDocumentMixin, gj.Document):
     )
     load_profile = ListField(field=EmbeddedDocumentField(RunLoadProfile), default=[])
     notes = StringField(required=True, default="")
+    labels = ListField(field=StringField(), default=[])
+
     started_at = DateTimeField(default=now)
     finished_at = DateTimeField(default=now)
 

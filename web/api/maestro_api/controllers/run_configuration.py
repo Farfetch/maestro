@@ -49,6 +49,7 @@ class RunConfigurationController:
         hosts = data.get("hosts", [])
         custom_properties = data.get("custom_properties", [])
         load_profile = data.get("load_profile", [])
+        labels = data.get("labels", [])
 
         new_run_configuration = RunConfiguration(
             title=title,
@@ -59,6 +60,7 @@ class RunConfigurationController:
             custom_data_ids=custom_data_ids,
             custom_properties=custom_properties,
             load_profile=load_profile,
+            labels=labels,
         ).save()
 
         return make_json_response(new_run_configuration.to_json())
@@ -85,6 +87,7 @@ class RunConfigurationController:
         hosts = data.get("hosts", [])
         custom_properties = data.get("custom_properties", [])
         load_profile = data.get("load_profile", [])
+        labels = data.get("labels", [])
 
         run_configuration.update(
             title=title,
@@ -95,6 +98,7 @@ class RunConfigurationController:
             custom_data_ids=custom_data_ids,
             custom_properties=custom_properties,
             load_profile=load_profile,
+            labels=labels,
         )
         run_configuration.reload()
 

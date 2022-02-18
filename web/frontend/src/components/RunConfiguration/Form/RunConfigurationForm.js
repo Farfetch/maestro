@@ -33,6 +33,7 @@ const RunConfigurationForm = ({
 
   const onFinish = async ({
     title,
+    labels,
     clientAgentId,
     serverAgentIds,
     hosts,
@@ -54,6 +55,7 @@ const RunConfigurationForm = ({
 
     const dataToSave = {
       title,
+      labels,
       runPlanId,
       clientAgentId,
       serverAgentIds,
@@ -132,9 +134,9 @@ const RunConfigurationForm = ({
               <>
                 <Title level={5}>General</Title>
                 <FormBlockText style={{ color: colors.grey[3] }}>
-                  Test title would be copied to all new started tests. Use this
-                  field as short test identification to be able quckly
-                  understand difference between running tests.
+                  Fields would be copied to all new started tests. Use this
+                  block as short test identification to quickly understand
+                  difference between running tests.
                 </FormBlockText>
               </>
             }
