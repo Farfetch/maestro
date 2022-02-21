@@ -43,9 +43,7 @@ from maestro_api.db.models.event import Event, EventType, EventStatus
             "",
             [
                 "6076d69ba216ff15b6e95ea2",
-                "6076d69ba216ff15b6e95ea3",
                 "6076d69ba216ff15b6e95ea4",
-                "6076d69ba216ff15b6e95ea5",
                 "6076d69ba216ff15b6e95ea6",
                 "6076d69ba216ff15b6e95ea7",
             ],

@@ -29,9 +29,9 @@ class RunConfigurationLoadProfile(EmbeddedDocument):
 class RunConfiguration(CreatedUpdatedDocumentMixin, gj.Document):
     title = StringField(required=True)
     run_plan_id = ObjectIdField(required=True)
-    client_agent_id = ObjectIdField(required=True)  # DEPRECATED
+    client_agent_id = ObjectIdField(required=False)  # DEPRECATED
     server_agent_ids = ListField(
-        required=True,
+        required=False,
         field=ObjectIdField(),
     )  # DEPRECATED
     agent_ids = ListField(
