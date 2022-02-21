@@ -1,4 +1,3 @@
-from maestro_agent.services.maestro_api.agent import Agent, AgentStatus
 from maestro_agent.services.maestro_api.run import Run, RunStatus
 from maestro_agent.services.docker import DockerService, JmeterDocker
 

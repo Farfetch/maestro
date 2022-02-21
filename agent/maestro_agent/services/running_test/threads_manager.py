@@ -40,7 +40,7 @@ class RunningTestThreadsManager:
         running_test = ControledThreadInstance(
             name=RunningTestThreadsManager.RUNNING_TEST,
             target=run_jmeter_container_handler,
-            args=(run, ),
+            args=(run,),
             children_threads=children_threads,
         )
         all_threads.append(running_test)
