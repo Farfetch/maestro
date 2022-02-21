@@ -19,7 +19,7 @@ describe("components/RunConfiguration/Form/AvailableAgents", () => {
     const { container } = render(
       <Form
         initialValues={{
-          serverAgentIds: []
+          agentIds: []
         }}
       >
         <AvailableAgents agents={agents} />

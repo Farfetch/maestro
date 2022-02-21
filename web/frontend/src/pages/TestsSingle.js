@@ -21,8 +21,7 @@ const CreateTestPage = () => {
     const {
       title,
       labels,
-      clientAgentId,
-      serverAgentIds,
+      agentIds,
       runPlanId,
       customDataIds,
       hosts,
@@ -41,8 +40,7 @@ const CreateTestPage = () => {
     setTestFormItialValues({
       title,
       labels,
-      clientAgentId,
-      serverAgentIds,
+      agentIds,
       hosts,
       customProperties,
       loadProfile,

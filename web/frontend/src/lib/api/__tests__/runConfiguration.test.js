@@ -22,8 +22,7 @@ describe("libs/api/endpoints/runConfiguration", () => {
     custom_data_ids: [],
     hosts: [],
     labels: ["label1"],
-    client_agent_id: "6076d152b28b871d6bdb604f",
-    server_agent_ids: [
+    agent_ids: [
       "6076d1bfb28b871d6bdb6095",
       "6076d1c5b28b871d6bdb609c",
       "6076d1cbb28b871d6bdb60a1"
@@ -50,8 +49,7 @@ describe("libs/api/endpoints/runConfiguration", () => {
     labels: ["label1"],
     customDataIds: apiResponse.custom_data_ids,
     hosts: apiResponse.hosts,
-    clientAgentId: apiResponse.client_agent_id,
-    serverAgentIds: apiResponse.server_agent_ids,
+    agentIds: apiResponse.agent_ids,
     runPlanId: apiResponse.run_plan_id,
     customProperties: apiResponse.custom_properties,
     loadProfile: apiResponse.load_profile,
@@ -76,8 +74,7 @@ describe("libs/api/endpoints/runConfiguration", () => {
       const dataToInsert = {
         customDataIds: apiResponse.custom_data_ids,
         hosts: apiResponse.hosts,
-        clientAgentId: apiResponse.client_agent_id,
-        serverAgentIds: apiResponse.server_agent_ids,
+        agentIds: apiResponse.agent_ids,
         runPlanId: apiResponse.run_plan_id,
         customProperties: apiResponse.custom_properties
       };
@@ -85,8 +82,7 @@ describe("libs/api/endpoints/runConfiguration", () => {
       axiosMock
         .onPost(`/api/run_configuration`, {
           run_plan_id: dataToInsert.runPlanId,
-          client_agent_id: dataToInsert.clientAgentId,
-          server_agent_ids: dataToInsert.serverAgentIds,
+          agent_ids: dataToInsert.agentIds,
           custom_data_ids: dataToInsert.customDataIds,
           hosts: dataToInsert.hosts,
           custom_properties: dataToInsert.customProperties
@@ -105,8 +101,7 @@ describe("libs/api/endpoints/runConfiguration", () => {
       const dataToUpdate = {
         customDataIds: apiResponse.custom_data_ids,
         hosts: apiResponse.hosts,
-        clientAgentId: apiResponse.client_agent_id,
-        serverAgentIds: apiResponse.server_agent_ids,
+        agentIds: apiResponse.agent_ids,
         runPlanId: apiResponse.run_plan_id,
         customProperties: apiResponse.custom_properties
       };
@@ -114,8 +109,7 @@ describe("libs/api/endpoints/runConfiguration", () => {
       axiosMock
         .onPut(`/api/run_configuration/${runConfigurationId}`, {
           run_plan_id: dataToUpdate.runPlanId,
-          client_agent_id: dataToUpdate.clientAgentId,
-          server_agent_ids: dataToUpdate.serverAgentIds,
+          agent_ids: dataToUpdate.agentIds,
           custom_data_ids: dataToUpdate.customDataIds,
           hosts: dataToUpdate.hosts,
           custom_properties: dataToUpdate.customProperties

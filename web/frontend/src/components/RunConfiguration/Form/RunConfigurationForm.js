@@ -34,8 +34,7 @@ const RunConfigurationForm = ({
   const onFinish = async ({
     title,
     labels,
-    clientAgentId,
-    serverAgentIds,
+    agentIds,
     hosts,
     customProperties,
     customData,
@@ -57,8 +56,7 @@ const RunConfigurationForm = ({
       title,
       labels,
       runPlanId,
-      clientAgentId,
-      serverAgentIds,
+      agentIds,
       hosts,
       customDataIds,
       customProperties,
@@ -79,15 +77,12 @@ const RunConfigurationForm = ({
   };
 
   const startTest = async () => {
-    const { clientAgentId, serverAgentIds } = {
+    const { agentIds } = {
       ...initialValues,
       ...savedData
     };
 
-    const agentsValid = isAgentsStatusValid(agents, [
-      clientAgentId,
-      ...serverAgentIds
-    ]);
+    const agentsValid = isAgentsStatusValid(agents, agentIds);
     if (agentsValid) {
       const { id: runId } = await createRun(runConfigurationId);
       await startRun(runId);
@@ -149,8 +144,9 @@ const RunConfigurationForm = ({
                 <Title level={5}>Agents</Title>
                 <FormBlockText>
                   Select where you want to execute tests. You can choosee
-                  multiple server agents based on load configuration and how
-                  powerfull machines are.
+                  multiple agents based on load configuration and how powerfull
+                  machines are. The configuration would be replicated in each
+                  selected agent.
                 </FormBlockText>
               </>
             }
@@ -259,7 +255,7 @@ const RunConfigurationForm = ({
 RunConfigurationForm.defaultProps = {
   runConfigurationId: null,
   initialValues: {
-    serverAgentIds: [],
+    agentIds: [],
     runPlans: [],
     customData: [],
     hosts: [],
@@ -273,8 +269,7 @@ RunConfigurationForm.propTypes = {
   runConfigurationId: PropTypes.string,
   initialValues: PropTypes.shape({
     title: PropTypes.string,
-    clientAgentId: PropTypes.string,
-    serverAgentIds: PropTypes.arrayOf(PropTypes.string),
+    agentIds: PropTypes.arrayOf(PropTypes.string),
     hosts: PropTypes.arrayOf(
       PropTypes.shape({
         host: PropTypes.string.isRequired,
