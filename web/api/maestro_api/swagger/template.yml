@@ -862,6 +862,11 @@ paths:
           description: "RunPlan ID"
           required: true
           type: string
+        - in: query
+          name: original_plan
+          description: "Choose Maestro or Original Plan"
+          required: false
+          type: boolean
       consumes:
         - "application/json"
       produces:

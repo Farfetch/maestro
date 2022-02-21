@@ -28,3 +28,7 @@ def run_threads_sync(threads):
 
     for running_thread in running_threads:
         running_thread.join()
+
+
+def parse_bool(str_value):
+    return str_value.lower() in ["true", "1"]

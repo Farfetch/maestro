@@ -8,6 +8,8 @@ from maestro_api.libs.flask.utils import (
     jsonify_list_of_docs,
     make_json_response,
 )
+from maestro_api.libs.jmx import Jmx
+from maestro_api.libs.utils import parse_bool
 
 
 class RunPlanController:
@@ -47,20 +49,25 @@ class RunPlanController:
 
         return jsonify_list_of_docs(run_plans)
 
-    def download(self, run_plan_id, user):
+    def download(self, run_plan_id, user, data):
         """
         Download RunPlan file by ID
         """
+        original_plan = parse_bool(data.get("original_plan", "true"))
+
         run_plan = get_obj_or_404(RunPlan, id=run_plan_id)
 
-        image = run_plan.run_plan_file.read()
+        jmx = Jmx(run_plan.run_plan_file.read())
         content_type = run_plan.run_plan_file.content_type
+
+        if original_plan is False:
+            jmx.add_backend_listener()
 
         filename = "%s_%s" % (run_plan_id, "run_plan.jmx")
 
         return (
             send_file(
-                BytesIO(image),
+                BytesIO(jmx.to_bytes()),
                 as_attachment=True,
                 attachment_filename=filename,
                 mimetype=content_type,

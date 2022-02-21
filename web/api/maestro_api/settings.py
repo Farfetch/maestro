@@ -2,14 +2,10 @@ import os
 import pathlib
 
 from dotenv import load_dotenv
-
 from maestro_api.enums import LogLevel
+from maestro_api.libs.utils import parse_bool
 
 load_dotenv()
-
-
-def parse_bool(str_value):
-    return str_value.lower() in ["true", "1"]
 
 
 def parse_list(str_value):
