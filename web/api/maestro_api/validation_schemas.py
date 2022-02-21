@@ -18,6 +18,7 @@ create_run_schema = {
     ],
     "additionalProperties": False,
 }
+
 update_run_schema = {
     "type": "object",
     "properties": {
@@ -172,6 +173,19 @@ run_agent_all_schema = {
     "required": [],
     "additionalProperties": False,
 }
+
+run_plan_download_schema = {
+    "type": "object",
+    "properties": {
+        "original_plan": {
+            "type": "string",
+            "enum": ["true", "false"],
+        },
+    },
+    "required": [],
+    "additionalProperties": False,
+}
+
 
 agent_create_schema = {
     "type": "object",

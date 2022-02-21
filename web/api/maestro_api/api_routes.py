@@ -17,6 +17,7 @@ from maestro_api.validation_schemas import (
     run_metric_all_schema,
     run_agent_update_schema,
     run_agent_all_schema,
+    run_plan_download_schema,
     agent_create_schema,
     agent_update_schema,
     agent_log_create_schema,
@@ -135,7 +136,7 @@ def init_api_routes(flask_app):
 
     @flask_app.route("/run_plan/<run_plan_id>/download", methods=["GET"])
     @requires_auth()
-    @validate_request()
+    @validate_request(run_plan_download_schema)
     def run_plan_download(*args, **kwargs):
         return run_plan_controller.download(*args, **kwargs)
 
