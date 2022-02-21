@@ -14,21 +14,9 @@ from maestro_api.db.models.event import Event, EventType, EventStatus
                 agent_id="6076d1c5b28b871d6bdb609c",
             ),
             dict(
-                id="6076d69ba216ff15b6e95ea3",
-                event_type=EventType.START_SERVER_AGENT.value,
-                run_id="6076d1bfb28b871d6bdb6095",
-                agent_id="6076d152b28b871d6bdb604f",
-            ),
-            dict(
                 id="6076d69ba216ff15b6e95ea4",
                 event_type=EventType.STOP_RUN.value,
                 run_id="6076d1bfb28b871d6bdb6095",
-                agent_id="6076d1cbb28b871d6bdb60a1",
-            ),
-            dict(
-                id="6076d69ba216ff15b6e95ea5",
-                event_type=EventType.STOP_SERVER_AGENT.value,
-                run_id="6076d1e3a216ff15b6e95e9d",
                 agent_id="6076d1cbb28b871d6bdb60a1",
             ),
             dict(

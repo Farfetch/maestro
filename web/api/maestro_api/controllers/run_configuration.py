@@ -33,11 +33,8 @@ class RunConfigurationController:
         Create RunConfiguration object
         """
 
-        # Validation if agents are valid and existed on the database
-        client_agent = get_obj_or_404(Agent, id=data.get("client_agent_id"))
-        server_agent_ids = [
-            get_obj_or_404(Agent, id=server_agent_id).id
-            for server_agent_id in data.get("server_agent_ids")
+        agent_ids = [
+            get_obj_or_404(Agent, id=agent_id).id for agent_id in data.get("agent_ids")
         ]
         run_plan = get_obj_or_404(RunPlan, id=data.get("run_plan_id"))
         custom_data_ids = [
@@ -53,8 +50,7 @@ class RunConfigurationController:
 
         new_run_configuration = RunConfiguration(
             title=title,
-            client_agent_id=client_agent.id,
-            server_agent_ids=server_agent_ids,
+            agent_ids=agent_ids,
             run_plan_id=run_plan.id,
             hosts=hosts,
             custom_data_ids=custom_data_ids,
@@ -70,11 +66,8 @@ class RunConfigurationController:
 
         run_configuration = get_obj_or_404(RunConfiguration, id=run_configuration_id)
 
-        # Validation if agents are valid and existed on the database
-        client_agent = get_obj_or_404(Agent, id=data.get("client_agent_id"))
-        server_agent_ids = [
-            get_obj_or_404(Agent, id=server_agent_id).id
-            for server_agent_id in data.get("server_agent_ids")
+        agent_ids = [
+            get_obj_or_404(Agent, id=agent_id).id for agent_id in data.get("agent_ids")
         ]
 
         run_plan = get_obj_or_404(RunPlan, id=data.get("run_plan_id"))
@@ -91,8 +84,7 @@ class RunConfigurationController:
 
         run_configuration.update(
             title=title,
-            client_agent_id=client_agent.id,
-            server_agent_ids=server_agent_ids,
+            agent_ids=agent_ids,
             run_plan_id=run_plan.id,
             hosts=hosts,
             custom_data_ids=custom_data_ids,
