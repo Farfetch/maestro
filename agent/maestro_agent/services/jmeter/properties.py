@@ -8,6 +8,8 @@ from maestro_agent.app_state import ApplicationState
 from maestro_agent.settings import (
     JMETER_DOCKER_METRICS_FILE,
     JMETER_DOCKER_CUSTOM_DATA_DIR,
+    MAESTRO_API_HOST,
+    MAESTRO_API_TOKEN,
 )
 
 
@@ -45,9 +47,11 @@ class JmeterProperties:
         custom_properties = self.custom_properties.copy()
         env_properties = self.get_properties_from_env()
         load_profile_properties = self.get_load_profile_properties()
+        run_properties = self.get_run_properties()
 
         properties.update(load_profile_properties)
         properties.update(env_properties)
+        properties.update(run_properties)
         properties.update(custom_properties)
 
         self.properties = properties.copy()
@@ -80,6 +84,14 @@ class JmeterProperties:
             load_profile_prop["load_profile"] = " ".join(lines_list)
 
         return load_profile_prop
+
+    def get_run_properties(self):
+        run_properties = {
+            "maestro.api.host": MAESTRO_API_HOST + "/api/run_metrics",
+            "maestro.api.token": MAESTRO_API_TOKEN,
+            "maestro.run.id": self.run.id,
+        }
+        return run_properties
 
     def get_agent_number_from_host(self, hostname):
         "Parses hostname and returns last number if it's digit"
