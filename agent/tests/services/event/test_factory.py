@@ -7,8 +7,6 @@ from maestro_agent.services.agent.hooks import AgentHooks
 from maestro_agent.services.event.handlers import (
     StartRunEventHandler,
     StopRunEventHandler,
-    StartServerAgentEventHandler,
-    StopServerAgentEventHandler,
 )
 
 
@@ -57,8 +55,6 @@ class TestEventHandlerFactory:
         [
             (EventType.START_RUN.value, StartRunEventHandler),
             (EventType.STOP_RUN.value, StopRunEventHandler),
-            (EventType.START_SERVER_AGENT.value, StartServerAgentEventHandler),
-            (EventType.STOP_SERVER_AGENT.value, StopServerAgentEventHandler),
         ],
     )
     def test_build(self, event_type, instance_class):

@@ -83,11 +83,9 @@ class JmeterDocker:
 
         return jmeter_image[0]
 
-    def run_jmeter_client(self, server_agents):
+    def run_container(self):
         "Runs jmeter client container based on TestRun object"
 
-        server_agent_ips = [server_agent.ip for server_agent in server_agents]
-        remote_ips = ",".join(server_agent_ips)
         logs_file = "/mnt/jmeter.log"
 
         extra_hosts = self._get_container_extra_hosts()
@@ -95,10 +93,9 @@ class JmeterDocker:
 
         volumes = self._get_container_volumes()
 
-        jmeter_running_command = "-n -t %s -p %s -R%s -j %s" % (
+        jmeter_running_command = "-n -t %s -p %s -j %s" % (
             JMETER_DOCKER_PLAN_FILE,
             JMETER_DOCKER_PROPERTIES_FILE,
-            remote_ips,
             logs_file,
         )
 
@@ -111,35 +108,6 @@ class JmeterDocker:
             remove=True,
             detach=True,
             extra_hosts=extra_hosts,
-        )
-
-        return container
-
-    def run_jmeter_server(self, ip):
-        "Runs jmeter server container based on TestRun object"
-        logs_file = "/mnt/%s-jmeter.log" % ip
-        volumes = self._get_container_volumes()
-
-        properties = "%s" % ("-Djava.rmi.server.hostname=%s" % ip,)
-
-        extra_hosts = self._get_container_extra_hosts()
-        Logger.debug("Maestrojmeter image custom hosts %s", extra_hosts)
-
-        jmeter_running_command = "-s %s -p %s -j %s" % (
-            properties,
-            JMETER_DOCKER_PROPERTIES_FILE,
-            logs_file,
-        )
-
-        container = DockerService.client().containers.run(
-            image=JmeterDocker.get_jmeter_image_name(self.run.id),
-            command=jmeter_running_command,
-            extra_hosts=extra_hosts,
-            volumes=volumes,
-            network_mode="host",
-            name=JMETER_CONTAINER_NAME,
-            remove=True,
-            detach=True,
         )
 
         return container

@@ -65,7 +65,7 @@ class JmeterProperties:
         Details: https://jmeter-plugins.org/wiki/ThroughputShapingTimer
         """
         load_profile_prop = {}
-        agents_count = len(self.run.server_agent_ids)
+        agents_count = len(self.run.agent_ids)
 
         if self.run.load_profile:
 

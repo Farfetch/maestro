@@ -6,7 +6,6 @@ from maestro_agent.services.running_test.files import RunningTestFiles
 
 from maestro_agent.services.running_test import (
     RunningTestThreadsManager,
-    wait_for_server_agents,
     prepare_for_running,
 )
 
@@ -71,33 +70,15 @@ class StartRunEventHandler(EventHandlerBase):
         self.agent_hooks.preparation_started()
         RunApi.update(self.run.id, run_status=RunStatus.CREATING.value)
 
-        Logger.info(f"Preparing prerequisites to start a test run_id={self.run.id}")
-        server_agents = wait_for_server_agents(self.run)
-
         Logger.info("Preparing prerequisites to start a test")
         prepare_for_running(self.run)
 
         Logger.info("Starting a test")
         running_test_threads = RunningTestThreadsManager.instance()
-        running_test_threads.start_test(run=self.run, server_agents=server_agents)
+        running_test_threads.start_test(run=self.run)
         RunApi.update(self.run.id, run_status=RunStatus.RUNNING.value)
         self.agent_hooks.running()
 
-        Logger.info("Test is running")
-
-
-class StartServerAgentEventHandler(EventHandlerBase):
-    @required_statuses([RunStatus.PENDING.value, RunStatus.CREATING.value])
-    def event_type_process(self):
-
-        Logger.info(f"Preparing prerequisites to start a test run_id={self.run.id}")
-        self.agent_hooks.preparation_started()
-        prepare_for_running(self.run)
-
-        Logger.info("Starting a test")
-        running_test_threads = RunningTestThreadsManager.instance()
-        running_test_threads.start_server_agents(run=self.run, agent=self.agent)
-        self.agent_hooks.running()
         Logger.info("Test is running")
 
 
@@ -117,7 +98,3 @@ class StopRunEventHandler(EventHandlerBase):
         Logger.info("Test stopped")
 
         ApplicationState.available()
-
-
-class StopServerAgentEventHandler(StopRunEventHandler):
-    pass

@@ -9,13 +9,13 @@ from maestro_agent.app_state import ApplicationState
 from maestro_agent.services.running_test.files import RunningTestFiles
 
 
-def run_jmeter_client_container_handler(finish, finished, failed, run, server_agents):
+def run_jmeter_container_handler(finish, finished, failed, run):
     CONTAINER_CHECK_TIMEOUT = 5.0
     try:
         JmeterContainerStateManager.clean_old_containers()
 
         jmeter_docker = JmeterDocker(run=run)
-        jmeter_docker.run_jmeter_client(server_agents=server_agents)
+        jmeter_docker.run_container()
 
         while finish() is False:
             try:

@@ -31,8 +31,7 @@ def test_get_jmeter_image_name(mocker):
         id=run_id,
         run_status=RunStatus.PENDING.value,
         run_plan_id="123",
-        client_agent_id="234",
-        server_agent_ids=["456"],
+        agent_ids=["456"],
         custom_data_ids=[],
         hosts=[],
         custom_properties=[],
@@ -75,7 +74,7 @@ def run_jmeter_master(mocker):
             assert "maestrojmeter:%s" % (run_id) == image
             assert network_mode == "host"
             assert (
-                "-n -t %s -p %s -l %s -R127.0.0.1 -j %s"
+                "-n -t %s -p %s -l %s -j %s"
                 % (run_plan_path, properties_file, test_result_path, logs_file)
                 == command
             )
@@ -95,8 +94,7 @@ def run_jmeter_master(mocker):
         id=run_id,
         run_status=RunStatus.PENDING.value,
         run_plan_id="123",
-        client_agent_id="234",
-        server_agent_ids=["456"],
+        agent_ids=["456"],
         custom_data_ids=[],
         hosts=hosts,
         custom_properties=[],
@@ -104,22 +102,10 @@ def run_jmeter_master(mocker):
         created_at=None,
         updated_at=None,
     )
-    server_agents = [
-        Agent(
-            id="1",
-            agent_status=AgentStatus.RUNNING_TEST.value,
-            hostname="slave.ff.net",
-            ip="127.0.0.1",
-            created_at=None,
-            updated_at=None,
-        )
-    ]
 
     jmeter_docker = JmeterDocker(run=run)
 
-    assert expected_container == jmeter_docker.run_jmeter_master(
-        server_agents=server_agents
-    )
+    assert expected_container == jmeter_docker.run_container()
 
 
 def run_jmeter_slave(mocker):
@@ -166,8 +152,7 @@ def run_jmeter_slave(mocker):
         id=run_id,
         run_status=RunStatus.PENDING.value,
         run_plan_id="123",
-        client_agent_id="234",
-        server_agent_ids=["456"],
+        agent_ids=["456"],
         custom_data_ids=[],
         hosts=hosts,
         load_profile=[],
@@ -201,8 +186,7 @@ def test_get_running_container(mocker):
         id=run_id,
         run_status=RunStatus.PENDING.value,
         run_plan_id="123",
-        client_agent_id="234",
-        server_agent_ids=["456"],
+        agent_ids=["456"],
         custom_data_ids=[],
         hosts=[],
         load_profile=[],
