@@ -1,3 +1,5 @@
+from mongoengine import Q
+
 from maestro_api.db.models.run import Run
 from maestro_api.db.models.agent import Agent
 from maestro_api.db.models.run_agent import RunAgent
@@ -9,6 +11,8 @@ from maestro_api.libs.flask.utils import (
     jsonify_list_of_docs,
     make_json_response,
 )
+
+from maestro_api.libs.utils import str_to_list
 
 
 class RunController:
@@ -33,10 +37,24 @@ class RunController:
 
         return make_json_response(run.to_json())
 
-    def all(self, user):
+    def all(self, data, user):
         "Get all Run objects"
 
-        runs = Run.objects()
+        labels = data.get("labels", None)
+        run_status = data.get("run_status", None)
+        skip = int(data.get("skip", 0))
+        limit = int(data.get("limit", 100))
+        sort = data.get("sort", "-started_at")
+
+        filter_query = Q()
+
+        if labels is not None:
+            filter_query = filter_query & Q(labels__all=str_to_list(labels))
+
+        if run_status is not None:
+            filter_query = filter_query & Q(run_status__in=str_to_list(run_status))
+
+        runs = Run.objects.filter(filter_query).order_by(sort).skip(skip).limit(limit)
 
         return jsonify_list_of_docs(runs)
 

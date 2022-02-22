@@ -467,6 +467,36 @@ paths:
         - "application/json"
       produces:
         - "application/json"
+      parameters:
+        - in: query
+          name: labels
+          description: "List of Run labels should be included"
+          collectionFormat: multi
+          type: array
+          items:
+            type: string
+        - in: query
+          name: run_status
+          description: "Filter by RunStatus"
+          $ref: "#/components/schemas/RunStatus"
+        - in: query
+          name: skip
+          description: "Skip number of documents."
+          default: 0
+          type: number
+        - in: query
+          name: limit
+          default: 100
+          description: "Limit number of documents in response."
+          type: number
+        - in: query
+          name: sort
+          description: "Sort by specific field."
+          default: "-started_at"
+          enum:
+            - -started_at
+            - started_at
+
       responses:
         200:
           schema:

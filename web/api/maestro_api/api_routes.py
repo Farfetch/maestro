@@ -13,6 +13,7 @@ from maestro_api.controllers.event import EventController
 from maestro_api.validation_schemas import (
     create_run_schema,
     update_run_schema,
+    run_all_schema,
     run_configuration_create_schema,
     run_metric_all_schema,
     run_agent_update_schema,
@@ -65,6 +66,7 @@ def init_api_routes(flask_app):
         return run_controller.create_one(*args, **kwargs)
 
     @flask_app.route("/runs", methods=["GET"])
+    @validate_request(run_all_schema)
     @requires_auth()
     def run_all(*args, **kwargs):
         return run_controller.all(*args, **kwargs)
