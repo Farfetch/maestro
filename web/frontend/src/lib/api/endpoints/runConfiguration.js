@@ -7,8 +7,7 @@ const runConfigurationObjectMapper = (runConfiguration) => ({
   labels: runConfiguration.labels,
   customDataIds: runConfiguration.custom_data_ids,
   hosts: runConfiguration.hosts,
-  clientAgentId: runConfiguration.client_agent_id,
-  serverAgentIds: runConfiguration.server_agent_ids,
+  agentIds: runConfiguration.agent_ids,
   runPlanId: runConfiguration.run_plan_id,
   customProperties: runConfiguration.custom_properties,
   loadProfile: runConfiguration.load_profile,
@@ -20,8 +19,7 @@ const runConfigurationObjectMapper = (runConfiguration) => ({
  *
  * @param {String} runPlanId  ID from RunPlan collection
  * @param {Array} hosts  list of objects: {host: String, ip: String}
- * @param {String} clientAgentId  ID from Agent collection
- * @param {Array} serverAgentIds  List of Ids from Agent collection
+ * @param {Array} agentIds  List of Ids from Agent collection
  * @param {Array} customDataIds  List of Ids from CustomData collection
  * @param {Array} customProperties  List of properties that would available inside running test
  * @returns
@@ -31,8 +29,7 @@ export const createRunConfiguration = async ({
   labels,
   runPlanId,
   hosts,
-  clientAgentId,
-  serverAgentIds,
+  agentIds,
   customDataIds,
   customProperties,
   loadProfile
@@ -41,8 +38,7 @@ export const createRunConfiguration = async ({
     title,
     labels,
     run_plan_id: runPlanId,
-    client_agent_id: clientAgentId,
-    server_agent_ids: serverAgentIds,
+    agent_ids: agentIds,
     custom_data_ids: customDataIds,
     custom_properties: customProperties,
     load_profile: loadProfile,
@@ -58,8 +54,7 @@ export const createRunConfiguration = async ({
  *
  * @param {String} runPlanId  ID from RunPlan collection
  * @param {Array} hosts  list of objects: {host: String, ip: String}
- * @param {String} clientAgentId  ID from Agent collection
- * @param {Array} serverAgentIds  List of Ids from Agent collection
+ * @param {Array} agentIds  List of Ids from Agent collection
  * @param {Array} customDataIds  List of Ids from CustomData collection
  * @param {Array} customProperties  List of properties that would available inside running test
  * @returns
@@ -71,8 +66,7 @@ export const updateRunConfiguration = async (
     labels,
     runPlanId,
     hosts,
-    clientAgentId,
-    serverAgentIds,
+    agentIds,
     customDataIds,
     customProperties,
     loadProfile
@@ -84,8 +78,7 @@ export const updateRunConfiguration = async (
       title,
       labels,
       run_plan_id: runPlanId,
-      client_agent_id: clientAgentId,
-      server_agent_ids: serverAgentIds,
+      agent_ids: agentIds,
       custom_data_ids: customDataIds,
       custom_properties: customProperties,
       load_profile: loadProfile,

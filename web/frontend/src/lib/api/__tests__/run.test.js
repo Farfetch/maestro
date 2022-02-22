@@ -24,8 +24,7 @@ describe("libs/api/endpoints/run", () => {
     custom_data_ids: [],
     hosts: [],
     labels: ["label1"],
-    client_agent_id: "6076d152b28b871d6bdb604f",
-    server_agent_ids: [
+    agent_ids: [
       "6076d1bfb28b871d6bdb6095",
       "6076d1c5b28b871d6bdb609c",
       "6076d1cbb28b871d6bdb60a1"
@@ -57,8 +56,7 @@ describe("libs/api/endpoints/run", () => {
     labels: ["label1"],
     customDataIds: apiResponse.custom_data_ids,
     hosts: apiResponse.hosts,
-    clientAgentId: apiResponse.client_agent_id,
-    serverAgentIds: apiResponse.server_agent_ids,
+    agentIds: apiResponse.agent_ids,
     runPlanId: apiResponse.run_plan_id,
     runConfigurationId: apiResponse.run_configuration_id,
     runStatus: apiResponse.run_status,
