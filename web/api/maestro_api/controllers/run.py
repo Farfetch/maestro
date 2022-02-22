@@ -66,8 +66,7 @@ class RunController:
         new_run = Run(
             title=configuration.title,
             run_configuration_id=configuration.id,
-            client_agent_id=configuration.client_agent_id,
-            server_agent_ids=configuration.server_agent_ids,
+            agent_ids=configuration.agent_ids,
             run_plan_id=configuration.run_plan_id,
             custom_data_ids=configuration.custom_data_ids,
             labels=configuration.labels,
@@ -76,7 +75,7 @@ class RunController:
             custom_properties=custom_properties,
         ).save()
 
-        agent_ids = configuration.server_agent_ids + [configuration.client_agent_id]
+        agent_ids = configuration.agent_ids
 
         agents = Agent.objects(id__in=agent_ids)
         run_agents = [

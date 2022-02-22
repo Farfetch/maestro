@@ -25,8 +25,6 @@ class EventType(ExtendedEnum):
 
     START_RUN = "START_RUN"
     STOP_RUN = "STOP_RUN"
-    START_SERVER_AGENT = "START_SERVER_AGENT"
-    STOP_SERVER_AGENT = "STOP_SERVER_AGENT"
 
 
 class Event(CreatedUpdatedDocumentMixin, gj.Document):

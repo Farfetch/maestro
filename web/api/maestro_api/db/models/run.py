@@ -47,12 +47,11 @@ class Run(CreatedUpdatedDocumentMixin, gj.Document):
         choices=RunStatus.list(),
     )
     run_plan_id = ObjectIdField(required=True)
-    client_agent_id = ObjectIdField(required=True)
-    server_agent_ids = ListField(
+
+    agent_ids = ListField(
         required=True,
         field=ObjectIdField(),
     )
-
     hosts = ListField(field=EmbeddedDocumentField(RunHosts), default=[])
     custom_data_ids = ListField(field=ObjectIdField(), default=[])
     custom_properties = ListField(

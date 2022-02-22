@@ -40,8 +40,7 @@ def test_run_metric_all(client):
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
-    client_agent_id = "6076d152b28b871d6bdb604f"
-    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
     min_datetime_str = "2019-01-01 10:00:00"
 
     min_datetime = datetime.strptime(min_datetime_str, "%Y-%m-%d %H:%M:%S")
@@ -98,8 +97,7 @@ def test_run_metric_all(client):
         title=title,
         run_configuration_id=run_configuration_id,
         run_plan_id=run_plan_id,
-        client_agent_id=client_agent_id,
-        server_agent_ids=server_agent_ids,
+        agent_ids=agent_ids,
         run_status=RunStatus.RUNNING.value,
     ).save()
 
@@ -159,8 +157,7 @@ def test_run_metric_all_with_show_labels_param(client):
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
-    client_agent_id = "6076d152b28b871d6bdb604f"
-    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
     min_datetime_str = "2019-01-01 10:00:00"
 
     min_datetime = datetime.strptime(min_datetime_str, "%Y-%m-%d %H:%M:%S")
@@ -174,8 +171,7 @@ def test_run_metric_all_with_show_labels_param(client):
         title=title,
         run_configuration_id=run_configuration_id,
         run_plan_id=run_plan_id,
-        client_agent_id=client_agent_id,
-        server_agent_ids=server_agent_ids,
+        agent_ids=agent_ids,
         run_status=RunStatus.RUNNING.value,
     ).save()
 
@@ -199,8 +195,7 @@ def test_run_metric_all_with_show_labels_and_zero_time_interval(client):
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
-    client_agent_id = "6076d152b28b871d6bdb604f"
-    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
     min_datetime_str = "2019-01-01 10:00:00"
 
     min_datetime = datetime.strptime(min_datetime_str, "%Y-%m-%d %H:%M:%S")
@@ -214,8 +209,7 @@ def test_run_metric_all_with_show_labels_and_zero_time_interval(client):
         title=title,
         run_configuration_id=run_configuration_id,
         run_plan_id=run_plan_id,
-        client_agent_id=client_agent_id,
-        server_agent_ids=server_agent_ids,
+        agent_ids=agent_ids,
         run_status=RunStatus.RUNNING.value,
     ).save()
 
@@ -240,8 +234,7 @@ def test_run_metrics_create_many(client):
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
-    client_agent_id = "6076d152b28b871d6bdb604f"
-    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
 
     metric_to_store = dict(
         timeStamp=1633708363609,
@@ -287,8 +280,7 @@ def test_run_metrics_create_many(client):
         title=title,
         run_configuration_id=run_configuration_id,
         run_plan_id=run_plan_id,
-        client_agent_id=client_agent_id,
-        server_agent_ids=server_agent_ids,
+        agent_ids=agent_ids,
         run_status=RunStatus.RUNNING.value,
     ).save()
 
@@ -313,8 +305,7 @@ def test_run_metrics_download(client):
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
-    client_agent_id = "6076d152b28b871d6bdb604f"
-    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
     min_datetime_str = "2019-01-01 10:00:00"
 
     min_datetime = datetime.strptime(min_datetime_str, "%Y-%m-%d %H:%M:%S")
@@ -348,8 +339,7 @@ def test_run_metrics_download(client):
         title=title,
         run_configuration_id=run_configuration_id,
         run_plan_id=run_plan_id,
-        client_agent_id=client_agent_id,
-        server_agent_ids=server_agent_ids,
+        agent_ids=agent_ids,
         run_status=RunStatus.RUNNING.value,
     ).save()
 

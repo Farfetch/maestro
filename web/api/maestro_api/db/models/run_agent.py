@@ -14,7 +14,7 @@ class RunAgentStatus(ExtendedEnum):
 class RunAgent(CreatedUpdatedDocumentMixin, gj.Document):
     """
     RunAgent Model stores data related to the particular Run and Agent.
-    Model is created to evenually replace run.client_agent_id and run.server_agent_ids.
+    Model might eventually replace usage of run.agent_ids field.
     """
 
     run_id = ObjectIdField(required=True)

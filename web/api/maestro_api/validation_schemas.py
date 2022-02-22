@@ -46,12 +46,7 @@ run_configuration_create_schema = {
             "minLength": 12,
             "maxLength": 24,
         },
-        "client_agent_id": {
-            "type": "string",
-            "minLength": 12,
-            "maxLength": 24,
-        },
-        "server_agent_ids": {
+        "agent_ids": {
             "type": "array",
             "items": {"type": "string", "minLength": 12, "maxLength": 24},
         },
@@ -113,8 +108,7 @@ run_configuration_create_schema = {
     },
     "required": [
         "run_plan_id",
-        "client_agent_id",
-        "server_agent_ids",
+        "agent_ids",
     ],
     "additionalProperties": False,
 }

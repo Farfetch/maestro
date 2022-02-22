@@ -36,18 +36,17 @@ class RunStatusController:
     def __init__(self, flask_app):
         self.flask_app = flask_app
 
-    def create_agent_events(self, run_id, agents):
+    def create_agent_events(self, run_id, agent_ids, event_type):
 
         all_events = []
 
-        for agent in agents:
-            for agent_id in agent["ids"]:
-                event = Event(
-                    event_type=agent["event_type"],
-                    run_id=run_id,
-                    agent_id=agent_id,
-                ).save()
-                all_events.append(event)
+        for agent_id in agent_ids:
+            event = Event(
+                event_type=event_type,
+                run_id=run_id,
+                agent_id=agent_id,
+            ).save()
+            all_events.append(event)
 
         return all_events
 
@@ -59,17 +58,8 @@ class RunStatusController:
         Available only for Runs with status: PENDING
         """
 
-        server_agents = {
-            "ids": run.server_agent_ids,
-            "event_type": EventType.START_SERVER_AGENT.value,
-        }
-        client_agents = {
-            "ids": [run.client_agent_id],
-            "event_type": EventType.START_RUN.value,
-        }
         all_events = self.create_agent_events(
-            run.id,
-            [server_agents, client_agents],
+            run.id, run.agent_ids, EventType.START_RUN.value
         )
 
         return jsonify_list_of_docs(all_events)
@@ -99,17 +89,9 @@ class RunStatusController:
         RunAgent.objects(run_id=run.id).update(
             set__agent_status=RunAgentStatus.PROCESSING.value, set__error_message=""
         )
-        server_agents = {
-            "ids": run.server_agent_ids,
-            "event_type": EventType.START_SERVER_AGENT.value,
-        }
-        client_agents = {
-            "ids": [run.client_agent_id],
-            "event_type": EventType.START_RUN.value,
-        }
+
         all_events = self.create_agent_events(
-            run.id,
-            [server_agents, client_agents],
+            run.id, run.agent_ids, EventType.START_RUN.value
         )
 
         return jsonify_list_of_docs(all_events)
@@ -132,17 +114,8 @@ class RunStatusController:
         # New Events to stop test would be created
         Event.objects(run_id=run.id, event_status=EventStatus.PENDING.value).delete()
 
-        server_agents = {
-            "ids": run.server_agent_ids,
-            "event_type": EventType.STOP_SERVER_AGENT.value,
-        }
-        client_agents = {
-            "ids": [run.client_agent_id],
-            "event_type": EventType.STOP_RUN.value,
-        }
         all_events = self.create_agent_events(
-            run.id,
-            [server_agents, client_agents],
+            run.id, run.agent_ids, EventType.STOP_RUN.value
         )
 
         run.update_status(RunStatus.STOPPED.value)
@@ -157,23 +130,21 @@ class RunStatusController:
     )
     def finish_one(self, run, user):
         """
-        Send event that test is finished to server agents.
+        Agent finished test.
+
+        Endpoint doesn't send any events. Main responsibility is to listen
+         for agents. If agents finished a test and mark test as finished
+         once last agent finished.
+
 
         Available only for Runs with status: RUNNING
         Update RunStatus to FINISHED
         """
 
-        server_agents = {
-            "ids": run.server_agent_ids,
-            "event_type": EventType.STOP_SERVER_AGENT.value,
-        }
-
-        all_events = self.create_agent_events(
-            run.id,
-            [server_agents],
-        )
+        # TODO: update status to finished only if this is the last agent
 
         run.update_status(RunStatus.FINISHED.value)
         run.save()
 
-        return jsonify_list_of_docs(all_events)
+        # This endpoint doesn't generate any events
+        return jsonify_list_of_docs([])

@@ -9,8 +9,7 @@ from maestro_api.db.models.custom_data import CustomData
 
 def test_create_run_configuration(client):
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
-    client_agent_id = "6076d152b28b871d6bdb604f"
-    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
     run_plan_title = "Example test plan"
     run_configuration_title = "Example test plan"
     hosts = [{"host": "test", "ip": "127.0.0.3"}]
@@ -22,8 +21,7 @@ def test_create_run_configuration(client):
     available_in_response = {
         "title": run_configuration_title,
         "run_plan_id": run_plan_id,
-        "client_agent_id": client_agent_id,
-        "server_agent_ids": server_agent_ids,
+        "agent_ids": agent_ids,
         "custom_properties": custom_properties,
         "hosts": hosts,
         "custom_data_ids": custom_data_ids,
@@ -31,20 +29,16 @@ def test_create_run_configuration(client):
         "labels": labels,
     }
 
-    Agent(id=client_agent_id, hostname="test", ip="test_ip").save()
     RunPlan(id=run_plan_id, title=run_plan_title).save()
-    for server_agent_id in server_agent_ids:
-        Agent(
-            id=server_agent_id, hostname="host_%s" % server_agent_id, ip="test_ip"
-        ).save()
+    for agent_id in agent_ids:
+        Agent(id=agent_id, hostname="host_%s" % agent_id, ip="test_ip").save()
     for custom_data_id in custom_data_ids:
         CustomData(id=custom_data_id, name="test.csv").save()
 
     request_data = {
         "title": run_configuration_title,
         "run_plan_id": run_plan_id,
-        "client_agent_id": client_agent_id,
-        "server_agent_ids": server_agent_ids,
+        "agent_ids": agent_ids,
         "custom_properties": custom_properties,
         "hosts": hosts,
         "custom_data_ids": custom_data_ids,
@@ -67,33 +61,27 @@ def test_create_run_configuration(client):
 
 def test_create_run_configuration_required_params_only(client):
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
-    client_agent_id = "6076d152b28b871d6bdb604f"
-    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
     run_plan_title = "Example test plan"
     run_configuration_title = "Example test plan"
 
     available_in_response = {
         "title": run_configuration_title,
         "run_plan_id": run_plan_id,
-        "client_agent_id": client_agent_id,
-        "server_agent_ids": server_agent_ids,
+        "agent_ids": agent_ids,
         "custom_properties": [],
         "hosts": [],
         "custom_data_ids": [],
     }
 
-    Agent(id=client_agent_id, hostname="test", ip="test_ip").save()
     RunPlan(id=run_plan_id, title=run_plan_title).save()
-    for server_agent_id in server_agent_ids:
-        Agent(
-            id=server_agent_id, hostname="host_%s" % server_agent_id, ip="test_ip"
-        ).save()
+    for agent_id in agent_ids:
+        Agent(id=agent_id, hostname="host_%s" % agent_id, ip="test_ip").save()
 
     request_data = {
         "title": run_configuration_title,
         "run_plan_id": run_plan_id,
-        "client_agent_id": client_agent_id,
-        "server_agent_ids": server_agent_ids,
+        "agent_ids": agent_ids,
     }
     response = client.post(
         "/run_configuration",
@@ -112,8 +100,7 @@ def test_create_run_configuration_required_params_only(client):
 def test_update_run_configuration(client):
     run_configuration_id = "6106d1e3a216ff15b6e95e9d"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
-    client_agent_id = "6076d152b28b871d6bdb604f"
-    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
     run_plan_title = "Example test plan"
     run_configuration_title = "Example test plan"
     hosts = [{"host": "test", "ip": "127.0.0.3"}]
@@ -124,8 +111,7 @@ def test_update_run_configuration(client):
     available_in_response = {
         "title": run_configuration_title,
         "run_plan_id": run_plan_id,
-        "client_agent_id": client_agent_id,
-        "server_agent_ids": server_agent_ids,
+        "agent_ids": agent_ids,
         "custom_properties": custom_properties,
         "hosts": hosts,
         "custom_data_ids": [],
@@ -133,18 +119,14 @@ def test_update_run_configuration(client):
         "labels": labels,
     }
 
-    Agent(id=client_agent_id, hostname="test", ip="test_ip").save()
     RunPlan(id=run_plan_id, title=run_plan_title).save()
-    for server_agent_id in server_agent_ids:
-        Agent(
-            id=server_agent_id, hostname="host_%s" % server_agent_id, ip="test_ip"
-        ).save()
+    for agent_id in agent_ids:
+        Agent(id=agent_id, hostname="host_%s" % agent_id, ip="test_ip").save()
 
     RunConfiguration(
         id=run_configuration_id,
         title=run_configuration_title,
-        client_agent_id=client_agent_id,
-        server_agent_ids=server_agent_ids,
+        agent_ids=agent_ids,
         run_plan_id=run_plan_id,
         hosts=[],
         custom_data_ids=[],
@@ -156,8 +138,7 @@ def test_update_run_configuration(client):
     request_data = {
         "title": run_configuration_title,
         "run_plan_id": run_plan_id,
-        "client_agent_id": client_agent_id,
-        "server_agent_ids": server_agent_ids,
+        "agent_ids": agent_ids,
         "custom_properties": custom_properties,
         "hosts": hosts,
         "custom_data_ids": [],
@@ -181,15 +162,13 @@ def test_update_run_configuration(client):
 def test_delete_run_configuration(client):
     run_configuration_id = "6106d1e3a216ff15b6e95e9d"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
-    client_agent_id = "6076d152b28b871d6bdb604f"
-    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
     run_configuration_title = "Example test plan"
 
     RunConfiguration(
         id=run_configuration_id,
         title=run_configuration_title,
-        client_agent_id=client_agent_id,
-        server_agent_ids=server_agent_ids,
+        agent_ids=agent_ids,
         run_plan_id=run_plan_id,
         hosts=[],
         custom_data_ids=[],
@@ -227,8 +206,7 @@ def test_delete_run_configuration_with_not_found(client):
 def test_get_run_configuration(client):
     run_configuration_id = "6106d1e3a216ff15b6e95e9d"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
-    client_agent_id = "6076d152b28b871d6bdb604f"
-    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
     run_configuration_title = "Example test plan"
     hosts = [{"host": "test", "ip": "127.0.0.3"}]
     custom_properties = [{"name": "testProperty", "value": "123"}]
@@ -237,8 +215,7 @@ def test_get_run_configuration(client):
     RunConfiguration(
         id=run_configuration_id,
         title=run_configuration_title,
-        client_agent_id=client_agent_id,
-        server_agent_ids=server_agent_ids,
+        agent_ids=agent_ids,
         run_plan_id=run_plan_id,
         hosts=hosts,
         custom_data_ids=[],
@@ -257,8 +234,7 @@ def test_get_run_configuration(client):
     assert res_json["id"] == run_configuration_id
     assert res_json["title"] == run_configuration_title
     assert res_json["run_plan_id"] == run_plan_id
-    assert res_json["client_agent_id"] == client_agent_id
-    assert res_json["server_agent_ids"] == server_agent_ids
+    assert res_json["agent_ids"] == agent_ids
     assert res_json["custom_properties"] == custom_properties
     assert res_json["hosts"] == hosts
     assert res_json["custom_data_ids"] == []
@@ -278,8 +254,7 @@ def test_get_run_configuration_with_not_found(client):
 def test_list_run_configurations(client):
     run_configuration_id = "6106d1e3a216ff15b6e95e9d"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
-    client_agent_id = "6076d152b28b871d6bdb604f"
-    server_agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
     run_configuration_title = "Example test plan"
     hosts = [{"host": "test", "ip": "127.0.0.3"}]
     custom_properties = [{"name": "testProperty", "value": "123"}]
@@ -287,8 +262,7 @@ def test_list_run_configurations(client):
     RunConfiguration(
         id=run_configuration_id,
         title=run_configuration_title,
-        client_agent_id=client_agent_id,
-        server_agent_ids=server_agent_ids,
+        agent_ids=agent_ids,
         run_plan_id=run_plan_id,
         hosts=hosts,
         custom_data_ids=[],
@@ -309,8 +283,7 @@ def test_list_run_configurations(client):
     assert item["id"] == run_configuration_id
     assert item["title"] == run_configuration_title
     assert item["run_plan_id"] == run_plan_id
-    assert item["client_agent_id"] == client_agent_id
-    assert item["server_agent_ids"] == server_agent_ids
+    assert item["agent_ids"] == agent_ids
     assert item["custom_properties"] == custom_properties
     assert item["hosts"] == hosts
     assert item["custom_data_ids"] == []

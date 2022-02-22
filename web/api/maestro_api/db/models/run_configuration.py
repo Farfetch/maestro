@@ -29,8 +29,7 @@ class RunConfigurationLoadProfile(EmbeddedDocument):
 class RunConfiguration(CreatedUpdatedDocumentMixin, gj.Document):
     title = StringField(required=True)
     run_plan_id = ObjectIdField(required=True)
-    client_agent_id = ObjectIdField(required=True)
-    server_agent_ids = ListField(
+    agent_ids = ListField(
         required=True,
         field=ObjectIdField(),
     )

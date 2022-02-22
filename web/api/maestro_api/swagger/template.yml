@@ -572,10 +572,7 @@ paths:
               run_plan_id:
                 type: string
                 description: "Run Plan identifier"
-              client_agent_id:
-                type: string
-                description: "Client Agent identifier"
-              server_agent_ids:
+              agent_ids:
                 type: array
                 description: "List of server Agents IDs should be used in test"
                 items:
@@ -634,8 +631,7 @@ paths:
                 description: "List of Run Labels"
             required:
               - run_plan_id
-              - client_agent_id
-              - server_agent_ids
+              - agent_ids
       responses:
         200:
           schema:
@@ -710,10 +706,7 @@ paths:
               run_plan_id:
                 type: string
                 description: "Run Plan ID"
-              client_agent_id:
-                type: string
-                description: "Client Agent ID"
-              server_agent_ids:
+              agent_ids:
                 type: array
                 description: "List of server Agent identfiers to be used in the test"
                 items:
@@ -772,8 +765,7 @@ paths:
                 description: "List of Run Labels"
             required:
               - run_plan_id
-              - client_agent_id
-              - server_agent_ids
+              - agent_ids
       responses:
         200:
           schema:
@@ -1166,8 +1158,6 @@ components:
       enum:
         - START_RUN
         - STOP_RUN
-        - START_SERVER_AGENT
-        - STOP_SERVER_AGENT
     RunStatus:
       type: string
       enum:
@@ -1306,9 +1296,7 @@ definitions:
         $ref: "#/components/schemas/RunStatus"
       run_plan_id:
         type: string
-      client_agent_id:
-        type: string
-      server_agent_ids:
+      agent_ids:
         type: array
         items: string
       custom_data_ids:
@@ -1400,9 +1388,7 @@ definitions:
         type: string
       run_plan_id:
         type: string
-      client_agent_id:
-        type: string
-      server_agent_ids:
+      agent_ids:
         type: array
         items: string
       custom_data_ids:
