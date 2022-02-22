@@ -22,7 +22,7 @@ class RunningTestThreadsManager:
 
         return cls._instance
 
-    def start_test(self, run):
+    def start_test(self, run, agent):
         if self.is_running():
             raise Exception("Test is already running, try to stop current one before")
 
@@ -40,7 +40,7 @@ class RunningTestThreadsManager:
         running_test = ControledThreadInstance(
             name=RunningTestThreadsManager.RUNNING_TEST,
             target=run_jmeter_container_handler,
-            args=(run,),
+            args=(run, agent),
             children_threads=children_threads,
         )
         all_threads.append(running_test)

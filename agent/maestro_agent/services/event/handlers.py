@@ -1,5 +1,5 @@
 from maestro_agent.app_state import ApplicationState
-from maestro_agent.services.maestro_api.run import RunApi, RunStatus
+from maestro_agent.services.maestro_api.run import RunApi
 from maestro_agent.logging import Logger
 from maestro_agent.services.agent.hooks import AgentHooks
 from maestro_agent.services.running_test.files import RunningTestFiles
@@ -16,9 +16,6 @@ class EventHandlerBase:
     agent = None
     agent_hooks = None
 
-    # Options that can be changed per each Event
-    update_run_error_status = True
-
     def __init__(self, event, agent):
         agent_hooks = AgentHooks(event.run_id, agent.id)
         self.event = event
@@ -32,8 +29,6 @@ class EventHandlerBase:
         except Exception as e:
             # Log errors with specific event type based logic
             self.agent_hooks.error(str(e))
-            if self.update_run_error_status:
-                RunApi.update(self.run.id, run_status=RunStatus.ERROR.value)
             raise e
 
     def event_type_process(self):
@@ -46,26 +41,20 @@ class StartRunEventHandler(EventHandlerBase):
     def event_type_process(self):
 
         self.agent_hooks.preparation_started()
-        # TODO: change to RunAgent status update
-        RunApi.update(self.run.id, run_status=RunStatus.CREATING.value)
 
         Logger.info("Preparing prerequisites to start a test")
         prepare_for_running(self.run)
 
         Logger.info("Starting a test")
         running_test_threads = RunningTestThreadsManager.instance()
-        running_test_threads.start_test(run=self.run)
+        running_test_threads.start_test(run=self.run, agent=self.agent)
 
-        # TODO: change to RunAgent status update
-        RunApi.update(self.run.id, run_status=RunStatus.RUNNING.value)
         self.agent_hooks.running()
 
         Logger.info("Test is running")
 
 
 class StopRunEventHandler(EventHandlerBase):
-    update_run_error_status = False
-
     def event_type_process(self):
         Logger.info(f"Stop test execution. run_id={self.run.id}")
 
