@@ -48,11 +48,6 @@ class Run(CreatedUpdatedDocumentMixin, gj.Document):
     )
     run_plan_id = ObjectIdField(required=True)
 
-    client_agent_id = ObjectIdField(required=False)  # DEPRECATED
-    server_agent_ids = ListField(
-        required=False,
-        field=ObjectIdField(),
-    )  # DEPRECATED
     agent_ids = ListField(
         required=True,
         field=ObjectIdField(),
