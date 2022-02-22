@@ -40,6 +40,11 @@ const RunRunningStatus = ({ run }) => {
     restartRun(run.id);
   }, [run]);
 
+  const isTimerAvailable =
+    (run.runStatus === runStatusModel.RUNNING && isRunMetricsAvailable) ||
+    run.runStatus === runStatusModel.STOPPED ||
+    run.runStatus === runStatusModel.FINISHED;
+
   const getButtonsByStatus = (runStatus) => {
     switch (runStatus) {
       case runStatusModel.STOPPED:
@@ -96,7 +101,7 @@ const RunRunningStatus = ({ run }) => {
           />
         </Col>
         <Col flex="200px">
-          {run.runStatus === runStatusModel.RUNNING || (
+          {isTimerAvailable ? (
             <RunRunningTime
               startedAt={run.startedAt}
               finishedAt={
@@ -105,7 +110,7 @@ const RunRunningStatus = ({ run }) => {
                   : false
               }
             />
-          )}
+          ) : null}
         </Col>
 
         <Col span={24}>
