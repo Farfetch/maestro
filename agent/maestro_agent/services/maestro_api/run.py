@@ -107,11 +107,6 @@ class RunApi:
         )
 
     @staticmethod
-    def finish(run_id):
-        "Update Run status and generate new events to stop server agents"
-        MaestroApiClient.post("/api/run_status/%s/finish" % run_id)
-
-    @staticmethod
     def send_metrics(run_id, metrics):
         MaestroApiClient.post(
             "/api/run_metrics/%s" % run_id,

@@ -100,19 +100,6 @@ def test_maestro_run_update(mocker):
     put_mock.assert_called_once()
 
 
-def test_maestro_run_finish(mocker):
-    run_id = "1-2-3-4"
-
-    post_mock = mocker.patch(
-        "maestro_agent.services.maestro_api.MaestroApiClient.post",
-    )
-
-    RunApi.finish(run_id)
-
-    post_mock.assert_called_with("/api/run_status/1-2-3-4/finish")
-    post_mock.assert_called_once()
-
-
 def test_maestro_run_send_metrics(mocker):
     run_id = "1-2-3-4"
     metrics = {"test": 1}
