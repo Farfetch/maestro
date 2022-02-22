@@ -27,8 +27,7 @@ def test_maestro_run_mapped_response():
 
     run_id = "tr_id_1"
     run_plan_id = "tp_id_1"
-    client_agent_id = "md_id_1"
-    server_agent_ids = ["sd_id_1"]
+    agent_ids = ["sd_id_1"]
     custom_data_ids = ["cd_id_1"]
     start = 1
     end = 10
@@ -45,8 +44,7 @@ def test_maestro_run_mapped_response():
         id=run_id,
         run_status=RunStatus.PENDING.value,
         run_plan_id=run_plan_id,
-        client_agent_id=client_agent_id,
-        server_agent_ids=server_agent_ids,
+        agent_ids=agent_ids,
         custom_data_ids=custom_data_ids,
         hosts=[dict(host=host, ip=ip)],
         custom_properties=[dict(name=custom_property, value=custom_property_value)],
@@ -60,8 +58,7 @@ def test_maestro_run_mapped_response():
             id=run_id,
             run_status=RunStatus.PENDING.value,
             run_plan_id=run_plan_id,
-            client_agent_id=client_agent_id,
-            server_agent_ids=server_agent_ids,
+            agent_ids=agent_ids,
             custom_data_ids=custom_data_ids,
             hosts=[dict(host=host, ip=ip)],
             custom_properties=[dict(name=custom_property, value=custom_property_value)],
@@ -73,8 +70,7 @@ def test_maestro_run_mapped_response():
     assert expected.id == actual.id
     assert expected.run_status == actual.run_status
     assert expected.run_plan_id == actual.run_plan_id
-    assert expected.client_agent_id == actual.client_agent_id
-    assert expected.server_agent_ids == actual.server_agent_ids
+    assert expected.agent_ids == actual.agent_ids
     assert expected.custom_data_ids == actual.custom_data_ids
     assert expected.hosts[0].host == actual.hosts[0].host
     assert expected.hosts[0].ip == actual.hosts[0].ip

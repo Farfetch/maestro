@@ -21,14 +21,13 @@ default_properties = {
 
 
 def create_run(
-    run_id=default_run_id, custom_properties=[], load_profile=[], server_agent_ids=["2"]
+    run_id=default_run_id, custom_properties=[], load_profile=[], agent_ids=["2"]
 ):
     return Run(
         id=run_id,
         run_status=None,
         run_plan_id=None,
-        client_agent_id="1",
-        server_agent_ids=server_agent_ids,
+        agent_ids=agent_ids,
         custom_data_ids=None,
         hosts=[],
         load_profile=load_profile,
@@ -149,12 +148,12 @@ def test_jmeter_properties_get_load_profile_properties():
 
 
 def test_jmeter_properties_get_load_profile_properties_with_two_agents():
-    server_agent_ids = ["2", "3"]
+    agent_ids = ["2", "3"]
     load_profile = [
         dict(start=10, end=20, duration=60),
         dict(start=20, end=30, duration=120),
     ]
-    run = create_run(load_profile=load_profile, server_agent_ids=server_agent_ids)
+    run = create_run(load_profile=load_profile, agent_ids=agent_ids)
 
     properties = JmeterProperties(run).properties
 

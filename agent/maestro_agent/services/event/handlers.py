@@ -6,30 +6,8 @@ from maestro_agent.services.running_test.files import RunningTestFiles
 
 from maestro_agent.services.running_test import (
     RunningTestThreadsManager,
-    wait_for_server_agents,
     prepare_for_running,
 )
-
-
-def required_statuses(run_statuses):
-    "Skip the event if status doesn't match"
-
-    def decorator(func):
-        def wrapper(self, *args):
-            if self.run.run_status not in run_statuses:
-                Logger.info(
-                    "Event to start an Agent skipped. run_status=%s"
-                    % self.run.run_status
-                )
-                return None
-
-            val = func(self, *args)
-
-            return val
-
-        return wrapper
-
-    return decorator
 
 
 class EventHandlerBase:
@@ -65,39 +43,23 @@ class EventHandlerBase:
 
 
 class StartRunEventHandler(EventHandlerBase):
-    @required_statuses([RunStatus.PENDING.value])
     def event_type_process(self):
 
         self.agent_hooks.preparation_started()
+        # TODO: change to RunAgent status update
         RunApi.update(self.run.id, run_status=RunStatus.CREATING.value)
-
-        Logger.info(f"Preparing prerequisites to start a test run_id={self.run.id}")
-        server_agents = wait_for_server_agents(self.run)
 
         Logger.info("Preparing prerequisites to start a test")
         prepare_for_running(self.run)
 
         Logger.info("Starting a test")
         running_test_threads = RunningTestThreadsManager.instance()
-        running_test_threads.start_test(run=self.run, server_agents=server_agents)
+        running_test_threads.start_test(run=self.run)
+
+        # TODO: change to RunAgent status update
         RunApi.update(self.run.id, run_status=RunStatus.RUNNING.value)
         self.agent_hooks.running()
 
-        Logger.info("Test is running")
-
-
-class StartServerAgentEventHandler(EventHandlerBase):
-    @required_statuses([RunStatus.PENDING.value, RunStatus.CREATING.value])
-    def event_type_process(self):
-
-        Logger.info(f"Preparing prerequisites to start a test run_id={self.run.id}")
-        self.agent_hooks.preparation_started()
-        prepare_for_running(self.run)
-
-        Logger.info("Starting a test")
-        running_test_threads = RunningTestThreadsManager.instance()
-        running_test_threads.start_server_agents(run=self.run, agent=self.agent)
-        self.agent_hooks.running()
         Logger.info("Test is running")
 
 
@@ -117,7 +79,3 @@ class StopRunEventHandler(EventHandlerBase):
         Logger.info("Test stopped")
 
         ApplicationState.available()
-
-
-class StopServerAgentEventHandler(StopRunEventHandler):
-    pass

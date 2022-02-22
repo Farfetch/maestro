@@ -42,8 +42,7 @@ class Run:
         id,
         run_status,
         run_plan_id,
-        client_agent_id,
-        server_agent_ids,
+        agent_ids,
         custom_data_ids,
         hosts,
         load_profile,
@@ -54,8 +53,7 @@ class Run:
         self.id = id
         self.run_status = run_status
         self.run_plan_id = run_plan_id
-        self.client_agent_id = client_agent_id
-        self.server_agent_ids = server_agent_ids
+        self.agent_ids = agent_ids
         self.custom_data_ids = custom_data_ids
         self.hosts = [
             RunHost(host=host.get("host"), ip=host.get("ip")) for host in hosts
@@ -83,8 +81,7 @@ class RunApi:
             id=json.get("id"),
             run_status=json.get("run_status"),
             run_plan_id=json.get("run_plan_id"),
-            client_agent_id=json.get("client_agent_id"),
-            server_agent_ids=json.get("server_agent_ids"),
+            agent_ids=json.get("agent_ids"),
             custom_data_ids=json.get("custom_data_ids"),
             hosts=json.get("hosts"),
             custom_properties=json.get("custom_properties"),
