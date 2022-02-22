@@ -2,6 +2,7 @@ import docker
 from maestro_agent.logging import Logger
 
 from maestro_agent.settings import (
+    AGENT_HOST,
     JMETER_BASE_IMAGE,
     JMETER_IMAGE_BASE_REPO,
     JMETER_IMAGE_BASE_VERSION,
@@ -43,7 +44,13 @@ class JmeterDocker:
     @staticmethod
     def get_jmeter_image_name(run_id):
         "Returns jmeter image name along with tag"
-        return JMETER_BASE_IMAGE % run_id
+
+        # Used for testing only when you need to run more than one agent locally
+        agent = ""
+        if AGENT_HOST:
+            agent = "_" + AGENT_HOST
+
+        return JMETER_BASE_IMAGE % run_id + agent
 
     def _get_container_volumes(self):
         maestro_run_mount_dir = JMETER_RUN_MOUNT_DIR % self.run.id

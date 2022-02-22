@@ -10,27 +10,6 @@ from maestro_agent.services.running_test import (
 )
 
 
-def required_statuses(run_statuses):
-    "Skip the event if status doesn't match"
-
-    def decorator(func):
-        def wrapper(self, *args):
-            if self.run.run_status not in run_statuses:
-                Logger.info(
-                    "Event to start an Agent skipped. run_status=%s"
-                    % self.run.run_status
-                )
-                return None
-
-            val = func(self, *args)
-
-            return val
-
-        return wrapper
-
-    return decorator
-
-
 class EventHandlerBase:
 
     event = None
@@ -64,10 +43,10 @@ class EventHandlerBase:
 
 
 class StartRunEventHandler(EventHandlerBase):
-    @required_statuses([RunStatus.PENDING.value])
     def event_type_process(self):
 
         self.agent_hooks.preparation_started()
+        # TODO: change to RunAgent status update
         RunApi.update(self.run.id, run_status=RunStatus.CREATING.value)
 
         Logger.info("Preparing prerequisites to start a test")
@@ -76,6 +55,8 @@ class StartRunEventHandler(EventHandlerBase):
         Logger.info("Starting a test")
         running_test_threads = RunningTestThreadsManager.instance()
         running_test_threads.start_test(run=self.run)
+
+        # TODO: change to RunAgent status update
         RunApi.update(self.run.id, run_status=RunStatus.RUNNING.value)
         self.agent_hooks.running()
 
