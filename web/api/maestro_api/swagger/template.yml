@@ -937,30 +937,6 @@ paths:
         404:
           description: Run not found
 
-  /run_status/{run_id}/finish:
-    post:
-      tags:
-        - "Run Status"
-      summary: "Finish running test"
-      description: ""
-      operationId: "finishRunById"
-      parameters:
-        - in: path
-          name: run_id
-          description: "Run unique ID"
-          required: true
-          type: string
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      responses:
-        200:
-          schema:
-            $ref: "#/definitions/Events"
-          description: "Returns list of created Events"
-        404:
-          description: Run not found
   /run_status/{run_id}/stop:
     post:
       tags:

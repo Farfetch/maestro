@@ -122,29 +122,3 @@ class RunStatusController:
         run.save()
 
         return jsonify_list_of_docs(all_events)
-
-    @required_statuses(
-        [
-            RunStatus.RUNNING.value,
-        ]
-    )
-    def finish_one(self, run, user):
-        """
-        Agent finished test.
-
-        Endpoint doesn't send any events. Main responsibility is to listen
-         for agents. If agents finished a test and mark test as finished
-         once last agent finished.
-
-
-        Available only for Runs with status: RUNNING
-        Update RunStatus to FINISHED
-        """
-
-        # TODO: update status to finished only if this is the last agent
-
-        run.update_status(RunStatus.FINISHED.value)
-        run.save()
-
-        # This endpoint doesn't generate any events
-        return jsonify_list_of_docs([])
