@@ -56,22 +56,22 @@ def test_create_run(client):
 def test_create_run_with_agent_runs(client):
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
-    agent_ids = ["6076d1bfb28b871d6bdb6095", "6076d1bfb28b871d6bdb6096"]
-    agent_hostname = "agent1.net"
-    agent_hostname2 = "agent2.net"
-    agent_ip = "127.0.0.5"
-    agent_ip2 = "127.0.0.6"
+
+    agents = [
+        {"id": "6076d1bfb28b871d6bdb6095", "hostname": "agent1.net", "ip": "127.0.0.5"},
+        {"id": "6076d1bfb28b871d6bdb6096", "hostname": "agent2.net", "ip": "127.0.0.6"},
+    ]
     title = "Example test plan"
 
     RunConfiguration(
         id=run_configuration_id,
         title=title,
         run_plan_id=run_plan_id,
-        agent_ids=agent_ids,
+        agent_ids=[agent["id"] for agent in agents],
     ).save()
 
-    Agent(id=agent_ids[0], ip=agent_ip, hostname=agent_hostname).save()
-    Agent(id=agent_ids[1], ip=agent_ip2, hostname=agent_hostname2).save()
+    for agent in agents:
+        Agent(id=agent["id"], ip=agent["ip"], hostname=agent["hostname"]).save()
 
     request_data = {
         "run_configuration_id": run_configuration_id,
@@ -87,13 +87,14 @@ def test_create_run_with_agent_runs(client):
 
     assert response.status_code == 200
     assert 2 == len(agent_runs)
-    assert agent_ids[0] == str(agent_runs[0].agent_id)
-    assert agent_hostname == str(agent_runs[0].agent_hostname)
+
+    assert agents[0]["id"] == str(agent_runs[0].agent_id)
+    assert agents[0]["hostname"] == str(agent_runs[0].agent_hostname)
     assert res_json["id"] == str(agent_runs[0].run_id)
     assert RunAgentStatus.PROCESSING.value == str(agent_runs[0].agent_status)
 
-    assert agent_ids[1] == str(agent_runs[1].agent_id)
-    assert agent_hostname2 == str(agent_runs[1].agent_hostname)
+    assert agents[1]["id"] == str(agent_runs[1].agent_id)
+    assert agents[1]["hostname"] == str(agent_runs[1].agent_hostname)
     assert res_json["id"] == str(agent_runs[1].run_id)
     assert RunAgentStatus.PROCESSING.value == str(agent_runs[1].agent_status)
 
