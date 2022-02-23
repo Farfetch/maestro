@@ -14,6 +14,43 @@ class RunConfigurationController:
     def __init__(self, flask_app):
         self.flask_app = flask_app
 
+    def _get_create_update_data(self, data):
+        agent_ids = [
+            get_obj_or_404(Agent, id=agent_id).id for agent_id in data.get("agent_ids")
+        ]
+
+        run_plan = get_obj_or_404(RunPlan, id=data.get("run_plan_id"))
+
+        custom_data_ids = [
+            get_obj_or_404(CustomData, id=custom_data_id).id
+            for custom_data_id in data.get("custom_data_ids", [])
+        ]
+
+        title = data.get("title")
+        hosts = data.get("hosts", [])
+        custom_properties = data.get("custom_properties", [])
+        load_profile = data.get("load_profile", [])
+        labels = data.get("labels", [])
+        is_schedule_enabled = data.get("is_schedule_enabled", False)
+        schedule = data.get("schedule", None)
+
+        data_to_db = {
+            "title": title,
+            "agent_ids": agent_ids,
+            "run_plan_id": run_plan.id,
+            "hosts": hosts,
+            "custom_data_ids": custom_data_ids,
+            "custom_properties": custom_properties,
+            "load_profile": load_profile,
+            "labels": labels,
+            "is_schedule_enabled": is_schedule_enabled,
+        }
+
+        if schedule is not None:
+            data_to_db["schedule"] = schedule
+
+        return data_to_db
+
     def get_one(self, run_configuration_id, user):
         "Get RunConfiguration by ID"
 
@@ -33,31 +70,9 @@ class RunConfigurationController:
         Create RunConfiguration object
         """
 
-        agent_ids = [
-            get_obj_or_404(Agent, id=agent_id).id for agent_id in data.get("agent_ids")
-        ]
-        run_plan = get_obj_or_404(RunPlan, id=data.get("run_plan_id"))
-        custom_data_ids = [
-            get_obj_or_404(CustomData, id=custom_data_id).id
-            for custom_data_id in data.get("custom_data_ids", [])
-        ]
+        data_to_insert = self._get_create_update_data(data)
 
-        title = data.get("title")
-        hosts = data.get("hosts", [])
-        custom_properties = data.get("custom_properties", [])
-        load_profile = data.get("load_profile", [])
-        labels = data.get("labels", [])
-
-        new_run_configuration = RunConfiguration(
-            title=title,
-            agent_ids=agent_ids,
-            run_plan_id=run_plan.id,
-            hosts=hosts,
-            custom_data_ids=custom_data_ids,
-            custom_properties=custom_properties,
-            load_profile=load_profile,
-            labels=labels,
-        ).save()
+        new_run_configuration = RunConfiguration(**data_to_insert).save()
 
         return make_json_response(new_run_configuration.to_json())
 
@@ -66,32 +81,9 @@ class RunConfigurationController:
 
         run_configuration = get_obj_or_404(RunConfiguration, id=run_configuration_id)
 
-        agent_ids = [
-            get_obj_or_404(Agent, id=agent_id).id for agent_id in data.get("agent_ids")
-        ]
+        data_to_update = self._get_create_update_data(data)
 
-        run_plan = get_obj_or_404(RunPlan, id=data.get("run_plan_id"))
-
-        custom_data_ids = [
-            get_obj_or_404(CustomData, id=custom_data_id).id
-            for custom_data_id in data.get("custom_data_ids")
-        ]
-        title = data.get("title")
-        hosts = data.get("hosts", [])
-        custom_properties = data.get("custom_properties", [])
-        load_profile = data.get("load_profile", [])
-        labels = data.get("labels", [])
-
-        run_configuration.update(
-            title=title,
-            agent_ids=agent_ids,
-            run_plan_id=run_plan.id,
-            hosts=hosts,
-            custom_data_ids=custom_data_ids,
-            custom_properties=custom_properties,
-            load_profile=load_profile,
-            labels=labels,
-        )
+        run_configuration.update(**data_to_update)
         run_configuration.reload()
 
         return make_json_response(run_configuration.to_json())

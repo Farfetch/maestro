@@ -1,32 +1,45 @@
 import json
-
+import pytest
 
 from maestro_api.db.models.agent import Agent
 from maestro_api.db.models.run_plan import RunPlan
 from maestro_api.db.models.run_configuration import RunConfiguration
 from maestro_api.db.models.custom_data import CustomData
+from maestro_api.enums import DaysOfTheWeek
 
 
-def test_create_run_configuration(client):
+@pytest.mark.parametrize(
+    "optional_params",
+    [
+        {},
+        {"hosts": [{"host": "test", "ip": "127.0.0.3"}]},
+        {"custom_properties": [{"name": "testProperty", "value": "123"}]},
+        {"load_profile": [{"start": 1, "end": 10, "duration": 5}]},
+        {"labels": ["label1", "label2"]},
+        {
+            "is_schedule_enabled": True,
+            "schedule": {"days": [DaysOfTheWeek.Mon.value], "time": "09:00"},
+        },
+        {
+            "is_schedule_enabled": False,
+            "schedule": {"days": [DaysOfTheWeek.Mon.value], "time": "09:00"},
+        },
+        {"is_schedule_enabled": False},
+    ],
+)
+def test_create_run_configuration(client, optional_params):
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
     agent_ids = ["6076d1bfb28b871d6bdb6095"]
     run_plan_title = "Example test plan"
     run_configuration_title = "Example test plan"
-    hosts = [{"host": "test", "ip": "127.0.0.3"}]
-    custom_properties = [{"name": "testProperty", "value": "123"}]
     custom_data_ids = ["6086d152b28b871d6bdb604f"]
-    load_profile = [{"start": 1, "end": 10, "duration": 5}]
-    labels = ["label1", "label2"]
 
     available_in_response = {
         "title": run_configuration_title,
         "run_plan_id": run_plan_id,
         "agent_ids": agent_ids,
-        "custom_properties": custom_properties,
-        "hosts": hosts,
         "custom_data_ids": custom_data_ids,
-        "load_profile": load_profile,
-        "labels": labels,
+        **optional_params,
     }
 
     RunPlan(id=run_plan_id, title=run_plan_title).save()
@@ -39,11 +52,8 @@ def test_create_run_configuration(client):
         "title": run_configuration_title,
         "run_plan_id": run_plan_id,
         "agent_ids": agent_ids,
-        "custom_properties": custom_properties,
-        "hosts": hosts,
         "custom_data_ids": custom_data_ids,
-        "load_profile": load_profile,
-        "labels": labels,
+        **optional_params,
     }
     response = client.post(
         "/run_configuration",
@@ -59,64 +69,37 @@ def test_create_run_configuration(client):
     assert available_in_response.items() <= res_json.items()
 
 
-def test_create_run_configuration_required_params_only(client):
-    run_plan_id = "6076d1e3a216ff15b6e95e9d"
-    agent_ids = ["6076d1bfb28b871d6bdb6095"]
-    run_plan_title = "Example test plan"
-    run_configuration_title = "Example test plan"
-
-    available_in_response = {
-        "title": run_configuration_title,
-        "run_plan_id": run_plan_id,
-        "agent_ids": agent_ids,
-        "custom_properties": [],
-        "hosts": [],
-        "custom_data_ids": [],
-    }
-
-    RunPlan(id=run_plan_id, title=run_plan_title).save()
-    for agent_id in agent_ids:
-        Agent(id=agent_id, hostname="host_%s" % agent_id, ip="test_ip").save()
-
-    request_data = {
-        "title": run_configuration_title,
-        "run_plan_id": run_plan_id,
-        "agent_ids": agent_ids,
-    }
-    response = client.post(
-        "/run_configuration",
-        data=json.dumps(request_data),
-        content_type="application/json",
-    )
-    res_json = json.loads(response.data)
-
-    assert response.status_code == 200
-    assert "id" in res_json
-    assert "created_at" in res_json
-    assert "updated_at" in res_json
-    assert available_in_response.items() <= res_json.items()
-
-
-def test_update_run_configuration(client):
+@pytest.mark.parametrize(
+    "optional_params",
+    [
+        {},
+        {"hosts": [{"host": "test", "ip": "127.0.0.3"}]},
+        {"custom_properties": [{"name": "testProperty", "value": "123"}]},
+        {"load_profile": [{"start": 1, "end": 10, "duration": 5}]},
+        {"labels": ["label1", "label2"]},
+        {
+            "is_schedule_enabled": True,
+            "schedule": {"days": [DaysOfTheWeek.Mon.value], "time": "09:00"},
+        },
+        {
+            "is_schedule_enabled": False,
+            "schedule": {"days": [DaysOfTheWeek.Mon.value], "time": "09:00"},
+        },
+        {"is_schedule_enabled": False},
+    ],
+)
+def test_update_run_configuration(client, optional_params):
     run_configuration_id = "6106d1e3a216ff15b6e95e9d"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
     agent_ids = ["6076d1bfb28b871d6bdb6095"]
     run_plan_title = "Example test plan"
     run_configuration_title = "Example test plan"
-    hosts = [{"host": "test", "ip": "127.0.0.3"}]
-    custom_properties = [{"name": "testProperty", "value": "123"}]
-    load_profile = [{"start": 1, "end": 10, "duration": 5}]
-    labels = ["label1", "label2"]
 
     available_in_response = {
         "title": run_configuration_title,
         "run_plan_id": run_plan_id,
         "agent_ids": agent_ids,
-        "custom_properties": custom_properties,
-        "hosts": hosts,
-        "custom_data_ids": [],
-        "load_profile": load_profile,
-        "labels": labels,
+        **optional_params,
     }
 
     RunPlan(id=run_plan_id, title=run_plan_title).save()
@@ -139,11 +122,7 @@ def test_update_run_configuration(client):
         "title": run_configuration_title,
         "run_plan_id": run_plan_id,
         "agent_ids": agent_ids,
-        "custom_properties": custom_properties,
-        "hosts": hosts,
-        "custom_data_ids": [],
-        "load_profile": load_profile,
-        "labels": labels,
+        **optional_params,
     }
     response = client.put(
         f"/run_configuration/{run_configuration_id}",

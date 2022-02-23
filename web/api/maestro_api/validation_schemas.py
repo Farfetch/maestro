@@ -3,6 +3,7 @@ from maestro_api.db.models.run_agent import RunAgentStatus
 from maestro_api.db.models.agent import AgentStatus
 from maestro_api.db.models.agent_log import AgentLogLevel
 from maestro_api.db.models.event import EventStatus, EventType
+from maestro_api.enums import DaysOfTheWeek
 
 create_run_schema = {
     "type": "object",
@@ -125,6 +126,24 @@ run_configuration_create_schema = {
         "labels": {
             "type": "array",
             "items": {"type": "string"},
+        },
+        "is_schedule_enabled": {
+            "type": "boolean",
+        },
+        "schedule": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "array",
+                    "items": {"type": "string", "enum": DaysOfTheWeek.list()},
+                },
+                "time": {"type": "string"},
+            },
+            "required": [
+                "days",
+                "time",
+            ],
+            "additionalProperties": False,
         },
     },
     "required": [

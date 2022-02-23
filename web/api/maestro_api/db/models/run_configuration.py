@@ -1,5 +1,6 @@
 import mongoengine_goodjson as gj
 from mongoengine import (
+    BooleanField,
     IntField,
     StringField,
     ObjectIdField,
@@ -8,6 +9,11 @@ from mongoengine import (
     EmbeddedDocumentField,
 )
 from maestro_api.db.mixins import CreatedUpdatedDocumentMixin
+
+
+class RunConfigurationSchedule(EmbeddedDocument):
+    days = ListField(field=StringField(), required=True)
+    time = StringField(required=True)
 
 
 class RunConfigurationHosts(EmbeddedDocument):
@@ -42,3 +48,7 @@ class RunConfiguration(CreatedUpdatedDocumentMixin, gj.Document):
         field=EmbeddedDocumentField(RunConfigurationLoadProfile), default=[]
     )
     labels = ListField(field=StringField(), default=[])
+
+    is_schedule_enabled = BooleanField(default=False)
+
+    schedule = EmbeddedDocumentField(RunConfigurationSchedule)
