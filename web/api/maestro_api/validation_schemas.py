@@ -37,6 +37,27 @@ update_run_schema = {
     "additionalProperties": False,
 }
 
+run_all_schema = {
+    "type": "object",
+    "properties": {
+        "run_status": {"type": "string", "enum": RunStatus.list()},
+        "notes": {"type": "string"},
+        "labels": {
+            "anyOf": [
+                {
+                    "type": "array",
+                    "items": {"type": "string"},
+                },
+                {"type": "string"},
+            ]
+        },
+        "limit": {"type": "string", "minLength": 1},
+        "skip": {"type": "string", "minLength": 1},
+        "sort": {"type": "string", "enum": ["started_at", "-started_at"]},
+    },
+    "additionalProperties": False,
+}
+
 run_configuration_create_schema = {
     "type": "object",
     "properties": {

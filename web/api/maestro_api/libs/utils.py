@@ -32,3 +32,11 @@ def run_threads_sync(threads):
 
 def parse_bool(str_value):
     return str_value.lower() in ["true", "1"]
+
+
+def str_to_list(str_value) -> list:
+    """
+    Convert string to list with one element
+    or just return received list
+    """
+    return [str_value] if not isinstance(str_value, list) else str_value
