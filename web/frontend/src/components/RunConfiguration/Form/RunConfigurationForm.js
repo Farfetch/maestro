@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 import { Button, Card, Col, Form, message, Row, Typography } from "antd";
+import moment from "moment";
 import PropTypes from "prop-types";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { createRun, startRun } from "../../../lib/api/endpoints/run";
@@ -12,6 +12,7 @@ import LoadConfigurationFormItem from "./FormItems/LoadConfiguration";
 import RunCustomPropertiesFormItem from "./FormItems/RunCustomProperties";
 import RunHostsFormItem from "./FormItems/RunHosts";
 import RunPlanFormItem from "./FormItems/RunPlan";
+import ScheduleFormItem from "./FormItems/Schedule";
 import TitleFormItem from "./FormItems/Title";
 import {
   isAgentsStatusValid,
@@ -29,7 +30,6 @@ const RunConfigurationForm = ({
 }) => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const [savedData, setSavedData] = useState({});
 
   const onFinish = async ({
     title,
@@ -39,7 +39,10 @@ const RunConfigurationForm = ({
     customProperties,
     customData,
     runPlans,
-    loadProfile
+    loadProfile,
+    isScheduleEnabled,
+    scheduleDays,
+    scheduleTime
   }) => {
     const loadingMessageKey = "runConfigurationFormLoading";
 
@@ -60,14 +63,21 @@ const RunConfigurationForm = ({
       hosts,
       customDataIds,
       customProperties,
-      loadProfile
+      loadProfile,
+      isScheduleEnabled
     };
+
+    if (isScheduleEnabled) {
+      dataToSave.schedule = {
+        days: scheduleDays,
+        time: scheduleTime
+      };
+    }
+
     const newRunConfigurationId = await saveRunConfiguration(
       runConfigurationId,
       dataToSave
     );
-
-    setSavedData(dataToSave);
 
     message.success({ content: "Saved!", key: loadingMessageKey });
 
@@ -77,11 +87,7 @@ const RunConfigurationForm = ({
   };
 
   const startTest = async () => {
-    const { agentIds } = {
-      ...initialValues,
-      ...savedData
-    };
-
+    const agentIds = form.getFieldValue("agentIds");
     const agentsValid = isAgentsStatusValid(agents, agentIds);
     if (agentsValid) {
       const { id: runId } = await createRun(runConfigurationId);
@@ -145,12 +151,29 @@ const RunConfigurationForm = ({
                 <FormBlockText>
                   Select where you want to execute tests. You can choosee
                   multiple agents based on load configuration and how powerfull
-                  machines are. The configuration would be replicated in each
+                  machines are. The configuration would be replicated to each
                   selected agent.
                 </FormBlockText>
               </>
             }
             right={<AvailableAgentsFormItem agents={agents} />}
+          />
+
+          <FormBlock
+            left={
+              <>
+                <Title level={5}>Schedule</Title>
+                <FormBlockText>
+                  Select days and time when you want to run your tests on daily
+                  basics.
+                </FormBlockText>
+              </>
+            }
+            right={
+              <ScheduleFormItem
+                initialScheduleEnabled={initialValues.isScheduleEnabled}
+              />
+            }
           />
 
           <FormBlock
@@ -260,7 +283,10 @@ RunConfigurationForm.defaultProps = {
     customData: [],
     hosts: [],
     customProperties: [],
-    loadProfile: []
+    loadProfile: [],
+    isScheduleEnabled: false,
+    scheduleDays: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    scheduleTime: moment("09:00", "HH:mm")
   },
   agents: []
 };

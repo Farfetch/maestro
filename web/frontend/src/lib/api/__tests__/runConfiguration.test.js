@@ -39,6 +39,11 @@ describe("libs/api/endpoints/runConfiguration", () => {
       end: 20,
       duration: 100
     },
+    is_schedule_enabled: true,
+    schedule: {
+      days: ["Mon", "Tue"],
+      time: "09:00"
+    },
     created_at: "2021-04-14 12:29:20",
     updated_at: "2021-04-14 12:51:25"
   };
@@ -53,6 +58,8 @@ describe("libs/api/endpoints/runConfiguration", () => {
     runPlanId: apiResponse.run_plan_id,
     customProperties: apiResponse.custom_properties,
     loadProfile: apiResponse.load_profile,
+    isScheduleEnabled: apiResponse.is_schedule_enabled,
+    schedule: apiResponse.schedule,
     createdAt: toLocalDate(apiResponse.created_at),
     updatedAt: toLocalDate(apiResponse.updated_at)
   };
@@ -113,6 +120,41 @@ describe("libs/api/endpoints/runConfiguration", () => {
           custom_data_ids: dataToUpdate.customDataIds,
           hosts: dataToUpdate.hosts,
           custom_properties: dataToUpdate.customProperties
+        })
+        .reply(200, apiResponse);
+
+      const data = await updateRunConfiguration(
+        runConfigurationId,
+        dataToUpdate
+      );
+
+      expect(data).toStrictEqual(expectedData);
+    });
+
+    test("should disable configuration schedule", async () => {
+      const runConfigurationId = "1-2-3";
+      const dataToUpdate = {
+        customDataIds: apiResponse.custom_data_ids,
+        hosts: apiResponse.hosts,
+        agentIds: apiResponse.agent_ids,
+        runPlanId: apiResponse.run_plan_id,
+        customProperties: apiResponse.custom_properties,
+        isScheduleEnabled: true,
+        schedule: {
+          days: ["Mon"],
+          time: "10:00"
+        }
+      };
+
+      axiosMock
+        .onPut(`/api/run_configuration/${runConfigurationId}`, {
+          run_plan_id: dataToUpdate.runPlanId,
+          agent_ids: dataToUpdate.agentIds,
+          custom_data_ids: dataToUpdate.customDataIds,
+          hosts: dataToUpdate.hosts,
+          custom_properties: dataToUpdate.customProperties,
+          is_schedule_enabled: dataToUpdate.isScheduleEnabled,
+          schedule: dataToUpdate.schedule
         })
         .reply(200, apiResponse);
 

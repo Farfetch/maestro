@@ -11,6 +11,8 @@ const runConfigurationObjectMapper = (runConfiguration) => ({
   runPlanId: runConfiguration.run_plan_id,
   customProperties: runConfiguration.custom_properties,
   loadProfile: runConfiguration.load_profile,
+  isScheduleEnabled: runConfiguration.is_schedule_enabled,
+  schedule: runConfiguration.schedule,
   createdAt: toLocalDate(runConfiguration.created_at),
   updatedAt: toLocalDate(runConfiguration.updated_at)
 });
@@ -22,6 +24,9 @@ const runConfigurationObjectMapper = (runConfiguration) => ({
  * @param {Array} agentIds  List of Ids from Agent collection
  * @param {Array} customDataIds  List of Ids from CustomData collection
  * @param {Array} customProperties  List of properties that would available inside running test
+ * @param {Array} loadProfile List of load configuration steps to configure traffic shaping
+ * @param {Array} isScheduleEnabled Boolean value to enable/disable scheduling
+ * @param {Array} schedule  Object with days and time when to run a test regularly
  * @returns
  */
 export const createRunConfiguration = async ({
@@ -32,7 +37,9 @@ export const createRunConfiguration = async ({
   agentIds,
   customDataIds,
   customProperties,
-  loadProfile
+  loadProfile,
+  isScheduleEnabled,
+  schedule
 }) => {
   const res = await maestroClient.post(`/api/run_configuration`, {
     title,
@@ -42,7 +49,9 @@ export const createRunConfiguration = async ({
     custom_data_ids: customDataIds,
     custom_properties: customProperties,
     load_profile: loadProfile,
-    hosts
+    hosts,
+    is_schedule_enabled: isScheduleEnabled,
+    ...(schedule ? { schedule } : {})
   });
 
   const runConfiguration = runConfigurationObjectMapper(res.data);
@@ -57,6 +66,9 @@ export const createRunConfiguration = async ({
  * @param {Array} agentIds  List of Ids from Agent collection
  * @param {Array} customDataIds  List of Ids from CustomData collection
  * @param {Array} customProperties  List of properties that would available inside running test
+ * @param {Array} loadProfile List of load configuration steps to configure traffic shaping
+ * @param {Array} isScheduleEnabled Boolean value to enable/disable scheduling
+ * @param {Array} schedule  Object with days and time when to run a test regularly
  * @returns
  */
 export const updateRunConfiguration = async (
@@ -69,7 +81,9 @@ export const updateRunConfiguration = async (
     agentIds,
     customDataIds,
     customProperties,
-    loadProfile
+    loadProfile,
+    isScheduleEnabled,
+    schedule
   }
 ) => {
   const res = await maestroClient.put(
@@ -82,7 +96,9 @@ export const updateRunConfiguration = async (
       custom_data_ids: customDataIds,
       custom_properties: customProperties,
       load_profile: loadProfile,
-      hosts
+      hosts,
+      is_schedule_enabled: isScheduleEnabled,
+      ...(schedule ? { schedule } : {})
     }
   );
 
