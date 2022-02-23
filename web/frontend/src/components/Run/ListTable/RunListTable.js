@@ -2,10 +2,11 @@ import { Col, Row, Space, Table, Tag } from "antd";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
+import { runStatus as runStatusModel } from "../../../lib/api/models";
 import { runSingleUrl } from "../../../lib/routes";
 import RunStatusTag from "../../tag/RunStatusTag";
 
-const columns = [
+const getColumns = (labels) => [
   {
     title: "Title",
     dataIndex: "title",
@@ -21,6 +22,12 @@ const columns = [
     dataIndex: "labels",
     key: "labels",
     width: 180,
+    filters: labels.map((label) => ({
+      text: label,
+      value: label
+    })),
+    filterSearch: true,
+    onFilter: (value, record) => record.labels.includes(value),
     render: (text, record) =>
       record.labels.map((label) => <Tag key={record.key + label}>{label}</Tag>)
   },
@@ -29,6 +36,11 @@ const columns = [
     dataIndex: "runStatus",
     key: "runStatus",
     width: 100,
+    filters: Object.values(runStatusModel).map((runStatus) => ({
+      text: runStatus,
+      value: runStatus
+    })),
+    onFilter: (value, record) => record.runStatus === value,
     render: (text) => <RunStatusTag runStatus={text} />
   },
   {
@@ -67,6 +79,15 @@ const runMapper = ({ id, title, runStatus, notes, labels, createdAt }) => ({
 
 const RunListTable = ({ runs, isLoading }) => {
   const runsDataSource = runs.map(runMapper);
+  const labels = runs.reduce((previousValue, run) => {
+    run.labels.forEach((label) => {
+      if (!previousValue.includes(label)) {
+        previousValue.push(label);
+      }
+    });
+
+    return previousValue;
+  }, []);
 
   return (
     <Row gutter={[32, 32]} justify="start" align="middle">
@@ -75,7 +96,7 @@ const RunListTable = ({ runs, isLoading }) => {
           size="small"
           loading={isLoading}
           dataSource={runsDataSource}
-          columns={columns}
+          columns={getColumns(labels)}
           pagination={{
             defaultPageSize: 50,
             hideOnSinglePage: true,
