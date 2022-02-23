@@ -43,7 +43,7 @@ class RunController:
         labels = data.get("labels", None)
         run_status = data.get("run_status", None)
         skip = int(data.get("skip", 0))
-        limit = int(data.get("limit", 100))
+        limit = int(data.get("limit", 1000))
         sort = data.get("sort", "-started_at")
 
         filter_query = Q()

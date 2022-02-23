@@ -486,7 +486,7 @@ paths:
           type: number
         - in: query
           name: limit
-          default: 100
+          default: 1000
           description: "Limit number of documents in response."
           type: number
         - in: query
