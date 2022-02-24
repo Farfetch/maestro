@@ -1,4 +1,5 @@
 import { Col, Row } from "antd";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -26,7 +27,9 @@ const CreateTestPage = () => {
       customDataIds,
       hosts,
       customProperties,
-      loadProfile
+      loadProfile,
+      isScheduleEnabled,
+      schedule
     } = await fetchRunConfigurationById(runConfigurationIdParam);
 
     const customData = await Promise.all(
@@ -57,7 +60,14 @@ const CreateTestPage = () => {
         name: customDataItem.name,
         status: "done",
         url: customDataDownloadUrl(customDataItem.id)
-      }))
+      })),
+      isScheduleEnabled,
+      ...(schedule
+        ? {
+            scheduleDays: schedule.days,
+            scheduleTime: moment(schedule.time, "HH:mm")
+          }
+        : {})
     });
     setLoading(false);
   };

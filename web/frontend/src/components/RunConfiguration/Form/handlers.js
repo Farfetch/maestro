@@ -35,44 +35,15 @@ export const uploadRunPlan = async (runPlan) => {
   return runPlan.uid;
 };
 
-export const saveRunConfiguration = async (
-  runConfigurationId,
-  {
-    title,
-    labels,
-    runPlanId,
-    agentIds,
-    hosts,
-    customDataIds,
-    customProperties,
-    loadProfile
-  }
-) => {
+export const saveRunConfiguration = async (runConfigurationId, dataToSave) => {
   if (runConfigurationId === null) {
-    const { id: newRunConfigurationId } = await createRunConfiguration({
-      title,
-      labels,
-      runPlanId,
-
-      agentIds,
-      hosts,
-      customDataIds,
-      customProperties,
-      loadProfile
-    });
+    const { id: newRunConfigurationId } = await createRunConfiguration(
+      dataToSave
+    );
 
     return newRunConfigurationId;
   }
-  await updateRunConfiguration(runConfigurationId, {
-    title,
-    labels,
-    runPlanId,
-    agentIds,
-    hosts,
-    customDataIds,
-    customProperties,
-    loadProfile
-  });
+  await updateRunConfiguration(runConfigurationId, dataToSave);
   return runConfigurationId;
 };
 
