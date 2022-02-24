@@ -659,6 +659,24 @@ paths:
                 items:
                   type: string
                 description: "List of Run Labels"
+              is_schedule_enabled:
+                description: "Enable/Disable schedule based running"
+                type: boolean
+                default: False
+              schedule:
+                type: object
+                description: "Schedule configuration"
+                properties:
+                  days:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/DaysOfTheWeek"
+                  time:
+                    type: string
+                    format: time
+                required:
+                  - days
+                  - time
             required:
               - run_plan_id
               - agent_ids
@@ -793,6 +811,24 @@ paths:
                 items:
                   type: string
                 description: "List of Run Labels"
+              is_schedule_enabled:
+                description: "Enable/Disable schedule based running"
+                type: boolean
+                default: False
+              schedule:
+                type: object
+                description: "Schedule configuration"
+                properties:
+                  days:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/DaysOfTheWeek"
+                  time:
+                    type: string
+                    format: time
+                required:
+                  - days
+                  - time
             required:
               - run_plan_id
               - agent_ids
@@ -1181,6 +1217,17 @@ components:
         - RUNNING
         - FINISHED
         - ERROR
+
+    DaysOfTheWeek:
+      type: string
+      enum:
+        - Mon
+        - Tue
+        - Wed
+        - Thu
+        - Fri
+        - Sat
+        - Sun
 
 definitions:
   Agent:
