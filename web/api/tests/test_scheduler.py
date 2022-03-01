@@ -101,8 +101,10 @@ def test_start_scheduled_run_second_time(app):
         run_plan_id=run_plan_id,
         agent_ids=agent_ids,
         is_schedule_enabled=True,
-        days=[DaysOfTheWeek.Mon.value],
-        time="10:00",
+        schedule=dict(
+            days=[DaysOfTheWeek.Mon.value],
+            time="10:00",
+        ),
     ).save()
 
     run_repo = RunRepository()
