@@ -1,5 +1,4 @@
 import { Col, Row } from "antd";
-import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -9,6 +8,7 @@ import { fetchAgents } from "../lib/api/endpoints/agent";
 import { fetchCustomDataById } from "../lib/api/endpoints/customData";
 import { fetchRunConfigurationById } from "../lib/api/endpoints/runConfiguration";
 import { fetchRunPlanById } from "../lib/api/endpoints/runPlan";
+import { toLocalHourMinute } from "../lib/date";
 import { customDataDownloadUrl, runPlanDownloadUrl } from "../lib/routes";
 
 const CreateTestPage = () => {
@@ -65,7 +65,7 @@ const CreateTestPage = () => {
       ...(schedule
         ? {
             scheduleDays: schedule.days,
-            scheduleTime: moment(schedule.time, "HH:mm")
+            scheduleTime: toLocalHourMinute(schedule.time)
           }
         : {})
     });
