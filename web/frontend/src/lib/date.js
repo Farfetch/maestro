@@ -4,6 +4,8 @@ const defaultDatetimeFormat = "YYYY-MM-DD HH:mm:ss";
 
 const hourMinuteFormat = "HH:mm";
 
+export const daysOfTheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 export const toUtcString = (localDatetime) =>
   localDatetime.utc().format(defaultDatetimeFormat);
 
