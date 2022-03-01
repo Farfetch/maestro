@@ -71,7 +71,7 @@ class RunController:
         run_configuration_id = data.get("run_configuration_id")
 
         run_configuration = get_obj_or_404(RunConfiguration, id=run_configuration_id)
-        new_run = self.run_repo(run_configuration)
+        new_run = self.run_repo.create_run(run_configuration)
 
         return make_json_response(new_run.to_json())
 
