@@ -39,8 +39,6 @@ SWAGGER = {
 
 SWAGGER_ENABLED = parse_bool(os.environ.get("SWAGGER_ENABLED", "True"))
 
-SCHEDULER_ENABLED = parse_bool(os.environ.get("SCHEDULER_ENABLED", "True"))
-
 JMETER_BASE_IMAGE = "jmeter"
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "SECRETKEY")

@@ -36,3 +36,13 @@ def create_frontend_app(settings):
     init_auth_routes(flask_app)
 
     return flask_app
+
+
+def create_console_app(settings):
+    flask_app = Flask(__name__)
+
+    flask_app.config.from_object(settings)
+
+    init_db(flask_app)
+
+    return flask_app
