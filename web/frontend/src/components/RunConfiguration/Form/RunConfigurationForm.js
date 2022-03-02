@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import { createRun, startRun } from "../../../lib/api/endpoints/run";
 import { colors } from "../../../lib/colors";
+import { toUtcHourMinute } from "../../../lib/date";
 import AvailableAgentsFormItem from "./FormItems/AvailableAgents";
 import CustomDataFormItem from "./FormItems/CustomData";
 import LoadConfigurationFormItem from "./FormItems/LoadConfiguration";
@@ -70,7 +71,7 @@ const RunConfigurationForm = ({
     if (isScheduleEnabled) {
       dataToSave.schedule = {
         days: scheduleDays,
-        time: scheduleTime
+        time: toUtcHourMinute(scheduleTime)
       };
     }
 
