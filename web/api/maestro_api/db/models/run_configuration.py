@@ -1,6 +1,7 @@
 import mongoengine_goodjson as gj
 from mongoengine import (
     BooleanField,
+    DateTimeField,
     IntField,
     StringField,
     ObjectIdField,
@@ -52,3 +53,5 @@ class RunConfiguration(CreatedUpdatedDocumentMixin, gj.Document):
     is_schedule_enabled = BooleanField(default=False)
 
     schedule = EmbeddedDocumentField(RunConfigurationSchedule)
+
+    last_scheduled_at = DateTimeField()
