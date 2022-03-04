@@ -6,6 +6,8 @@ sidebar_position: 4
 
 The Backend Listener is responsible for sending metrics to the Maestro API using the HTTP protocol. With the data available, Maestro will present live results through nice graphs for the collected metrics.
 
+![Diagram](../assets/metrics_backend_listener.svg)
+
 This component is added automatically in the script therefore is not necessary any manual modification on the script.
 
 List of metrics:
