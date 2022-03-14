@@ -3,8 +3,8 @@ from maestro_api.db.models.run import Run
 
 from maestro_api.libs.flask.utils import (
     get_obj_or_404,
-    make_json_response,
     jsonify_list_of_docs,
+    jsonify,
 )
 
 from maestro_api.libs.utils import filter_dict_by_none_values
@@ -57,7 +57,7 @@ class RunAgentController:
 
         self.update_run_status(run_id, agent_status)
 
-        return make_json_response(run_agent.to_json())
+        return jsonify(run_agent.to_dict())
 
     def all(self, data, user):
         "Return list of RunAgent objects based on filters"

@@ -15,10 +15,10 @@ wheel = "0.37.1"
 
 [packages]
 APScheduler = "3.7.0"
-flask-mongoengine = "1.0.0"
 gunicorn = "20.1.0"
 jsonschema = "4.4.0"
-mongoengine_goodjson = "1.1.8"
+pymongo = "4.0.2"
+mongoengine = "0.24.0"
 flasgger = "0.9.5"
 python-dotenv = "0.17.1"
 python-jose = "1.16.0"

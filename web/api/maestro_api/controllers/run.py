@@ -9,7 +9,7 @@ from maestro_api.db.models.run_configuration import RunConfiguration
 from maestro_api.libs.flask.utils import (
     get_obj_or_404,
     jsonify_list_of_docs,
-    make_json_response,
+    jsonify,
 )
 
 from maestro_api.libs.utils import str_to_list
@@ -29,14 +29,14 @@ class RunController:
         RunAgent.objects(run_id=run.id).delete()
         run.delete()
 
-        return make_json_response(run.to_json())
+        return jsonify(run.to_dict())
 
     def get_one(self, run_id, user):
         "Get Single Run run by ID"
 
         run = get_obj_or_404(Run, id=run_id)
 
-        return make_json_response(run.to_json())
+        return jsonify(run.to_dict())
 
     def all(self, data, user):
         "Get all Run objects"
@@ -73,7 +73,7 @@ class RunController:
         run_configuration = get_obj_or_404(RunConfiguration, id=run_configuration_id)
         new_run = self.run_repo.create_run(run_configuration)
 
-        return make_json_response(new_run.to_json())
+        return jsonify(new_run.to_dict())
 
     def update_one(self, run_id, data, user):
         "Update Run object by ID"
@@ -93,4 +93,4 @@ class RunController:
 
         run.save()
 
-        return make_json_response(run.to_json())
+        return jsonify(run.to_dict())

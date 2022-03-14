@@ -1,4 +1,3 @@
-import json
 from flask import abort, jsonify, make_response, request, redirect as flask_redirect
 from maestro_api.settings import HTTPS_REDIRECTS_ENABLED
 
@@ -34,14 +33,6 @@ def body_specs(schema, responses, tags):
     }
 
 
-def make_json_response(response):
-    response = make_response(response)
-    response.status_code = 200
-    response.headers["Content-Type"] = "application/json"
-
-    return response
-
-
 def jsonify_list_of_docs(docs):
     """
     Based on https://pypi.org/project/mongoengine-goodjson
@@ -49,7 +40,7 @@ def jsonify_list_of_docs(docs):
     Return list of dicts that might be converted to JSON without futher
     operations.
     """
-    return jsonify([json.loads(doc.to_json()) for doc in docs])
+    return jsonify([doc.to_dict() for doc in docs])
 
 
 def redirect(location):
