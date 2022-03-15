@@ -36,7 +36,7 @@ def body_specs(schema, responses, tags):
 def jsonify_list_of_docs(docs):
     """
     Based on https://pypi.org/project/mongoengine-goodjson
-    Converts MongoDB docuemnts to Json ready format.
+    Converts MongoDB documents to Json ready format.
     Return list of dicts that might be converted to JSON without futher
     operations.
     """
