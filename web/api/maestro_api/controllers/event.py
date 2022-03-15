@@ -3,7 +3,7 @@ from maestro_api.db.models.event import Event
 from maestro_api.libs.flask.utils import (
     get_obj_or_404,
     jsonify_list_of_docs,
-    make_json_response,
+    jsonify,
 )
 from maestro_api.libs.utils import filter_dict_by_none_values
 
@@ -23,7 +23,7 @@ class EventController:
             event.event_status = event_status
             event = event.save()
 
-        return make_json_response(event.to_json())
+        return jsonify(event.to_dict())
 
     def all(self, data, user):
         """

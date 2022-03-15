@@ -6,7 +6,7 @@ from maestro_api.libs.flask.utils import (
     bad_request_response,
     get_obj_or_404,
     jsonify_list_of_docs,
-    make_json_response,
+    jsonify,
 )
 
 
@@ -32,7 +32,7 @@ class CustomDataController:
         )
         new_custom_data.save()
 
-        return make_json_response(new_custom_data.to_json())
+        return jsonify(new_custom_data.to_dict())
 
     def get_one(self, custom_data_id, user):
         """
@@ -40,7 +40,7 @@ class CustomDataController:
         """
         custom_data = get_obj_or_404(CustomData, id=custom_data_id)
 
-        return make_json_response(custom_data.to_json())
+        return jsonify(custom_data.to_dict())
 
     def all(self, user):
         """

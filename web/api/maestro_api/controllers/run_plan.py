@@ -6,7 +6,7 @@ from maestro_api.db.models.run_plan import RunPlan
 from maestro_api.libs.flask.utils import (
     get_obj_or_404,
     jsonify_list_of_docs,
-    make_json_response,
+    jsonify,
 )
 from maestro_api.libs.jmx import Jmx
 from maestro_api.libs.utils import parse_bool
@@ -31,7 +31,7 @@ class RunPlanController:
         )
         new_run_plan.save()
 
-        return make_json_response(new_run_plan.to_json())
+        return jsonify(new_run_plan.to_dict())
 
     def get_one(self, run_plan_id, user):
         """
@@ -39,7 +39,7 @@ class RunPlanController:
         """
         run_plan = get_obj_or_404(RunPlan, id=run_plan_id)
 
-        return make_json_response(run_plan.to_json())
+        return jsonify(run_plan.to_dict())
 
     def all(self, user):
         """

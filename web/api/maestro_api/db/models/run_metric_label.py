@@ -1,5 +1,3 @@
-import mongoengine_goodjson as gj
-
 from mongoengine import (
     ObjectIdField,
     DateTimeField,
@@ -8,6 +6,7 @@ from mongoengine import (
     EmbeddedDocumentField,
     EmbeddedDocument,
     ListField,
+    Document,
 )
 
 
@@ -18,7 +17,7 @@ class RunMetricLabelResponseCode(EmbeddedDocument):
     messages = ListField(StringField(unique=True))
 
 
-class RunMetricLabel(gj.Document):
+class RunMetricLabel(Document):
     run_id = ObjectIdField()
     datetime = DateTimeField()
     label = StringField()
@@ -35,3 +34,28 @@ class RunMetricLabel(gj.Document):
     )
 
     meta = {"indexes": ["run_id", "datetime", ("run_id", "datetime")]}
+
+    def to_dict(self):
+        return {
+            "id": str(self.id),
+            "run_id": str(self.run_id),
+            "datetime": str(self.datetime),
+            "label": self.label,
+            "success_count": self.success_count,
+            "total_count": self.total_count,
+            "latency_avg": self.latency_avg,
+            "latency_p50": self.latency_p50,
+            "latency_p75": self.latency_p75,
+            "latency_p90": self.latency_p90,
+            "latency_p95": self.latency_p95,
+            "latency_p99": self.latency_p99,
+            "responses": [
+                {
+                    "response_code": response.response_code,
+                    "total_count": response.total_count,
+                    "success_count": response.success_count,
+                    "messages": [message for message in response.messages],
+                }
+                for response in self.responses
+            ],
+        }

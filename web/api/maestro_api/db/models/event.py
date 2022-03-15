@@ -1,8 +1,8 @@
 from datetime import datetime
 from maestro_api.libs.extended.enum import ExtendedEnum
-import mongoengine_goodjson as gj
 from mongoengine import StringField, DateTimeField, ObjectIdField
 from maestro_api.db.mixins import CreatedUpdatedDocumentMixin
+from maestro_api.libs.datetime import strftime
 
 
 class EventStatus(ExtendedEnum):
@@ -27,7 +27,7 @@ class EventType(ExtendedEnum):
     STOP_RUN = "STOP_RUN"
 
 
-class Event(CreatedUpdatedDocumentMixin, gj.Document):
+class Event(CreatedUpdatedDocumentMixin):
     event_status = StringField(
         default=EventStatus.PENDING.value,
         required=True,
@@ -53,3 +53,16 @@ class Event(CreatedUpdatedDocumentMixin, gj.Document):
             self.finished_at = datetime.now()
 
         return super(Event, self).save(*args, **kwargs)
+
+    def to_dict(self):
+        return {
+            "id": str(self.id),
+            "run_id": str(self.run_id),
+            "event_status": self.event_status,
+            "event_type": self.event_type,
+            "agent_id": str(self.agent_id),
+            "started_at": strftime(self.started_at) if self.started_at else None,
+            "finished_at": strftime(self.finished_at) if self.finished_at else None,
+            "created_at": strftime(self.created_at),
+            "updated_at": strftime(self.updated_at),
+        }

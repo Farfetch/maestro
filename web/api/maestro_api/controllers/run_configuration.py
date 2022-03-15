@@ -3,11 +3,7 @@ from maestro_api.db.models.run_plan import RunPlan
 from maestro_api.db.models.custom_data import CustomData
 from maestro_api.db.models.run_configuration import RunConfiguration
 
-from maestro_api.libs.flask.utils import (
-    get_obj_or_404,
-    jsonify_list_of_docs,
-    make_json_response,
-)
+from maestro_api.libs.flask.utils import get_obj_or_404, jsonify_list_of_docs, jsonify
 
 
 class RunConfigurationController:
@@ -56,7 +52,7 @@ class RunConfigurationController:
 
         run_configuration = get_obj_or_404(RunConfiguration, id=run_configuration_id)
 
-        return make_json_response(run_configuration.to_json())
+        return jsonify(run_configuration.to_dict())
 
     def all(self, user):
         "Get all RunConfiguration objects"
@@ -74,7 +70,7 @@ class RunConfigurationController:
 
         new_run_configuration = RunConfiguration(**data_to_insert).save()
 
-        return make_json_response(new_run_configuration.to_json())
+        return jsonify(new_run_configuration.to_dict())
 
     def update_one(self, run_configuration_id, data, user):
         "Update RunConfiguration object by ID"
@@ -86,7 +82,7 @@ class RunConfigurationController:
         run_configuration.update(**data_to_update)
         run_configuration.reload()
 
-        return make_json_response(run_configuration.to_json())
+        return jsonify(run_configuration.to_dict())
 
     def delete_one(self, run_configuration_id, user):
         "Delete RunConfiguration by ID"
@@ -95,4 +91,4 @@ class RunConfigurationController:
 
         run_configuration.delete()
 
-        return make_json_response(run_configuration.to_json())
+        return jsonify(run_configuration.to_dict())
