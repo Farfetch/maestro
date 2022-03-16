@@ -16,7 +16,7 @@ class RunLogController:
 
     def update_or_create_one(self, user):
         """
-        Update or create Logs file based on `agent_id` and `run_id`
+        Update or create Logs file
         """
 
         run_id = request.form.get("run_id")

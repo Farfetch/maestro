@@ -4,6 +4,7 @@ from maestro_api.libs.datetime import strftime
 
 
 class RunLog(CreatedUpdatedDocumentMixin):
+
     """
     RunAgent Model stores data related to the particular Run and Agent.
     Model might eventually replace usage of run.agent_ids field.
