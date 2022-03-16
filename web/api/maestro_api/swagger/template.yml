@@ -632,10 +632,10 @@ paths:
       consumes:
         - "application/json"
       produces:
-        - "application/json"
+        - "application/zip"
       responses:
         200:
-          description: arhieve with RunLog files inside
+          description: ZIP arhieve contains jmeter logs files
           content:
             application/zip:
             schema:
