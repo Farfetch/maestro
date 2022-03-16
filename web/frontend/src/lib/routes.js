@@ -9,6 +9,9 @@ export const customDataDownloadUrl = (customDataId) =>
 export const runMetricsDownloadUrl = (runId) =>
   `${maestroApiUrl}/api/run_metrics/${runId}/download`;
 
+export const runLogDownloadUrl = (runId) =>
+  `${maestroApiUrl}/api/run_log/${runId}/download`;
+
 export const testSingleUrl = (runConfigurationId) =>
   `/test/${runConfigurationId}`;
 
