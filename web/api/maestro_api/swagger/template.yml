@@ -615,8 +615,6 @@ paths:
           description: "Return single RunAgent object"
         400:
           description: "Bad request"
-        404:
-          description: "RunAgent Not Found"
 
   /run_log/{run_id}/download:
     get:
