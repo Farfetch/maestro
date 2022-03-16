@@ -2,6 +2,7 @@ import json
 import io
 
 from maestro_api.db.models.run_log import RunLog
+from maestro_api.db.models.agent import Agent
 
 
 def test_run_log_create_log_file(client):
@@ -70,6 +71,7 @@ def test_run_log_update_log_file(client):
 def test_run_log_download(client):
     run_id = "6076d1e3a216ff15b6e95e1f"
     agent_id = "6076d1e3a216ff15b6e95e1d"
+    Agent(id=agent_id, hostname="test.maestro.net", ip="127.0.0.5").save()
 
     run_agent = RunLog(run_id=run_id, agent_id=agent_id)
     run_agent.run_logs_file.put(b"log file content", content_type="application/log")

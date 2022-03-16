@@ -642,7 +642,7 @@ paths:
               type: string
               format: binary
         404:
-          description: Run not found
+          description: RunLog objects not found
 
   /run_configuration:
     post:
