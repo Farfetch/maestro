@@ -80,6 +80,7 @@ JMETER_RUN_DIR_RELATIVE_PATH = os.path.relpath(JMETER_RUN_DIR, JMETER_DIR)
 # TEST RUN REALTIME METRICS MNT DIRECTORIES
 
 JMETER_RUN_METRICS_FILENAME = "run_metrics.csv"
+JMETER_RUN_LOGS_FILENAME = "jmeter.log"
 
 JMETER_RUN_MOUNT_DIR = os.path.join(HOST_MOUNT_DIR, "%s")  # /tmp/maestrojmeter/{id}
 
@@ -87,6 +88,10 @@ JMETER_RUN_MOUNT_DIR = os.path.join(HOST_MOUNT_DIR, "%s")  # /tmp/maestrojmeter/
 JMETER_RUN_METRICS_PATH = os.path.join(
     JMETER_RUN_MOUNT_DIR, JMETER_RUN_METRICS_FILENAME
 )  # mnt/{id}/run_metrics.csv
+
+JMETER_RUN_LOGS_PATH = os.path.join(
+    JMETER_RUN_MOUNT_DIR, JMETER_RUN_LOGS_FILENAME
+)  # mnt/{id}/jmeter.log
 
 
 # JMETER DOCKER DIRECTORIES
@@ -114,3 +119,9 @@ JMETER_DOCKER_METRICS_FILE = os.path.join(
     JMETER_DOCKER_MOUNT_DIR,
     JMETER_RUN_METRICS_FILENAME,
 )  # /mnt/run_metrics.csv
+
+
+JMETER_DOCKER_LOGS_FILE = os.path.join(
+    JMETER_DOCKER_MOUNT_DIR,
+    JMETER_RUN_LOGS_FILENAME,
+)  # /mnt/jmeter.log

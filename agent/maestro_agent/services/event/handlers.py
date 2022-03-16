@@ -2,7 +2,7 @@ from maestro_agent.app_state import ApplicationState
 from maestro_agent.services.maestro_api.run import RunApi
 from maestro_agent.logging import Logger
 from maestro_agent.services.agent.hooks import AgentHooks
-from maestro_agent.services.running_test.files import RunningTestFiles
+
 
 from maestro_agent.services.running_test import (
     RunningTestThreadsManager,
@@ -60,10 +60,6 @@ class StopRunEventHandler(EventHandlerBase):
 
         running_test_threads = RunningTestThreadsManager.instance()
         running_test_threads.stop_test()
-
-        # Clean up all data that was created during test execution
-        running_test_files = RunningTestFiles(run_id=self.run.id)
-        running_test_files.clean_up_files()
 
         Logger.info("Test stopped")
 

@@ -12,6 +12,7 @@ from maestro_agent.settings import (
     JMETER_DOCKER_MOUNT_DIR,
     JMETER_DOCKER_PLAN_FILE,
     JMETER_DOCKER_PROPERTIES_FILE,
+    JMETER_DOCKER_LOGS_FILE,
     JMETER_RUN_DIR_RELATIVE_PATH,
     JMETER_RUN_MOUNT_DIR,
 )
@@ -93,8 +94,6 @@ class JmeterDocker:
     def run_container(self):
         "Runs jmeter client container based on TestRun object"
 
-        logs_file = "/mnt/jmeter.log"
-
         extra_hosts = self._get_container_extra_hosts()
         Logger.debug("Maestrojmeter image custom hosts %s", extra_hosts)
 
@@ -103,7 +102,7 @@ class JmeterDocker:
         jmeter_running_command = "-n -t %s -p %s -j %s" % (
             JMETER_DOCKER_PLAN_FILE,
             JMETER_DOCKER_PROPERTIES_FILE,
-            logs_file,
+            JMETER_DOCKER_LOGS_FILE,
         )
 
         container = DockerService.client().containers.run(
