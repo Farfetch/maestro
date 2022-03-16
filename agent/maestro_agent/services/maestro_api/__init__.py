@@ -49,6 +49,17 @@ class MaestroApiClient:
         open(to_url, "wb").write(r.content)
 
     @staticmethod
+    def upload_file(url, data, files, mapper):
+        response = requests.put(
+            "%s%s" % (MAESTRO_API_HOST, url),
+            headers=MaestroApiClient.headers,
+            data=data,
+            files=files,
+        )
+
+        return MaestroApiClient.handle_response(response, mapper)
+
+    @staticmethod
     def handle_response(response, mapper):
         # 2xx
         if response.status_code < 300:
