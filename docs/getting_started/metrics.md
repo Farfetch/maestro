@@ -32,7 +32,7 @@ List of metrics:
 
 ### Downloading the Metrics
 
-When the test finish, Maestro allows you download the metrics samples exporting a CSV file, with the same format as '.jtl' file.
+When the test finish, Maestro allows you download the metrics samples exporting a CSV file, with the same format as ´.jtl´ file.
 
 File example:
 
@@ -51,6 +51,6 @@ Use the [Swagger template file](https://github.com/Farfetch/maestro/blob/master/
 
 ### About the Maestro Backend Listener Implementation
 
-The Maestro Backend Listener Implementation was created based on the Jmeter Backend Listener in order to increase performance and resilience.
+The Maestro Backend Listener Implementation was created based on the JMeter Backend Listener in order to increase performance and resilience.
 
 Read more about the Maestro Backend Listener Implementation [here](https://github.com/Farfetch/maestro/tree/master/jmeter/plugins/jmeter-backendlistener-maestro).
