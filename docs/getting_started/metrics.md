@@ -32,7 +32,7 @@ List of metrics:
 
 ### Downloading the Metrics
 
-When the test finish, Maestro allows you download the metrics samples exporting a CSV file, with the same format as ´.jtl´ file.
+When the test finish, Maestro allows you download the metrics samples exporting a CSV file, with the same format as `.jtl` file.
 
 File example:
 
