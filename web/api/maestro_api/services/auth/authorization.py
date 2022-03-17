@@ -27,9 +27,7 @@ class JWTAuthorization(object):
 
     _instances = dict()
 
-    jwks_uri = ".well-known/openid-configuration/jwks"
-
-    def __init__(self, issuer) -> None:
+    def __init__(self, host: str, issuer) -> None:
         """The constructor for the Authorization class.
 
         well_known_obj_cache: URL of the OpenID serve
@@ -39,19 +37,17 @@ class JWTAuthorization(object):
         audience: Expected recipient
         """
 
-        self.well_known_config = "%s/.well-known/openid-configuration" % issuer
-
-        self.well_known_obj_cache = requests.get(self.well_known_config).json()
-        self.jwks_uri = self.well_known_obj_cache["jwks_uri"]
-        self.issuer = self.well_known_obj_cache["issuer"]
-        self.jwks_keys = requests.get(self.jwks_uri).json()
+        self.well_known_config = "%s" % issuer
+        self.issuer = issuer
+        jwks_uri = f"{host}/.well-known/openid-configuration/jwks"
+        self.jwks_keys = requests.get(jwks_uri).json()
 
     @classmethod
-    def instance(cls, issuer):
-        if cls._instances.get(issuer, None) is None:
-            cls._instances[issuer] = JWTAuthorization(issuer=issuer)
+    def instance(cls, host, issuer):
+        if cls._instances.get(host, None) is None:
+            cls._instances[host] = JWTAuthorization(host=host, issuer=issuer)
 
-        return cls._instances.get(issuer)
+        return cls._instances.get(host)
 
     def validate_token(
         self, token: str, audience="user.read", algorithms=["RS256"]

@@ -2,11 +2,12 @@ from flask import request, redirect, make_response
 
 from maestro_api.services.auth.oauth import OauthClient
 from maestro_api.logging import Logger
+from maestro_api.db.repo.user import UserRepository
 
 from maestro_api.settings import (
     OAUTH_CLIENT_ID,
     OAUTH_CLIENT_SECRET,
-    OAUTH_ISSUER,
+    OAUTH_HOST,
     OAUTH_CLIENT_REDIRECT_URI,
     OAUTH_SCOPE,
 )
@@ -15,7 +16,7 @@ from maestro_api.settings import (
 def create_oauth_client():
     "Create oauth Client based on configuration from environment"
     client = OauthClient(
-        issuer=OAUTH_ISSUER,
+        host=OAUTH_HOST,
         client_id=OAUTH_CLIENT_ID,
         client_secret=OAUTH_CLIENT_SECRET,
         redirect_uri=OAUTH_CLIENT_REDIRECT_URI,
@@ -26,6 +27,8 @@ def create_oauth_client():
 
 
 def init_auth_routes(flask_app):
+    user_repository = UserRepository()
+
     @flask_app.route("/oauth/authorize")
     def authorize():
         client = create_oauth_client()
@@ -47,13 +50,18 @@ def init_auth_routes(flask_app):
             refresh_token = data.get("refresh_token")
             access_token = data.get("access_token")
 
+            user = client.get_userinfo(access_token)
+            user_repository.create_or_update(
+                name=user["name"], email=user["preferred_username"]
+            )
+
             response = make_response(redirect("/"))
             response.set_cookie("access_token", access_token)
             response.set_cookie("refresh_token", refresh_token)
 
         except Exception as e:
             Logger.error(str(e))
-            response = make_response(redirect("/login"))
+            response = make_response(str(e))
 
         return response
 

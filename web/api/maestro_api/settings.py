@@ -53,8 +53,14 @@ AUTH_API_ENABLED = parse_bool(os.environ.get("AUTH_API_ENABLED", "True"))
 AUTH_API_USER = os.environ.get("AUTH_API_USER", "maestro")
 AUTH_API_TOKEN = os.environ.get("AUTH_API_TOKEN", "")
 
+AUTH_ADMIN_EMAIL = os.environ.get("AUTH_ADMIN_EMAIL", "")
+
 # OAUTH CONFIGURATION
 OAUTH_ENABLED = parse_bool(os.environ.get("OAUTH_ENABLED", "False"))
+OAUTH_HOST = os.environ.get("OAUTH_HOST")
+OAUTH_WELL_KNOWN_CONFIGURATION_HOST = os.environ.get(
+    "OAUTH_WELL_KNOWN_CONFIGURATION_HOST", OAUTH_HOST
+)
 OAUTH_ISSUER = os.environ.get("OAUTH_ISSUER")
 OAUTH_CLIENT_ID = os.environ.get("OAUTH_CLIENT_ID")
 OAUTH_CLIENT_SECRET = os.environ.get("OAUTH_CLIENT_SECRET")
