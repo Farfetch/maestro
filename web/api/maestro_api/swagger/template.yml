@@ -581,6 +581,69 @@ paths:
         400:
           description: "Bad request"
 
+  /run_log:
+    put:
+      tags:
+        - "RunLog"
+      summary: "Update RunLog file"
+      description: ""
+      operationId: "updateRunLogFile"
+      consumes:
+        - "multipart/form-data"
+      produces:
+        - "application/json"
+      parameters:
+        - in: formData
+          name: run_logs_file
+          description: "RunLog file"
+          required: true
+          type: file
+        - in: formData
+          name: run_id
+          description: "Run ID"
+          required: true
+          type: string
+        - in: formData
+          name: agent_id
+          description: "Agent ID"
+          required: true
+          type: string
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/RunAgent"
+          description: "Return single RunAgent object"
+        400:
+          description: "Bad request"
+
+  /run_log/{run_id}/download:
+    get:
+      tags:
+        - "Run Log"
+      summary: "Download logs arhieve logs by RunId"
+      description: ""
+      operationId: "downloadRunLogsByRunId"
+      parameters:
+        - in: path
+          name: run_id
+          description: "Run ID"
+          required: true
+          type: string
+      consumes:
+        - "application/json"
+      produces:
+        - "application/zip"
+      responses:
+        200:
+          description: ZIP arhieve contains jmeter logs files
+          content:
+            application/zip:
+            schema:
+              type: string
+              format: binary
+        404:
+          description: RunLog objects not found
+
   /run_configuration:
     post:
       tags:
@@ -1414,6 +1477,8 @@ definitions:
       run_id:
         type: string
       agent_id:
+        type: string
+      run_logs_file:
         type: string
       agent_status:
         $ref: "#/components/schemas/RunAgentStatus"

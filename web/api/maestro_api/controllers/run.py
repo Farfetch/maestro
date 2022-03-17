@@ -1,7 +1,7 @@
 from mongoengine import Q
 
 from maestro_api.db.models.run import Run
-from maestro_api.db.models.agent import Agent
+from maestro_api.db.repo.run import RunRepository
 from maestro_api.db.models.run_agent import RunAgent
 from maestro_api.db.models.run_metric import RunMetric
 from maestro_api.db.models.run_configuration import RunConfiguration
@@ -9,15 +9,16 @@ from maestro_api.db.models.run_configuration import RunConfiguration
 from maestro_api.libs.flask.utils import (
     get_obj_or_404,
     jsonify_list_of_docs,
-    make_json_response,
+    jsonify,
 )
 
 from maestro_api.libs.utils import str_to_list
 
 
 class RunController:
-    def __init__(self, flask_app):
+    def __init__(self, flask_app=None):
         self.flask_app = flask_app
+        self.run_repo = RunRepository()
 
     def delete_one(self, run_id, user):
         "Delete Run and related metrics by ID"
@@ -28,14 +29,14 @@ class RunController:
         RunAgent.objects(run_id=run.id).delete()
         run.delete()
 
-        return make_json_response(run.to_json())
+        return jsonify(run.to_dict())
 
     def get_one(self, run_id, user):
         "Get Single Run run by ID"
 
         run = get_obj_or_404(Run, id=run_id)
 
-        return make_json_response(run.to_json())
+        return jsonify(run.to_dict())
 
     def all(self, data, user):
         "Get all Run objects"
@@ -69,43 +70,10 @@ class RunController:
 
         run_configuration_id = data.get("run_configuration_id")
 
-        configuration = get_obj_or_404(RunConfiguration, id=run_configuration_id)
-        hosts = [host.to_mongo() for host in configuration.hosts]
-        load_profile = [
-            load_profile_step.to_mongo()
-            for load_profile_step in configuration.load_profile
-        ]
+        run_configuration = get_obj_or_404(RunConfiguration, id=run_configuration_id)
+        new_run = self.run_repo.create_run(run_configuration)
 
-        custom_properties = [
-            custom_property.to_mongo()
-            for custom_property in configuration.custom_properties
-        ]
-
-        new_run = Run(
-            title=configuration.title,
-            run_configuration_id=configuration.id,
-            agent_ids=configuration.agent_ids,
-            run_plan_id=configuration.run_plan_id,
-            custom_data_ids=configuration.custom_data_ids,
-            labels=configuration.labels,
-            load_profile=load_profile,
-            hosts=hosts,
-            custom_properties=custom_properties,
-        ).save()
-
-        agent_ids = configuration.agent_ids
-
-        agents = Agent.objects(id__in=agent_ids)
-        run_agents = [
-            RunAgent(
-                run_id=new_run.id, agent_id=agent.id, agent_hostname=agent.hostname
-            )
-            for agent in agents
-        ]
-
-        RunAgent.objects.insert(run_agents)
-
-        return make_json_response(new_run.to_json())
+        return jsonify(new_run.to_dict())
 
     def update_one(self, run_id, data, user):
         "Update Run object by ID"
@@ -125,4 +93,4 @@ class RunController:
 
         run.save()
 
-        return make_json_response(run.to_json())
+        return jsonify(run.to_dict())

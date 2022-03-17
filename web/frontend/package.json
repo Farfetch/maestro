@@ -6,18 +6,18 @@
     "@ant-design/colors": "^6.0.0",
     "@ant-design/icons": "^4.6.2",
     "@testing-library/jest-dom": "^5.16.2",
-    "@testing-library/react": "^12.1.3",
+    "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
-    "antd": "^4.18.9",
-    "axios": "^0.26.0",
+    "antd": "^4.19.2",
+    "axios": "^0.26.1",
     "axios-mock-adapter": "^1.19.0",
     "chart.js": "^3.7.1",
     "chartjs-adapter-moment": "^1.0.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^8.4.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.29.2",
+    "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "mockdate": "^3.0.5",
     "moment": "^2.29.1",
@@ -27,7 +27,7 @@
     "react": "^17.0.2",
     "react-chartjs-2": "^3.0.3",
     "react-dom": "^17.0.2",
-    "react-router-dom": "6.2.1"
+    "react-router-dom": "6.2.2"
   },
   "devDependencies": {
     "react-scripts": "5.0.0"

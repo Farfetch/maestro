@@ -4,6 +4,7 @@ from maestro_api.controllers.run_configuration import RunConfigurationController
 from maestro_api.controllers.run_metric import RunMetricController
 from maestro_api.controllers.run_agent import RunAgentController
 from maestro_api.controllers.run_plan import RunPlanController
+from maestro_api.controllers.run_log import RunLogController
 from maestro_api.controllers.agent import AgentController
 from maestro_api.controllers.custom_data import CustomDataController
 from maestro_api.controllers.agent_log import AgentLogController
@@ -36,6 +37,7 @@ def init_api_routes(flask_app):
     run_configuration_controller = RunConfigurationController(flask_app)
     run_plan_controller = RunPlanController(flask_app)
     run_metric_controller = RunMetricController(flask_app)
+    run_log_controller = RunLogController(flask_app)
     run_agent_controller = RunAgentController(flask_app)
     agent_controller = AgentController(flask_app)
     custom_data_controller = CustomDataController(flask_app)
@@ -161,7 +163,18 @@ def init_api_routes(flask_app):
     def run_metric_download(*args, **kwargs):
         return run_metric_controller.download(*args, **kwargs)
 
-    # /run_metric routes
+    # /run_logs routes
+    @flask_app.route("/run_log", methods=["PUT"])
+    @requires_auth()
+    def run_log_update_one(*args, **kwargs):
+        return run_log_controller.update_or_create_one(*args, **kwargs)
+
+    @flask_app.route("/run_log/<run_id>/download", methods=["GET"])
+    @requires_auth()
+    def run_log_download(*args, **kwargs):
+        return run_log_controller.download_by_run(*args, **kwargs)
+
+    # /run_agent routes
     @flask_app.route("/run_agent", methods=["PUT"])
     @requires_auth()
     @validate_request(run_agent_update_schema)

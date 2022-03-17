@@ -3,7 +3,7 @@ from maestro_api.db.models.agent import Agent
 from maestro_api.libs.flask.utils import (
     get_obj_or_404,
     jsonify_list_of_docs,
-    make_json_response,
+    jsonify,
 )
 
 
@@ -28,7 +28,7 @@ class AgentController:
         except Agent.DoesNotExist:
             agent = Agent(hostname=hostname, ip=ip).save()
 
-        return make_json_response(agent.to_json())
+        return jsonify(agent.to_dict())
 
     def update_one(self, agent_id, data, user):
         """
@@ -45,7 +45,7 @@ class AgentController:
             agent.agent_status = agent_status
             agent = agent.save()
 
-        return make_json_response(agent.to_json())
+        return jsonify(agent.to_dict())
 
     def get_one(self, agent_id, user):
         """
@@ -53,7 +53,7 @@ class AgentController:
         """
         agent = get_obj_or_404(Agent, id=agent_id)
 
-        return make_json_response(agent.to_json())
+        return jsonify(agent.to_dict())
 
     def all(self, user):
         """

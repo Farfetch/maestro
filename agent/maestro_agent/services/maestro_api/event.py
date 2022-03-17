@@ -48,10 +48,10 @@ def event_json_to_object(event_json):
         agent_id=event_json.get("agent_id"),
         run_id=event_json.get("run_id"),
         started_at=dateutil.parser.parse(event_json["started_at"])
-        if "started_at" in event_json
+        if event_json["started_at"] is not None
         else None,
         finished_at=dateutil.parser.parse(event_json["finished_at"])
-        if "finished_at" in event_json
+        if event_json["finished_at"] is not None
         else None,
         created_at=dateutil.parser.parse(event_json.get("created_at")),
         updated_at=dateutil.parser.parse(event_json.get("updated_at")),

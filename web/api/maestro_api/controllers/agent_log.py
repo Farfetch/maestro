@@ -4,7 +4,7 @@ from maestro_api.db.models.agent_log import AgentLog
 
 from maestro_api.libs.flask.utils import (
     jsonify_list_of_docs,
-    make_json_response,
+    jsonify,
 )
 from maestro_api.libs.datetime import strptime
 
@@ -26,7 +26,7 @@ class AgentLogController:
             agent_id=agent_id, log_message=log_message, level=level
         ).save()
 
-        return make_json_response(new_agent_log.to_json())
+        return jsonify(new_agent_log.to_dict())
 
     def all(self, data, user):
         """

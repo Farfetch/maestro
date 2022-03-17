@@ -1,4 +1,3 @@
-import mongoengine_goodjson as gj
 from mongoengine import (
     IntField,
     StringField,
@@ -11,6 +10,7 @@ from mongoengine import (
 from maestro_api.libs.extended.enum import ExtendedEnum
 from maestro_api.libs.datetime import now
 from maestro_api.db.mixins import CreatedUpdatedDocumentMixin
+from maestro_api.libs.datetime import strftime
 
 
 class RunStatus(ExtendedEnum):
@@ -38,7 +38,7 @@ class RunLoadProfile(EmbeddedDocument):
     duration = IntField(required=True)
 
 
-class Run(CreatedUpdatedDocumentMixin, gj.Document):
+class Run(CreatedUpdatedDocumentMixin):
     title = StringField(required=True)
     run_configuration_id = ObjectIdField(required=True)
     run_status = StringField(
@@ -85,3 +85,38 @@ class Run(CreatedUpdatedDocumentMixin, gj.Document):
             self.finished_at = now()
 
         return self
+
+    def to_dict(self):
+        return {
+            "id": str(self.id),
+            "run_configuration_id": str(self.run_configuration_id),
+            "run_plan_id": str(self.run_plan_id),
+            "agent_ids": [str(agent_id) for agent_id in self.agent_ids],
+            "custom_data_ids": [
+                str(custom_data_id) for custom_data_id in self.custom_data_ids
+            ],
+            "title": self.title,
+            "run_status": self.run_status,
+            "hosts": [{"host": host.host, "ip": host.ip} for host in self.hosts],
+            "custom_properties": [
+                {
+                    "name": custom_property.name,
+                    "value": custom_property.value,
+                }
+                for custom_property in self.custom_properties
+            ],
+            "load_profile": [
+                {
+                    "start": load_step.start,
+                    "end": load_step.end,
+                    "duration": load_step.duration,
+                }
+                for load_step in self.load_profile
+            ],
+            "notes": self.notes,
+            "labels": self.labels,
+            "started_at": strftime(self.started_at),
+            "created_at": strftime(self.created_at),
+            "finished_at": strftime(self.finished_at),
+            "updated_at": strftime(self.updated_at),
+        }

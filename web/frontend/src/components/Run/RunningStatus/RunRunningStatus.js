@@ -11,6 +11,7 @@ import RunAnalyticCharts from "./AnalyticCharts";
 import DownloadMetricsButton from "./DownloadMetricsButton";
 import RunEditableLabelsGroup from "./EditableLabelsGroup";
 import RunEndpointCharts from "./EndpointCharts";
+import MoreButtonsMenu from "./MoreButtonsMenu";
 import RunNotesInput from "./NotesInput";
 import RunRunningTime from "./RunningTime";
 import StopExecutionButton from "./StopExecutionButton";
@@ -65,7 +66,8 @@ const RunRunningStatus = ({ run }) => {
           >
             <Button type="secondary">Restart</Button>
           </Popconfirm>,
-          <DownloadMetricsButton runId={run.id} key="downloadmetrics" />
+          <DownloadMetricsButton runId={run.id} key="downloadMetrics" />,
+          <MoreButtonsMenu runId={run.id} key="moreButtonsMenu" />
         ];
       default:
         if (!isRunMetricsAvailable) return [];
