@@ -2,6 +2,7 @@ import json
 
 
 from maestro_api.db.models.user import User, UserRole
+from maestro_api.controllers.user import UserController
 from maestro_api.db.models.workspace import Workspace
 
 
@@ -30,6 +31,33 @@ def test_user_all(client):
     assert "created_at" in res_users[0]
     assert "created_at" in res_users[0]
     assert "updated_at" in res_users[0]
+
+
+def test_user_me(app, client):
+
+    name = "User 1"
+    email = "user1@maestro.test"
+    workspace_ids = ["6076d1e3a216ff15b6e95e1f"]
+    role = UserRole.ADMIN.value
+
+    app.config["MOCK_AUTH_CURRENT_USER_EMAIL"] = email
+    User(name=name, email=email, role=role, workspace_ids=workspace_ids).save()
+
+    response = client.get(
+        "/me",
+    )
+
+    assert 200 == response.status_code
+
+    res_user = json.loads(response.data)
+
+    assert name == res_user["name"]
+    assert email == res_user["email"]
+    assert workspace_ids == res_user["workspace_ids"]
+    assert role == res_user["role"]
+    assert res_user["last_login_at"] is None
+    assert "created_at" in res_user
+    assert "updated_at" in res_user
 
 
 def test_create_user(client):

@@ -95,6 +95,10 @@ def requires_auth(redirect_to_login=False):
                     )
                     return f(*args, **kwargs, user=user)
                 else:
+                    mock_email = current_app.config["MOCK_AUTH_CURRENT_USER_EMAIL"]
+                    if mock_email:
+                        return f(*args, **kwargs, user={"email": mock_email})
+
                     if current_app.config["OAUTH_ENABLED"] is False:
                         return f(*args, **kwargs, user=None)
 
@@ -120,6 +124,7 @@ def requires_auth(redirect_to_login=False):
                     response.set_cookie("refresh_token", "", expires=0)
                     return response
                 else:
+                    # TODO: return unauthorized code
                     return jsonify({"error": e.error_msg}), e.status_code
 
         return wrapper

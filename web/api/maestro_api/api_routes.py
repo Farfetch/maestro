@@ -281,6 +281,11 @@ def init_api_routes(flask_app):
     def user_create_one(*args, **kwargs):
         return user_controller.create_one(*args, **kwargs)
 
+    @flask_app.route("/me", methods=["GET"])
+    @requires_auth()
+    def user_me(*args, **kwargs):
+        return user_controller.get_me(*args, **kwargs)
+
     # /workspace routes
     @flask_app.route("/workspaces", methods=["GET"])
     @requires_auth()

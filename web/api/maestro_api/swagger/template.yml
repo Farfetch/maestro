@@ -1341,6 +1341,23 @@ paths:
             $ref: "#/definitions/Users"
           description: "Returns list of User objects"
 
+  /me:
+    get:
+      tags:
+        - "User"
+      summary: "Get all User objects"
+      description: ""
+      operationId: "getCurrentUser"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/User"
+          description: "Return User object"
+
   /workspace:
     post:
       tags:
