@@ -1,8 +1,6 @@
 import json
 
-
 from maestro_api.db.models.user import User, UserRole
-from maestro_api.controllers.user import UserController
 from maestro_api.db.models.workspace import Workspace
 
 
