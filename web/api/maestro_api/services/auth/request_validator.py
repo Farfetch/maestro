@@ -7,6 +7,8 @@ from maestro_api.services.auth.authorization import (
 from maestro_api.services.auth.oauth import OauthClient
 from maestro_api.settings import (
     AUTH_API_USER,
+    OAUTH_HOST,
+    OAUTH_WELL_KNOWN_CONFIGURATION_HOST,
     OAUTH_ISSUER,
     OAUTH_CLIENT_ID,
     OAUTH_CLIENT_SECRET,
@@ -23,7 +25,7 @@ class AuthRequestValidator:
     def create_oauth_client(self):
         "Create oauth Client based on configuration from environment"
         client = OauthClient(
-            issuer=OAUTH_ISSUER,
+            host=OAUTH_HOST,
             client_id=OAUTH_CLIENT_ID,
             client_secret=OAUTH_CLIENT_SECRET,
             redirect_uri=OAUTH_CLIENT_REDIRECT_URI,
@@ -44,7 +46,9 @@ class AuthRequestValidator:
         if not access_token or not refresh_token:
             raise UnauthorizedAccessError("Access/Refresh tokens are not valid")
 
-        jwt_authorization = JWTAuthorization.instance(OAUTH_ISSUER)
+        jwt_authorization = JWTAuthorization.instance(
+            host=OAUTH_WELL_KNOWN_CONFIGURATION_HOST, issuer=OAUTH_ISSUER
+        )
         update_tokens = False
 
         try:
