@@ -2,7 +2,7 @@ from maestro_api.services.auth.oauth import OauthClient
 
 
 class TestOauthClient:
-    issuer = "https://issuer.test"
+    host = "https://host.test"
     client_id = "test_client"
     client_secret = "test_secret"
     scope = "test_scope"
@@ -10,7 +10,7 @@ class TestOauthClient:
 
     def test_get_authorize_url(self):
         client = OauthClient(
-            self.issuer,
+            self.host,
             self.client_id,
             self.client_secret,
             self.redirect_uri,
@@ -20,7 +20,7 @@ class TestOauthClient:
         authorize_url = client.get_authorize_url()
 
         extected_url = (
-            "https://issuer.test/connect/authorize"
+            "https://host.test/connect/authorize"
             "?client_id=test_client"
             "&response_type=code"
             "&scope=test_scope"
@@ -33,7 +33,7 @@ class TestOauthClient:
     def test_make_access_token(self, mocker):
 
         client = OauthClient(
-            self.issuer,
+            self.host,
             self.client_id,
             self.client_secret,
             self.redirect_uri,
@@ -57,7 +57,7 @@ class TestOauthClient:
     def test_make_refresh_token(self, mocker):
 
         client = OauthClient(
-            self.issuer,
+            self.host,
             self.client_id,
             self.client_secret,
             self.redirect_uri,
@@ -73,6 +73,30 @@ class TestOauthClient:
         mocker.patch("requests.post", return_value=RequestMock())
 
         data = client.make_token_refresh(refresh_roken="123")
+
+        mocker.resetall()
+
+        assert expected == data
+
+    def test_get_userinfo(self, mocker):
+
+        client = OauthClient(
+            self.host,
+            self.client_id,
+            self.client_secret,
+            self.redirect_uri,
+            self.scope,
+        )
+
+        expected = {"test": 1}
+
+        class RequestMock:
+            def json(self):
+                return expected
+
+        mocker.patch("requests.post", return_value=RequestMock())
+
+        data = client.get_userinfo(access_token="123")
 
         mocker.resetall()
 
