@@ -1,6 +1,6 @@
 from mongoengine import StringField, DateTimeField, ObjectIdField, ListField
 from maestro_api.db.mixins import CreatedUpdatedDocumentMixin
-from maestro_api.libs.datetime import now, strftime
+from maestro_api.libs.datetime import strftime
 from maestro_api.libs.extended.enum import ExtendedEnum
 
 
@@ -18,7 +18,6 @@ class User(CreatedUpdatedDocumentMixin):
 
     name = StringField(required=True)
     email = StringField(required=True, unique=True)
-    profile_img = StringField()
     workspace_ids = ListField(
         required=True,
         field=ObjectIdField(),
@@ -27,16 +26,18 @@ class User(CreatedUpdatedDocumentMixin):
         required=True,
         choices=UserRole.list(),
     )
-    last_login_at = DateTimeField(required=True, default=now())
+    last_login_at = DateTimeField()
 
     def to_dict(self):
         return {
             "id": str(self.id),
             "name": self.name,
             "email": self.email,
-            "profile_img": self.profile_img,
+            "role": self.role,
             "workspace_ids": [str(workspace_id) for workspace_id in self.workspace_ids],
-            "last_login_at": strftime(self.finished_at),
+            "last_login_at": strftime(self.last_login_at)
+            if self.last_login_at
+            else None,
             "created_at": strftime(self.created_at),
             "updated_at": strftime(self.updated_at),
         }

@@ -23,10 +23,9 @@ class UserRepository:
                 else UserRole.USER.value
             )
             default_workspace = Workspace.get_or_create_default()
+            workspace_ids = [default_workspace.id]
 
-            user = User(
-                name=name, email=email, role=role, workspace_ids=[default_workspace.id]
-            )
+            user = User(name=name, email=email, role=role, workspace_ids=workspace_ids)
         user.save()
 
         return user

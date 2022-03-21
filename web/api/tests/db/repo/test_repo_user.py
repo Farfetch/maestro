@@ -48,7 +48,6 @@ class TestUserRepository:
         assert expected_count == len(users)
         assert input["name"] == updated_user.name
         assert input["email"] == updated_user.email
-        assert updated_user.last_login_at
 
     def test_create_or_update_without_default_workspace(self, app, mocker):
         user_repo = UserRepository()
