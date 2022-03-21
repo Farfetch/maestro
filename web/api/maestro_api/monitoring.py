@@ -15,14 +15,4 @@ def init_monitoring_routes(flask_app):
 
     @flask_app.route("/monitoring/ready")
     def __ready():
-        """This is a function to handle the ready endpoint.
-
-        Returns
-        -------
-        str
-                Http response message
-        int
-                Http response status code, 200 is the app is ready and 503 if it is not.
-        """
-
         return "", 200
