@@ -1,7 +1,7 @@
 import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 
-const meObjectMapper = (user) => ({
+const userObjectMapper = (user) => ({
   id: user.id,
   email: user.email,
   name: user.name,
@@ -15,7 +15,15 @@ const meObjectMapper = (user) => ({
 export const fetchMe = async () => {
   const res = await maestroClient.get("/api/me");
 
-  const user = meObjectMapper(res.data);
+  const user = userObjectMapper(res.data);
 
   return user;
+};
+
+export const fetchUsers = async () => {
+  const res = await maestroClient.get("/api/users");
+
+  const users = res.data.map(userObjectMapper);
+
+  return users;
 };

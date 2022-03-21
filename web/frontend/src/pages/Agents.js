@@ -24,7 +24,7 @@ const TestsPage = () => {
   }, []);
   return (
     <>
-      <PageTitle title={"Agents"} button={null} />
+      <PageTitle title={"Agents"} />
       <Row gutter={[32, 32]} justify="start" align="middle">
         <Col span={24}>
           <AgentsListTable isLoading={isLoading} agents={agents} />

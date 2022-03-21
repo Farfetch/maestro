@@ -11,6 +11,7 @@ import RunSinglePage from "./pages/RunSingle";
 import TestsPage from "./pages/Tests";
 import TestsNewPage from "./pages/TestsNew";
 import TestsSinglePage from "./pages/TestsSingle";
+import WorkspacesPage from "./pages/Workspaces";
 
 const Router = () => (
   <BrowserRouter>
@@ -39,6 +40,9 @@ const Router = () => (
         <Route path="run">
           <Route index element={<NotFoundPage />} />
           <Route path=":runId" element={<RunSinglePage />} />
+        </Route>
+        <Route path="workspaces">
+          <Route index element={<WorkspacesPage />} />
         </Route>
       </Route>
 

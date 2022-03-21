@@ -1,6 +1,6 @@
 import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
-import { fetchMe } from "../endpoints/user";
+import { fetchMe, fetchUsers } from "../endpoints/user";
 
 const MockAdapter = require("axios-mock-adapter");
 
@@ -42,6 +42,15 @@ describe("libs/api/endpoints/run", () => {
       const data = await fetchMe();
 
       expect(data).toStrictEqual(expectedData);
+    });
+  });
+
+  describe("fetchUsers", () => {
+    test("should return single object", async () => {
+      axiosMock.onGet(`/api/users`).reply(200, [apiResponse]);
+      const data = await fetchUsers();
+
+      expect(data).toStrictEqual([expectedData]);
     });
   });
 });
