@@ -59,3 +59,15 @@ class WorkspaceController:
         created_workspace = self.create_or_update_workspace(Workspace(), data)
 
         return jsonify(created_workspace.to_dict())
+
+    def delete_one(self, workspace_id, user):
+        "Delete Workspace by ID"
+
+        workspace = get_obj_or_404(Workspace, id=workspace_id)
+        User.objects(workspace_ids__in=[workspace.id]).update(
+            pull__workspace_ids=workspace.id
+        )
+
+        workspace.delete()
+
+        return jsonify(workspace.to_dict())

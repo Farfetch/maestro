@@ -275,6 +275,11 @@ def init_api_routes(flask_app):
     def user_update_one(*args, **kwargs):
         return user_controller.update_one(*args, **kwargs)
 
+    @flask_app.route("/user/<user_id>", methods=["DELETE"])
+    @requires_auth()
+    def user_delete_one(*args, **kwargs):
+        return user_controller.delete_one(*args, **kwargs)
+
     @flask_app.route("/user", methods=["POST"])
     @requires_auth()
     @validate_request(user_create_or_update_schema)
@@ -297,6 +302,11 @@ def init_api_routes(flask_app):
     @validate_request(workspace_create_or_update_schema)
     def workspace_update_one(*args, **kwargs):
         return workspace_controller.update_one(*args, **kwargs)
+
+    @flask_app.route("/workspace/<workspace_id>", methods=["DELETE"])
+    @requires_auth()
+    def workspace_delete_one(*args, **kwargs):
+        return workspace_controller.delete_one(*args, **kwargs)
 
     @flask_app.route("/workspace", methods=["POST"])
     @requires_auth()
