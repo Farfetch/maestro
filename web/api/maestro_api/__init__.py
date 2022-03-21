@@ -5,7 +5,7 @@ from maestro_api.db.mongo import init_db
 from maestro_api.api_routes import init_api_routes
 from maestro_api.frontend_routes import init_frontend_routes
 from maestro_api.auth_routes import init_auth_routes
-from maestro_api.monitoring import init_monitoring
+from maestro_api.monitoring import init_monitoring_routes
 
 
 def create_app(settings):
@@ -35,7 +35,7 @@ def create_frontend_app(settings):
 
     init_frontend_routes(flask_app)
     init_auth_routes(flask_app)
-    init_monitoring(flask_app)
+    init_monitoring_routes(flask_app)
 
     return flask_app
 

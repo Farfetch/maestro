@@ -1,7 +1,7 @@
 from flask import jsonify
 
 
-def init_monitoring(flask_app):
+def init_monitoring_routes(flask_app):
     @flask_app.route("/monitoring/ping")
     def __ping():
         return "", 200
