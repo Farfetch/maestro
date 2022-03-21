@@ -23,3 +23,7 @@ export const agentLogsUrl = (runConfigurationId) =>
 export const runSingleUrl = (runId) => `/run/${runId}`;
 
 export const historyUrl = "/history";
+
+export const logoutUrl = `${maestroApiUrl}/logout`;
+export const workspacesUrl = "/workspaces";
+export const usersUrl = "/users";

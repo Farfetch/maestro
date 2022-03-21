@@ -4,12 +4,13 @@ import { Col, Row, Space } from "antd";
 import { Link } from "react-router-dom";
 
 import Logo from "../layout/Logo";
+import Profile from "./Profile";
 
 const Header = () => (
   <header>
     <Row>
-      <Col span={24}>
-        <Space size={24} align="center">
+      <Col flex="auto">
+        <Space size={24}>
           <Link to="/">
             <Logo />
           </Link>
@@ -17,6 +18,9 @@ const Header = () => (
           <Link to="/tests">Tests</Link>
           <Link to="/agents">Agents</Link>
         </Space>
+      </Col>
+      <Col style={{ marginLeft: "auto" }}>
+        <Profile />
       </Col>
     </Row>
   </header>
