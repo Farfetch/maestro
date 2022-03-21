@@ -45,3 +45,8 @@ class UserController:
         created_user = self.create_or_update_user(User(), data)
 
         return jsonify(created_user.to_dict())
+
+    def get_me(self, user):
+        res_user = get_obj_or_404(User, email=user["email"])
+
+        return jsonify(res_user.to_dict())

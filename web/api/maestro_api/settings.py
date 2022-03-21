@@ -67,3 +67,8 @@ OAUTH_CLIENT_SECRET = os.environ.get("OAUTH_CLIENT_SECRET")
 OAUTH_CLIENT_REDIRECT_URI = os.environ.get("OAUTH_CLIENT_REDIRECT_URI")
 OAUTH_SCOPE = os.environ.get("OAUTH_SCOPE", "openid user.read profile offline_access")
 OAUTH_EMAILS_WHITELIST = parse_list(os.environ.get("OAUTH_EMAILS_WHITELIST", None))
+
+
+# MOCK CONFIGURATION
+
+MOCK_AUTH_CURRENT_USER_EMAIL = os.environ.get("MOCK_AUTH_CURRENT_USER_EMAIL", None)
