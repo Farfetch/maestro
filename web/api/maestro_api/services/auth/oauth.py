@@ -10,18 +10,19 @@ class OauthClient:
     configuration = {
         "authorization_endpoint": "connect/authorize",
         "token_endpoint": "connect/token",
+        "userinfo": "connect/userinfo",
     }
 
     def __init__(
         self,
-        issuer: str,
+        host: str,
         client_id: str,
         client_secret: str,
         redirect_uri: str,
         scope: str,
     ):
 
-        self.issuer = issuer
+        self.host = host
         self.client_id = client_id
         self.client_secret = client_secret
         self.redirect_uri = redirect_uri
@@ -41,7 +42,7 @@ class OauthClient:
         query_params = urlencode(params)
 
         return "%s/%s?%s" % (
-            self.issuer,
+            self.host,
             self.configuration["authorization_endpoint"],
             query_params,
         )
@@ -64,7 +65,7 @@ class OauthClient:
         }
 
         res = requests.post(
-            f"{self.issuer}/{self.configuration['token_endpoint']}",
+            f"{self.host}/{self.configuration['token_endpoint']}",
             data=payload,
             headers=headers,
         ).json()
@@ -88,7 +89,28 @@ class OauthClient:
         }
 
         res = requests.post(
-            f"{self.issuer}/{self.configuration['token_endpoint']}",
+            f"{self.host}/{self.configuration['token_endpoint']}",
+            data=payload,
+            headers=headers,
+        ).json()
+
+        return res
+
+    def get_userinfo(self, access_token: str) -> dict:
+        """
+        Get userinfo data by using access_token
+        """
+
+        payload = {
+            "access_token": access_token,
+        }
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/x-www-form-urlencoded",
+        }
+
+        res = requests.post(
+            f"{self.host}/{self.configuration['userinfo']}",
             data=payload,
             headers=headers,
         ).json()

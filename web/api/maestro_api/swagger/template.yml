@@ -611,8 +611,8 @@ paths:
       responses:
         200:
           schema:
-            $ref: "#/definitions/RunAgent"
-          description: "Return single RunAgent object"
+            $ref: "#/definitions/RunLog"
+          description: "Return single RunLog object"
         400:
           description: "Bad request"
 
@@ -1234,6 +1234,221 @@ paths:
         404:
           description: Run not found
 
+  /user:
+    post:
+      tags:
+        - "User"
+      summary: "Create User object"
+      description: ""
+      operationId: "createUser"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "User input params to create User object"
+          schema:
+            properties:
+              name:
+                type: string
+                description: "User name"
+              email:
+                type: string
+                description: "User name"
+              role:
+                $ref: "#/components/schemas/UserRole"
+              workspace_ids:
+                type: array
+                description: "List of workspaces to be added to user"
+                items:
+                  type: string
+            required:
+              - name
+              - email
+              - role
+              - workspace_ids
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/User"
+          description: "Returns list of RunConfiguration objects"
+        400:
+          description: "Bad request"
+        404:
+          description: "Workspace Not Found"
+
+  /user/{user_id}:
+    put:
+      tags:
+        - "User"
+      summary: "Update User object"
+      description: ""
+      operationId: "updateUser"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "User input params to update User object"
+          schema:
+            properties:
+              name:
+                type: string
+                description: "User name"
+              email:
+                type: string
+                description: "User email"
+              role:
+                $ref: "#/components/schemas/UserRole"
+              workspace_ids:
+                type: array
+                description: "List of workspaces to be added to user"
+                items:
+                  type: string
+            required:
+              - name
+              - email
+              - role
+              - workspace_ids
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/User"
+          description: "Returns list of User objects"
+        400:
+          description: "Bad request"
+        404:
+          description: "Workspace or User Not Found"
+
+  /users:
+    get:
+      tags:
+        - "User"
+      summary: "Get all User objects"
+      description: ""
+      operationId: "getAllUsers"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Users"
+          description: "Returns list of User objects"
+
+  /me:
+    get:
+      tags:
+        - "User"
+      summary: "Get all User objects"
+      description: ""
+      operationId: "getCurrentUser"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/User"
+          description: "Return User object"
+
+  /workspace:
+    post:
+      tags:
+        - "Workspace"
+      summary: "Create Workspace object"
+      description: ""
+      operationId: "createWorkspace"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Workspace input params to create new object"
+          schema:
+            properties:
+              name:
+                type: string
+                description: "Workspace name"
+              users_email:
+                type: array
+                description: "List of emails to be added to workspace"
+                items:
+                  type: string
+            required:
+              - name
+              - users_email
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Workspace"
+          description: "Returns list of RunConfiguration objects"
+        400:
+          description: "Bad request"
+
+  /workspace/{workspace_id}:
+    put:
+      tags:
+        - "Workspace"
+      summary: "Update Workspace object"
+      description: ""
+      operationId: "updateWorkspace"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Workspace input params to create new object"
+          schema:
+            properties:
+              name:
+                type: string
+                description: "Workspace name"
+              users_email:
+                type: array
+                description: "List of emails to be added to workspace"
+                items:
+                  type: string
+            required:
+              - name
+              - users_email
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Workspace"
+          description: "Returns list of RunConfiguration objects"
+        400:
+          description: "Bad request"
+        404:
+          description: "Workspace not found"
+
+  /workspaces:
+    get:
+      tags:
+        - "Workspace"
+      summary: "Get all Workspace objects"
+      description: ""
+      operationId: "getAllWorkspaces"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Workspaces"
+          description: "Returns list of Workspace objects"
+
 components:
   schemas:
     AgentStatus:
@@ -1291,6 +1506,12 @@ components:
         - Fri
         - Sat
         - Sun
+
+    UserRole:
+      type: string
+      enum:
+        - USER
+        - ADMIN
 
 definitions:
   Agent:
@@ -1478,8 +1699,6 @@ definitions:
         type: string
       agent_id:
         type: string
-      run_logs_file:
-        type: string
       agent_status:
         $ref: "#/components/schemas/RunAgentStatus"
       agent_hostname:
@@ -1554,6 +1773,80 @@ definitions:
     description: List of RunConfiguration objects.
     items:
       $ref: "#/definitions/RunConfiguration"
+
+  RunLog:
+    type: object
+    properties:
+      id:
+        type: string
+      run_id:
+        type: string
+      agent_id:
+        type: string
+      run_logs_file:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      email:
+        type: string
+      profile_img:
+        type: string
+      workspace_ids:
+        type: array
+        items:
+          type: string
+      role:
+        $ref: "#/components/schemas/UserRole"
+      last_login_at:
+        type: string
+        format: date-time
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+
+  Users:
+    type: array
+    description: List of User objects.
+    items:
+      $ref: "#/definitions/User"
+
+  Workspace:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      is_default:
+        type: boolean
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+
+  Workspaces:
+    type: array
+    description: List of Workspace objects.
+    items:
+      $ref: "#/definitions/Workspace"
+
   RunMetric:
     type: object
     properties:

@@ -3,6 +3,7 @@ from maestro_api.db.models.run_agent import RunAgentStatus
 from maestro_api.db.models.agent import AgentStatus
 from maestro_api.db.models.agent_log import AgentLogLevel
 from maestro_api.db.models.event import EventStatus, EventType
+from maestro_api.db.models.user import UserRole
 from maestro_api.enums import DaysOfTheWeek
 
 create_run_schema = {
@@ -313,5 +314,49 @@ event_list_schema = {
             "maxLength": 24,
         },
     },
+    "additionalProperties": False,
+}
+
+
+user_create_or_update_schema = {
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+        },
+        "email": {
+            "type": "string",
+        },
+        "role": {
+            "type": "string",
+            "enum": UserRole.list(),
+        },
+        "workspace_ids": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "minLength": 12,
+                "maxLength": 24,
+            },
+        },
+    },
+    "required": ["name", "email", "role", "workspace_ids"],
+    "additionalProperties": False,
+}
+
+workspace_create_or_update_schema = {
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+        },
+        "users_email": {
+            "type": "array",
+            "items": {
+                "type": "string",
+            },
+        },
+    },
+    "required": ["name", "users_email"],
     "additionalProperties": False,
 }

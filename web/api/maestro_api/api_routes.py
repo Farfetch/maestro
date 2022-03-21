@@ -9,6 +9,8 @@ from maestro_api.controllers.agent import AgentController
 from maestro_api.controllers.custom_data import CustomDataController
 from maestro_api.controllers.agent_log import AgentLogController
 from maestro_api.controllers.event import EventController
+from maestro_api.controllers.user import UserController
+from maestro_api.controllers.workspace import WorkspaceController
 
 
 from maestro_api.validation_schemas import (
@@ -26,6 +28,8 @@ from maestro_api.validation_schemas import (
     agent_log_list_schema,
     event_update_schema,
     event_list_schema,
+    user_create_or_update_schema,
+    workspace_create_or_update_schema,
 )
 
 from maestro_api.libs.flask.decorators import requires_auth, validate_request
@@ -43,6 +47,8 @@ def init_api_routes(flask_app):
     custom_data_controller = CustomDataController(flask_app)
     agent_log_controller = AgentLogController(flask_app)
     event_controller = EventController(flask_app)
+    user_controller = UserController(flask_app)
+    workspace_controller = WorkspaceController(flask_app)
 
     # /run routes
     @flask_app.route("/run/<run_id>", methods=["DELETE"])
@@ -256,3 +262,44 @@ def init_api_routes(flask_app):
     @validate_request(event_list_schema)
     def event_get_all(*args, **kwargs):
         return event_controller.all(*args, **kwargs)
+
+    # /user routes
+    @flask_app.route("/users", methods=["GET"])
+    @requires_auth()
+    def user_get_all(*args, **kwargs):
+        return user_controller.all(*args, **kwargs)
+
+    @flask_app.route("/user/<user_id>", methods=["PUT"])
+    @requires_auth()
+    @validate_request(user_create_or_update_schema)
+    def user_update_one(*args, **kwargs):
+        return user_controller.update_one(*args, **kwargs)
+
+    @flask_app.route("/user", methods=["POST"])
+    @requires_auth()
+    @validate_request(user_create_or_update_schema)
+    def user_create_one(*args, **kwargs):
+        return user_controller.create_one(*args, **kwargs)
+
+    @flask_app.route("/me", methods=["GET"])
+    @requires_auth()
+    def user_me(*args, **kwargs):
+        return user_controller.get_me(*args, **kwargs)
+
+    # /workspace routes
+    @flask_app.route("/workspaces", methods=["GET"])
+    @requires_auth()
+    def workspace_get_all(*args, **kwargs):
+        return workspace_controller.all(*args, **kwargs)
+
+    @flask_app.route("/workspace/<workspace_id>", methods=["PUT"])
+    @requires_auth()
+    @validate_request(workspace_create_or_update_schema)
+    def workspace_update_one(*args, **kwargs):
+        return workspace_controller.update_one(*args, **kwargs)
+
+    @flask_app.route("/workspace", methods=["POST"])
+    @requires_auth()
+    @validate_request(workspace_create_or_update_schema)
+    def workspace_create_one(*args, **kwargs):
+        return workspace_controller.create_one(*args, **kwargs)
