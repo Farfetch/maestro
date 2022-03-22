@@ -20,6 +20,7 @@ const runConfigurationObjectMapper = (runConfiguration) => ({
 /**
  *
  * @param {String} runPlanId  ID from RunPlan collection
+ * @param {String} workspaceId  Workspace ID
  * @param {Array} hosts  list of objects: {host: String, ip: String}
  * @param {Array} agentIds  List of Ids from Agent collection
  * @param {Array} customDataIds  List of Ids from CustomData collection
@@ -33,6 +34,7 @@ export const createRunConfiguration = async ({
   title,
   labels,
   runPlanId,
+  workspaceId,
   hosts,
   agentIds,
   customDataIds,
@@ -45,6 +47,7 @@ export const createRunConfiguration = async ({
     title,
     labels,
     run_plan_id: runPlanId,
+    workspace_id: workspaceId,
     agent_ids: agentIds,
     custom_data_ids: customDataIds,
     custom_properties: customProperties,
@@ -62,6 +65,7 @@ export const createRunConfiguration = async ({
 /**
  *
  * @param {String} runPlanId  ID from RunPlan collection
+ * @param {String} workspaceId  Workspace ID
  * @param {Array} hosts  list of objects: {host: String, ip: String}
  * @param {Array} agentIds  List of Ids from Agent collection
  * @param {Array} customDataIds  List of Ids from CustomData collection
@@ -77,6 +81,7 @@ export const updateRunConfiguration = async (
     title,
     labels,
     runPlanId,
+    workspaceId,
     hosts,
     agentIds,
     customDataIds,
@@ -92,6 +97,7 @@ export const updateRunConfiguration = async (
       title,
       labels,
       run_plan_id: runPlanId,
+      workspace_id: workspaceId,
       agent_ids: agentIds,
       custom_data_ids: customDataIds,
       custom_properties: customProperties,
@@ -126,8 +132,13 @@ export const fetchRunConfigurationById = async (runConfigurationId) => {
  *
  * @returns  [] runConfiguration
  */
-export const fetchRunConfigurations = async () => {
-  const res = await maestroClient.get("/api/run_configurations");
+export const fetchRunConfigurations = async (filters = {}) => {
+  const params = {
+    params: {
+      ...(filters.workspaceId ? { workspace_id: filters.workspaceId } : {})
+    }
+  };
+  const res = await maestroClient.get("/api/run_configurations", params);
 
   const runConfigurations = res.data.map(runConfigurationObjectMapper);
 

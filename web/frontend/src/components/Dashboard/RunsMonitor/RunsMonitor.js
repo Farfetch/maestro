@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
+import { CurrentWorkspaceContext } from "../../../context/CurrentWorkspace";
 import { fetchRuns } from "../../../lib/api/endpoints/run";
 import { runStatus as runStatusModel } from "../../../lib/api/models";
 
@@ -7,6 +8,7 @@ const RunsMonitor = ({ children }) => {
   const [isIntervalLoading, setIsIntervalLoading] = useState(false);
   const [runs, setRuns] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { currentWorkspace } = useContext(CurrentWorkspaceContext);
 
   const updateRunsInterval = 5000;
 
@@ -17,7 +19,7 @@ const RunsMonitor = ({ children }) => {
       runStatusModel.RUNNING
     ];
 
-    const runsData = await fetchRuns();
+    const runsData = await fetchRuns({ workspaceId: currentWorkspace.id });
     const runningStatusRuns = runsData.filter((run) =>
       availableRunStatuses.includes(run.runStatus)
     );
@@ -42,7 +44,7 @@ const RunsMonitor = ({ children }) => {
     }, updateRunsInterval);
 
     return () => clearInterval(interval);
-  }, [isIntervalLoading]);
+  }, [isIntervalLoading, currentWorkspace]);
 
   // The function is executed only first time to make page load
   useEffect(() => {

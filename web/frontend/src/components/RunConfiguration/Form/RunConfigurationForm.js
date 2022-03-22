@@ -2,8 +2,10 @@
 import { Button, Card, Col, Form, message, Row, Typography } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { CurrentWorkspaceContext } from "../../../context/CurrentWorkspace";
 import { createRun, startRun } from "../../../lib/api/endpoints/run";
 import { colors } from "../../../lib/colors";
 import { toUtcHourMinute } from "../../../lib/date";
@@ -29,6 +31,7 @@ const RunConfigurationForm = ({
   initialValues,
   agents
 }) => {
+  const { currentWorkspace } = useContext(CurrentWorkspaceContext);
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
@@ -65,7 +68,8 @@ const RunConfigurationForm = ({
       customDataIds,
       customProperties,
       loadProfile,
-      isScheduleEnabled
+      isScheduleEnabled,
+      workspaceId: currentWorkspace.id
     };
 
     if (isScheduleEnabled) {
