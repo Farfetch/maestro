@@ -1,28 +1,39 @@
 import {
   AppstoreOutlined,
-  DownOutlined,
   LogoutOutlined,
   UserOutlined
 } from "@ant-design/icons";
-import { Dropdown, Menu, Space, Typography } from "antd";
+import { Dropdown, Menu, Select, Space } from "antd";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 
+import { CurrentWorkspaceContext } from "../../../context/CurrentWorkspace";
 import { UserContext } from "../../../context/User";
+import { userRole as userRoleModel } from "../../../lib/api/models";
 import { logoutUrl, usersUrl, workspacesUrl } from "../../../lib/routes";
 import Avatar from "../../layout/Avatar";
 
 const Profile = () => {
-  const { user } = useContext(UserContext);
+  const { user, workspaces } = useContext(UserContext);
+  const { currentWorkspace, setCurrentWorkspace } = useContext(
+    CurrentWorkspaceContext
+  );
 
   const menu = (
     <Menu>
-      <Menu.Item key="workspaces" icon={<AppstoreOutlined />}>
-        <Link to={workspacesUrl}>Workspaces</Link>
+      <Menu.Item key="me" disabled>
+        {user.email}
       </Menu.Item>
-      <Menu.Item key="users" icon={<UserOutlined />}>
-        <Link to={usersUrl}>Users</Link>
-      </Menu.Item>
+      {user.role === userRoleModel.ADMIN ? (
+        <>
+          <Menu.Item key="workspaces" icon={<AppstoreOutlined />}>
+            <Link to={workspacesUrl}>Workspaces</Link>
+          </Menu.Item>
+          <Menu.Item key="users" icon={<UserOutlined />}>
+            <Link to={usersUrl}>Users</Link>
+          </Menu.Item>
+        </>
+      ) : null}
       <Menu.Item key="logout" icon={<LogoutOutlined />}>
         <a href={logoutUrl}>Logout</a>
       </Menu.Item>
@@ -30,12 +41,26 @@ const Profile = () => {
   );
 
   return (
-    <Space align="center" size={12} style={{ height: "54px" }}>
-      <Avatar user={user} />
-      <Dropdown overlay={menu}>
-        <Typography.Text style={{ cursor: "pointer" }}>
-          {user.email} <DownOutlined />
-        </Typography.Text>
+    <Space align="center">
+      <Select
+        style={{ width: 240 }}
+        onChange={(workspaceId) => setCurrentWorkspace(workspaceId)}
+        defaultValue={currentWorkspace.id}
+      >
+        {workspaces.map((workspace) => (
+          <Select.Option value={workspace.id} key={workspace.id}>
+            {workspace.name}
+          </Select.Option>
+        ))}
+      </Select>
+      <Dropdown
+        overlay={menu}
+        placement="bottomRight"
+        arrow={{ pointAtCenter: true }}
+      >
+        <div style={{ cursor: "pointer" }}>
+          <Avatar user={user} />
+        </div>
       </Dropdown>
     </Space>
   );
