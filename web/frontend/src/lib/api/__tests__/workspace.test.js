@@ -36,7 +36,7 @@ describe("libs/api/endpoints/workspace", () => {
   ];
   describe("fetchWorkspaces", () => {
     test("should return list of workspaces", async () => {
-      axiosMock.onPost(`/api/workspaces`).reply(200, apiResponse);
+      axiosMock.onGet(`/api/workspaces`).reply(200, apiResponse);
       const data = await fetchWorkspaces();
 
       expect(data).toStrictEqual(expectedData);
