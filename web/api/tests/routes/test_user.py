@@ -137,3 +137,42 @@ def test_update_user(client):
     assert "created_at" in res
     assert "created_at" in res
     assert "updated_at" in res
+
+
+def test_user_delete(client):
+    user_id = "6076d1e3a216ff15b6e95e1f"
+    workspace_id = "6076d1e3a216ff15b6e95e1d"
+    name = "User Name"
+
+    Workspace(id=workspace_id, name="Default workspace").save()
+    User(
+        id=user_id,
+        name=name,
+        email="email@maestro.net",
+        role=UserRole.USER.value,
+        workspace_ids=[workspace_id],
+    ).save()
+    User(
+        name="test 2",
+        email="email2@maestro.net",
+        role=UserRole.USER.value,
+        workspace_ids=[workspace_id],
+    ).save()
+
+    response = client.delete(
+        f"/user/{user_id}",
+        content_type="application/json",
+    )
+
+    all_users = User.objects()
+
+    assert 200 == response.status_code
+
+    res = json.loads(response.data)
+
+    assert 1 == len(all_users)
+    assert user_id != all_users[0].id
+    assert user_id == res["id"]
+    assert name == res["name"]
+    assert "created_at" in res
+    assert "updated_at" in res

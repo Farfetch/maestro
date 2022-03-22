@@ -2,7 +2,12 @@ from maestro_api.db.models.workspace import Workspace
 from maestro_api.db.models.user import User, UserRole
 
 
-from maestro_api.libs.flask.utils import jsonify_list_of_docs, get_obj_or_404, jsonify
+from maestro_api.libs.flask.utils import (
+    jsonify_list_of_docs,
+    get_obj_or_404,
+    jsonify,
+    bad_request_response,
+)
 
 
 class WorkspaceController:
@@ -46,10 +51,14 @@ class WorkspaceController:
 
     def update_one(self, data, workspace_id, user):
         "Update Workspace data by ID"
+        workspace = get_obj_or_404(Workspace, id=workspace_id)
 
-        updated_workspace = self.create_or_update_workspace(
-            get_obj_or_404(Workspace, id=workspace_id), data
+        # Remove workspace from all users
+        User.objects(workspace_ids__in=[workspace.id]).update(
+            pull__workspace_ids=workspace.id
         )
+
+        updated_workspace = self.create_or_update_workspace(workspace, data)
 
         return jsonify(updated_workspace.to_dict())
 
@@ -59,3 +68,18 @@ class WorkspaceController:
         created_workspace = self.create_or_update_workspace(Workspace(), data)
 
         return jsonify(created_workspace.to_dict())
+
+    def delete_one(self, workspace_id, user):
+        "Delete Workspace by ID"
+
+        workspace = get_obj_or_404(Workspace, id=workspace_id)
+        if workspace.is_default:
+            return bad_request_response("Default workspace cannot be deleted")
+
+        User.objects(workspace_ids__in=[workspace.id]).update(
+            pull__workspace_ids=workspace.id
+        )
+
+        workspace.delete()
+
+        return jsonify(workspace.to_dict())

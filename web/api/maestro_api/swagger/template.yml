@@ -1318,12 +1318,28 @@ paths:
         200:
           schema:
             $ref: "#/definitions/User"
-          description: "Returns list of User objects"
+          description: "Updated User object"
         400:
           description: "Bad request"
         404:
           description: "Workspace or User Not Found"
-
+    delete:
+      tags:
+        - "User"
+      summary: "Delete User object"
+      description: ""
+      operationId: "deleteUser"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/User"
+          description: "Deleted User object"
+        404:
+          description: "User Not Found"
   /users:
     get:
       tags:
@@ -1431,6 +1447,25 @@ paths:
           description: "Bad request"
         404:
           description: "Workspace not found"
+    delete:
+      tags:
+        - "Workspace"
+      summary: "Delete Workspace object"
+      description: ""
+      operationId: "deleteWorkspace"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Workspace"
+          description: "Deleted Workspace object"
+        400:
+          description: "Bad request"
+        404:
+          description: "Workspace Not Found"
 
   /workspaces:
     get:

@@ -50,3 +50,12 @@ class UserController:
         res_user = get_obj_or_404(User, email=user["email"])
 
         return jsonify(res_user.to_dict())
+
+    def delete_one(self, user_id, user):
+        "Delete User by ID"
+
+        user = get_obj_or_404(User, id=user_id)
+
+        user.delete()
+
+        return jsonify(user.to_dict())
