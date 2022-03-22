@@ -2,12 +2,27 @@ from maestro_api.db.models.user import User
 from maestro_api.db.models.workspace import Workspace
 
 
-from maestro_api.libs.flask.utils import jsonify_list_of_docs, get_obj_or_404, jsonify
+from maestro_api.libs.flask.utils import (
+    abort,
+    jsonify_list_of_docs,
+    get_obj_or_404,
+    jsonify,
+    bad_request_response,
+)
 
 
 class UserController:
     def __init__(self, flask_app=None):
         self.flask_app = flask_app
+
+    def validate_is_user_exist(self, email, user_id=None):
+        "Return Bad Request when user with following email exist"
+        try:
+            user = User.objects.get(email=email)
+            if user_id is None or user.id != user_id:
+                return abort(bad_request_response("User is already exist"))
+        except User.DoesNotExist:
+            pass
 
     def create_or_update_user(self, user, data):
         workspaces = [
@@ -32,15 +47,16 @@ class UserController:
 
     def update_one(self, data, user_id, user):
         "Update User data by ID"
+        user_to_update = get_obj_or_404(User, id=user_id)
+        self.validate_is_user_exist(data.get("email"), user_to_update.id)
 
-        updated_user = self.create_or_update_user(
-            get_obj_or_404(User, id=user_id), data
-        )
+        updated_user = self.create_or_update_user(user_to_update, data)
 
         return jsonify(updated_user.to_dict())
 
     def create_one(self, data, user):
         "Create new User"
+        self.validate_is_user_exist(data.get("email"))
 
         created_user = self.create_or_update_user(User(), data)
 
