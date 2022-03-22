@@ -165,6 +165,50 @@ def test_update_workspace(client):
     assert "updated_at" in res
 
 
+def test_update_workspace_with_users_update(client):
+    workspace_id = "6076d1e3a216ff15b6e95e1f"
+    default_workspace_id = "6076d1e3a216ff15b6e95e1d"
+    name = "Workspace 2"
+    users_email = ["email2@maestro.net"]
+
+    Workspace(id=workspace_id, name="Workspace 1").save()
+    Workspace(id=default_workspace_id, is_default=True, name="Default workspace").save()
+    User(
+        name="test",
+        email="email@maestro.net",
+        role=UserRole.USER.value,
+        workspace_ids=[workspace_id, default_workspace_id],
+    ).save()
+    User(
+        name="test 2",
+        email="email2@maestro.net",
+        role=UserRole.USER.value,
+        workspace_ids=[workspace_id, default_workspace_id],
+    ).save()
+
+    request_data = {
+        "name": name,
+        "users_email": users_email,
+    }
+    response = client.put(
+        f"/workspace/{workspace_id}",
+        data=json.dumps(request_data),
+        content_type="application/json",
+    )
+
+    users = User.objects(workspace_ids__in=[workspace_id])
+
+    assert 200 == response.status_code
+
+    res = json.loads(response.data)
+    assert 1 == len(users)
+    assert users_email[0] == users[0].email
+    assert name == res["name"]
+    assert res["is_default"] is False
+    assert "created_at" in res
+    assert "updated_at" in res
+
+
 def test_workspace_delete(client):
     workspace_id = "6076d1e3a216ff15b6e95e1f"
     default_workspace_id = "6076d1e3a216ff15b6e95e1d"
@@ -202,3 +246,16 @@ def test_workspace_delete(client):
     assert res["is_default"] is False
     assert "created_at" in res
     assert "updated_at" in res
+
+
+def test_workspace_delete_default(client):
+    workspace_id = "6076d1e3a216ff15b6e95e1f"
+
+    Workspace(id=workspace_id, is_default=True, name="Default workspace").save()
+
+    response = client.delete(
+        f"/workspace/{workspace_id}",
+        content_type="application/json",
+    )
+
+    assert 400 == response.status_code

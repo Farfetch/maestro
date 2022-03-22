@@ -1462,6 +1462,8 @@ paths:
           schema:
             $ref: "#/definitions/Workspace"
           description: "Deleted Workspace object"
+        400:
+          description: "Bad request"
         404:
           description: "Workspace Not Found"
 
