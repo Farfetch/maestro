@@ -1,6 +1,12 @@
 import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
-import { fetchMe, fetchUsers } from "../endpoints/user";
+import {
+  createUser,
+  deleteUser,
+  fetchMe,
+  fetchUsers,
+  updateUser
+} from "../endpoints/user";
 
 const MockAdapter = require("axios-mock-adapter");
 
@@ -51,6 +57,62 @@ describe("libs/api/endpoints/run", () => {
       const data = await fetchUsers();
 
       expect(data).toStrictEqual([expectedData]);
+    });
+  });
+
+  describe("createUser", () => {
+    test("should return single User object", async () => {
+      const createData = {
+        name: "test",
+        email: "test2@maestro.net",
+        role: "USER",
+        workspaceIds: ["6076d210a216ff15b6e95ea1"]
+      };
+      axiosMock
+        .onPost(`/api/user`, {
+          name: createData.name,
+          email: createData.email,
+          role: createData.role,
+          workspace_ids: createData.workspaceIds
+        })
+        .reply(200, apiResponse);
+      const data = await createUser(createData);
+
+      expect(data).toStrictEqual(expectedData);
+    });
+  });
+
+  describe("updateUser", () => {
+    test("should return single User object", async () => {
+      const userId = "6076d210a216ff15b6e95ea0";
+      const updateData = {
+        name: "test",
+        email: "test2@maestro.net",
+        role: "USER",
+        workspaceIds: ["6076d210a216ff15b6e95ea1"]
+      };
+      axiosMock
+        .onPut(`/api/user/${userId}`, {
+          name: updateData.name,
+          email: updateData.email,
+          role: updateData.role,
+          workspace_ids: updateData.workspaceIds
+        })
+        .reply(200, apiResponse);
+      const data = await updateUser(userId, updateData);
+
+      expect(data).toStrictEqual(expectedData);
+    });
+  });
+
+  describe("deleteUser", () => {
+    test("should return single User object", async () => {
+      const userId = "6076d210a216ff15b6e95ea0";
+
+      axiosMock.onDelete(`/api/user/${userId}`).reply(200, apiResponse);
+      const data = await deleteUser(userId);
+
+      expect(data).toStrictEqual(expectedData);
     });
   });
 });

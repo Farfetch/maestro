@@ -9,10 +9,22 @@ const workspaceObjectMapper = (workspace) => ({
   updatedAt: toLocalDate(workspace.updated_at)
 });
 
-export const fetchWorkspaces = async () => {
+/**
+ *
+ * @param {object} filters
+ *   isDefault - boolean param. Default: ALL
+ * @returns
+ */
+export const fetchWorkspaces = async (filters = false) => {
   const res = await maestroClient.get("/api/workspaces");
 
   const workspaces = res.data.map(workspaceObjectMapper);
+
+  if (filters) {
+    return workspaces.filter(
+      ({ isDefault }) => isDefault === filters.isDefault
+    );
+  }
 
   return workspaces;
 };
