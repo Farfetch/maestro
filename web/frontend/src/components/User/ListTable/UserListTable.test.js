@@ -15,6 +15,7 @@ describe("components/User/UserListTable", () => {
         email: "user1@maestro.net",
         role: "USER",
         workspaceIds: ["1-2-3", "4-5-6"],
+        lastLoginAt: moment("2018-05-24T13:48:04.313000"),
         createdAt: moment("2018-05-24T13:48:04.313000"),
         updatedAt: moment("2018-05-24T13:48:04.313000")
       },
@@ -33,12 +34,14 @@ describe("components/User/UserListTable", () => {
       {
         id: "1-2-3",
         name: "Workspace 1",
+        isDefault: false,
         createdAt: moment("2018-05-24T13:48:04.313000"),
         updatedAt: moment("2018-05-24T13:48:04.313000")
       },
       {
         id: "4-5-6",
         name: "Workspace 2",
+        isDefault: false,
         createdAt: moment("2018-05-24T13:48:04.313000"),
         updatedAt: moment("2018-05-24T13:48:04.313000")
       }

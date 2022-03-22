@@ -7,8 +7,7 @@ const userObjectMapper = (user) => ({
   name: user.name,
   role: user.role,
   workspaceIds: user.workspace_ids,
-  // lastLoginAt: user.last_login_at ? toLocalDate(user.last_login_at) : null,
-  lastLoginAt: null,
+  lastLoginAt: user.last_login_at ? toLocalDate(user.last_login_at) : null,
   createdAt: toLocalDate(user.created_at),
   updatedAt: toLocalDate(user.updated_at)
 });
