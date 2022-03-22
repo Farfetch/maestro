@@ -25,7 +25,7 @@ const PageTitleRow = ({ title, button = null }) => (
 
 PageTitleRow.propTypes = {
   title: PropTypes.string.isRequired,
-  button: PropTypes.node.isRequired
+  button: PropTypes.any
 };
 
 export default PageTitleRow;

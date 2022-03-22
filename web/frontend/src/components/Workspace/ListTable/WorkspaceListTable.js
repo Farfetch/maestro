@@ -42,28 +42,31 @@ const WorkspaceListTable = ({ workspaces, users, isLoading, refresh }) => {
           <Button type="link" onClick={() => setEditWorkspaceId(record.key)}>
             Edit
           </Button>
-          <Popconfirm
-            key="restart"
-            placement="left"
-            title={
-              <>
-                <p>Are you sure you want to delete workspace?</p>
-                <p>
-                  All tests, metrics and access to the workspace would be lost.
-                </p>
-              </>
-            }
-            okText="Yes"
-            cancelText="No"
-            onConfirm={async () => {
-              await deleteWorkspace(record.key);
-              refresh();
-            }}
-          >
-            <Button type="link" danger>
-              Delete
-            </Button>
-          </Popconfirm>
+          {!record.isDefault ? (
+            <Popconfirm
+              key="restart"
+              placement="left"
+              title={
+                <>
+                  <p>Are you sure you want to delete workspace?</p>
+                  <p>
+                    All tests, metrics and access to the workspace would be
+                    lost.
+                  </p>
+                </>
+              }
+              okText="Yes"
+              cancelText="No"
+              onConfirm={async () => {
+                await deleteWorkspace(record.key);
+                refresh();
+              }}
+            >
+              <Button type="link" danger>
+                Delete
+              </Button>
+            </Popconfirm>
+          ) : null}
         </>
       )
     }
