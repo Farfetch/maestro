@@ -1,6 +1,5 @@
-import { Button, Col, Row, Typography } from "antd";
+import { Col, Row, Typography } from "antd";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -18,11 +17,7 @@ const PageTitleRow = ({ title, button = null }) => (
           justifyContent: "right"
         }}
       >
-        <Link to={button.link}>
-          <Button type="primary" size="large">
-            {button.title}
-          </Button>
-        </Link>
+        {button}
       </Col>
     ) : null}
   </Row>
@@ -30,10 +25,7 @@ const PageTitleRow = ({ title, button = null }) => (
 
 PageTitleRow.propTypes = {
   title: PropTypes.string.isRequired,
-  button: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    link: PropTypes.string.isRequired
-  })
+  button: PropTypes.any
 };
 
 export default PageTitleRow;

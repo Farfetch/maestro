@@ -62,7 +62,7 @@ const AgentSingleLogs = () => {
   return (
     <Row gutter={[32, 32]} justify="start" align="middle">
       <Col flex="auto">
-        <PageTitle title={"Agent Logs"} button={null} />
+        <PageTitle title={"Agent Logs"} />
       </Col>
       <Col span={24}>
         <Space size="middle" align="left">

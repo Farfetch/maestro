@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react";
+import { Button } from "antd";
 import React from "react";
-import { MemoryRouter } from "react-router-dom";
+import { Link, MemoryRouter } from "react-router-dom";
 
 import PageTitle from "./PageTitle";
 
@@ -11,10 +12,13 @@ describe("components/PageTitle", () => {
     },
     {
       title: "Test title",
-      button: {
-        link: "/button-test-link",
-        title: "Button title"
-      }
+      button: (
+        <Link to="/button-test-link">
+          <Button type="primary" size="large">
+            Button title
+          </Button>
+        </Link>
+      )
     }
   ].map((props) =>
     test(`should render PageTitle component`, async () => {

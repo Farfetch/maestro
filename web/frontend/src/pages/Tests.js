@@ -1,5 +1,6 @@
-import { Col, Row } from "antd";
+import { Button, Col, Row } from "antd";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import PageTitle from "../components/layout/PageTitle";
 import RunConfigurationTable from "../components/RunConfiguration/Table";
@@ -28,7 +29,13 @@ const TestsPage = () => {
     <>
       <PageTitle
         title={"Tests"}
-        button={{ link: testNewUrl, title: "Create" }}
+        button={
+          <Link to={testNewUrl}>
+            <Button type="primary" size="large">
+              Create
+            </Button>
+          </Link>
+        }
       />
       <Row>
         <Col span={24}>
