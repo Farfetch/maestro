@@ -5,19 +5,35 @@ import {
 } from "@ant-design/icons";
 import { Dropdown, Menu, Select, Space } from "antd";
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { CurrentWorkspaceContext } from "../../../context/CurrentWorkspace";
 import { UserContext } from "../../../context/User";
 import { userRole as userRoleModel } from "../../../lib/api/models";
-import { logoutUrl, usersUrl, workspacesUrl } from "../../../lib/routes";
+import {
+  historyUrl,
+  homeUrl,
+  logoutUrl,
+  testsUrl,
+  usersUrl,
+  workspacesUrl
+} from "../../../lib/routes";
 import Avatar from "../../layout/Avatar";
 
 const Profile = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { user, workspaces } = useContext(UserContext);
   const { currentWorkspace, setCurrentWorkspace } = useContext(
     CurrentWorkspaceContext
   );
+
+  const onWorkspaceChange = (workspaceId) => {
+    if (![testsUrl, historyUrl, homeUrl].includes(pathname))
+      navigate(historyUrl);
+    const workspace = workspaces.find(({ id }) => id === workspaceId);
+    setCurrentWorkspace(workspace);
+  };
 
   const menu = (
     <Menu>
@@ -44,7 +60,7 @@ const Profile = () => {
     <Space align="center">
       <Select
         style={{ width: 240 }}
-        onChange={(workspaceId) => setCurrentWorkspace(workspaceId)}
+        onChange={onWorkspaceChange}
         defaultValue={currentWorkspace.id}
       >
         {workspaces.map((workspace) => (

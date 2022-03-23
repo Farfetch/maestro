@@ -73,8 +73,13 @@ export const restartRun = async (runId) => {
   return run;
 };
 
-export const fetchRuns = async () => {
-  const res = await maestroClient.get(`/api/runs`);
+export const fetchRuns = async (filters = {}) => {
+  const params = {
+    params: {
+      ...(filters.workspaceId ? { workspace_id: filters.workspaceId } : {})
+    }
+  };
+  const res = await maestroClient.get(`/api/runs`, params);
 
   const runs = res.data.map(runObjectMapper);
 

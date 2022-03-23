@@ -1,27 +1,28 @@
 import { Col, Row } from "antd";
-import React, { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import PageTitle from "../components/layout/PageTitle";
 import RunListTable from "../components/Run/ListTable";
+import { CurrentWorkspaceContext } from "../context/CurrentWorkspace";
 import { fetchRuns } from "../lib/api/endpoints/run";
 
 const HistoryPage = () => {
   const [runs, setRuns] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const updateRunPlans = async () => {
-    setIsLoading(true);
-
-    const runsRes = await fetchRuns();
-
-    setRuns(runsRes);
-
-    setIsLoading(false);
-  };
+  const { currentWorkspace } = useContext(CurrentWorkspaceContext);
 
   useEffect(() => {
+    const updateRunPlans = async () => {
+      setIsLoading(true);
+
+      const runsRes = await fetchRuns({ workspaceId: currentWorkspace.id });
+
+      setRuns(runsRes);
+
+      setIsLoading(false);
+    };
     updateRunPlans();
-  }, []);
+  }, [currentWorkspace]);
 
   return (
     <>

@@ -1,29 +1,33 @@
 import { Button, Col, Row } from "antd";
-import React, { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import PageTitle from "../components/layout/PageTitle";
 import RunConfigurationTable from "../components/RunConfiguration/Table";
+import { CurrentWorkspaceContext } from "../context/CurrentWorkspace";
 import { fetchRunConfigurations } from "../lib/api/endpoints/runConfiguration";
 import { testNewUrl } from "../lib/routes";
 
 const TestsPage = () => {
   const [runConfigurations, setRunConfigurations] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const updateRunConfigurations = async () => {
-    setIsLoading(true);
-
-    const runConfigurationsRes = await fetchRunConfigurations();
-
-    setRunConfigurations(runConfigurationsRes);
-
-    setIsLoading(false);
-  };
+  const { currentWorkspace } = useContext(CurrentWorkspaceContext);
 
   useEffect(() => {
+    const updateRunConfigurations = async () => {
+      setIsLoading(true);
+
+      const runConfigurationsRes = await fetchRunConfigurations({
+        workspaceId: currentWorkspace.id
+      });
+
+      setRunConfigurations(runConfigurationsRes);
+
+      setIsLoading(false);
+    };
+
     updateRunConfigurations();
-  }, []);
+  }, [currentWorkspace]);
 
   return (
     <>

@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
 import React from "react";
+import { MemoryRouter } from "react-router-dom";
 
 import { CurrentWorkspaceContext } from "../../../context/CurrentWorkspace";
 import { UserContext } from "../../../context/User";
@@ -29,7 +30,9 @@ describe("components/Header/Profile", () => {
         <CurrentWorkspaceContext.Provider
           value={{ currentWorkspace: workspaces[0] }}
         >
-          <Profile />
+          <MemoryRouter initialEntries={["/"]}>
+            <Profile />
+          </MemoryRouter>
         </CurrentWorkspaceContext.Provider>
       </UserContext.Provider>
     );
