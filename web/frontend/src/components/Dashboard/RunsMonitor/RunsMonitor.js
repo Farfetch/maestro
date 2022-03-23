@@ -44,6 +44,7 @@ const RunsMonitor = ({ children }) => {
     }, updateRunsInterval);
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isIntervalLoading, currentWorkspace]);
 
   // The function is executed only first time to make page load
@@ -55,6 +56,7 @@ const RunsMonitor = ({ children }) => {
     };
 
     loadRunsData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return children({ isLoading, runs });
