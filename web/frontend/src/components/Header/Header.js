@@ -19,7 +19,7 @@ const Header = () => (
           <Link to="/agents">Agents</Link>
         </Space>
       </Col>
-      <Col style={{ marginLeft: "auto" }}>
+      <Col style={{ marginLeft: "auto", display: "flex" }}>
         <Profile />
       </Col>
     </Row>

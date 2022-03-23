@@ -1,13 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+import { CurrentWorkspaceContextProvider } from "./context/CurrentWorkspace";
 import { UserContextProvider } from "./context/User";
 import Router from "./Router";
 
 ReactDOM.render(
   // <React.StrictMode>
   <UserContextProvider>
-    <Router />
+    <CurrentWorkspaceContextProvider>
+      <Router />
+    </CurrentWorkspaceContextProvider>
   </UserContextProvider>,
 
   // </React.StrictMode>,
