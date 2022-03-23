@@ -136,6 +136,7 @@ def test_run_agent_list_bad_response(client):
 )
 def test_run_agent_update(client, agent_status, error_message):
     run_agent_id = "6076d69ba216ff15b6e95ea2"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     agent_id = "6076d1c5b28b871d6bdb609c"
 
     run_id = "6076d69ba216ff15b6e95ea2"
@@ -145,6 +146,7 @@ def test_run_agent_update(client, agent_status, error_message):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         run_configuration_id=run_configuration_id,
         title="Some test",
         run_plan_id=run_plan_id,
@@ -258,12 +260,14 @@ def test_run_agent_update_with_run_status_update(
     client, run_agents, update_data, expected_run_status
 ):
     run_id = "6076d69ba216ff15b6e95ea2"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_configuration_id = "7076d69ba216ff15b6e95ea2"
     run_plan_id = "8076d69ba216ff15b6e95ea2"
     agent_ids = ["5076d69ba216ff15b6e95ea2"]
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         run_configuration_id=run_configuration_id,
         title="Some test",
         run_plan_id=run_plan_id,

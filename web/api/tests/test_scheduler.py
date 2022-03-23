@@ -67,12 +67,14 @@ from maestro_api.scheduler import start_scheduled_run
 @freeze_time("2012-01-02 10:02:00")
 def test_start_scheduled_run(app, run_configurations, created_runs):
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     agent_ids = ["6076d1e3a216ff15b6e95e8d"]
     RunPlan(id=run_plan_id, title="Example Plan").save()
     for agent_id in agent_ids:
         Agent(id=agent_id, hostname="host_%s" % agent_id, ip="test_ip").save()
     for run_configuration in run_configurations:
         RunConfiguration(
+            workspace_id=workspace_id,
             title="Example test plan",
             run_plan_id=run_plan_id,
             agent_ids=agent_ids,
@@ -91,12 +93,14 @@ def test_start_scheduled_run(app, run_configurations, created_runs):
 @freeze_time("2012-01-02 10:02:00")
 def test_start_scheduled_run_second_time(app):
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     agent_ids = ["6076d1e3a216ff15b6e95e8d"]
     RunPlan(id=run_plan_id, title="Example Plan").save()
     for agent_id in agent_ids:
         Agent(id=agent_id, hostname="host_%s" % agent_id, ip="test_ip").save()
 
     RunConfiguration(
+        workspace_id=workspace_id,
         title="Example test plan",
         run_plan_id=run_plan_id,
         agent_ids=agent_ids,

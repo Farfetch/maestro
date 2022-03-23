@@ -2,6 +2,8 @@ from maestro_api.db.models.run import Run
 from maestro_api.db.models.run_configuration import RunConfiguration
 from maestro_api.db.models.agent import Agent
 from maestro_api.db.models.run_agent import RunAgent
+from maestro_api.db.models.run_metric import RunMetric
+from maestro_api.db.models.run_metric_label import RunMetricLabel
 
 
 class RunRepository:
@@ -24,6 +26,7 @@ class RunRepository:
         new_run = Run(
             title=run_configuration.title,
             run_configuration_id=run_configuration.id,
+            workspace_id=run_configuration.workspace_id,
             agent_ids=run_configuration.agent_ids,
             run_plan_id=run_configuration.run_plan_id,
             custom_data_ids=run_configuration.custom_data_ids,
@@ -46,3 +49,14 @@ class RunRepository:
         RunAgent.objects.insert(run_agents)
 
         return new_run
+
+    def delete_with_related(self, run: Run):
+        "Delete Run and all related documents"
+
+        RunMetric.objects(run_id=run.id).delete()
+        RunMetricLabel.objects(run_id=run.id).delete()
+        RunAgent.objects(run_id=run.id).delete()
+
+        run.delete()
+
+        return run

@@ -42,6 +42,11 @@ update_run_schema = {
 run_all_schema = {
     "type": "object",
     "properties": {
+        "workspace_id": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 24,
+        },
         "run_status": {"type": "string", "enum": RunStatus.list()},
         "notes": {"type": "string"},
         "labels": {
@@ -60,11 +65,28 @@ run_all_schema = {
     "additionalProperties": False,
 }
 
+run_configuration_all_schema = {
+    "type": "object",
+    "properties": {
+        "workspace_id": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 24,
+        },
+    },
+    "additionalProperties": False,
+}
+
 run_configuration_create_schema = {
     "type": "object",
     "properties": {
         "title": {"type": "string"},
         "run_plan_id": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 24,
+        },
+        "workspace_id": {
             "type": "string",
             "minLength": 12,
             "maxLength": 24,
@@ -148,6 +170,7 @@ run_configuration_create_schema = {
         },
     },
     "required": [
+        "workspace_id",
         "run_plan_id",
         "agent_ids",
     ],

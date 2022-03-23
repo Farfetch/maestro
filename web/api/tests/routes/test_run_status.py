@@ -9,6 +9,7 @@ from maestro_api.db.models.event import EventType
 
 def test_run_status_start(client):
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
@@ -16,6 +17,7 @@ def test_run_status_start(client):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         run_configuration_id=run_configuration_id,
         title=title,
         run_plan_id=run_plan_id,
@@ -41,6 +43,7 @@ def test_run_status_start(client):
     [RunStatus.FINISHED.value, RunStatus.STOPPED.value, RunStatus.ERROR.value],
 )
 def test_run_status_restart(client, run_status):
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
@@ -49,6 +52,7 @@ def test_run_status_restart(client, run_status):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         run_configuration_id=run_configuration_id,
         title=title,
         run_plan_id=run_plan_id,
@@ -76,6 +80,7 @@ def test_run_status_restart(client, run_status):
 )
 def test_run_status_restart_with_bad_request(client, run_status):
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
@@ -83,6 +88,7 @@ def test_run_status_restart_with_bad_request(client, run_status):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         run_configuration_id=run_configuration_id,
         title=title,
         run_plan_id=run_plan_id,
@@ -101,6 +107,7 @@ def test_run_status_restart_with_bad_request(client, run_status):
 
 def test_run_status_restart_with_reset_to_default_fields(client):
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     title = "some example title"
     diff_run_id = "6076d1e3a216ff15b6e95e2f"
     run_id = "6076d1e3a216ff15b6e95e1f"
@@ -110,6 +117,7 @@ def test_run_status_restart_with_reset_to_default_fields(client):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         run_configuration_id=run_configuration_id,
         title=title,
         run_plan_id=run_plan_id,
@@ -153,6 +161,7 @@ def test_run_status_restart_with_reset_to_default_fields(client):
 
 def test_run_status_start_with_running_status(client):
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
@@ -160,6 +169,7 @@ def test_run_status_start_with_running_status(client):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         run_configuration_id=run_configuration_id,
         title=title,
         run_plan_id=run_plan_id,
@@ -176,6 +186,7 @@ def test_run_status_start_with_running_status(client):
 
 def test_run_status_stop(client):
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
@@ -183,6 +194,7 @@ def test_run_status_stop(client):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         run_configuration_id=run_configuration_id,
         title=title,
         run_plan_id=run_plan_id,
@@ -210,6 +222,7 @@ def test_run_status_stop(client):
 )
 def test_run_status_stop_with_bad_request_response(client, run_status):
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
@@ -217,6 +230,7 @@ def test_run_status_stop_with_bad_request_response(client, run_status):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         run_configuration_id=run_configuration_id,
         title=title,
         run_plan_id=run_plan_id,

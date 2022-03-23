@@ -469,6 +469,10 @@ paths:
         - "application/json"
       parameters:
         - in: query
+          name: workspace_id
+          description: "Wokspace ID"
+          type: string
+        - in: query
           name: labels
           description: "List of Run labels should be included"
           collectionFormat: multi
@@ -665,6 +669,9 @@ paths:
               run_plan_id:
                 type: string
                 description: "Run Plan identifier"
+              workspace_id:
+                type: string
+                description: "Workspace identifier"
               agent_ids:
                 type: array
                 description: "List of server Agents IDs should be used in test"
@@ -750,6 +757,7 @@ paths:
           description: "Returns list of RunConfiguration objects"
         400:
           description: "Bad request"
+
   /run_configuration/{run_configuration_id}:
     get:
       tags:
@@ -902,6 +910,7 @@ paths:
           description: "Returns list of Run objects"
         400:
           description: "Bad request"
+
   /run_configurations:
     get:
       tags:
@@ -913,6 +922,11 @@ paths:
         - "application/json"
       produces:
         - "application/json"
+      parameters:
+        - in: query
+          name: workspace_id
+          description: "Wokspace ID"
+          type: string
       responses:
         200:
           schema:
@@ -1668,6 +1682,8 @@ definitions:
         $ref: "#/components/schemas/RunStatus"
       run_plan_id:
         type: string
+      workspace_id:
+        type: string
       agent_ids:
         type: array
         items: string
@@ -1759,6 +1775,8 @@ definitions:
       id:
         type: string
       run_plan_id:
+        type: string
+      workspace_id:
         type: string
       agent_ids:
         type: array

@@ -2,8 +2,7 @@ from mongoengine import Q
 
 from maestro_api.db.models.run import Run
 from maestro_api.db.repo.run import RunRepository
-from maestro_api.db.models.run_agent import RunAgent
-from maestro_api.db.models.run_metric import RunMetric
+
 from maestro_api.db.models.run_configuration import RunConfiguration
 
 from maestro_api.libs.flask.utils import (
@@ -25,9 +24,7 @@ class RunController:
 
         run = get_obj_or_404(Run, id=run_id)
 
-        RunMetric.objects(run_id=run.id).delete()
-        RunAgent.objects(run_id=run.id).delete()
-        run.delete()
+        self.run_repo.delete_with_related(run)
 
         return jsonify(run.to_dict())
 
@@ -41,6 +38,7 @@ class RunController:
     def all(self, data, user):
         "Get all Run objects"
 
+        workspace_id = data.get("workspace_id", None)
         labels = data.get("labels", None)
         run_status = data.get("run_status", None)
         skip = int(data.get("skip", 0))
@@ -51,6 +49,9 @@ class RunController:
 
         if labels is not None:
             filter_query = filter_query & Q(labels__all=str_to_list(labels))
+
+        if workspace_id is not None:
+            filter_query = filter_query & Q(workspace_id=workspace_id)
 
         if run_status is not None:
             filter_query = filter_query & Q(run_status__in=str_to_list(run_status))

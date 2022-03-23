@@ -10,6 +10,7 @@ from maestro_api.db.models.run_agent import RunAgent, RunAgentStatus
 
 
 def test_create_run(client):
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     agent_ids = ["6076d1bfb28b871d6bdb6095"]
@@ -23,12 +24,14 @@ def test_create_run(client):
         "title": title,
         "run_configuration_id": run_configuration_id,
         "run_plan_id": run_plan_id,
+        "workspace_id": workspace_id,
         "agent_ids": agent_ids,
         "labels": labels,
     }
 
     RunConfiguration(
         id=run_configuration_id,
+        workspace_id=workspace_id,
         title=title,
         run_plan_id=run_plan_id,
         agent_ids=agent_ids,
@@ -55,6 +58,7 @@ def test_create_run(client):
 
 
 def test_create_run_with_agent_runs(client):
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
 
@@ -66,6 +70,7 @@ def test_create_run_with_agent_runs(client):
 
     RunConfiguration(
         id=run_configuration_id,
+        workspace_id=workspace_id,
         title=title,
         run_plan_id=run_plan_id,
         agent_ids=[agent["id"] for agent in agents],
@@ -101,6 +106,7 @@ def test_create_run_with_agent_runs(client):
 
 
 def test_create_run_with_hosts(client):
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
     agent_ids = ["6076d1bfb28b871d6bdb6095"]
     agent_hostname = "agent1.net"
@@ -112,6 +118,7 @@ def test_create_run_with_hosts(client):
 
     available_in_response = {
         "title": title,
+        "workspace_id": workspace_id,
         "run_configuration_id": run_configuration_id,
         "run_status": RunStatus.PENDING.value,
         "run_plan_id": run_plan_id,
@@ -122,6 +129,7 @@ def test_create_run_with_hosts(client):
 
     RunConfiguration(
         id=run_configuration_id,
+        workspace_id=workspace_id,
         title=title,
         run_plan_id=run_plan_id,
         agent_ids=agent_ids,
@@ -166,6 +174,7 @@ def test_create_test_with_not_found_configuration(client):
 
 def test_get_run(client):
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
@@ -174,6 +183,7 @@ def test_get_run(client):
     data_to_create = {
         "id": run_id,
         "run_configuration_id": run_configuration_id,
+        "workspace_id": workspace_id,
         "title": title,
         "run_plan_id": run_plan_id,
         "agent_ids": agent_ids,
@@ -236,7 +246,7 @@ def test_get_run_with_not_found_response(client):
     ],
 )
 def test_udpate_run_status(client, run_status, started_at, finished_at):
-
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
@@ -245,6 +255,7 @@ def test_udpate_run_status(client, run_status, started_at, finished_at):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         run_configuration_id=run_configuration_id,
         title=title,
         run_plan_id=run_plan_id,
@@ -275,7 +286,7 @@ def test_udpate_run_status(client, run_status, started_at, finished_at):
 
 
 def test_udpate_run_notes(client):
-
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
@@ -285,6 +296,7 @@ def test_udpate_run_notes(client):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         run_configuration_id=run_configuration_id,
         title=title,
         run_plan_id=run_plan_id,
@@ -311,6 +323,7 @@ def test_udpate_run_notes(client):
 
 
 def test_udpate_run_labels(client):
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
@@ -320,6 +333,7 @@ def test_udpate_run_labels(client):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         run_configuration_id=run_configuration_id,
         title=title,
         run_plan_id=run_plan_id,
@@ -360,6 +374,7 @@ def test_update_run_with_not_found_response(client):
 
 def test_list_runs(client):
     "Returns list of test runs from the DB"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"
@@ -369,6 +384,7 @@ def test_list_runs(client):
 
     run = Run(
         id=run_id,
+        workspace_id=workspace_id,
         run_configuration_id=run_configuration_id,
         title=title,
         run_plan_id=run_plan_id,
@@ -394,7 +410,7 @@ def test_list_runs(client):
 
 def test_create_run_with_custom_properties(client):
     "Returns single test run when test run with properties created"
-
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
@@ -412,6 +428,7 @@ def test_create_run_with_custom_properties(client):
 
     RunConfiguration(
         id=run_configuration_id,
+        workspace_id=workspace_id,
         title=title,
         run_plan_id=run_plan_id,
         agent_ids=agent_ids,
@@ -437,6 +454,7 @@ def test_create_run_with_custom_properties(client):
 
 
 def test_delete_one(client):
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
@@ -446,6 +464,7 @@ def test_delete_one(client):
     data_to_create = {
         "id": run_id,
         "run_configuration_id": run_configuration_id,
+        "workspace_id": workspace_id,
         "title": title,
         "run_plan_id": run_plan_id,
         "agent_ids": agent_ids,
@@ -475,33 +494,38 @@ def test_run_delete_with_run_not_found(client):
     assert response.status_code == 404
 
 
-default_agents_data = [
+default_runs_data = [
     dict(
         run_id="6076d69ba216ff15b6e95ea1",
+        workspace_id="6076d1e3a216ff15b6e95e9a",
         labels=["label1", "label2"],
         run_status=RunStatus.PENDING.value,
         started_at=datetime(2019, 1, 1),
     ),
     dict(
         run_id="6076d69ba216ff15b6e95ea2",
+        workspace_id="6076d1e3a216ff15b6e95e9a",
         labels=["label1"],
         run_status=RunStatus.RUNNING.value,
         started_at=datetime(2019, 2, 1),
     ),
     dict(
         run_id="6076d69ba216ff15b6e95ea3",
+        workspace_id="6076d1e3a216ff15b6e95e9a",
         labels=[],
         run_status=RunStatus.RUNNING.value,
         started_at=datetime(2019, 3, 1),
     ),
     dict(
         run_id="6076d69ba216ff15b6e95ea4",
+        workspace_id="6076d1e3a216ff15b6e95e9a",
         labels=["label2"],
         run_status=RunStatus.RUNNING.value,
         started_at=datetime(2019, 4, 1),
     ),
     dict(
         run_id="6076d69ba216ff15b6e95ea5",
+        workspace_id="6076d1e3a216ff15b6e95e8a",
         labels=["label1", "label2"],
         run_status=RunStatus.FINISHED.value,
         started_at=datetime(2019, 5, 1),
@@ -511,7 +535,7 @@ default_agents_data = [
 
 @pytest.mark.parametrize(
     "db_data",
-    [default_agents_data],
+    [default_runs_data],
 )
 @pytest.mark.parametrize(
     "input_params,extected_ids",
@@ -551,6 +575,12 @@ default_agents_data = [
                 "6076d69ba216ff15b6e95ea4",
             ],
         ),
+        (
+            "?workspace_id=6076d1e3a216ff15b6e95e8a",
+            [
+                "6076d69ba216ff15b6e95ea5",
+            ],
+        ),
     ],
 )
 def test_run_list(client, db_data, input_params, extected_ids):
@@ -562,6 +592,7 @@ def test_run_list(client, db_data, input_params, extected_ids):
 
         Run(
             id=document["run_id"],
+            workspace_id=document["workspace_id"],
             run_configuration_id=run_configuration_id,
             title=title,
             run_plan_id=run_plan_id,

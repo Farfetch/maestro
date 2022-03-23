@@ -1,7 +1,10 @@
+from mongoengine import Q
+
 from maestro_api.db.models.agent import Agent
 from maestro_api.db.models.run_plan import RunPlan
 from maestro_api.db.models.custom_data import CustomData
 from maestro_api.db.models.run_configuration import RunConfiguration
+from maestro_api.db.models.workspace import Workspace
 
 from maestro_api.libs.flask.utils import get_obj_or_404, jsonify_list_of_docs, jsonify
 
@@ -16,6 +19,7 @@ class RunConfigurationController:
         ]
 
         run_plan = get_obj_or_404(RunPlan, id=data.get("run_plan_id"))
+        workspace = get_obj_or_404(Workspace, id=data.get("workspace_id"))
 
         custom_data_ids = [
             get_obj_or_404(CustomData, id=custom_data_id).id
@@ -34,6 +38,7 @@ class RunConfigurationController:
             "title": title,
             "agent_ids": agent_ids,
             "run_plan_id": run_plan.id,
+            "workspace_id": workspace.id,
             "hosts": hosts,
             "custom_data_ids": custom_data_ids,
             "custom_properties": custom_properties,
@@ -54,10 +59,17 @@ class RunConfigurationController:
 
         return jsonify(run_configuration.to_dict())
 
-    def all(self, user):
+    def all(self, data, user):
         "Get all RunConfiguration objects"
 
-        run_configurations = RunConfiguration.objects()
+        workspace_id = data.get("workspace_id", None)
+
+        filter_query = Q()
+
+        if workspace_id is not None:
+            filter_query = filter_query & Q(workspace_id=workspace_id)
+
+        run_configurations = RunConfiguration.objects.filter(filter_query)
 
         return jsonify_list_of_docs(run_configurations)
 

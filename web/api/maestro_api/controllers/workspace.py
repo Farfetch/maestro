@@ -1,5 +1,8 @@
 from maestro_api.db.models.workspace import Workspace
 from maestro_api.db.models.user import User, UserRole
+from maestro_api.db.repo.run import RunRepository
+from maestro_api.db.models.run import Run
+from maestro_api.db.models.run_configuration import RunConfiguration
 
 
 from maestro_api.libs.flask.utils import (
@@ -13,6 +16,7 @@ from maestro_api.libs.flask.utils import (
 class WorkspaceController:
     def __init__(self, flask_app=None):
         self.flask_app = flask_app
+        self.run_repo = RunRepository()
 
     def create_or_update_workspace(self, workspace, data):
         "Create Owrkspace and share it with Users"
@@ -79,6 +83,10 @@ class WorkspaceController:
         User.objects(workspace_ids__in=[workspace.id]).update(
             pull__workspace_ids=workspace.id
         )
+        runs = Run.objects(workspace_id=workspace.id)
+        for run in runs:
+            self.run_repo.delete_with_related(run)
+        RunConfiguration.objects(workspace_id=workspace.id).delete()
 
         workspace.delete()
 
