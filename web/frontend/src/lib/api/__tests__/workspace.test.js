@@ -2,6 +2,7 @@ import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 import {
   createWorkspace,
+  deleteWorkspace,
   fetchWorkspaces,
   updateWorkspace
 } from "../endpoints/workspace";
@@ -41,6 +42,74 @@ describe("libs/api/endpoints/workspace", () => {
 
       expect(data).toStrictEqual(expectedData);
     });
+
+    test("should return only default workspaces", async () => {
+      const apiWorkspaces = [
+        {
+          id: "6076d210a216ff15b6e95ea0",
+          name: "Test Workspace1",
+          is_default: false,
+          created_at: "2021-04-14 12:29:20",
+          updated_at: "2021-04-14 12:51:25"
+        },
+        {
+          id: "6076d210a216ff15b6e95ea0",
+          name: "Default Workspace",
+          is_default: true,
+          created_at: "2021-04-14 12:29:20",
+          updated_at: "2021-04-14 12:51:25"
+        }
+      ];
+
+      const expectedWorkspaces = [
+        {
+          id: apiWorkspaces[1].id,
+          name: apiWorkspaces[1].name,
+          isDefault: apiWorkspaces[1].is_default,
+          createdAt: toLocalDate(apiWorkspaces[1].created_at),
+          updatedAt: toLocalDate(apiWorkspaces[1].updated_at)
+        }
+      ];
+
+      axiosMock.onGet(`/api/workspaces`).reply(200, apiWorkspaces);
+      const data = await fetchWorkspaces({ isDefault: true });
+
+      expect(data).toStrictEqual(expectedWorkspaces);
+    });
+
+    test("should return only not default workspaces", async () => {
+      const apiWorkspaces = [
+        {
+          id: "6076d210a216ff15b6e95ea0",
+          name: "Test Workspace1",
+          is_default: false,
+          created_at: "2021-04-14 12:29:20",
+          updated_at: "2021-04-14 12:51:25"
+        },
+        {
+          id: "6076d210a216ff15b6e95ea0",
+          name: "Default Workspace",
+          is_default: true,
+          created_at: "2021-04-14 12:29:20",
+          updated_at: "2021-04-14 12:51:25"
+        }
+      ];
+
+      const expectedWorkspaces = [
+        {
+          id: apiWorkspaces[0].id,
+          name: apiWorkspaces[0].name,
+          isDefault: apiWorkspaces[0].is_default,
+          createdAt: toLocalDate(apiWorkspaces[0].created_at),
+          updatedAt: toLocalDate(apiWorkspaces[0].updated_at)
+        }
+      ];
+
+      axiosMock.onGet(`/api/workspaces`).reply(200, apiWorkspaces);
+      const data = await fetchWorkspaces({ isDefault: false });
+
+      expect(data).toStrictEqual(expectedWorkspaces);
+    });
   });
 
   describe("createWorkspace", () => {
@@ -75,6 +144,19 @@ describe("libs/api/endpoints/workspace", () => {
         })
         .reply(200, apiResponse[0]);
       const data = await updateWorkspace(workspaceId, updateData);
+
+      expect(data).toStrictEqual(expectedData[0]);
+    });
+  });
+
+  describe("deleteWorkspace", () => {
+    test("should return single Workspace object", async () => {
+      const workspaceId = "6076d210a216ff15b6e95ea0";
+
+      axiosMock
+        .onDelete(`/api/workspace/${workspaceId}`)
+        .reply(200, apiResponse[0]);
+      const data = await deleteWorkspace(workspaceId);
 
       expect(data).toStrictEqual(expectedData[0]);
     });

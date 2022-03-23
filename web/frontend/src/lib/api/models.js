@@ -29,3 +29,8 @@ export const agentLogLevel = {
   ERROR: "ERROR",
   CRITICAL: "CRITICAL"
 };
+
+export const userRole = {
+  USER: "USER",
+  ADMIN: "ADMIN"
+};

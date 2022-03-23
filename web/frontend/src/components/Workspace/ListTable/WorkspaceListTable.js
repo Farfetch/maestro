@@ -1,8 +1,9 @@
-import { Button, Popconfirm, Table, Tag } from "antd";
+import { Button, Popconfirm, Table } from "antd";
 import PropTypes from "prop-types";
 import { useState } from "react";
 
 import { deleteWorkspace } from "../../../lib/api/endpoints/workspace";
+import { userRole as userRoleModel } from "../../../lib/api/models";
 import EditWorkspaceModal from "../EditWorkspaceModal";
 
 const workspaceMapper = ({ id, name, isDefault, createdAt, updatedAt }) => ({
@@ -20,12 +21,7 @@ const WorkspaceListTable = ({ workspaces, users, isLoading, refresh }) => {
     {
       title: "Name",
       dataIndex: "name",
-      key: "name",
-      render: (text, record) => (
-        <>
-          {text} {record.isDefault ? <Tag color="blue">Default</Tag> : null}
-        </>
-      )
+      key: "name"
     },
     {
       title: "Created at",
@@ -115,6 +111,17 @@ WorkspaceListTable.propTypes = {
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       isDefault: PropTypes.bool.isRequired,
+      createdAt: PropTypes.object.isRequired,
+      updatedAt: PropTypes.object.isRequired
+    })
+  ),
+  users: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      role: PropTypes.oneOf([userRoleModel.USER, userRoleModel.ADMIN]),
+      workspaceIds: PropTypes.arrayOf(PropTypes.string),
       createdAt: PropTypes.object.isRequired,
       updatedAt: PropTypes.object.isRequired
     })
