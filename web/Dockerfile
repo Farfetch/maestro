@@ -14,8 +14,8 @@ WORKDIR /home/maestro/app
 
 ENV PATH="/home/maestro/.local/bin:${PATH}"
 
-RUN python -m pip install --upgrade pip==21.3.1
-RUN python -m pip install pipenv==2020.11.15
+RUN python -m pip install --upgrade pip==22.0.4
+RUN python -m pip install pipenv==2022.3.23
 
 COPY --chown=maestro:maestro api .
 RUN rm -rf frontend

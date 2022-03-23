@@ -94,6 +94,79 @@ def test_create_user(client):
     assert "updated_at" in res
 
 
+def test_create_user_with_already_exist_email(client):
+
+    name = "User 1"
+    email = "user1@maestro.test"
+    workspace_ids = ["6076d1e3a216ff15b6e95e1f"]
+    role = UserRole.USER.value
+
+    for workspace_id in workspace_ids:
+        Workspace(id=workspace_id, name="Test").save()
+
+    User(
+        name=name,
+        email=email,
+        role=role,
+        workspace_ids=["6076d1e3a216ff15b6e95e2f"],
+    ).save()
+
+    request_data = {
+        "name": name,
+        "email": email,
+        "role": role,
+        "workspace_ids": workspace_ids,
+    }
+    response = client.post(
+        "/user",
+        data=json.dumps(request_data),
+        content_type="application/json",
+    )
+
+    assert 400 == response.status_code
+
+
+def test_update_user_with_already_exist_email(client):
+
+    user_id = "6076d1e3a216ff15b6e95e1d"
+    name = "User 1"
+    email = "user1@maestro.test"
+    workspace_ids = ["6076d1e3a216ff15b6e95e1f"]
+    role = UserRole.USER.value
+
+    for workspace_id in workspace_ids:
+        Workspace(id=workspace_id, name="Test").save()
+
+    User(
+        name=name,
+        email=email,
+        role=role,
+        workspace_ids=["6076d1e3a216ff15b6e95e2f"],
+    ).save()
+
+    User(
+        id=user_id,
+        name="User 2",
+        email="user2@maestro.test",
+        role=role,
+        workspace_ids=["6076d1e3a216ff15b6e95e2f"],
+    ).save()
+
+    request_data = {
+        "name": name,
+        "email": email,
+        "role": role,
+        "workspace_ids": workspace_ids,
+    }
+    response = client.put(
+        f"/user/{user_id}",
+        data=json.dumps(request_data),
+        content_type="application/json",
+    )
+
+    assert 400 == response.status_code
+
+
 def test_update_user(client):
 
     user_id = "6076d1e3a216ff15b6e95e1d"
