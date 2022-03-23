@@ -2,23 +2,22 @@ import { Button, Col, Row } from "antd";
 import React, { useEffect, useState } from "react";
 
 import PageTitle from "../components/layout/PageTitle";
-import CreateWorkspaceModal from "../components/Workspace/CreateWorkspaceModal";
-import WorkspaceLisTable from "../components/Workspace/ListTable";
+import CreateUserModal from "../components/User/CreateUserModal";
+import UserListTable from "../components/User/ListTable";
 import { fetchUsers } from "../lib/api/endpoints/user";
 import { fetchWorkspaces } from "../lib/api/endpoints/workspace";
 
-const WorkspacesPage = () => {
+const UsersPage = () => {
   const [workspaces, setWorkspaces] = useState([]);
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isCreateWorkspaceVisible, setIsCreateWorkspaceVisible] =
-    useState(false);
+  const [isCreateUserVisible, setIsCreateUserVisibile] = useState(false);
 
   const updateWorkspacesAndUsers = async () => {
     setIsLoading(true);
 
     const [workspacesRes, usersRes] = await Promise.all([
-      fetchWorkspaces({ isDefault: false }),
+      fetchWorkspaces(),
       fetchUsers()
     ]);
 
@@ -35,12 +34,12 @@ const WorkspacesPage = () => {
   return (
     <>
       <PageTitle
-        title={"Workspaces"}
+        title={"Users"}
         button={
           <Button
             type="primary"
             size="large"
-            onClick={() => setIsCreateWorkspaceVisible(true)}
+            onClick={() => setIsCreateUserVisibile(true)}
           >
             Create
           </Button>
@@ -48,7 +47,7 @@ const WorkspacesPage = () => {
       />
       <Row gutter={[32, 32]} justify="start" align="middle">
         <Col span={24}>
-          <WorkspaceLisTable
+          <UserListTable
             isLoading={isLoading}
             workspaces={workspaces}
             users={users}
@@ -56,19 +55,20 @@ const WorkspacesPage = () => {
           />
         </Col>
       </Row>
-      <CreateWorkspaceModal
+      <CreateUserModal
         users={users}
-        isVisible={isCreateWorkspaceVisible}
+        workspaces={workspaces}
+        isVisible={isCreateUserVisible}
         onSave={() => {
-          setIsCreateWorkspaceVisible(false);
+          setIsCreateUserVisibile(false);
           updateWorkspacesAndUsers();
         }}
         onCancel={() => {
-          setIsCreateWorkspaceVisible(false);
+          setIsCreateUserVisibile(false);
         }}
       />
     </>
   );
 };
 
-export default WorkspacesPage;
+export default UsersPage;
