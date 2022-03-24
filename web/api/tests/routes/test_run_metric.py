@@ -37,6 +37,7 @@ def get_metrics(min_datetime, next_datetime):
 
 def test_run_metric_all(client):
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
@@ -94,6 +95,7 @@ def test_run_metric_all(client):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         title=title,
         run_configuration_id=run_configuration_id,
         run_plan_id=run_plan_id,
@@ -154,6 +156,7 @@ def test_run_metric_all(client):
 
 def test_run_metric_all_with_show_labels_param(client):
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
@@ -168,6 +171,7 @@ def test_run_metric_all_with_show_labels_param(client):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         title=title,
         run_configuration_id=run_configuration_id,
         run_plan_id=run_plan_id,
@@ -191,6 +195,7 @@ def test_run_metric_all_with_show_labels_param(client):
 
 
 def test_run_metric_all_with_show_labels_and_zero_time_interval(client):
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
@@ -206,6 +211,7 @@ def test_run_metric_all_with_show_labels_and_zero_time_interval(client):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         title=title,
         run_configuration_id=run_configuration_id,
         run_plan_id=run_plan_id,
@@ -229,6 +235,7 @@ def test_run_metric_all_with_show_labels_and_zero_time_interval(client):
 
 
 def test_run_metrics_create_many(client):
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     run_id = "6076d1e3a216ff15b6e95e1f"
     title = "some example title"
@@ -277,6 +284,7 @@ def test_run_metrics_create_many(client):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         title=title,
         run_configuration_id=run_configuration_id,
         run_plan_id=run_plan_id,
@@ -302,6 +310,7 @@ def test_run_metrics_create_many(client):
 
 def test_run_metrics_download(client):
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
     title = "some example title"
     run_id = "6076d1e3a216ff15b6e95e1f"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
@@ -336,6 +345,7 @@ def test_run_metrics_download(client):
 
     Run(
         id=run_id,
+        workspace_id=workspace_id,
         title=title,
         run_configuration_id=run_configuration_id,
         run_plan_id=run_plan_id,

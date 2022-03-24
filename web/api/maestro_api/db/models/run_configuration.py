@@ -36,6 +36,7 @@ class RunConfigurationLoadProfile(EmbeddedDocument):
 class RunConfiguration(CreatedUpdatedDocumentMixin):
     title = StringField(required=True)
     run_plan_id = ObjectIdField(required=True)
+    workspace_id = ObjectIdField(required=True)
     agent_ids = ListField(
         required=True,
         field=ObjectIdField(),
@@ -60,6 +61,7 @@ class RunConfiguration(CreatedUpdatedDocumentMixin):
         return {
             "id": str(self.id),
             "run_plan_id": str(self.run_plan_id),
+            "workspace_id": str(self.workspace_id),
             "agent_ids": [str(agent_id) for agent_id in self.agent_ids],
             "custom_data_ids": [
                 str(custom_data_id) for custom_data_id in self.custom_data_ids
