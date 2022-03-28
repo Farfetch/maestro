@@ -113,7 +113,7 @@ const CreateUserForm = ({
 };
 
 CreateUserForm.propTypes = {
-  form: PropTypes.any.isRequired,
+  form: PropTypes.any,
   initialValues: PropTypes.shape({
     name: PropTypes.string,
     workspaceIds: PropTypes.arrayOf(PropTypes.string)

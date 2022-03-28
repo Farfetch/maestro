@@ -1,4 +1,5 @@
 import { cleanup, render, waitFor } from "@testing-library/react";
+import moment from "moment";
 import React from "react";
 
 import CreateUserForm from "./CreateUserForm";
@@ -13,25 +14,33 @@ describe("components/User/CreateUserForm", () => {
         name: "user 1",
         email: "user1@maestro.net",
         role: "USER",
-        workspaceIds: ["1-2-3", "4-5-6"]
+        workspaceIds: ["1-2-3", "4-5-6"],
+        createdAt: moment("2018-05-24 13:48:00"),
+        updatedAt: moment("2018-05-24 13:48:00")
       },
       {
         id: "user-id-2",
         name: "user 2",
         email: "user2@maestro.net",
         role: "USER",
-        workspaceIds: ["4-5-6"]
+        workspaceIds: ["4-5-6"],
+        createdAt: moment("2018-05-24 13:48:00"),
+        updatedAt: moment("2018-05-24 13:48:00")
       }
     ];
 
     const workspaces = [
       {
         id: "1-2-3",
-        name: "Workspace 1"
+        name: "Workspace 1",
+        createdAt: moment("2018-05-24 13:48:00"),
+        updatedAt: moment("2018-05-24 13:48:00")
       },
       {
         id: "4-5-6",
-        name: "Workspace 2"
+        name: "Workspace 2",
+        createdAt: moment("2018-05-24 13:48:00"),
+        updatedAt: moment("2018-05-24 13:48:00")
       }
     ];
 
@@ -57,25 +66,33 @@ describe("components/User/CreateUserForm", () => {
         name: "user 1",
         email: "user1@maestro.net",
         role: "USER",
-        workspaceIds: ["1-2-3", "4-5-6"]
+        workspaceIds: ["1-2-3", "4-5-6"],
+        createdAt: moment("2018-05-24 13:48:00"),
+        updatedAt: moment("2018-05-24 13:48:00")
       },
       {
         id: "user-id-2",
         name: "user 2",
         email: "user2@maestro.net",
         role: "USER",
-        workspaceIds: ["4-5-6"]
+        workspaceIds: ["4-5-6"],
+        createdAt: moment("2018-05-24 13:48:00"),
+        updatedAt: moment("2018-05-24 13:48:00")
       }
     ];
 
     const workspaces = [
       {
         id: "1-2-3",
-        name: "Workspace 1"
+        name: "Workspace 1",
+        createdAt: moment("2018-05-24 13:48:00"),
+        updatedAt: moment("2018-05-24 13:48:00")
       },
       {
         id: "4-5-6",
-        name: "Workspace 2"
+        name: "Workspace 2",
+        createdAt: moment("2018-05-24 13:48:00"),
+        updatedAt: moment("2018-05-24 13:48:00")
       }
     ];
 
