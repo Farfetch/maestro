@@ -2,6 +2,7 @@ import json
 import pytest
 
 from maestro_api.db.models.agent import Agent
+from maestro_api.db.models.run import Run
 from maestro_api.db.models.run_plan import RunPlan
 from maestro_api.db.models.run_configuration import RunConfiguration
 from maestro_api.db.models.custom_data import CustomData
@@ -178,6 +179,49 @@ def test_delete_run_configuration(client):
     assert res_json["id"] == run_configuration_id
 
     assert len(available_run_configurations) == 0
+
+
+def test_delete_run_configuration_with_runs(client):
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
+    run_configuration_id = "6106d1e3a216ff15b6e95e9d"
+    run_plan_id = "6076d1e3a216ff15b6e95e9d"
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    run_configuration_title = "Example test plan"
+
+    RunConfiguration(
+        id=run_configuration_id,
+        workspace_id=workspace_id,
+        title=run_configuration_title,
+        agent_ids=agent_ids,
+        run_plan_id=run_plan_id,
+        hosts=[],
+        custom_data_ids=[],
+        custom_properties=[],
+    ).save()
+
+    Run(
+        run_configuration_id=run_configuration_id,
+        workspace_id=workspace_id,
+        title="Test run",
+        run_plan_id=run_plan_id,
+        agent_ids=agent_ids,
+    ).save()
+
+    request_data = {}
+    response = client.delete(
+        f"/run_configuration/{run_configuration_id}",
+        data=json.dumps(request_data),
+        content_type="application/json",
+    )
+    available_run_configurations = RunConfiguration.objects()
+    available_runs = Run.objects()
+    res_json = json.loads(response.data)
+
+    assert response.status_code == 200
+    assert res_json["id"] == run_configuration_id
+
+    assert len(available_run_configurations) == 0
+    assert len(available_runs) == 0
 
 
 def test_delete_run_configuration_with_not_found(client):
