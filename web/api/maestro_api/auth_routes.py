@@ -3,6 +3,7 @@ from flask import request, redirect, make_response
 from maestro_api.services.auth.oauth import OauthClient
 from maestro_api.logging import Logger
 from maestro_api.db.repo.user import UserRepository
+from maestro_api.db.models.user import UserRole
 
 from maestro_api.settings import (
     OAUTH_CLIENT_ID,
@@ -10,6 +11,7 @@ from maestro_api.settings import (
     OAUTH_HOST,
     OAUTH_CLIENT_REDIRECT_URI,
     OAUTH_SCOPE,
+    AUTH_ADMIN_EMAIL,
 )
 
 
@@ -51,8 +53,13 @@ def init_auth_routes(flask_app):
             access_token = data.get("access_token")
 
             user = client.get_userinfo(access_token)
+            role = (
+                UserRole.ADMIN.value
+                if user["email"] == AUTH_ADMIN_EMAIL
+                else UserRole.USER.value
+            )
             user_repository.create_or_update(
-                name=user["name"], email=user["preferred_username"]
+                name=user["name"], email=user["preferred_username"], role=role
             )
 
             response = make_response(redirect("/"))
