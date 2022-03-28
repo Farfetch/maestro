@@ -101,7 +101,6 @@ export const updateRun = async (runId, params) => {
 };
 
 /**
- * NOTE: at least one of params is required
  * @param {string} runId optional param to update status
  * @returns {Run}
  */

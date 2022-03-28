@@ -146,7 +146,6 @@ export const fetchRunConfigurations = async (filters = {}) => {
 };
 
 /**
- * NOTE: at least one of params is required
  * @param {string} runConfigurationId optional param to update status
  * @returns {RunConfiguration}
  */
