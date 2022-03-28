@@ -51,7 +51,9 @@ JMETER_DIR = os.path.join(ROOT_DIRECTORY, "jmeter")
 
 # HOST MACHINE DIRECTORIES
 
-HOST_MOUNT_DIR = os.environ.get("HOST_MOUNT_DIR", os.path.join(pathlib.Path.home(), ".maestro", "jmeter"))
+HOST_MOUNT_DIR = os.environ.get(
+    "HOST_MOUNT_DIR", os.path.join(pathlib.Path.home(), ".maestro", "jmeter")
+)
 
 # RUN DIRECTORIES
 
