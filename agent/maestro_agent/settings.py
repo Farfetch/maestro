@@ -51,7 +51,9 @@ JMETER_DIR = os.path.join(ROOT_DIRECTORY, "jmeter")
 
 # HOST MACHINE DIRECTORIES
 
-HOST_MOUNT_DIR = os.environ.get("HOST_MOUNT_DIR", "/tmp/maestrojmeter")
+HOST_MOUNT_DIR = os.environ.get(
+    "HOST_MOUNT_DIR", os.path.join(pathlib.Path.home(), ".maestro", "jmeter")
+)
 
 # RUN DIRECTORIES
 
@@ -82,7 +84,7 @@ JMETER_RUN_DIR_RELATIVE_PATH = os.path.relpath(JMETER_RUN_DIR, JMETER_DIR)
 JMETER_RUN_METRICS_FILENAME = "run_metrics.csv"
 JMETER_RUN_LOGS_FILENAME = "jmeter.log"
 
-JMETER_RUN_MOUNT_DIR = os.path.join(HOST_MOUNT_DIR, "%s")  # /tmp/maestrojmeter/{id}
+JMETER_RUN_MOUNT_DIR = os.path.join(HOST_MOUNT_DIR, "%s")  # $HOME/.maestro/jmeter/{id}
 
 
 JMETER_RUN_METRICS_PATH = os.path.join(
