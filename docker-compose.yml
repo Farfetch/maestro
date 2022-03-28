@@ -1,7 +1,7 @@
 version: "3.4"
 services:
   web:
-    image: farfetchoss/maestro:0.5.0
+    image: farfetchoss/maestro:beta-7db33f1
     container_name: maestroweb
 
     environment:
@@ -23,26 +23,27 @@ services:
         - "CMD-SHELL"
         - 'curl http://maestroweb:5000'
       interval: 2s
-      timeout: 3s
+      timeout: 5s
       retries: 10
 
   agent:
-    image: farfetchoss/maestro-agent:0.5.0
-    container_name: maestroagent_client
+    image: farfetchoss/maestro-agent:beta-7db33f1
+    container_name: maestroagent
+    restart: always
     environment:
       MAESTRO_API_HOST: http://maestroweb:5000
       JMETER_IMAGE_BASE_REPO: farfetchoss/maestro-agent
       JMETER_IMAGE_BASE_VERSION: 0.5.0
       JMETER_CONTAINER_NAME: maestrojmeter_client
       AGENT_HOST: agent.maestro.net
-      HOST_MOUNT_DIR: /tmp/maestrojmeter
+      HOST_MOUNT_DIR: $HOME/.maestro/jmeter
     volumes:
       - type: bind
         source: /var/run/docker.sock
         target: /var/run/docker.sock
       - type: bind
-        source: /tmp/maestrojmeter
-        target: /tmp/maestrojmeter
+        source: $HOME/.maestro/jmeter
+        target: $HOME/.maestro/jmeter
     networks:
       - default
     depends_on:

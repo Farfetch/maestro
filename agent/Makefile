@@ -25,10 +25,10 @@ run:
 	JMETER_CONTAINER_NAME=maestrojmeter AGENT_HOST=agent.maestro.net python run.py
 
 run1:
-	HOST_MOUNT_DIR=/tmp/maestrojmeter1 JMETER_CONTAINER_NAME=maestrojmeter1 AGENT_HOST=agent1.maestro.net python run.py
+	HOST_MOUNT_DIR=$HOME/.maestro/jmeter1 JMETER_CONTAINER_NAME=maestrojmeter1 AGENT_HOST=agent1.maestro.net python run.py
 
 run2:
-	HOST_MOUNT_DIR=/tmp/maestrojmeter2 JMETER_CONTAINER_NAME=maestrojmeter2 AGENT_HOST=agent2.maestro.net python run.py
+	HOST_MOUNT_DIR=$HOME/.maestro/jmeter2 JMETER_CONTAINER_NAME=maestrojmeter2 AGENT_HOST=agent2.maestro.net python run.py
 
 coverage:
 	pytest --cov-report term-missing --cov=maestro_agent tests

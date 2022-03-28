@@ -17,10 +17,10 @@ We do have some environment requirements that you have to check manually to make
 
 The commands below would help to get the application up and running. It also will give a general feeling of how it works.
 
-Before you continue, make sure the `/tmp/maestrojmeter` folder is created and exists. The folder would be used to store all temporary data from JMeter and mostly used as the shared volume between Maestro containers and JMeter ones.
+Before you continue, make sure the `$HOME/.maestro/jmeter` folder is created and exists. The folder would be used to store all temporary data from JMeter and mostly used as the shared volume between Maestro containers and JMeter ones.
 
 ```bash
-mkdir -p /tmp/maestrojmeter
+mkdir -p $HOME/.maestro/jmeter
 ```
 
 **Run application**:
