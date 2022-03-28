@@ -2,6 +2,7 @@ import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 import {
   createRunConfiguration,
+  deleteRunConfiguration,
   fetchRunConfigurationById,
   fetchRunConfigurations,
   updateRunConfiguration
@@ -174,6 +175,19 @@ describe("libs/api/endpoints/runConfiguration", () => {
       const data = await fetchRunConfigurations();
 
       expect(data).toStrictEqual([expectedData]);
+    });
+  });
+
+  describe("deleteRunConfiguration", () => {
+    test("should return single RunConfiugration object", async () => {
+      const runConfigurationId = "1-2-3";
+      axiosMock
+        .onDelete(`/api/run_configuration/${runConfigurationId}`)
+        .reply(200, apiResponse);
+
+      const data = await deleteRunConfiguration(runConfigurationId);
+
+      expect(data).toStrictEqual(expectedData);
     });
   });
 });

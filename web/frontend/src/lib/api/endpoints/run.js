@@ -99,3 +99,16 @@ export const updateRun = async (runId, params) => {
 
   return run;
 };
+
+/**
+ * NOTE: at least one of params is required
+ * @param {string} runId optional param to update status
+ * @returns {Run}
+ */
+export const deleteRun = async (runId) => {
+  const res = await maestroClient.delete(`/api/run/${runId}`);
+
+  const run = runObjectMapper(res.data);
+
+  return run;
+};

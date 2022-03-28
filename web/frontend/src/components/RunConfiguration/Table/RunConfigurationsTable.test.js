@@ -20,6 +20,7 @@ describe("components/RunConfiguration/Table", () => {
       updatedAt: moment("2018-05-24T13:48:04.313000")
     }
   ];
+  const refetch = () => null;
   test(`should render RunConfigurationTable component`, async () => {
     MockDate.set(toLocalDate("2022-03-03 00:00:00"));
     const rendered = render(
@@ -27,6 +28,7 @@ describe("components/RunConfiguration/Table", () => {
         <RunConfigurationsTable
           runConfigurations={runConfigurations}
           isLoading={false}
+          refetch={refetch}
         />
       </MemoryRouter>
     );
@@ -42,6 +44,7 @@ describe("components/RunConfiguration/Table", () => {
         <RunConfigurationsTable
           runConfigurations={runConfigurations}
           isLoading={true}
+          refetch={refetch}
         />
       </MemoryRouter>
     );
@@ -92,6 +95,7 @@ describe("components/RunConfiguration/Table", () => {
         <RunConfigurationsTable
           runConfigurations={runConfigurationsWithSchedule}
           isLoading={false}
+          refetch={refetch}
         />
       </MemoryRouter>
     );

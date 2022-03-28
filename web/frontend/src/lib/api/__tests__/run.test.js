@@ -2,6 +2,7 @@ import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 import {
   createRun,
+  deleteRun,
   fetchRunById,
   fetchRuns,
   startRun,
@@ -153,6 +154,17 @@ describe("libs/api/endpoints/run", () => {
       axiosMock.onPut(`/api/run/${runId}`, params).reply(200, apiResponse);
 
       const data = await updateRun(runId, params);
+
+      expect(data).toStrictEqual(expectedData);
+    });
+  });
+
+  describe("deleteRun", () => {
+    test("should return single Run object", async () => {
+      const runId = "1-2-3";
+      axiosMock.onDelete(`/api/run/${runId}`).reply(200, apiResponse);
+
+      const data = await deleteRun(runId);
 
       expect(data).toStrictEqual(expectedData);
     });
