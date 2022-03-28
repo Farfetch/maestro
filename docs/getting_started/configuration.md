@@ -33,4 +33,4 @@ Maestro application services could be configured by using the Environment variab
 | `JMETER_IMAGE_BASE_VERSION`            | JMeter version to run the test. It also used as tag for pulling repository    | _String_  | ''                                        |
 | `JMETER_IMAGE_HEAP`                    | JAVA HEAP configuration. Could be different based on machine resources        | _String_  | '-Xms1g -Xmx1g -XX:MaxMetaspaceSize=256m' |
 | `JMETER_CONTAINER_NAME`                | Container name that would be built per each test run                          | _String_  | 'maestrojmeter'                           |
-| `HOST_MOUNT_DIR`                       | Host machine temporary directory to share the data between running containers | _String_  | '$HOME/.maestro/jmeter'                   |
+| `HOST_MOUNT_DIR`                       | Host machine temporary directory to share the data between running containers | _String_  | `$HOME/.maestro/jmeter`                   |
