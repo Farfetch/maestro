@@ -10,7 +10,10 @@ from maestro_api.services.auth.request_validator import (
     AuthRequestValidator,
     UnauthorizedAccessError,
 )
-from maestro_api.settings import AUTH_API_USER, AUTH_API_TOKEN
+from maestro_api.settings import (
+    AUTH_API_USER,
+    AUTH_API_TOKEN,
+)
 
 
 def validate_request(schema=None):
@@ -100,7 +103,15 @@ def requires_auth(redirect_to_login=False):
                         return f(*args, **kwargs, user={"email": mock_email})
 
                     if current_app.config["OAUTH_ENABLED"] is False:
-                        return f(*args, **kwargs, user=None)
+                        return f(
+                            *args,
+                            **kwargs,
+                            user={
+                                "email": current_app.config[
+                                    "MOCK_AUTH_ANONYMOUS_USER_EMAIL"
+                                ]
+                            }
+                        )
 
                     auth_data = auth_validator.validate_tokens(
                         access_token, refresh_token
