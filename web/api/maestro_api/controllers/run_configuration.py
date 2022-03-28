@@ -1,10 +1,12 @@
 from mongoengine import Q
 
 from maestro_api.db.models.agent import Agent
+from maestro_api.db.models.run import Run
 from maestro_api.db.models.run_plan import RunPlan
 from maestro_api.db.models.custom_data import CustomData
 from maestro_api.db.models.run_configuration import RunConfiguration
 from maestro_api.db.models.workspace import Workspace
+from maestro_api.db.repo.run import RunRepository
 
 from maestro_api.libs.flask.utils import get_obj_or_404, jsonify_list_of_docs, jsonify
 
@@ -12,6 +14,7 @@ from maestro_api.libs.flask.utils import get_obj_or_404, jsonify_list_of_docs, j
 class RunConfigurationController:
     def __init__(self, flask_app):
         self.flask_app = flask_app
+        self.run_repo = RunRepository()
 
     def _get_create_update_data(self, data):
         agent_ids = [
@@ -100,6 +103,10 @@ class RunConfigurationController:
         "Delete RunConfiguration by ID"
 
         run_configuration = get_obj_or_404(RunConfiguration, id=run_configuration_id)
+
+        runs = Run.objects(run_configuration_id=run_configuration.id)
+        for run in runs:
+            self.run_repo.delete_with_related(run)
 
         run_configuration.delete()
 
