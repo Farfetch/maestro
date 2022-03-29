@@ -1,12 +1,13 @@
-import { Col, Row, Space, Table, Tag } from "antd";
+import { Button, Col, Row, Space, Table, Tag } from "antd";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 import { runStatus as runStatusModel } from "../../../lib/api/models";
 import { runSingleUrl } from "../../../lib/routes";
 import RunStatusTag from "../../tag/RunStatusTag";
+import RunDeleteButton from "./DeleteButton";
 
-const getColumns = (labels) => [
+const getColumns = (labels, refetch) => [
   {
     title: "Title",
     dataIndex: "title",
@@ -58,11 +59,13 @@ const getColumns = (labels) => [
   {
     title: "Action",
     key: "action",
-    width: 80,
+    width: 160,
     render: (text, record) => (
-      <Space size="middle">
-        <Link to={runSingleUrl(record.key)}>Open</Link>
-        {/* TODO: add delete to remove all data that is related to the test run */}
+      <Space size="small">
+        <Link to={runSingleUrl(record.key)}>
+          <Button type="link">Open</Button>
+        </Link>
+        <RunDeleteButton runId={record.key} refetch={refetch} />
       </Space>
     )
   }
@@ -77,7 +80,7 @@ const runMapper = ({ id, title, runStatus, notes, labels, createdAt }) => ({
   createdAt
 });
 
-const RunListTable = ({ runs, isLoading }) => {
+const RunListTable = ({ runs, isLoading, refetch }) => {
   const runsDataSource = runs.map(runMapper);
   const labels = runs.reduce((previousValue, run) => {
     run.labels.forEach((label) => {
@@ -96,7 +99,7 @@ const RunListTable = ({ runs, isLoading }) => {
           size="small"
           loading={isLoading}
           dataSource={runsDataSource}
-          columns={getColumns(labels)}
+          columns={getColumns(labels, refetch)}
           pagination={{
             defaultPageSize: 50,
             hideOnSinglePage: true,
@@ -119,6 +122,7 @@ RunListTable.propTypes = {
       updatedAt: PropTypes.object.isRequired
     })
   ),
+  refetch: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired
 };
 

@@ -56,7 +56,7 @@ const CreateWorkspaceForm = ({ form, initialValues, onFinish, users }) => {
 };
 
 CreateWorkspaceForm.propTypes = {
-  form: PropTypes.any.isRequired,
+  form: PropTypes.any,
   initialValues: PropTypes.shape({
     name: PropTypes.string,
     usersEmail: PropTypes.arrayOf(PropTypes.string)

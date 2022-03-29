@@ -11,17 +11,19 @@ const HistoryPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { currentWorkspace } = useContext(CurrentWorkspaceContext);
 
+  const updateRunPlans = async () => {
+    setIsLoading(true);
+
+    const runsRes = await fetchRuns({ workspaceId: currentWorkspace.id });
+
+    setRuns(runsRes);
+
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    const updateRunPlans = async () => {
-      setIsLoading(true);
-
-      const runsRes = await fetchRuns({ workspaceId: currentWorkspace.id });
-
-      setRuns(runsRes);
-
-      setIsLoading(false);
-    };
     updateRunPlans();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentWorkspace]);
 
   return (
@@ -29,7 +31,11 @@ const HistoryPage = () => {
       <PageTitle title="History" />
       <Row>
         <Col span={24}>
-          <RunListTable isLoading={isLoading} runs={runs} />
+          <RunListTable
+            isLoading={isLoading}
+            runs={runs}
+            refetch={updateRunPlans}
+          />
         </Col>
       </Row>
     </>

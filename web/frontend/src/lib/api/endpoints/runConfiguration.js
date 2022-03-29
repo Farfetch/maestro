@@ -144,3 +144,17 @@ export const fetchRunConfigurations = async (filters = {}) => {
 
   return runConfigurations;
 };
+
+/**
+ * @param {string} runConfigurationId optional param to update status
+ * @returns {RunConfiguration}
+ */
+export const deleteRunConfiguration = async (runConfigurationId) => {
+  const res = await maestroClient.delete(
+    `/api/run_configuration/${runConfigurationId}`
+  );
+
+  const runConfiguration = runConfigurationObjectMapper(res.data);
+
+  return runConfiguration;
+};

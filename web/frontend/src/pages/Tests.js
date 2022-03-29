@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Col, Row } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -13,19 +14,19 @@ const TestsPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { currentWorkspace } = useContext(CurrentWorkspaceContext);
 
+  const updateRunConfigurations = async () => {
+    setIsLoading(true);
+
+    const runConfigurationsRes = await fetchRunConfigurations({
+      workspaceId: currentWorkspace.id
+    });
+
+    setRunConfigurations(runConfigurationsRes);
+
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    const updateRunConfigurations = async () => {
-      setIsLoading(true);
-
-      const runConfigurationsRes = await fetchRunConfigurations({
-        workspaceId: currentWorkspace.id
-      });
-
-      setRunConfigurations(runConfigurationsRes);
-
-      setIsLoading(false);
-    };
-
     updateRunConfigurations();
   }, [currentWorkspace]);
 
@@ -46,6 +47,7 @@ const TestsPage = () => {
           <RunConfigurationTable
             isLoading={isLoading}
             runConfigurations={runConfigurations}
+            refetch={updateRunConfigurations}
           />
         </Col>
       </Row>

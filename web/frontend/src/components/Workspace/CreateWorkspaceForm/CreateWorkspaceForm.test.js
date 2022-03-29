@@ -1,4 +1,5 @@
 import { cleanup, render, waitFor } from "@testing-library/react";
+import moment from "moment";
 import React from "react";
 
 import CreateWorkspaceForm from "./CreateWorkspaceForm";
@@ -10,7 +11,9 @@ describe("components/Workspace/CreateWorkspaceForm", () => {
     const users = [
       {
         id: "user-id",
-        email: "user1@maestro.net"
+        email: "user1@maestro.net",
+        createdAt: moment("2018-05-24 13:48:00"),
+        updatedAt: moment("2018-05-24 13:48:00")
       }
     ];
 
@@ -32,15 +35,21 @@ describe("components/Workspace/CreateWorkspaceForm", () => {
     const users = [
       {
         id: "user-id",
-        email: "user1@maestro.net"
+        email: "user1@maestro.net",
+        createdAt: moment("2018-05-24 13:48:00"),
+        updatedAt: moment("2018-05-24 13:48:00")
       },
       {
         id: "user-id-2",
-        email: "user2@maestro.net"
+        email: "user2@maestro.net",
+        createdAt: moment("2018-05-24 13:48:00"),
+        updatedAt: moment("2018-05-24 13:48:00")
       },
       {
         id: "user-id-3",
-        email: "user3@maestro.net"
+        email: "user3@maestro.net",
+        createdAt: moment("2018-05-24 13:48:00"),
+        updatedAt: moment("2018-05-24 13:48:00")
       }
     ];
 

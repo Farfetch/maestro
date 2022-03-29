@@ -1,4 +1,4 @@
-import { Col, Row, Space, Table } from "antd";
+import { Button, Col, Row, Space, Table } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
 import React from "react";
@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 
 import { daysOfTheWeek, toLocalHourMinute } from "../../../lib/date";
 import { testSingleUrl } from "../../../lib/routes";
+import RunConfigurationDeleteButton from "./DeleteButton";
 
-const columns = [
+const getColumns = (refetch) => [
   {
     title: "Title",
     dataIndex: "title",
@@ -44,8 +45,14 @@ const columns = [
     width: 200,
     render: (text, record) => (
       <>
-        <Space size="middle">
-          <Link to={testSingleUrl(record.key)}>Open</Link>
+        <Space size="small">
+          <Link to={testSingleUrl(record.key)}>
+            <Button type="link">Open</Button>
+          </Link>
+          <RunConfigurationDeleteButton
+            runConfigurationId={record.key}
+            refetch={refetch}
+          />
         </Space>
       </>
     )
@@ -86,7 +93,11 @@ const runConfigurationMapper = ({
   createdAt
 });
 
-const RunConfigurationsTable = ({ runConfigurations, isLoading = false }) => {
+const RunConfigurationsTable = ({
+  runConfigurations,
+  refetch,
+  isLoading = false
+}) => {
   const dataSource = runConfigurations.map(runConfigurationMapper);
 
   const pagination = {
@@ -103,7 +114,7 @@ const RunConfigurationsTable = ({ runConfigurations, isLoading = false }) => {
           size="small"
           loading={isLoading}
           dataSource={dataSource}
-          columns={columns}
+          columns={getColumns(refetch)}
           pagination={pagination}
         />
       </Col>
@@ -121,6 +132,7 @@ RunConfigurationsTable.propTypes = {
       updatedAt: PropTypes.object.isRequired
     })
   ),
+  refetch: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired
 };
 
