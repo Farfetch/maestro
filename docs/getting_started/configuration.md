@@ -27,7 +27,7 @@ Maestro application services could be configured by using the Environment variab
 | Variable                               | Description                                                                   | Value     | Default                                   |
 | -------------------------------------- | ----------------------------------------------------------------------------- | --------- | ----------------------------------------- |
 | `ENABLE_MAESTRO_API_HANDLER`           | Send messages to Maestro API and make them available on the frontend.         | _Boolean_ | True                                      |
-| `MAESTRO_API_HOST`                     | Provide Maestro API host                                                      | _String_  | `http://localhost:5000`                     |
+| `MAESTRO_API_HOST`                     | Provide Maestro API host                                                      | _String_  | `http://localhost:5000`                   |
 | `MAESTRO_METRICS_PROCESSING_BULK_SIZE` | Number of JMeter metrics in each request to API                               | _Number_  | 100                                       |
 | `JMETER_IMAGE_BASE_REPO`               | Repository from where JMeter image should be pulled                           | _String_  | ''                                        |
 | `JMETER_IMAGE_BASE_VERSION`            | JMeter version to run the test. It also used as tag for pulling repository    | _String_  | ''                                        |
