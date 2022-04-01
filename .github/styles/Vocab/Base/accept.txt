@@ -6,7 +6,7 @@ Pipenv
 Tldraw
 Docusaurus
 JMeter
-http
+HTTP
 Enum
 Profiler
 Nodemon
