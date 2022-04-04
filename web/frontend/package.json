@@ -7,7 +7,7 @@
     "@ant-design/icons": "^4.6.2",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
-    "@testing-library/user-event": "^13.5.0",
+    "@testing-library/user-event": "^14.0.4",
     "antd": "^4.19.5",
     "axios": "^0.26.1",
     "axios-mock-adapter": "^1.19.0",
