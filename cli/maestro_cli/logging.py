@@ -27,7 +27,7 @@ class Logger:
 
         log_format = os.environ.get(
             "LOG_FORMAT",
-            "maestro_agent %(asctime)s %(levelname)s %(module)s.%(funcName)s:%(lineno)s - %(message)s",  # noqa: E501
+            "maestro_cli %(asctime)s %(levelname)s %(module)s.%(funcName)s:%(lineno)s - %(message)s",  # noqa: E501
         )
 
         formatter = logging.Formatter(fmt=log_format)
