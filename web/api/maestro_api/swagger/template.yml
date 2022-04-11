@@ -366,8 +366,8 @@ paths:
       responses:
         200:
           schema:
-            $ref: "#/definitions/Runs"
-          description: "Returns list of Run objects"
+            $ref: "#/definitions/Run"
+          description: "Returns Run object"
         400:
           description: "Bad request"
   /run/{run_id}:
