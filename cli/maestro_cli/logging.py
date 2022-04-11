@@ -48,4 +48,3 @@ class Logger:
         Logger.error = Logger.instance.error
         Logger.warn = Logger.instance.warn
         Logger.debug = Logger.instance.debug
-

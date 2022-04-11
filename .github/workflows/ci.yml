@@ -89,6 +89,47 @@ jobs:
           coverage-reports: ./agent/coverage.xml
           language: python
 
+  cli:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./cli
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3.1.0
+        with:
+          python-version: "3.9.5"
+
+      - name: Install pipenv
+        run: |
+          python -m pip install --upgrade pip==22.0.4
+          pip install pipenv==2022.3.23
+
+      - name: Install dependacies
+        run: make deps
+
+      - name: Run linting checks
+        run: make lint
+
+      - name: Run formatting checks
+        run: make format
+
+      - name: Run tests
+        run: make test
+
+      - name: Generate coverage
+        run: make coverage-xml
+
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: ./agent/coverage.xml
+          language: python
+
   frontend:
     timeout-minutes: 10
     runs-on: ubuntu-latest
@@ -184,3 +225,4 @@ jobs:
             https://github.com/errata-ai/write-good/releases/latest/download/write-good.zip
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
