@@ -5,7 +5,7 @@
   "dependencies": {
     "@ant-design/colors": "^6.0.0",
     "@ant-design/icons": "^4.6.2",
-    "@testing-library/jest-dom": "^5.16.3",
+    "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^14.1.0",
     "antd": "^4.19.5",
