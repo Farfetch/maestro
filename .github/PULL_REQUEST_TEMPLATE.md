@@ -20,9 +20,9 @@ Otherwise, you can delete this section
 
 ## Checklist
 
-- [ ] The commit message follows our guidelines
-- [ ] Tests for the respective changes have been added
-- [ ] The labels and/or milestones were added
+- [x] The commit message follows our guidelines
+- [x] Tests for the respective changes have been added
+- [x] The labels and/or milestones were added
 
 ## Disclaimer
 
