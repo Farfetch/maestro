@@ -25,10 +25,6 @@ LOG_LEVEL = os.environ.get("LOG_LEVEL", LogLevel.INFO.value)
 
 MONGODB_SETTINGS = {
     "host": os.environ.get("MONGODB_HOST", "localhost"),
-    "port": int(os.environ.get("MONGODB_PORT", 27017)),
-    "db": os.environ.get("MONGODB_DB", "maestro"),
-    "username": os.environ.get("MONGODB_USERNAME", None),
-    "password": os.environ.get("MONGODB_PASSWORD", None),
 }
 
 SWAGGER = {
