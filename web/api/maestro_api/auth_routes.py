@@ -53,6 +53,9 @@ def init_auth_routes(flask_app):
             access_token = data.get("access_token")
 
             user = client.get_userinfo(access_token)
+
+            Logger.debug(f"User info: {user}")
+
             role = (
                 UserRole.ADMIN.value
                 if user["email"] == AUTH_ADMIN_EMAIL

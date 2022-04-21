@@ -27,6 +27,8 @@ MONGODB_SETTINGS = {
     "host": os.environ.get("MONGODB_HOST", "localhost"),
     "port": int(os.environ.get("MONGODB_PORT", 27017)),
     "db": os.environ.get("MONGODB_DB", "maestro"),
+    "username": os.environ.get("MONGODB_USERNAME", None),
+    "password": os.environ.get("MONGODB_PASSWORD", None),
 }
 
 SWAGGER = {
@@ -65,7 +67,9 @@ OAUTH_ISSUER = os.environ.get("OAUTH_ISSUER")
 OAUTH_CLIENT_ID = os.environ.get("OAUTH_CLIENT_ID")
 OAUTH_CLIENT_SECRET = os.environ.get("OAUTH_CLIENT_SECRET")
 OAUTH_CLIENT_REDIRECT_URI = os.environ.get("OAUTH_CLIENT_REDIRECT_URI")
-OAUTH_SCOPE = os.environ.get("OAUTH_SCOPE", "openid user.read profile offline_access")
+OAUTH_SCOPE = os.environ.get(
+    "OAUTH_SCOPE", "openid user.read email profile offline_access"
+)
 OAUTH_EMAILS_WHITELIST = parse_list(os.environ.get("OAUTH_EMAILS_WHITELIST", None))
 
 
