@@ -48,7 +48,7 @@ def validate_request(schema=None):
         @wraps(f)
         def wrapper(*args, **kw):
             try:
-                json = request.get_json()
+                json = request.get_json(silent=True)
                 args_dict = normalize_query(request.args)
                 form_dict = request.form.to_dict()
 
