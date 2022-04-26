@@ -66,9 +66,6 @@ def init_auth_routes(flask_app):
                 name=user["name"], email=user["preferred_username"], role=role
             )
 
-            Logger.debug(f"Accces token: {access_token}")
-            Logger.debug(f"Refresh token: {refresh_token}")
-
             response = make_response(redirect("/"))
             response.set_cookie("access_token", access_token)
             response.set_cookie("refresh_token", refresh_token)
