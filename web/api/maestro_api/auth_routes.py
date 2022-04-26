@@ -37,7 +37,7 @@ def init_auth_routes(flask_app):
         client = create_oauth_client()
         authorize_url = client.get_authorize_url()
 
-        return redirect(authorize_url)
+        return redirect(authorize_url, external=True)
 
     @flask_app.route("/oauth/callback", methods=["POST"])
     def oauth_callback():

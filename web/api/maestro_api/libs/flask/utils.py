@@ -43,12 +43,12 @@ def jsonify_list_of_docs(docs):
     return jsonify([doc.to_dict() for doc in docs])
 
 
-def redirect(location):
+def redirect(location, external=False):
     """
     Redirect to location based on Request host from settings
     """
 
-    if REQUEST_HOST:
+    if REQUEST_HOST and external is False:
         return flask_redirect(f"{REQUEST_HOST}{location}")
 
     return flask_redirect(location)
