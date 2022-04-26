@@ -1,7 +1,7 @@
 from functools import wraps
 
 import mongoengine
-from flask import request, redirect, current_app, jsonify
+from flask import request, current_app, jsonify
 from jsonschema import ValidationError, validate
 
 from maestro_api.libs.flask.utils import bad_request_response
@@ -10,6 +10,8 @@ from maestro_api.services.auth.request_validator import (
     AuthRequestValidator,
     UnauthorizedAccessError,
 )
+from maestro_api.libs.flask.utils import redirect
+
 from maestro_api.settings import (
     AUTH_API_USER,
     AUTH_API_TOKEN,
