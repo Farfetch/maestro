@@ -87,7 +87,8 @@ def init_auth_routes(flask_app):
         if access_token:
             return redirect("/")
 
-        return redirect("/oauth/authorize")
+        return make_response("login")
+        # return redirect("/oauth/authorize")
 
     @flask_app.route("/logout")
     def logout():
