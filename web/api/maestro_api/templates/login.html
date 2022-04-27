@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Maestro</title>
+        <meta charset="utf-8" />
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style>
+            body {
+                height: 100vh;
+                width: 100%;
+                display: grid;
+            }
+
+            .container {
+                margin: auto auto;
+            }
+
+            .form-button {
+                border-radius: 5px;
+                color: #fff;
+                border: 1px solid #e86328;
+                background: #e86328;
+                font-weight: bold;
+                transition: all 0.3s;
+                padding: 10px 5px;
+                font-size: 25px;
+                letter-spacing: 2px;
+                line-height: 1.25;
+                cursor: pointer;
+                display: inline-block;
+            }
+
+            .button {
+                font-family: Polaris, sans-serif;
+                color: #222222;
+                background: #fff;
+                border-color: #cccccc;
+                margin: calc(35px - 1em) auto 35px;
+                padding: 14px 112px;
+                position: relative;
+                max-width: 360px;
+            }
+
+            a {
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <a class="form-button button" href="/oauth/authorize">Sign in </a>
+        </div>
+    </body>
+</html>
