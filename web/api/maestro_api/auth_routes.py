@@ -1,4 +1,4 @@
-from flask import request, make_response
+from flask import request, render_template, make_response
 
 from maestro_api.services.auth.oauth import OauthClient
 from maestro_api.logging import Logger
@@ -84,7 +84,7 @@ def init_auth_routes(flask_app):
         if access_token:
             return redirect("/")
 
-        return redirect("/oauth/authorize")
+        return render_template("login.html")
 
     @flask_app.route("/logout")
     def logout():
