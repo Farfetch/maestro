@@ -57,11 +57,7 @@ def init_auth_routes(flask_app):
 
             Logger.debug(f"User info: {user}")
 
-            role = (
-                UserRole.ADMIN.value
-                if user["email"] == AUTH_ADMIN_EMAIL
-                else UserRole.USER.value
-            )
+            role = UserRole.ADMIN.value if user["email"] == AUTH_ADMIN_EMAIL else None
             user_repository.create_or_update(
                 name=user["name"], email=user["preferred_username"], role=role
             )

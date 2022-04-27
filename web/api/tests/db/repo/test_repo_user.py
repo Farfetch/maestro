@@ -78,3 +78,14 @@ class TestUserRepository:
         assert [default_workspace.id] == created_user.workspace_ids
         assert default_workspace.id == workspace.id
         assert default_workspace.name == workspace.name
+
+    def test_create_or_update_without_passed_role(self, app, mocker):
+        user_repo = UserRepository()
+        name = "Admin User"
+        email = "user1@maestro.test"
+
+        Workspace(name="Some default workspace", is_default=True).save()
+
+        created_user = user_repo.create_or_update(name=name, email=email)
+
+        assert UserRole.USER.value == created_user.role
