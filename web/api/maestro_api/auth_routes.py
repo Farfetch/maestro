@@ -1,9 +1,10 @@
-from flask import request, redirect, make_response
+from flask import request, make_response
 
 from maestro_api.services.auth.oauth import OauthClient
 from maestro_api.logging import Logger
 from maestro_api.db.repo.user import UserRepository
 from maestro_api.db.models.user import UserRole
+from maestro_api.libs.flask.utils import redirect
 
 from maestro_api.settings import (
     OAUTH_CLIENT_ID,
@@ -36,7 +37,7 @@ def init_auth_routes(flask_app):
         client = create_oauth_client()
         authorize_url = client.get_authorize_url()
 
-        return redirect(authorize_url)
+        return redirect(authorize_url, external=True)
 
     @flask_app.route("/oauth/callback", methods=["POST"])
     def oauth_callback():

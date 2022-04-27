@@ -81,9 +81,9 @@ class AuthRequestValidator:
             len(self.emails_whitelist) > 0
             and user["email"] not in self.emails_whitelist
         ):
-            raise UnauthorizedAccessError(
-                {"description": "User %s doesn't have access" % user["email"]}
-            )
+            message = "User %s doesn't have access" % user["email"]
+            Logger.debug(message)
+            raise UnauthorizedAccessError({"description": message})
 
         return {
             "user": user,

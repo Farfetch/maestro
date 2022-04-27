@@ -1,5 +1,5 @@
-from flask import abort, jsonify, make_response, request, redirect as flask_redirect
-from maestro_api.settings import HTTPS_REDIRECTS_ENABLED
+from flask import abort, jsonify, make_response, redirect as flask_redirect
+from maestro_api.settings import REQUEST_HOST
 
 
 def not_found_response(error="Not Found"):
@@ -43,15 +43,12 @@ def jsonify_list_of_docs(docs):
     return jsonify([doc.to_dict() for doc in docs])
 
 
-def redirect(location):
+def redirect(location, external=False):
     """
-    Making redirect to location that is provided from application based
-    on property of enabled HTTPS
+    Redirect to location based on Request host from settings
     """
 
-    if HTTPS_REDIRECTS_ENABLED:
-        host = request.host
-        protocol = "https://"
-        return flask_redirect(f"{protocol}{host}{location}")
+    if REQUEST_HOST and external is False:
+        return flask_redirect(f"{REQUEST_HOST}{location}")
 
     return flask_redirect(location)
