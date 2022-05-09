@@ -16,7 +16,7 @@ wheel = "0.37.1"
 [packages]
 APScheduler = "3.7.0"
 gunicorn = "20.1.0"
-jsonschema = "4.4.0"
+jsonschema = "4.5.1"
 pymongo = "4.1.1"
 mongoengine = "0.24.1"
 flasgger = "0.9.5"
