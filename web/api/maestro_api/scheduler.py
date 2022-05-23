@@ -1,7 +1,9 @@
 import atexit
 import math
+import datetime
 
 from maestro_api.db.models.run_configuration import RunConfiguration
+from maestro_api.db.models.agent import Agent, AgentStatus
 from maestro_api.db.repo.run import RunRepository
 from maestro_api.logging import Logger
 from maestro_api.libs.datetime import now, TZ_UTC
@@ -9,6 +11,7 @@ from maestro_api.enums import DaysOfTheWeek
 
 
 def start_scheduled_run(run_repo: RunRepository):
+    Logger.info("backgroundJob: start_scheduled_run job started")
 
     day_of_the_week = DaysOfTheWeek.list()
     now_time = now()
@@ -23,7 +26,10 @@ def start_scheduled_run(run_repo: RunRepository):
         schedule__days__in=[day_to_run],
     )
 
-    Logger.info(f"Search for scheduled runs. day={day_to_run}, time={time_to_run}")
+    Logger.info(
+        "backgroundJob: Search for scheduled runs. day=%s, time=%s"
+        % (day_to_run, time_to_run)
+    )
     for run_configuration in run_configurations:
         if run_configuration.last_scheduled_at:
             last_scheduled_at = run_configuration.last_scheduled_at.astimezone(TZ_UTC)
@@ -36,8 +42,22 @@ def start_scheduled_run(run_repo: RunRepository):
         run_configuration.save()
 
         Logger.info(
-            f"Started scheduled run. run_configuration_id={run_configuration.id}"
+            "backgroundJob: Started scheduled run. run_configuration_id=%s"
+            % run_configuration.id
         )
+
+    Logger.info("backgroundJob: start_scheduled_run job finished")
+
+
+def update_agent_status():
+    Logger.info("backgroundJob: update_agent_status started")
+    min_ago_date = now() - datetime.timedelta(minutes=1)
+
+    Agent.objects(updated_at__lte=min_ago_date).update(
+        set__agent_status=AgentStatus.UNAVAILABLE.value
+    )
+
+    Logger.info("backgroundJob: update_agent_status job finished")
 
 
 def register_shutdown_events(scheduler):
@@ -48,6 +68,14 @@ def register_shutdown_events(scheduler):
 def init_scheduler(scheduler):
     run_repo = RunRepository()
     register_shutdown_events(scheduler)
+
+    scheduler.add_job(
+        func=update_agent_status,
+        trigger="interval",
+        seconds=60,
+        replace_existing=True,
+        max_instances=1,
+    )
 
     scheduler.add_job(
         func=lambda: start_scheduled_run(run_repo),
