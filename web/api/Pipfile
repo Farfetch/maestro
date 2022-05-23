@@ -23,7 +23,7 @@ flasgger = "0.9.5"
 python-dotenv = "0.20.0"
 python-jose = "1.16.0"
 typing-extensions = "4.2.0"
-numpy = "1.22.2"
+numpy = "1.22.4"
 requests = "2.27.0"
 
 [requires]
