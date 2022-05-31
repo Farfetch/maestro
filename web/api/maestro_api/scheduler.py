@@ -4,6 +4,7 @@ import datetime
 
 from maestro_api.db.models.run_configuration import RunConfiguration
 from maestro_api.db.models.agent import Agent, AgentStatus
+from maestro_api.db.models.event import Event, EventType
 from maestro_api.db.repo.run import RunRepository
 from maestro_api.logging import Logger
 from maestro_api.libs.datetime import now, TZ_UTC
@@ -37,9 +38,17 @@ def start_scheduled_run(run_repo: RunRepository):
             if is_already_run:
                 continue
 
-        run_repo.create_run(run_configuration)
+        run = run_repo.create_run(run_configuration)
         run_configuration.last_scheduled_at = now_time
         run_configuration.save()
+
+        # Generate Events to start a test
+        for agent_id in run.agent_ids:
+            Event(
+                event_type=EventType.START_RUN.value,
+                run_id=run.id,
+                agent_id=agent_id,
+            ).save()
 
         Logger.info(
             "backgroundJob: Started scheduled run. run_configuration_id=%s"
