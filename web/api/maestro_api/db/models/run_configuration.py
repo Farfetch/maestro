@@ -91,6 +91,7 @@ class RunConfiguration(CreatedUpdatedDocumentMixin):
             }
             if self.schedule
             else None,
+            "last_scheduled_at": self.last_scheduled_at,
             "created_at": strftime(self.created_at),
             "updated_at": strftime(self.updated_at),
         }
