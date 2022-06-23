@@ -34,7 +34,9 @@ def start_scheduled_run(run_repo: RunRepository):
     )
     for run_configuration in run_configurations:
         if run_configuration.last_scheduled_at:
-            last_scheduled_at = run_configuration.last_scheduled_at.replace(tzinfo=TZ_UTC)
+            last_scheduled_at = run_configuration.last_scheduled_at.replace(
+                tzinfo=TZ_UTC
+            )
             is_already_run = (now_time - last_scheduled_at).total_seconds() < 300
             if is_already_run:
                 continue
