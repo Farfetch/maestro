@@ -16,9 +16,10 @@ def start_scheduled_run(run_repo: RunRepository):
 
     day_of_the_week = DaysOfTheWeek.list()
     now_time = now()
+    now_hour_str = now_time.hour if now_time.hour >= 10 else f"0{now_time.hour}"
     now_minute = math.floor(now_time.minute / 5) * 5
     now_minute_str = now_minute if now_minute >= 10 else f"0{now_minute}"
-    time_to_run = f"{now_time.hour}:{now_minute_str}"
+    time_to_run = f"{now_hour_str}:{now_minute_str}"
     day_to_run = day_of_the_week[now_time.weekday()]
 
     run_configurations = RunConfiguration.objects.filter(
@@ -33,7 +34,7 @@ def start_scheduled_run(run_repo: RunRepository):
     )
     for run_configuration in run_configurations:
         if run_configuration.last_scheduled_at:
-            last_scheduled_at = run_configuration.last_scheduled_at.astimezone(TZ_UTC)
+            last_scheduled_at = run_configuration.last_scheduled_at.replace(tzinfo=TZ_UTC)
             is_already_run = (now_time - last_scheduled_at).total_seconds() < 300
             if is_already_run:
                 continue
