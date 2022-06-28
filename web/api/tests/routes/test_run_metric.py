@@ -234,6 +234,45 @@ def test_run_metric_all_with_show_labels_and_zero_time_interval(client):
     assert "Google-2" == res_json[1].get("label")
 
 
+def test_run_metric_all_zero_time_interval_and_without_show_labels(client):
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
+    run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    title = "some example title"
+    run_id = "6076d1e3a216ff15b6e95e1f"
+    run_plan_id = "6076d1e3a216ff15b6e95e9d"
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    min_datetime_str = "2019-01-01 10:00:00"
+
+    min_datetime = datetime.strptime(min_datetime_str, "%Y-%m-%d %H:%M:%S")
+    next_datetime = datetime.strptime(
+        min_datetime_str, "%Y-%m-%d %H:%M:%S"
+    ) + timedelta(hours=5)
+    metrics = get_metrics(min_datetime, next_datetime)
+
+    Run(
+        id=run_id,
+        workspace_id=workspace_id,
+        title=title,
+        run_configuration_id=run_configuration_id,
+        run_plan_id=run_plan_id,
+        agent_ids=agent_ids,
+        run_status=RunStatus.RUNNING.value,
+    ).save()
+
+    for metric in metrics:
+        RunMetricLabel(run_id=run_id, **metric).save()
+
+    response = client.get(
+        "/run_metrics/%s?time_interval=0" % run_id,
+    )
+
+    assert 200 == response.status_code
+    res_json = json.loads(response.data)
+
+    assert 1 == len(res_json)
+    assert 2 == res_json[0].get("total_count")
+
+
 def test_run_metrics_create_many(client):
     workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
