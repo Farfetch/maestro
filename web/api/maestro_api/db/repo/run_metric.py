@@ -75,7 +75,7 @@ class RunMetricRepository:
                     {"$mod": [{"$second": "$datetime"}, time_interval]},
                 ]
             },
-        }
+        } if time_interval > 0 else {}
         group = {
             "_id": group_id,
             "latency_avg": {"$avg": "$latency_avg"},
@@ -96,8 +96,6 @@ class RunMetricRepository:
                 group["_id"] = {"label": "$label"}
             else:
                 group["_id"]["label"] = "$label"
-        else:
-            group["_id"] = {}
         metrics_query = RunMetricLabel.objects.aggregate(
             [
                 {"$match": match},
