@@ -64,18 +64,22 @@ class RunMetricRepository:
             "run_id": ObjectId(run_id),
         }
 
-        group_id = {
-            "year": {"$year": "$datetime"},
-            "dayOfYear": {"$dayOfYear": "$datetime"},
-            "hour": {"$hour": "$datetime"},
-            "minute": {"$minute": "$datetime"},
-            "interval": {
-                "$subtract": [
-                    {"$second": "$datetime"},
-                    {"$mod": [{"$second": "$datetime"}, time_interval]},
-                ]
-            },
-        } if time_interval > 0 else {}
+        group_id = (
+            {
+                "year": {"$year": "$datetime"},
+                "dayOfYear": {"$dayOfYear": "$datetime"},
+                "hour": {"$hour": "$datetime"},
+                "minute": {"$minute": "$datetime"},
+                "interval": {
+                    "$subtract": [
+                        {"$second": "$datetime"},
+                        {"$mod": [{"$second": "$datetime"}, time_interval]},
+                    ]
+                },
+            }
+            if time_interval > 0
+            else {}
+        )
         group = {
             "_id": group_id,
             "latency_avg": {"$avg": "$latency_avg"},
