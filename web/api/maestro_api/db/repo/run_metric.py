@@ -96,6 +96,8 @@ class RunMetricRepository:
                 group["_id"] = {"label": "$label"}
             else:
                 group["_id"]["label"] = "$label"
+        else:
+            group["_id"] = {}
         metrics_query = RunMetricLabel.objects.aggregate(
             [
                 {"$match": match},
