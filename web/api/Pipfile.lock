@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "5fc624a017308576a61e09030a2866fca480830315d06df4c6847611bd5330be"
+            "sha256": "9ed0fdf458f349007198143a4d15a32da5b84dc3d4e0922399c26eff363f2633"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -183,11 +183,11 @@
         },
         "mongoengine": {
             "hashes": [
-                "sha256:01baac85f408f5eefb6195c0afeae631e7fc6fab5cb221a7b46646f94227d6da",
-                "sha256:68878b65bcb3751debcba4342180a180161cdb5f46525027e622ad081dd44fac"
+                "sha256:c76d49658575bb995682e2e77c8ef7cda63faf939415b32ee923745d120f8b02",
+                "sha256:f5c4e1b206b2ccffe4adc7a6283ed26dd799bd115a5fb1d2e885a075132cdb88"
             ],
             "index": "pypi",
-            "version": "==0.24.1"
+            "version": "==0.24.2"
         },
         "numpy": {
             "hashes": [
