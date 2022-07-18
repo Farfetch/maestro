@@ -16,7 +16,7 @@ const RunningTestAnalytics = ({
   isRunMetricsAvailable,
   setIsRunMetricsAvailable
 }) => {
-  const defaultTimeInterval = 1;
+  const defaultTimeInterval = 5;
   const updateChartsInterval = 5000;
   const [runMetrics, setRunMetrics] = useState([]);
   const [autoRefresh, setAutoRefresh] = useState(true);
