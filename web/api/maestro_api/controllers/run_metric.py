@@ -40,7 +40,7 @@ class RunMetricController:
 
         run = get_obj_or_404(Run, id=run_id)
 
-        metrics = RunMetric.objects(run_id=run.id)
+        metrics = RunMetric.objects(run_id=run.id).no_cache()
         jmeter_metrics = JmeterService.format_to_jmeter_format(metrics)
 
         headers = [
