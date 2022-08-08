@@ -7,7 +7,7 @@ from unittest.mock import call
 def test_log_metrics_send_errors_metrics_should_be_sent(mocker):
     logger_error = mocker.patch("maestro_agent.logging.Logger.error")
     run = "1-2-3"
-    test_processor = RunMetricsProcessor(run, start_processing_workers=False)
+    test_processor = RunMetricsProcessor(run, start_threads=False)
 
     last_time_sent = datetime.datetime.now() - datetime.timedelta(seconds=10)
     test_processor.send_metrics_error["last_time_sent"] = last_time_sent
@@ -20,7 +20,7 @@ def test_log_metrics_send_errors_metrics_should_be_sent(mocker):
 def test_log_metrics_send_errors_metrics_should_not_be_sent(mocker):
     logger_error = mocker.patch("maestro_agent.logging.Logger.error")
     run = "1-2-3"
-    test_processor = RunMetricsProcessor(run, start_processing_workers=False)
+    test_processor = RunMetricsProcessor(run, start_threads=False)
     last_time_sent = datetime.datetime.now() - datetime.timedelta(seconds=1)
     test_processor.send_metrics_error["last_time_sent"] = last_time_sent
     test_processor.send_metrics_error["count"] = 1
@@ -32,7 +32,7 @@ def test_log_metrics_send_errors_metrics_should_not_be_sent(mocker):
 def test_log_metrics_send_errors_metrics_with_metrics_count_0(mocker):
     logger_error = mocker.patch("maestro_agent.logging.Logger.error")
     run = "1-2-3"
-    test_processor = RunMetricsProcessor(run, start_processing_workers=False)
+    test_processor = RunMetricsProcessor(run, start_threads=False)
 
     last_time_sent = datetime.datetime.now() - datetime.timedelta(seconds=10)
     test_processor.send_metrics_error["last_time_sent"] = last_time_sent
@@ -62,7 +62,7 @@ def test_split_by_last_seconds_default_values():
             "timeStamp": 1633708363999,  # Friday, 8 October 2021 15:52:43.999
         },
     ]
-    test_processor = RunMetricsProcessor(run, start_processing_workers=False)
+    test_processor = RunMetricsProcessor(run, start_threads=False)
     (metrics_to_process, skipped_metrics) = test_processor.split_by_last_seconds(
         metrics
     )
@@ -104,7 +104,7 @@ def test_split_by_last_seconds_default_skip_last_1_second():
             "timeStamp": 1633708363999,  # Friday, 8 October 2021 15:52:43.999
         },
     ]
-    test_processor = RunMetricsProcessor(run, start_processing_workers=False)
+    test_processor = RunMetricsProcessor(run, start_threads=False)
 
     (metrics_to_process, skipped_metrics) = test_processor.split_by_last_seconds(
         metrics, skip_seconds=1
@@ -150,7 +150,7 @@ def test_split_by_last_seconds_default_skip_last_2_seconds():
             "timeStamp": 1633708363999,  # Friday, 8 October 2021 15:52:43.999
         },
     ]
-    test_processor = RunMetricsProcessor(run, start_processing_workers=False)
+    test_processor = RunMetricsProcessor(run, start_threads=False)
 
     (metrics_to_process, skipped_metrics) = test_processor.split_by_last_seconds(
         metrics, skip_seconds=2
@@ -201,7 +201,7 @@ def test_processing_worker_api_call(mocker):
             "timeStamp": 1633708363999,  # Friday, 8 October 2021 15:52:43.999
         },
     ]
-    test_processor = RunMetricsProcessor(run, start_processing_workers=True)
+    test_processor = RunMetricsProcessor(run, start_threads=True)
     test_processor.BULK_SIZE = 2  # send each two items to API
 
     for metric in metrics:

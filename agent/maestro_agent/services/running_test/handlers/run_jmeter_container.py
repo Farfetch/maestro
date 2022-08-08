@@ -26,7 +26,6 @@ def run_jmeter_container_handler(finish, finished, failed, run, agent):
 
             if logs_path.is_file():
                 run_log_file = open(logs_path, "r")
-                print(run_log_file)
                 RunLogApi.upload_log_file(run.id, agent.id, run_log_file)
 
         def finish_test(status):

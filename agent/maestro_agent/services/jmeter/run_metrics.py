@@ -4,11 +4,15 @@ from queue import Queue
 from threading import Thread
 from time import sleep
 
+from py import process
+
 from maestro_agent.services.maestro_api.run import RunApi
 from maestro_agent.libs.csv.file_observer import CsvFileObserver
 from maestro_agent.libs.utils import chunks
 from maestro_agent.logging import Logger
 from maestro_agent.settings import MAESTRO_METRICS_PROCESSING_BULK_SIZE
+
+from maestro_agent.services.prometheus.push_gateway import PrometheusPushGateway
 
 
 class RunMetricsProcessor:
@@ -26,7 +30,7 @@ class RunMetricsProcessor:
 
     last_send_date = datetime.now()
 
-    def __init__(self, run_id, start_processing_workers=True):
+    def __init__(self, run_id, start_threads=True):
         self.queue = Queue()
         self.data = []
 
@@ -35,9 +39,9 @@ class RunMetricsProcessor:
             "last_time_sent": datetime.now(),
         }
         self.run_id = run_id
-        self.run_processing_workers = start_processing_workers
+        self.start_threads = start_threads
 
-        if start_processing_workers is True:
+        if start_threads is True:
             self.init_threads()
 
     def init_threads(self):
@@ -94,7 +98,7 @@ class RunMetricsProcessor:
         """
         Send data to maestro each 5 seconds if the
         """
-        while self.run_processing_workers is True:
+        while self.start_threads is True:
             current_time = datetime.now()
             seconds_diff = (current_time - self.last_send_date).total_seconds()
             if seconds_diff > 5:
@@ -103,7 +107,7 @@ class RunMetricsProcessor:
             sleep(0.5)
 
     def processing_worker(self):
-        while self.run_processing_workers is True:
+        while self.start_threads is True:
 
             if self.queue.empty() is False:
 
@@ -157,22 +161,29 @@ class RunMetricsCsvFileObserver(CsvFileObserver):
     ):
         super(RunMetricsCsvFileObserver, self).__init__(file_path, stop)
         self.run_id = run_id
-        self.processor = RunMetricsProcessor(run_id=run_id)
+        self.processors = [
+            RunMetricsProcessor(run_id=run_id),
+            PrometheusPushGateway(run_id=run_id),
+        ]
 
     def process_line(self, line):
         """
         Send line from the file to sending queue. Queue will be processed
         based on bulk size
         """
-        self.processor.add_and_send(line)
+        for processor in self.processors:
+            processor.add_and_send(line)
 
     def on_finish(self):
         """
         Alaways clean up the queue and send metrics once the file process finish
         """
         Logger.debug("Processing metrics file finished")
-        self.processor.send_data()
 
-        while self.processor.queue.empty() is False:
-            sleep(1)
-        self.processor.run_processing_workers = False
+        for processor in self.processors:
+            processor.send_data()
+            processor.send_data()
+
+            while processor.queue.empty() is False:
+                sleep(1)
+            processor.start_threads = False
