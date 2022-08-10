@@ -69,7 +69,7 @@ class RunPlanController:
             send_file(
                 BytesIO(jmx.to_bytes()),
                 as_attachment=True,
-                attachment_filename=filename,
+                download_name=filename,
                 mimetype=content_type,
             ),
             200,

@@ -72,7 +72,7 @@ class RunLogController:
             send_file(
                 logs_archive_buffer,
                 as_attachment=True,
-                attachment_filename=logs_archive_name,
+                download_name=logs_archive_name,
             ),
             200,
         )
