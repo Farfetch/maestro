@@ -65,7 +65,7 @@ class CustomDataController:
             send_file(
                 BytesIO(image),
                 as_attachment=True,
-                attachment_filename=filename,
+                download_name=filename,
                 mimetype=content_type,
             ),
             200,

@@ -72,7 +72,7 @@ class RunMetricController:
             send_file(
                 binary_file,
                 as_attachment=True,
-                attachment_filename=filename,
+                download_name=filename,
                 mimetype=content_type,
             ),
             200,
