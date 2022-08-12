@@ -131,7 +131,10 @@ const expandedRowRender = (record) => {
       title: "Errors",
       key: `${record.label}-errors-col`,
       render: (text, { successCount, totalCount }) => (
-        <span>{calculateErrorRate(successCount, totalCount)}</span>
+        <span>
+          {calculateErrorRate(successCount, totalCount)}{" "}
+          <span style={{ fontSize: 11 }}>%</span>
+        </span>
       )
     }
   ];
