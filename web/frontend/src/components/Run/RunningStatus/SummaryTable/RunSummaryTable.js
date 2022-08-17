@@ -5,6 +5,13 @@ import React, { useEffect, useState } from "react";
 import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
 import { avg } from "../../../../lib/utils";
 
+const calculateErrorRate = (successCount, totalCount) => {
+  const errorsCount = totalCount - successCount;
+  const errorRate = parseFloat((errorsCount / totalCount) * 100).toFixed(2);
+
+  return errorRate;
+};
+
 const columns = [
   {
     title: "Label",
@@ -92,6 +99,58 @@ const columns = [
   }
 ];
 
+const expandedRowRender = (record) => {
+  const expendedRowColumns = [
+    {
+      title: "Response code",
+      dataIndex: "responseCode",
+      key: `${record.label}-responseCode-col`
+    },
+    {
+      title: "Messages",
+      key: `${record.label}-messages-col`,
+      render: (text, { messages }) => (
+        <span>
+          {messages.map((message) => (
+            <p key={message}>{message}</p>
+          ))}
+        </span>
+      )
+    },
+    {
+      title: "Success",
+      dataIndex: "successCount",
+      key: `${record.label}-successCount-col`
+    },
+    {
+      title: "Total",
+      dataIndex: "totalCount",
+      key: `${record.label}-totalCount-col`
+    },
+    {
+      title: "Errors",
+      key: `${record.label}-errors-col`,
+      render: (text, { successCount, totalCount }) => (
+        <span>
+          {calculateErrorRate(successCount, totalCount)}{" "}
+          <span style={{ fontSize: 11 }}>%</span>
+        </span>
+      )
+    }
+  ];
+
+  return (
+    <span key={`${record.label}-extended-table`}>
+      <Table
+        columns={expendedRowColumns}
+        dataSource={record.responses}
+        pagination={false}
+        rowKey="responseCode"
+      />
+    </span>
+  );
+};
+
 const RunSummaryTable = ({ runId }) => {
   const [urlMetrics, setUrlMetrics] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -108,6 +167,7 @@ const RunSummaryTable = ({ runId }) => {
 
       return parseFloat((totalCount / diffInSeconds) * 60).toFixed(0);
     };
+
     const formattedUrlMetrics = metricsRes.map(
       ({
         minDatetime,
@@ -116,12 +176,11 @@ const RunSummaryTable = ({ runId }) => {
         successCount,
         label,
         latencyAvg,
-        latencyP50
+        latencyP50,
+        responses
       }) => {
         const errorsCount = totalCount - successCount;
-        const errorRate = parseFloat((errorsCount / totalCount) * 100).toFixed(
-          2
-        );
+        const errorRate = calculateErrorRate(successCount, totalCount);
         const rpm = getRpm(minDatetime, maxDatetime, totalCount);
 
         return {
@@ -133,7 +192,8 @@ const RunSummaryTable = ({ runId }) => {
           rpm,
           totalCount,
           latencyAvg,
-          latencyP50
+          latencyP50,
+          responses
         };
       }
     );
@@ -155,6 +215,9 @@ const RunSummaryTable = ({ runId }) => {
         dataSource={urlMetrics}
         columns={columns}
         pagination={false}
+        expandable={{
+          expandedRowRender
+        }}
         summary={(pageData) => {
           let total = 0;
           let totalLatencyP50 = 0;
@@ -176,6 +239,7 @@ const RunSummaryTable = ({ runId }) => {
           return (
             <>
               <Table.Summary.Row>
+                <Table.Summary.Cell />
                 <Table.Summary.Cell>
                   <Typography.Text strong>Total</Typography.Text>
                 </Table.Summary.Cell>
@@ -188,11 +252,7 @@ const RunSummaryTable = ({ runId }) => {
                   </Typography.Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Table.Summary.Cell>
-                    <Typography.Text strong>
-                      {totalSuccessCount}
-                    </Typography.Text>
-                  </Table.Summary.Cell>
+                  <Typography.Text strong>{totalSuccessCount}</Typography.Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
                   <Typography.Text strong>{total}</Typography.Text>
