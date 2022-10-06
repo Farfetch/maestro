@@ -10,7 +10,7 @@ RUN mvn clean install --batch-mode
 
 FROM openjdk:8u312-jre-slim as build-image
 
-ENV JMETER_VERSION=5.4.3
+ENV JMETER_VERSION=5.5
 ENV JMETER_HOME_FOLDER=/opt/jmeter
 ENV JMETER_BIN_FOLDER=${JMETER_HOME_FOLDER}/bin
 ENV JMETER_LIB_FOLDER=${JMETER_HOME_FOLDER}/lib
