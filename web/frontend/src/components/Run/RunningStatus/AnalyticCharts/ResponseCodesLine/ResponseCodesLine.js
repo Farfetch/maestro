@@ -1,4 +1,5 @@
 import { Typography } from "antd";
+import { maxBy } from "lodash";
 import React from "react";
 import { Line } from "react-chartjs-2";
 
@@ -7,17 +8,18 @@ import { defaultChartOptions } from "../../../../../lib/charts/defaultOptions";
 
 const { Title } = Typography;
 
-const ResponseCodesLine = ({ metrics }) => {
+const ResponseCodesLine = ({ run, metrics }) => {
+  const finishedAt = maxBy(metrics, "maxDatetime")?.maxDatetime;
+
   const buildChartData = (dataToRender) => {
     const labels = dataToRender.map(({ minDatetime }) =>
       minDatetime.format("HH:mm:ss")
     );
 
-    const { datasets, minDatetime, maxDatetime } =
-      metricsToResponseCodeLineDataset(dataToRender);
+    const { datasets } = metricsToResponseCodeLineDataset(dataToRender);
 
     const options = {
-      ...defaultChartOptions(minDatetime, maxDatetime),
+      ...defaultChartOptions(run.startedAt, finishedAt),
       plugins: {
         tooltip: {
           callbacks: {

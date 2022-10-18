@@ -3,8 +3,8 @@ import metricsToResponseCodeLinesDataset from "../metricsToResponseCodeLine";
 
 const metrics = [
   {
-    minDatetime: "2022-01-13T15:37:38.000Z",
-    maxDatetime: "2022-01-13T15:37:44.000Z",
+    minDatetime: toLocalDate("2022-01-13T15:37:38.000Z"),
+    maxDatetime: toLocalDate("2022-01-13T15:37:44.000Z"),
     latencyAvg: 25.1,
     latencyP99: 46.72,
     latencyP95: 45.38,
@@ -23,8 +23,8 @@ const metrics = [
     ]
   },
   {
-    minDatetime: "2022-01-13T15:37:45.000Z",
-    maxDatetime: "2022-01-13T15:37:59.000Z",
+    minDatetime: toLocalDate("2022-01-13T15:37:45.000Z"),
+    maxDatetime: toLocalDate("2022-01-13T15:37:59.000Z"),
     latencyAvg: 25.19,
     latencyP99: 47.04,
     latencyP95: 45.64,
@@ -43,8 +43,8 @@ const metrics = [
     ]
   },
   {
-    minDatetime: "2022-01-13T15:38:00.000Z",
-    maxDatetime: "2022-01-13T15:38:14.000Z",
+    minDatetime: toLocalDate("2022-01-13T15:38:00.000Z"),
+    maxDatetime: toLocalDate("2022-01-13T15:38:14.000Z"),
     latencyAvg: 24.92,
     latencyP99: 46.88,
     latencyP95: 45.51,
@@ -63,8 +63,8 @@ const metrics = [
     ]
   },
   {
-    minDatetime: "2022-01-13T15:38:15.000Z",
-    maxDatetime: "2022-01-13T15:38:29.000Z",
+    minDatetime: toLocalDate("2022-01-13T15:38:15.000Z"),
+    maxDatetime: toLocalDate("2022-01-13T15:38:29.000Z"),
     latencyAvg: 25.01,
     latencyP99: 46.86,
     latencyP95: 45.55,
@@ -83,8 +83,8 @@ const metrics = [
     ]
   },
   {
-    minDatetime: "2022-01-13T15:38:30.000Z",
-    maxDatetime: "2022-01-13T15:38:44.000Z",
+    minDatetime: toLocalDate("2022-01-13T15:38:30.000Z"),
+    maxDatetime: toLocalDate("2022-01-13T15:38:44.000Z"),
     latencyAvg: 25.14,
     latencyP99: 47.23,
     latencyP95: 45.65,
@@ -103,8 +103,8 @@ const metrics = [
     ]
   },
   {
-    minDatetime: "2022-01-13T15:38:45.000Z",
-    maxDatetime: "2022-01-13T15:38:59.000Z",
+    minDatetime: toLocalDate("2022-01-13T15:38:45.000Z"),
+    maxDatetime: toLocalDate("2022-01-13T15:38:59.000Z"),
     latencyAvg: 25.01,
     latencyP99: 47.08,
     latencyP95: 45.62,
@@ -123,8 +123,8 @@ const metrics = [
     ]
   },
   {
-    minDatetime: "2022-01-13T15:39:00.000Z",
-    maxDatetime: "2022-01-13T15:39:14.000Z",
+    minDatetime: toLocalDate("2022-01-13T15:39:00.000Z"),
+    maxDatetime: toLocalDate("2022-01-13T15:39:14.000Z"),
     latencyAvg: 25.07,
     latencyP99: 47.06,
     latencyP95: 45.61,
@@ -143,8 +143,8 @@ const metrics = [
     ]
   },
   {
-    minDatetime: "2022-01-13T15:39:15.000Z",
-    maxDatetime: "2022-01-13T15:39:29.000Z",
+    minDatetime: toLocalDate("2022-01-13T15:39:15.000Z"),
+    maxDatetime: toLocalDate("2022-01-13T15:39:29.000Z"),
     latencyAvg: 25.6,
     latencyP99: 47.21,
     latencyP95: 45.65,
@@ -163,8 +163,8 @@ const metrics = [
     ]
   },
   {
-    minDatetime: "2022-01-13T15:39:30.000Z",
-    maxDatetime: "2022-01-13T15:39:33.000Z",
+    minDatetime: toLocalDate("2022-01-13T15:39:30.000Z"),
+    maxDatetime: toLocalDate("2022-01-13T15:39:33.000Z"),
     latencyAvg: 24.5,
     latencyP99: 47.5,
     latencyP95: 45.94,
