@@ -24,8 +24,8 @@ const colorsList = [
 ];
 
 const metricsToResponseCodeLinesDataset = (metrics) => {
-  const minDatetime = minBy(metrics.minDatetime)?.minDatetime ?? null;
-  const maxDatetime = maxBy(metrics.maxBy)?.maxDatetime ?? null;
+  const minDatetime = minBy(metrics, "minDatetime")?.minDatetime ?? null;
+  const maxDatetime = maxBy(metrics, "maxDatetime")?.maxDatetime ?? null;
 
   const responseCodes = new Set(
     metrics.reduce((previous, current) => {
