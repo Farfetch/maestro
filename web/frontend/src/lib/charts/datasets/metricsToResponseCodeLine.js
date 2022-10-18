@@ -1,5 +1,6 @@
+import { maxBy, minBy } from "lodash";
+
 import { colors, getNextColor } from "../../colors";
-import { toLocalDate } from "../../date";
 
 const colorsAlias = {
   200: colors.green,
@@ -23,8 +24,8 @@ const colorsList = [
 ];
 
 const metricsToResponseCodeLinesDataset = (metrics) => {
-  let minDatetime = metrics[0] ? toLocalDate(metrics[0].minDatetime) : null;
-  let maxDatetime = null;
+  const minDatetime = minBy(metrics.minDatetime)?.minDatetime ?? null;
+  const maxDatetime = maxBy(metrics.maxBy)?.maxDatetime ?? null;
 
   const responseCodes = new Set(
     metrics.reduce((previous, current) => {
@@ -37,18 +38,14 @@ const metricsToResponseCodeLinesDataset = (metrics) => {
 
   const getDataByResponseCode = (responseCode) =>
     metrics.map((metric) => {
-      const metricMinDatetime = toLocalDate(metric.minDatetime);
-      const metricMaxDatetime = toLocalDate(metric.maxDatetime);
       const responseCodeMetrics = metric.responses.find(
         (el) => el.responseCode === responseCode
       );
-      if (metricMinDatetime < minDatetime) minDatetime = metricMinDatetime;
-      if (metricMaxDatetime > maxDatetime) maxDatetime = metricMaxDatetime;
 
       return {
         responseCode,
         y: responseCodeMetrics ? responseCodeMetrics.totalCount : 0,
-        x: metricMinDatetime,
+        x: metric.minDatetime,
         messages: responseCodeMetrics ? responseCodeMetrics.messages : [],
         totalCount: responseCodeMetrics ? responseCodeMetrics.totalCount : 0,
         successCount: responseCodeMetrics ? responseCodeMetrics.successCount : 0

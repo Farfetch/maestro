@@ -2,27 +2,26 @@ import "chartjs-adapter-moment";
 
 import { green, red } from "@ant-design/colors";
 import { Typography } from "antd";
-import moment from "moment";
+import { maxBy } from "lodash";
 import React from "react";
 import { Line } from "react-chartjs-2";
 
-import laodProfileToTimeframe from "../../../../../lib/charts/datasets/loadProfileToTimeframe";
+import loadProfileToTimeframe from "../../../../../lib/charts/datasets/loadProfileToTimeframe";
 import { defaultChartOptions } from "../../../../../lib/charts/defaultOptions";
 
 const { Title } = Typography;
 
-const HitsErrorsLine = ({ metrics, loadProfile }) => {
+const HitsErrorsLine = ({ run, metrics, loadProfile }) => {
+  const { startedAt } = run;
+  const finishedAt = maxBy(metrics, "maxDatetime")?.maxDatetime;
+
   const options = {
-    ...defaultChartOptions()
+    ...defaultChartOptions(startedAt, finishedAt)
   };
 
   const buildChartData = (dataToRender, loadProfileToRender) => {
-    const firstDatetime = dataToRender[0]
-      ? dataToRender[0].minDatetime
-      : moment();
-
-    const loadProfileTimeframe = laodProfileToTimeframe(
-      firstDatetime,
+    const loadProfileTimeframe = loadProfileToTimeframe(
+      startedAt,
       loadProfileToRender
     );
 
@@ -74,4 +73,5 @@ const HitsErrorsLine = ({ metrics, loadProfile }) => {
     </>
   );
 };
+
 export default HitsErrorsLine;

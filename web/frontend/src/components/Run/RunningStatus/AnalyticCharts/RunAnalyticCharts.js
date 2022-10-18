@@ -120,13 +120,17 @@ const RunningTestAnalytics = ({
       </Col>
 
       <Col span={24}>
-        <HitsErrorsLine metrics={runMetrics} loadProfile={loadProfile} />
+        <HitsErrorsLine
+          run={run}
+          metrics={runMetrics}
+          loadProfile={loadProfile}
+        />
       </Col>
       <Col span={24}>
-        <ResponseTimeLine metrics={runMetrics} />
+        <ResponseTimeLine run={run} metrics={runMetrics} />
       </Col>
       <Col span={24}>
-        <ResponseCodesLine metrics={runMetrics} />
+        <ResponseCodesLine run={run} metrics={runMetrics} />
       </Col>
     </Row>
   );

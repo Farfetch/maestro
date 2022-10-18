@@ -1,5 +1,6 @@
 import { geekblue, lime, orange } from "@ant-design/colors";
 import { Typography } from "antd";
+import { maxBy } from "lodash";
 import React from "react";
 import { Line } from "react-chartjs-2";
 
@@ -7,9 +8,11 @@ import { defaultChartOptions } from "../../../../../lib/charts/defaultOptions";
 
 const { Title } = Typography;
 
-const ResponseTimeLine = ({ metrics }) => {
+const ResponseTimeLine = ({ run, metrics }) => {
+  const finishedAt = maxBy(metrics, "maxDatetime")?.maxDatetime;
+
   const options = {
-    ...defaultChartOptions()
+    ...defaultChartOptions(run.startedAt, finishedAt)
   };
 
   const buildChartData = (dataToRender) => {
