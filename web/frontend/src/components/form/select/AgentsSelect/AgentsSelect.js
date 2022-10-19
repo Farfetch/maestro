@@ -1,4 +1,5 @@
 import { Select } from "antd";
+import { orderBy } from "lodash";
 import PropTypes from "prop-types";
 
 import { agentStatus } from "../../../../lib/api/models";
@@ -15,7 +16,7 @@ const AgentsSelect = ({ value, agents, mode, onChange }) => (
     onChange={onChange}
     value={value}
   >
-    {agents.map((agent) => (
+    {orderBy(agents, "hostname", "asc").map((agent) => (
       <Option key={agent.id}>
         <AgentStatusBadge
           agentStatus={agent.agentStatus}

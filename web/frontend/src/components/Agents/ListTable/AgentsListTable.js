@@ -9,7 +9,12 @@ const columns = [
   {
     title: "Hostname",
     dataIndex: "hostname",
-    key: "hostname"
+    key: "hostname",
+    sorter: {
+      compare: (recordA, recordB) =>
+        recordB.hostname.localeCompare(recordA.hostname)
+    },
+    defaultSortOrder: "descend"
   },
   {
     title: "IP",
@@ -22,6 +27,12 @@ const columns = [
     dataIndex: "agentStatus",
     key: "agentStatus",
     width: 180,
+    filters: Object.values(agentStatusModel).map((agentStatus) => ({
+      text: agentStatus,
+      value: agentStatus
+    })),
+    filterSearch: true,
+    onFilter: (value, record) => record.agentStatus === value,
     render: (text, record) => (
       <AgentStatusBadge
         agentStatus={record.agentStatus}
@@ -33,13 +44,21 @@ const columns = [
     title: "Created at",
     dataIndex: "createdAt",
     key: "createdAt",
-    width: 180
+    width: 180,
+    sorter: {
+      compare: (recordA, recordB) => recordB.createdAt.diff(recordA.createdAt)
+    },
+    render: (text, record) => record.createdAt.format("L HH:mm:ss")
   },
   {
     title: "Updated at",
     dataIndex: "updatedAt",
     key: "updatedAt",
-    width: 180
+    width: 180,
+    sorter: {
+      compare: (recordA, recordB) => recordB.updatedAt.diff(recordA.updatedAt)
+    },
+    render: (text, record) => record.updatedAt.format("L HH:mm:ss")
   }
 ];
 
@@ -55,8 +74,8 @@ const agentMapper = ({
   agentStatus,
   hostname,
   ip,
-  createdAt: createdAt.format("L HH:mm:ss"),
-  updatedAt: updatedAt.format("L HH:mm:ss")
+  createdAt,
+  updatedAt
 });
 
 const AgentsListTable = ({ agents, isLoading }) => {
