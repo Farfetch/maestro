@@ -1,15 +1,18 @@
+import { Empty, Typography } from "antd";
+import { maxBy } from "lodash";
 import React from "react";
 import { Line } from "react-chartjs-2";
 
+import { defaultChartOptions } from "../../../../../lib/charts/defaultOptions";
 import { getNextColor } from "../../../../../lib/colors";
 
-const HitsErrorsLabelLine = ({ metrics, labelsToShow = [] }) => {
+const { Title } = Typography;
+
+const HitsErrorsLabelLine = ({ run, metrics, labelsToShow = [] }) => {
+  const { startedAt } = run;
+  const finishedAt = maxBy(metrics, "maxDatetime")?.maxDatetime;
   const options = {
-    animation: {
-      duration: 0
-    },
-    responsive: true,
-    maintainAspectRatio: true,
+    ...defaultChartOptions(startedAt, finishedAt),
     plugins: {
       legend: {
         display: false
@@ -29,15 +32,6 @@ const HitsErrorsLabelLine = ({ metrics, labelsToShow = [] }) => {
       {}
     );
 
-    function onlyUnique(value, index, self) {
-      return self.indexOf(value) === index;
-    }
-
-    const labels = dataToRender
-      .sort((firstEl, secondEl) => firstEl.minDatetime - secondEl.minDatetime)
-      .map(({ minDatetime }) => minDatetime.format("HH:mm:ss"))
-      .filter(onlyUnique);
-
     let currentColorIndex = 0;
 
     const getColor = () => {
@@ -47,9 +41,11 @@ const HitsErrorsLabelLine = ({ metrics, labelsToShow = [] }) => {
       return color;
     };
 
-    const filteredLabels = Object.keys(metricsByLabel).filter((label) =>
-      labelsToShow.includes(label)
-    );
+    const filteredLabels = labelsToShow.length
+      ? Object.keys(metricsByLabel).filter((label) =>
+          labelsToShow.includes(label)
+        )
+      : Object.keys(metricsByLabel);
 
     const datasets = filteredLabels.map((label) => {
       const color = getColor();
@@ -61,7 +57,7 @@ const HitsErrorsLabelLine = ({ metrics, labelsToShow = [] }) => {
             (firstEl, secondEl) => firstEl.minDatetime - secondEl.minDatetime
           )
           .map(({ latencyP50, minDatetime }) => ({
-            x: minDatetime.format("HH:mm:ss"),
+            x: minDatetime,
             y: latencyP50
           })),
         fill: false,
@@ -72,14 +68,20 @@ const HitsErrorsLabelLine = ({ metrics, labelsToShow = [] }) => {
     });
 
     return {
-      labels,
       datasets
     };
   };
 
+  const { datasets } = buildChartData(metrics);
+
   return (
     <>
-      <Line data={buildChartData(metrics)} options={options} />
+      <Title level={5}>Response time by label</Title>
+      {datasets.length ? (
+        <Line data={{ datasets }} options={options} />
+      ) : (
+        <Empty />
+      )}
     </>
   );
 };

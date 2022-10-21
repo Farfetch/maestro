@@ -94,7 +94,6 @@ const RunningTestAnalytics = ({
               <Select.Option key={15}>15 sec</Select.Option>
               <Select.Option key={30}>30 sec</Select.Option>
               <Select.Option key={60}>60 sec</Select.Option>
-              ))
             </Select>
           </>
           <Button type="primary" onClick={refreshChart}>

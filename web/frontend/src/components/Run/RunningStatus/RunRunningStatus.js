@@ -137,7 +137,7 @@ const RunRunningStatus = ({ run }) => {
               key="endpoints"
               disabled={!isRunMetricsAvailable}
             >
-              <RunEndpointCharts runId={run.id} />
+              <RunEndpointCharts run={run} />
             </Tabs.TabPane>
           </Tabs>
         </Col>
