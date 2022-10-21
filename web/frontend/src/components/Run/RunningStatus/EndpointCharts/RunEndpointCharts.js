@@ -1,13 +1,14 @@
 /* eslint-disable max-statements */
 import { Button, Col, Row, Select, Space } from "antd";
+import { orderBy } from "lodash";
 import React, { useEffect, useState } from "react";
 
 import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
 import PageSpinner from "../../../layout/PageSpinner";
 import HitsErrorsLabelLine from "./HitsErrorsLabelLine";
 
-const RunEndpointsCharts = ({ runId }) => {
-  const defaultTimeInterval = 15;
+const RunEndpointsCharts = ({ run }) => {
+  const defaultTimeInterval = 5;
   const showLabels = true;
   const [runMetrics, setRunMetrics] = useState([]);
   const [labelsToShow, setLabelsToShow] = useState([]);
@@ -24,17 +25,19 @@ const RunEndpointsCharts = ({ runId }) => {
   };
 
   useEffect(() => {
-    updateRunMetrics(runId);
+    updateRunMetrics(run.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [runId]);
+  }, [run]);
 
   const refreshChart = async () => {
-    const metrics = await fetchMetrics(runId, timeInterval, showLabels);
+    const metrics = await fetchMetrics(run.id, timeInterval, showLabels);
 
     setRunMetrics(metrics);
   };
 
-  const labels = Array.from(new Set(runMetrics.map(({ label }) => label)));
+  const labels = orderBy(
+    Array.from(new Set(runMetrics.map(({ label }) => label)))
+  );
 
   return (
     <>
@@ -60,7 +63,25 @@ const RunEndpointsCharts = ({ runId }) => {
                     <Select.Option key={15}>15 sec</Select.Option>
                     <Select.Option key={30}>30 sec</Select.Option>
                     <Select.Option key={60}>60 sec</Select.Option>
-                    ))
+                  </Select>
+                </>
+                <>
+                  Labels:
+                  <Select
+                    mode="multiple"
+                    style={{
+                      width: "500px"
+                    }}
+                    placeholder="All"
+                    onChange={(value) => {
+                      setLabelsToShow(value);
+                    }}
+                    maxTagCount="responsive"
+                    allowClear={true}
+                  >
+                    {labels.map((label) => (
+                      <Select.Option key={label}>{label}</Select.Option>
+                    ))}
                   </Select>
                 </>
                 <Button type="primary" onClick={refreshChart}>
@@ -70,6 +91,7 @@ const RunEndpointsCharts = ({ runId }) => {
             </Col>
             <Col span={24}>
               <HitsErrorsLabelLine
+                run={run}
                 metrics={runMetrics}
                 labelsToShow={labelsToShow}
               />
@@ -81,27 +103,7 @@ const RunEndpointsCharts = ({ runId }) => {
                 textAlign: "start"
               }}
             >
-              <Space align="center">
-                <>
-                  Labels:
-                  <Select
-                    mode="multiple"
-                    style={{
-                      width: "100%",
-                      minWidth: "600px",
-                      margin: "0 auto"
-                    }}
-                    placeholder="Choose label"
-                    defaultValue={labels[0] || false}
-                    onChange={(value) => setLabelsToShow(value)}
-                  >
-                    {labels.map((label) => (
-                      <Select.Option key={label}>{label}</Select.Option>
-                    ))}
-                    ))
-                  </Select>
-                </>
-              </Space>
+              <Space align="center"></Space>
             </Col>
           </Row>
         </>
