@@ -115,7 +115,7 @@ const RunRunningStatus = ({ run }) => {
             <Space size="large">
               <div>
                 <Typography.Text type="secondary">Started at: </Typography.Text>
-                {run.startedAt.format("L HH:mm:ss")}
+                {run.startedAt ? run.startedAt.format("L HH:mm:ss") : null}
               </div>
               <div>
                 <Typography.Text type="secondary">Agents: </Typography.Text>
