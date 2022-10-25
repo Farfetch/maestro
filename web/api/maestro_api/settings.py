@@ -82,6 +82,5 @@ MOCK_AUTH_ANONYMOUS_USER_EMAIL = os.environ.get(
     "MOCK_AUTH_ANONYMOUS_USER_EMAIL", "anonymous@maestro.net"
 )
 
-
 # METRICS CONFIGURATION
 MAESTRO_STORE_RAW_METRICS=parse_bool(os.environ.get("MAESTRO_STORE_RAW_METRICS", "True"))
