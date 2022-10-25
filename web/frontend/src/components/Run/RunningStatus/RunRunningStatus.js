@@ -1,4 +1,13 @@
-import { Button, Col, PageHeader, Popconfirm, Row, Tabs } from "antd";
+import {
+  Button,
+  Col,
+  PageHeader,
+  Popconfirm,
+  Row,
+  Space,
+  Tabs,
+  Typography
+} from "antd";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -95,23 +104,38 @@ const RunRunningStatus = ({ run }) => {
       }}
       tags={<RunEditableLabelsGroup runId={run.id} defaultValue={run.labels} />}
     >
-      <Row gutter={[0, 0]}>
-        <Col flex="auto">
-          <RunNotesInput
-            runId={run.id}
-            defaultValue={run.notes || "Add running test execution notes..."}
-          />
-        </Col>
-        <Col flex="200px">
-          {isTimerAvailable ? (
-            <RunRunningTime
-              startedAt={run.startedAt}
-              finishedAt={
-                run.runStatus !== runStatusModel.RUNNING
-                  ? run.finishedAt
-                  : false
-              }
+      <Row gutter={[0, 0]} type="flex" align="middle" justify="end">
+        <Col span={16}>
+          <Space direction="vertical" size={0}>
+            <RunNotesInput
+              runId={run.id}
+              defaultValue={run.notes || "Add running test execution notes..."}
             />
+
+            <Space size="large">
+              <div>
+                <Typography.Text type="secondary">Started at: </Typography.Text>
+                {run.startedAt ? run.startedAt.format("L HH:mm:ss") : null}
+              </div>
+              <div>
+                <Typography.Text type="secondary">Agents: </Typography.Text>
+                {run.agentIds.length}
+              </div>
+            </Space>
+          </Space>
+        </Col>
+        <Col span={8} style={{ textAlign: "right" }}>
+          {isTimerAvailable ? (
+            <>
+              <RunRunningTime
+                startedAt={run.startedAt}
+                finishedAt={
+                  run.runStatus !== runStatusModel.RUNNING
+                    ? run.finishedAt
+                    : false
+                }
+              />
+            </>
           ) : null}
         </Col>
 
