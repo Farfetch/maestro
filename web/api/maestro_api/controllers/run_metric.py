@@ -12,6 +12,7 @@ from maestro_api.libs.csv import CsvBytesIO
 
 from maestro_api.settings import MAESTRO_STORE_RAW_METRICS
 
+
 class RunMetricController:
     def __init__(self, flask_app):
         self.flask_app = flask_app
