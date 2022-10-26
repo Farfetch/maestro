@@ -1,8 +1,9 @@
+/* eslint-disable max-statements */
 /* eslint-disable max-lines */
 import { Button, Card, Col, Form, message, Row, Typography } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { CurrentWorkspaceContext } from "../../../context/CurrentWorkspace";
@@ -32,6 +33,7 @@ const RunConfigurationForm = ({
   agents
 }) => {
   const { currentWorkspace } = useContext(CurrentWorkspaceContext);
+  const [isClone, setIsClone] = useState(false);
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
@@ -80,7 +82,7 @@ const RunConfigurationForm = ({
     }
 
     const newRunConfigurationId = await saveRunConfiguration(
-      runConfigurationId,
+      !isClone ? runConfigurationId : null,
       dataToSave
     );
 
@@ -262,6 +264,19 @@ const RunConfigurationForm = ({
               onClick={() => startTest()}
             >
               Start
+            </Button>
+          </Col>
+          <Col>
+            <Button
+              type="dashed"
+              size="large"
+              key="submit"
+              onClick={() => {
+                setIsClone(true);
+                form.submit();
+              }}
+            >
+              Clone
             </Button>
           </Col>
           <Col>
