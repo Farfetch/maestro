@@ -10,6 +10,8 @@ from maestro_api.libs.flask.utils import (
 )
 from maestro_api.libs.csv import CsvBytesIO
 
+from maestro_api.settings import MAESTRO_STORE_RAW_METRICS
+
 
 class RunMetricController:
     def __init__(self, flask_app):
@@ -29,7 +31,8 @@ class RunMetricController:
         ]
         MetricsAggregator().group_and_store_by_label(run_id, metric_instances)
 
-        RunMetric.objects.insert(metric_instances)
+        if MAESTRO_STORE_RAW_METRICS:
+            RunMetric.objects.insert(metric_instances)
 
         return jsonify({"metrics_count": len(jmeter_metrics)})
 
