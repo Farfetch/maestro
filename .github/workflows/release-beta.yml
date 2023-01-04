@@ -8,7 +8,7 @@ on:
 
 jobs:
   web:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       DOCKER_HUB_REPOSITORY: maestro
       DOCKER_HUB_TAG_PREFIX: beta
@@ -46,7 +46,7 @@ jobs:
           cache-to: type=inline
 
   agent:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       DOCKER_HUB_REPOSITORY: maestro-agent
       DOCKER_HUB_TAG_PREFIX: beta
@@ -84,7 +84,7 @@ jobs:
           cache-to: type=inline
 
   cli:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       DOCKER_HUB_REPOSITORY: maestro-cli
       DOCKER_HUB_TAG_PREFIX: beta
@@ -122,7 +122,7 @@ jobs:
           cache-to: type=inline
 
   jmeter:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       DOCKER_HUB_REPOSITORY: maestro-jmeter
       DOCKER_HUB_TAG_PREFIX: beta

@@ -9,7 +9,7 @@ on:
 jobs:
   api:
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     defaults:
       run:
         working-directory: ./web/api
@@ -50,7 +50,7 @@ jobs:
 
   agent:
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     defaults:
       run:
         working-directory: ./agent
@@ -91,7 +91,7 @@ jobs:
 
   cli:
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     defaults:
       run:
         working-directory: ./cli
@@ -132,7 +132,7 @@ jobs:
 
   frontend:
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     defaults:
       run:
         working-directory: ./web/frontend
@@ -170,7 +170,7 @@ jobs:
 
   site:
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     defaults:
       run:
         working-directory: ./site
@@ -195,7 +195,7 @@ jobs:
 
   backendlistener:
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     defaults:
       run:
         working-directory: ./jmeter/plugins/jmeter-backendlistener-maestro
@@ -208,7 +208,7 @@ jobs:
       - run: mvn --batch-mode --update-snapshots verify
 
   prose:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     defaults:
       run:
         working-directory: ./
