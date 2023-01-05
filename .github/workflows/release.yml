@@ -10,7 +10,7 @@ on:
 jobs:
   web:
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       DOCKER_HUB_REPOSITORY: maestro
 
@@ -48,7 +48,7 @@ jobs:
 
   agent:
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       DOCKER_HUB_REPOSITORY: maestro-agent
 
@@ -86,7 +86,7 @@ jobs:
 
   cli:
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       DOCKER_HUB_REPOSITORY: maestro-cli
 
@@ -124,7 +124,7 @@ jobs:
 
   jmeter:
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       DOCKER_HUB_REPOSITORY: maestro-jmeter
 
