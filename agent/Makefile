@@ -22,7 +22,7 @@ test:
 	pytest
 
 run:
-	JMETER_CONTAINER_NAME=maestrojmeter AGENT_HOST=agent.maestro.net python run.py
+	JMETER_CONTAINER_NAME=maestrojmeter AGENT_HOST=agent.maestro.net LOG_LEVEL=DEBUG python run.py
 
 run1:
 	HOST_MOUNT_DIR=$HOME/.maestro/jmeter1 JMETER_CONTAINER_NAME=maestrojmeter1 AGENT_HOST=agent1.maestro.net python run.py

@@ -55,16 +55,16 @@ Production:
 
 ### Linting & Formatting
 
-`make check` - - Run linting and formatting checks
+`make check` - - Run linting and formatting checks.
 
-`make lint` - Run **Pylint** linting checks
+`make lint` - Run **Pylint** linting checks.
 
-`make format` - Run **Black** formatting checks
+`make format` - Run **Black** formatting checks.
 
-`make format-fix` - Run **Black** to fix files formatting automatically
+`make format-fix` - Run **Black** to fix files formatting automatically.
 
 ### Testing
 
-`make test` - Run tests
+`make test` - Run tests.
 
-`make coverage` - Run tests and generate code coverage reports
+`make coverage` - Run tests and generate code coverage reports.
