@@ -45,10 +45,10 @@ class RunMetricsProcessor:
 
     def init_threads(self):
         Logger.debug(
-            f"Number of workers processing metrics to sent to API: {self.PROCESSING_WORKERS}"
+            f"Number of metrics workers sending to API: {self.PROCESSING_WORKERS}"
         )
         Logger.debug(
-            f"Time based processor to send metrics to Queue (local): {self.PROCESSING_SECONDS_INTERVAL}"
+            f"Time based sending to Queue (local): {self.PROCESSING_SECONDS_INTERVAL}"
         )
 
         threads = [
