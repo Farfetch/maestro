@@ -27,7 +27,7 @@ const DashboardCard = ({ run }) => {
 
     const errors =
       lastMetric && lastMetric.totalCount !== 0
-        ? 1 - lastMetric.totalCount / lastMetric.successCount
+        ? 1 - lastMetric.successCount / lastMetric.totalCount
         : 0;
     const totalCount = lastMetric ? lastMetric.totalCount : 0;
 
@@ -75,7 +75,7 @@ const DashboardCard = ({ run }) => {
                   />
                   <Statistic
                     title="Errors"
-                    value={runMetric.errors}
+                    value={runMetric.errors.toFixed(2)}
                     suffix="%"
                     loading={loading}
                   />
