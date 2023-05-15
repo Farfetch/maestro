@@ -63,13 +63,11 @@ class RunPlanController:
         if original_plan is False:
             jmx.add_backend_listener()
 
-        filename = "%s_%s" % (run_plan_id, "run_plan.jmx")
-
         return (
             send_file(
                 BytesIO(jmx.to_bytes()),
                 as_attachment=True,
-                download_name=filename,
+                download_name=run_plan.title,
                 mimetype=content_type,
             ),
             200,
