@@ -13,14 +13,6 @@ const calculateErrorRate = (successCount, totalCount) => {
   return errorRate;
 };
 
-const calculateTotalErrorRate = (totalSuccessCount, totalCount) => {
-  const totalErrorRate = parseFloat(
-    (1 - totalSuccessCount / totalCount) * 100
-  ).toFixed(2);
-
-  return totalErrorRate;
-};
-
 const columns = [
   {
     title: "Label",
@@ -281,10 +273,7 @@ const RunSummaryTable = ({ runId }) => {
               totalLatencyP99 += latencyP99;
               totalSuccessCount += successCount;
               totalRpm += parseFloat(rpm);
-              totalErrorRate = calculateTotalErrorRate(
-                totalSuccessCount,
-                total
-              );
+              totalErrorRate = calculateErrorRate(totalSuccessCount, total);
               totalErrorsCount += errorsCount;
             }
           );
