@@ -31,20 +31,6 @@ const columns = [
     }
   },
   {
-    title: "Latency (p99)",
-    dataIndex: "latencyP99",
-    key: "latencyP99",
-    render: (text, record) => (
-      <span key={`${record.url}-latencyP99`}>
-        {`${record.latencyP99}`} <span style={{ fontSize: 11 }}>ms</span>
-      </span>
-    ),
-    sorter: {
-      compare: (recordA, recordB) => recordA.latencyP99 - recordB.latencyP99
-    },
-    width: 100
-  },
-  {
     title: "Latency (p50)",
     dataIndex: "latencyP50",
     key: "latencyP50",
@@ -59,14 +45,16 @@ const columns = [
     width: 100
   },
   {
-    title: "Success",
-    dataIndex: "successCount",
-    key: "successCount",
+    title: "Latency (p99)",
+    dataIndex: "latencyP99",
+    key: "latencyP99",
     render: (text, record) => (
-      <span key={`${record.url}-successCount`}>{`${record.successCount}`}</span>
+      <span key={`${record.url}-latencyP99`}>
+        {`${record.latencyP99}`} <span style={{ fontSize: 11 }}>ms</span>
+      </span>
     ),
     sorter: {
-      compare: (recordA, recordB) => recordA.successCount - recordB.successCount
+      compare: (recordA, recordB) => recordA.latencyP99 - recordB.latencyP99
     },
     width: 100
   },
@@ -83,18 +71,16 @@ const columns = [
     width: 100
   },
   {
-    title: "RPM",
-    dataIndex: "rpm",
-    key: "rpm",
+    title: "Success",
+    dataIndex: "successCount",
+    key: "successCount",
     render: (text, record) => (
-      <span key={`${record.url}-rpm`}>
-        {record.rpm} <span style={{ fontSize: 11 }}>req/min</span>
-      </span>
+      <span key={`${record.url}-successCount`}>{`${record.successCount}`}</span>
     ),
     sorter: {
-      compare: (recordA, recordB) => recordA.rpm - recordB.rpm
+      compare: (recordA, recordB) => recordA.successCount - recordB.successCount
     },
-    width: 120
+    width: 100
   },
   {
     title: "Error count",
@@ -124,6 +110,20 @@ const columns = [
       compare: (recordA, recordB) => recordA.errorRate - recordB.errorRate
     },
     width: 100
+  },
+  {
+    title: "RPM",
+    dataIndex: "rpm",
+    key: "rpm",
+    render: (text, record) => (
+      <span key={`${record.url}-rpm`}>
+        {record.rpm} <span style={{ fontSize: 11 }}>req/min</span>
+      </span>
+    ),
+    sorter: {
+      compare: (recordA, recordB) => recordA.rpm - recordB.rpm
+    },
+    width: 120
   }
 ];
 
@@ -302,16 +302,10 @@ const RunSummaryTable = ({ runId }) => {
                   </Typography.Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Typography.Text strong>{totalSuccessCount}</Typography.Text>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell>
                   <Typography.Text strong>{total}</Typography.Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Typography.Text strong>
-                    {avg(totalRpm, itemsCount).toFixed(0)}
-                  </Typography.Text>
-                  <span style={{ fontSize: 11 }}> req/min</span>
+                  <Typography.Text strong>{totalSuccessCount}</Typography.Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
                   <Typography.Text strong>{totalErrorsCount}</Typography.Text>
@@ -319,6 +313,12 @@ const RunSummaryTable = ({ runId }) => {
                 <Table.Summary.Cell>
                   <Typography.Text strong>{totalErrorRate}</Typography.Text>
                   <span style={{ fontSize: 11 }}> %</span>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell>
+                  <Typography.Text strong>
+                    {avg(totalRpm, itemsCount).toFixed(0)}
+                  </Typography.Text>
+                  <span style={{ fontSize: 11 }}> req/min</span>
                 </Table.Summary.Cell>
               </Table.Summary.Row>
             </>
