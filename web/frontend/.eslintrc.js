@@ -42,6 +42,15 @@ module.exports = {
         "max-statements": ["error", 30],
         "max-lines": ["error", 500]
       }
+    },
+    {
+      files: ["RunSummaryTable.js"],
+      rules: {
+        "max-depth": ["error", 3],
+        "max-nested-callbacks": ["error", 3],
+        "max-statements": ["error", 30],
+        "max-lines": ["error", 400]
+      }
     }
   ]
 };
