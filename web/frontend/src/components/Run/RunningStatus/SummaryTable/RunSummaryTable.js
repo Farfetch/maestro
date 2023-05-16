@@ -6,7 +6,6 @@ import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
 import { avg } from "../../../../lib/utils";
 
 const calculateErrorRate = (successCount, totalCount) => {
-  // const errorsCount = totalCount - successCount;
   const errorRate = parseFloat((1 - successCount / totalCount) * 100).toFixed(
     2
   );
@@ -43,17 +42,19 @@ const columns = [
     sorter: {
       compare: (recordA, recordB) => recordA.latencyP50 - recordB.latencyP50
     },
-    width: 150
+    width: 100
   },
   {
-    title: "Success",
-    dataIndex: "successCount",
-    key: "successCount",
+    title: "Latency (p99)",
+    dataIndex: "latencyP99",
+    key: "latencyP99",
     render: (text, record) => (
-      <span key={`${record.url}-successCount`}>{`${record.successCount}`}</span>
+      <span key={`${record.url}-latencyP99`}>
+        {`${record.latencyP99}`} <span style={{ fontSize: 11 }}>ms</span>
+      </span>
     ),
     sorter: {
-      compare: (recordA, recordB) => recordA.successCount - recordB.successCount
+      compare: (recordA, recordB) => recordA.latencyP99 - recordB.latencyP99
     },
     width: 100
   },
@@ -70,6 +71,47 @@ const columns = [
     width: 100
   },
   {
+    title: "Success",
+    dataIndex: "successCount",
+    key: "successCount",
+    render: (text, record) => (
+      <span key={`${record.url}-successCount`}>{`${record.successCount}`}</span>
+    ),
+    sorter: {
+      compare: (recordA, recordB) => recordA.successCount - recordB.successCount
+    },
+    width: 100
+  },
+  {
+    title: "Error count",
+    dataIndex: "errorCount",
+    key: "errorCount",
+    defaultSortOrder: "descend",
+    render: (text, record) => (
+      <span key={`${record.url}-error_count`}>{record.errorsCount}</span>
+    ),
+    sorter: {
+      compare: (recordA, recordB) => recordA.errorsCount - recordB.errorsCount
+    },
+    width: 110
+  },
+  {
+    title: "Error rate",
+    dataIndex: "errorRate",
+    key: "errorRate",
+    defaultSortOrder: "descend",
+    render: (text, record) => (
+      <span key={`${record.url}-error_rate`}>
+        {record.errorRate}
+        <span style={{ fontSize: 11 }}>%</span>
+      </span>
+    ),
+    sorter: {
+      compare: (recordA, recordB) => recordA.errorRate - recordB.errorRate
+    },
+    width: 100
+  },
+  {
     title: "RPM",
     dataIndex: "rpm",
     key: "rpm",
@@ -81,23 +123,7 @@ const columns = [
     sorter: {
       compare: (recordA, recordB) => recordA.rpm - recordB.rpm
     },
-    width: 150
-  },
-  {
-    title: "Error rate",
-    dataIndex: "errorRate",
-    key: "errorRate",
-    defaultSortOrder: "descend",
-    width: 100,
-    render: (text, record) => (
-      <span key={`${record.url}-error_rate`}>
-        {record.errorRate}
-        <span style={{ fontSize: 11 }}>%</span>
-      </span>
-    ),
-    sorter: {
-      compare: (recordA, recordB) => recordA.errorRate - recordB.errorRate
-    }
+    width: 120
   }
 ];
 
@@ -179,6 +205,7 @@ const RunSummaryTable = ({ runId }) => {
         label,
         latencyAvg,
         latencyP50,
+        latencyP99,
         responses
       }) => {
         const errorsCount = totalCount - successCount;
@@ -195,6 +222,7 @@ const RunSummaryTable = ({ runId }) => {
           totalCount,
           latencyAvg,
           latencyP50,
+          latencyP99,
           responses
         };
       }
@@ -223,18 +251,30 @@ const RunSummaryTable = ({ runId }) => {
         summary={(pageData) => {
           let total = 0;
           let totalLatencyP50 = 0;
+          let totalLatencyP99 = 0;
           let totalSuccessCount = 0;
           let totalRpm = 0;
+          let totalErrorsCount = 0;
           let totalErrorRate = 0;
           const itemsCount = pageData.length;
 
           pageData.forEach(
-            ({ totalCount, latencyP50, successCount, rpm, errorRate }) => {
+            ({
+              totalCount,
+              latencyP50,
+              latencyP99,
+              successCount,
+              rpm,
+              // errorRate,
+              errorsCount
+            }) => {
               total += totalCount;
               totalLatencyP50 += latencyP50;
+              totalLatencyP99 += latencyP99;
               totalSuccessCount += successCount;
               totalRpm += parseFloat(rpm);
-              totalErrorRate += parseFloat(errorRate);
+              totalErrorRate = calculateErrorRate(totalSuccessCount, total);
+              totalErrorsCount += errorsCount;
             }
           );
 
@@ -254,22 +294,31 @@ const RunSummaryTable = ({ runId }) => {
                   </Typography.Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
-                  <Typography.Text strong>{totalSuccessCount}</Typography.Text>
+                  <Typography.Text>
+                    <Typography.Text strong>
+                      {avg(totalLatencyP99, itemsCount).toFixed(2)}
+                    </Typography.Text>
+                    <span style={{ fontSize: 11 }}> ms</span>
+                  </Typography.Text>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
                   <Typography.Text strong>{total}</Typography.Text>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell>
+                  <Typography.Text strong>{totalSuccessCount}</Typography.Text>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell>
+                  <Typography.Text strong>{totalErrorsCount}</Typography.Text>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell>
+                  <Typography.Text strong>{totalErrorRate}</Typography.Text>
+                  <span style={{ fontSize: 11 }}> %</span>
                 </Table.Summary.Cell>
                 <Table.Summary.Cell>
                   <Typography.Text strong>
                     {avg(totalRpm, itemsCount).toFixed(0)}
                   </Typography.Text>
                   <span style={{ fontSize: 11 }}> req/min</span>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell>
-                  <Typography.Text strong>
-                    {avg(totalErrorRate, itemsCount).toFixed(2)}
-                  </Typography.Text>
-                  <span style={{ fontSize: 11 }}> %</span>
                 </Table.Summary.Cell>
               </Table.Summary.Row>
             </>
