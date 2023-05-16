@@ -27,7 +27,7 @@ const DashboardCard = ({ run }) => {
 
     const errors =
       lastMetric && lastMetric.totalCount !== 0
-        ? 1 - lastMetric.successCount / lastMetric.totalCount
+        ? (1 - lastMetric.successCount / lastMetric.totalCount) * 100
         : 0;
     const totalCount = lastMetric ? lastMetric.totalCount : 0;
 

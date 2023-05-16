@@ -6,8 +6,10 @@ import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
 import { avg } from "../../../../lib/utils";
 
 const calculateErrorRate = (successCount, totalCount) => {
-  const errorsCount = totalCount - successCount;
-  const errorRate = parseFloat((errorsCount / totalCount) * 100).toFixed(2);
+  // const errorsCount = totalCount - successCount;
+  const errorRate = parseFloat((1 - successCount / totalCount) * 100).toFixed(
+    2
+  );
 
   return errorRate;
 };
