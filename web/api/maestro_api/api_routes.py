@@ -75,8 +75,8 @@ def init_api_routes(flask_app):
         return run_controller.create_one(*args, **kwargs)
 
     @flask_app.route("/runs", methods=["GET"])
-    @validate_request(run_all_schema)
     @requires_auth()
+    @validate_request(run_all_schema)
     def run_all(*args, **kwargs):
         return run_controller.all(*args, **kwargs)
 
