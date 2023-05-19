@@ -38,6 +38,7 @@ class RunController:
     def all(self, data, user):
         "Get all Run objects"
 
+        title = data.get("title", None)
         workspace_id = data.get("workspace_id", None)
         labels = data.get("labels", None)
         run_status = data.get("run_status", None)
@@ -55,6 +56,9 @@ class RunController:
 
         if run_status is not None:
             filter_query = filter_query & Q(run_status__in=str_to_list(run_status))
+
+        if title is not None:
+            filter_query = filter_query & Q(title__contains=title)
 
         runs = Run.objects.filter(filter_query).order_by(sort).skip(skip).limit(limit)
 

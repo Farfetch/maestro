@@ -473,6 +473,10 @@ paths:
           description: "Wokspace ID"
           type: string
         - in: query
+          name: title
+          description: "Run Title"
+          type: string
+        - in: query
           name: labels
           description: "List of Run labels should be included"
           collectionFormat: multi

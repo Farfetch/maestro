@@ -42,6 +42,11 @@ update_run_schema = {
 run_all_schema = {
     "type": "object",
     "properties": {
+        "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40,
+        },
         "workspace_id": {
             "type": "string",
             "minLength": 12,
