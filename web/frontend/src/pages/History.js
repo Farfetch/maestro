@@ -11,14 +11,14 @@ const HistoryPage = () => {
   const [runs, setRuns] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { currentWorkspace } = useContext(CurrentWorkspaceContext);
-  const [inputText, setInputText] = useState("");
+  const [searchRunTile, setSearchRunTile] = useState("");
 
   const updateRunPlans = async () => {
     setIsLoading(true);
 
     const runsRes = await fetchRuns({
       workspaceId: currentWorkspace.id,
-      title: inputText
+      title: searchRunTile
     });
 
     setRuns(runsRes);
@@ -29,16 +29,16 @@ const HistoryPage = () => {
   useEffect(() => {
     updateRunPlans();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentWorkspace, inputText]);
+  }, [currentWorkspace, searchRunTile]);
 
-  const filterInputText = (value) => {
-    setInputText(value);
+  const filterSearchRunTitle = (value) => {
+    setSearchRunTile(value);
   };
 
   return (
     <>
       <PageTitle title="History" />
-      <SearchBar onChangeInputText={filterInputText} />
+      <SearchBar onChangeSearchRunTitle={filterSearchRunTitle} />
       <Row>
         <Col span={24}>
           <RunListTable
