@@ -30,6 +30,6 @@ def strptime(datetime_str):
     return utc_datetime
 
 
-def strftime_no_utc(local_datetime):
+def strftime_lite(local_datetime):
 
     return local_datetime.strftime(DEFAULT_DATTETIME_FORMAT)
