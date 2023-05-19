@@ -245,7 +245,7 @@ def test_get_run_with_not_found_response(client):
         ),
     ],
 )
-def test_udpate_run_status(client, run_status, started_at, finished_at):
+def test_update_run_status(client, run_status, started_at, finished_at):
     workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"
@@ -285,7 +285,7 @@ def test_udpate_run_status(client, run_status, started_at, finished_at):
     assert finished_at == res_json["finished_at"]
 
 
-def test_udpate_run_notes(client):
+def test_update_run_notes(client):
     workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"
@@ -322,7 +322,7 @@ def test_udpate_run_notes(client):
     assert RunStatus.PENDING.value == updated_run.run_status
 
 
-def test_udpate_run_labels(client):
+def test_update_run_labels(client):
     workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_configuration_id = "6326d1e3a216ff15b6e95e9d"
     title = "some example title"

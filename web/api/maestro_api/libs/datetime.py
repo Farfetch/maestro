@@ -28,3 +28,8 @@ def strptime(datetime_str):
     utc_datetime = TZ_UTC.localize(naive_datetime, is_dst=None)
 
     return utc_datetime
+
+
+def strftime_no_utc(local_datetime):
+
+    return local_datetime.strftime(DEFAULT_DATTETIME_FORMAT)
