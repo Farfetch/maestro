@@ -15,10 +15,8 @@ def now():
 
 
 def strftime(local_datetime):
-
-    utc_datetime = local_datetime.astimezone(TZ_UTC)
-
-    return utc_datetime.strftime(DEFAULT_DATTETIME_FORMAT)
+    "Converts string to datetime format"
+    return local_datetime.strftime(DEFAULT_DATTETIME_FORMAT)
 
 
 def strptime(datetime_str):
@@ -28,8 +26,3 @@ def strptime(datetime_str):
     utc_datetime = TZ_UTC.localize(naive_datetime, is_dst=None)
 
     return utc_datetime
-
-
-def strftime_lite(local_datetime):
-
-    return local_datetime.strftime(DEFAULT_DATTETIME_FORMAT)

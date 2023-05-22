@@ -8,7 +8,7 @@ from mongoengine import (
     EmbeddedDocumentField,
 )
 from maestro_api.libs.extended.enum import ExtendedEnum
-from maestro_api.libs.datetime import now, strftime_lite
+from maestro_api.libs.datetime import now, strftime
 from maestro_api.db.mixins import CreatedUpdatedDocumentMixin
 
 
@@ -116,8 +116,8 @@ class Run(CreatedUpdatedDocumentMixin):
             ],
             "notes": self.notes,
             "labels": self.labels,
-            "started_at": strftime_lite(self.started_at),
-            "created_at": strftime_lite(self.created_at),
-            "finished_at": strftime_lite(self.finished_at),
-            "updated_at": strftime_lite(self.updated_at),
+            "started_at": strftime(self.started_at),
+            "created_at": strftime(self.created_at),
+            "finished_at": strftime(self.finished_at),
+            "updated_at": strftime(self.updated_at),
         }

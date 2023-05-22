@@ -2,6 +2,10 @@ import csv
 from io import StringIO
 from datetime import datetime
 
+import pytz
+
+TZ_UTC = pytz.utc
+
 
 class JmeterMetric:
     def __init__(
@@ -55,7 +59,7 @@ class JmeterService:
     @staticmethod
     def format_metrics(data):
         def str_timestamp_to_datetime(timestamp):
-            return datetime.fromtimestamp(float(timestamp) / 1000)
+            return datetime.fromtimestamp(float(timestamp) / 1000, tz=TZ_UTC)
 
         def int_or_None(value):
             return int(value) if value.isnumeric() else None
