@@ -8,9 +8,8 @@ from mongoengine import (
     EmbeddedDocumentField,
 )
 from maestro_api.libs.extended.enum import ExtendedEnum
-from maestro_api.libs.datetime import now
+from maestro_api.libs.datetime import now, strftime
 from maestro_api.db.mixins import CreatedUpdatedDocumentMixin
-from maestro_api.libs.datetime import strftime
 
 
 class RunStatus(ExtendedEnum):
