@@ -8,11 +8,14 @@ from maestro_agent.settings import (
 
 from maestro_agent.enums import LogLevel
 from maestro_agent.services.logging.handlers import MaestroApiHandler
+import queue
+from logging.handlers import QueueHandler, QueueListener
 
 
 class Logger:
 
     instance = None
+    listener = None
 
     def set_logging_level(logger):
         available_levels = LogLevel.list()
@@ -51,7 +54,15 @@ class Logger:
         Logger.warn = Logger.instance.warn
         Logger.debug = Logger.instance.debug
 
-    def register_maestro_api_logging(agent_id):
+    def stop_listener():
+        if Logger.listener is not None:
+            Logger.listener.stop()
 
+    def register_maestro_api_logging(agent_id):
         if ENABLE_MAESTRO_API_HANDLER:
-            Logger.instance.addHandler(MaestroApiHandler(agent_id=agent_id))
+            log_queue = queue.Queue(-1)
+            Logger.instance.addHandler(QueueHandler(log_queue))
+            Logger.listener = QueueListener(
+                log_queue, MaestroApiHandler(agent_id=agent_id)
+            )
+            Logger.listener.start()
