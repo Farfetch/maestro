@@ -13,7 +13,6 @@ class MaestroApiHandler(StreamHandler):
 
     def emit(self, record):
 
-        # TODO: use queue and process all log messages together to improve performance
         msg = self.format(record)
         level = record.levelname
 

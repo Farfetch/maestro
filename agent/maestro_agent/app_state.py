@@ -63,6 +63,7 @@ class ApplicationState:
         )
         ApplicationState.agent = agent
         Logger.info("Maestro agent exited")
+        Logger.stop_listener()
 
     @staticmethod
     def reset():
