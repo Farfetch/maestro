@@ -40,6 +40,7 @@ describe("libs/api/endpoints/runConfiguration", () => {
       end: 20,
       duration: 100
     },
+    is_loadprofile_enabled: true,
     is_schedule_enabled: true,
     schedule: {
       days: ["Mon", "Tue"],
@@ -59,6 +60,7 @@ describe("libs/api/endpoints/runConfiguration", () => {
     runPlanId: apiResponse.run_plan_id,
     customProperties: apiResponse.custom_properties,
     loadProfile: apiResponse.load_profile,
+    isLoadProfileEnabled: apiResponse.is_loadprofile_enabled,
     isScheduleEnabled: apiResponse.is_schedule_enabled,
     schedule: apiResponse.schedule,
     createdAt: toLocalDate(apiResponse.created_at),
@@ -156,6 +158,38 @@ describe("libs/api/endpoints/runConfiguration", () => {
           custom_properties: dataToUpdate.customProperties,
           is_schedule_enabled: dataToUpdate.isScheduleEnabled,
           schedule: dataToUpdate.schedule
+        })
+        .reply(200, apiResponse);
+
+      const data = await updateRunConfiguration(
+        runConfigurationId,
+        dataToUpdate
+      );
+
+      expect(data).toStrictEqual(expectedData);
+    });
+
+    test("should disable load profiler", async () => {
+      const runConfigurationId = "1-2-3";
+      const dataToUpdate = {
+        customDataIds: apiResponse.custom_data_ids,
+        hosts: apiResponse.hosts,
+        agentIds: apiResponse.agent_ids,
+        runPlanId: apiResponse.run_plan_id,
+        customProperties: apiResponse.custom_properties,
+        loadProfile: apiResponse.load_profile,
+        isLoadProfileEnabled: false
+      };
+
+      axiosMock
+        .onPut(`/api/run_configuration/${runConfigurationId}`, {
+          run_plan_id: dataToUpdate.runPlanId,
+          agent_ids: dataToUpdate.agentIds,
+          custom_data_ids: dataToUpdate.customDataIds,
+          hosts: dataToUpdate.hosts,
+          custom_properties: dataToUpdate.customProperties,
+          load_profile: dataToUpdate.loadProfile,
+          is_loadprofile_enabled: dataToUpdate.isLoadProfileEnabled
         })
         .reply(200, apiResponse);
 

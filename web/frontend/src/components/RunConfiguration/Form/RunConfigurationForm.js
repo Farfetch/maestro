@@ -48,7 +48,8 @@ const RunConfigurationForm = ({
     loadProfile,
     isScheduleEnabled,
     scheduleDays,
-    scheduleTime
+    scheduleTime,
+    isLoadProfileEnabled
   }) => {
     const loadingMessageKey = "runConfigurationFormLoading";
 
@@ -71,7 +72,8 @@ const RunConfigurationForm = ({
       customProperties,
       loadProfile,
       isScheduleEnabled,
-      workspaceId: currentWorkspace.id
+      workspaceId: currentWorkspace.id,
+      isLoadProfileEnabled
     };
 
     if (isScheduleEnabled) {
@@ -251,6 +253,7 @@ const RunConfigurationForm = ({
             right={
               <LoadConfigurationFormItem
                 initialLoadProfile={initialValues.loadProfile}
+                initialLoadProfileEnabled={initialValues.isLoadProfileEnabled}
               />
             }
           />
@@ -306,7 +309,8 @@ RunConfigurationForm.defaultProps = {
     loadProfile: [],
     isScheduleEnabled: false,
     scheduleDays: ["Mon", "Tue", "Wed", "Thu", "Fri"],
-    scheduleTime: moment("09:00", "HH:mm")
+    scheduleTime: moment("09:00", "HH:mm"),
+    isLoadProfileEnabled: true
   },
   agents: []
 };

@@ -57,6 +57,8 @@ class RunConfiguration(CreatedUpdatedDocumentMixin):
 
     last_scheduled_at = DateTimeField()
 
+    is_loadprofile_enabled = BooleanField(default=True)
+
     def to_dict(self):
         return {
             "id": str(self.id),
@@ -83,6 +85,7 @@ class RunConfiguration(CreatedUpdatedDocumentMixin):
                 }
                 for load_step in self.load_profile
             ],
+            "is_loadprofile_enabled": self.is_loadprofile_enabled,
             "labels": self.labels,
             "is_schedule_enabled": self.is_schedule_enabled,
             "schedule": {

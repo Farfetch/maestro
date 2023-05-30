@@ -151,6 +151,9 @@ run_configuration_create_schema = {
                 "additionalProperties": False,
             },
         },
+        "is_loadprofile_enabled": {
+            "type": "boolean",
+        },
         "labels": {
             "type": "array",
             "items": {"type": "string"},
