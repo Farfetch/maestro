@@ -87,7 +87,6 @@ def test_split_by_last_seconds_default_values():
 
 
 def test_split_by_last_seconds_default_skip_last_1_second():
-
     run = "1-2-3"
 
     metrics = [
@@ -133,7 +132,6 @@ def test_split_by_last_seconds_default_skip_last_1_second():
 
 
 def test_split_by_last_seconds_default_skip_last_2_seconds():
-
     run = "1-2-3"
 
     metrics = [
@@ -179,7 +177,6 @@ def test_split_by_last_seconds_default_skip_last_2_seconds():
 
 
 def test_processing_worker_api_call(mocker):
-
     send_metrics = mocker.patch(
         "maestro_agent.services.maestro_api.run.RunApi.send_metrics"
     )

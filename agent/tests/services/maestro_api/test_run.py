@@ -24,7 +24,6 @@ def test_maestro_run_get(mocker):
 
 
 def test_maestro_run_mapped_response():
-
     run_id = "tr_id_1"
     run_plan_id = "tp_id_1"
     agent_ids = ["sd_id_1"]

@@ -13,7 +13,6 @@ from logging.handlers import QueueHandler, QueueListener
 
 
 class Logger:
-
     instance = None
     listener = None
 

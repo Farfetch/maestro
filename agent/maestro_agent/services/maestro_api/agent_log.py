@@ -12,7 +12,6 @@ class AgentLog:
 
 
 def agent_log_json_to_object(job_json):
-
     return AgentLog(
         id=job_json.get("id"),
         agent_id=job_json.get("agent_id"),
@@ -25,7 +24,6 @@ def agent_log_json_to_object(job_json):
 class AgentLogApi:
     @staticmethod
     def send_log_message(agent_id, log_message, level):
-
         data = dict(agent_id=agent_id, log_message=log_message, level=level)
         return MaestroApiClient.post(
             "/api/agent_log",

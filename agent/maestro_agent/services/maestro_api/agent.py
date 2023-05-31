@@ -22,7 +22,6 @@ class Agent:
 
 
 def agent_json_to_object(job_json):
-
     return Agent(
         id=job_json.get("id"),
         agent_status=job_json.get("agent_status"),
@@ -36,7 +35,6 @@ def agent_json_to_object(job_json):
 class AgentApi:
     @staticmethod
     def create_or_update(data):
-
         return MaestroApiClient.put(
             "/api/agent",
             data=data,

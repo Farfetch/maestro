@@ -10,7 +10,6 @@ class EventStatus(Enum):
 
 
 class EventType(Enum):
-
     START_RUN = "START_RUN"
     STOP_RUN = "STOP_RUN"
 
@@ -40,7 +39,6 @@ class Event:
 
 
 def event_json_to_object(event_json):
-
     return Event(
         id=event_json.get("id"),
         event_status=event_json.get("event_status"),
