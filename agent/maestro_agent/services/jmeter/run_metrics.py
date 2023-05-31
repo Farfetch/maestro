@@ -1,8 +1,9 @@
 from datetime import datetime
 import math
 from queue import Queue
-from threading import Thread
+from threading import Thread, current_thread
 from time import sleep
+import time
 
 from maestro_agent.services.maestro_api.run import RunApi
 from maestro_agent.libs.csv.file_observer import CsvFileObserver
@@ -52,10 +53,10 @@ class RunMetricsProcessor:
         )
 
         threads = [
-            Thread(target=self.processing_worker)
+            Thread(target=self.processing_worker, name="RMP-Worker-%s" % elem)
             for elem in range(self.PROCESSING_WORKERS)
         ]
-        threads.append(Thread(target=self.time_based_processor))
+        threads.append(Thread(target=self.time_based_processor, name="RMP-TimeBased"))
         self.threads = threads
 
         for thread in self.threads:
@@ -122,17 +123,24 @@ class RunMetricsProcessor:
                 for data_chunk in chunks(data, self.BULK_SIZE):
                     self.last_send_date = datetime.now()
                     try:
+                        start_send_metric = time.perf_counter()
                         RunApi.send_metrics(run_id=self.run_id, metrics=data_chunk)
-                        Logger.debug(f"{len(data_chunk)} run metrics sent to API"),
-                        Logger.debug(f"{self.queue.qsize()} queue size"),
+                        time_send_metric = time.perf_counter() - start_send_metric
+                        Logger.debug(
+                            f"{current_thread().name}:: {len(data_chunk)} sent | {self.queue.qsize()} qsize | {time_send_metric * 1000:.2f}ms"
+                        )
+                        RunMetricsDiagnostic.add_metrics_sent(len(data_chunk))
+                        RunMetricsDiagnostic.set_max_queue_size(self.queue.qsize())
+                        RunMetricsDiagnostic.add_send_metrics_latency(time_send_metric)
 
-                    except Exception:
+                    except Exception as e:
+                        Logger.debug(f"Error sending metrics to API: {e}")
                         self.send_metrics_error["count"] += 1
 
                 self.queue.task_done()
             else:
                 # Put worker asleep if there anything to process
-                sleep(0.5)
+                sleep(0.01)
 
     def add_and_send(self, data):
         self.add_data(data)
@@ -160,6 +168,51 @@ class RunMetricsProcessor:
                 self.send_metrics_error["count"] = 0
 
 
+class RunMetricsDiagnostic:
+    TOTAL_METRICS_SENT = 0
+    MAX_QUEUE_SIZE = 0
+    send_metrics_latencies = []
+
+    @staticmethod
+    def reset():
+        RunMetricsDiagnostic.TOTAL_METRICS_SENT = 0
+        RunMetricsDiagnostic.MAX_QUEUE_SIZE = 0
+        RunMetricsDiagnostic.send_metrics_latencies = []
+
+    @staticmethod
+    def add_metrics_sent(count):
+        RunMetricsDiagnostic.TOTAL_METRICS_SENT += count
+
+    @staticmethod
+    def set_max_queue_size(size):
+        RunMetricsDiagnostic.MAX_QUEUE_SIZE = max(
+            size, RunMetricsDiagnostic.MAX_QUEUE_SIZE
+        )
+
+    @staticmethod
+    def add_send_metrics_latency(latency):
+        RunMetricsDiagnostic.send_metrics_latencies.append(latency)
+
+    @staticmethod
+    def _get_average_send_metrics_latency():
+        lenth = len(RunMetricsDiagnostic.send_metrics_latencies)
+        return (
+            sum(RunMetricsDiagnostic.send_metrics_latencies) / lenth if lenth > 0 else 0
+        )
+
+    @staticmethod
+    def log():
+        result = {
+            "total_metrics_sent": RunMetricsDiagnostic.TOTAL_METRICS_SENT,
+            "max_queue_size": RunMetricsDiagnostic.MAX_QUEUE_SIZE,
+            "send_metrics_latency_ms_avg": round(
+                RunMetricsDiagnostic._get_average_send_metrics_latency() * 1000, 2
+            ),
+        }
+
+        Logger.info(f"RunMetricsDiagnostic: {result}")
+
+
 class RunMetricsCsvFileObserver(CsvFileObserver):
     def __init__(
         self,
@@ -170,6 +223,7 @@ class RunMetricsCsvFileObserver(CsvFileObserver):
         super(RunMetricsCsvFileObserver, self).__init__(file_path, stop)
         self.run_id = run_id
         self.processor = RunMetricsProcessor(run_id=run_id)
+        RunMetricsDiagnostic.reset()
 
     def process_line(self, line):
         """
@@ -185,6 +239,9 @@ class RunMetricsCsvFileObserver(CsvFileObserver):
         Logger.debug("Processing metrics file finished")
         self.processor.send_data_to_queue()
 
+        # Wait until all metrics are sent
         while self.processor.queue.empty() is False:
             sleep(1)
+
         self.processor.run_processing_workers = False
+        RunMetricsDiagnostic.log()
