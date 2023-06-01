@@ -14,7 +14,7 @@ wheel = "0.37.1"
 [packages]
 python-dotenv = "0.20.0"
 python_dateutil = "2.8.1"
-requests = "2.27.1"
+requests = "2.31.0"
 
 [requires]
 python_version = "3.9.5"
