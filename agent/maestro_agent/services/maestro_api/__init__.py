@@ -9,9 +9,11 @@ class MaestroApiClient:
         "User-Agent": "maestroagent",
     }
 
+    session = requests.Session()
+
     @staticmethod
     def get(url, data={}, mapper=None):
-        response = requests.get(
+        response = MaestroApiClient.session.get(
             "%s%s" % (MAESTRO_API_HOST, url),
             headers=MaestroApiClient.headers,
             params=data,
@@ -21,7 +23,7 @@ class MaestroApiClient:
 
     @staticmethod
     def put(url, data={}, mapper=None):
-        response = requests.put(
+        response = MaestroApiClient.session.put(
             "%s%s" % (MAESTRO_API_HOST, url),
             headers=MaestroApiClient.headers,
             json=data,
@@ -31,7 +33,7 @@ class MaestroApiClient:
 
     @staticmethod
     def post(url, data={}, mapper=None):
-        response = requests.post(
+        response = MaestroApiClient.session.post(
             "%s%s" % (MAESTRO_API_HOST, url),
             headers=MaestroApiClient.headers,
             json=data,

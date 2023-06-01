@@ -10,6 +10,7 @@ pytest = "7.2.0"
 pytest-cov = "4.0.0"
 pytest_mock = "3.10.0"
 wheel = "0.37.1"
+requests-mock = "1.10.0"
 
 [packages]
 APScheduler = "3.9.1"
@@ -17,6 +18,7 @@ docker = "4.4.3"
 python-dotenv = "0.21.0"
 python_dateutil = "2.8.1"
 requests = "2.28.1"
+iniconfig = "*"
 
 [requires]
 python_version = "3.9.5"

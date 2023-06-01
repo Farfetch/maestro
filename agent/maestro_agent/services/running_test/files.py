@@ -26,7 +26,6 @@ class RunningTestFiles:
         Logger.debug(f"Created test run mount directory {self.mount_dir}")
 
     def clean_up_files(self):
-
         for file in os.listdir(self.mount_dir):
             file_path = os.path.join(self.mount_dir, file)
             Logger.debug(f"Remove {file_path}")

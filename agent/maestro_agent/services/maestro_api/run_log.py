@@ -15,7 +15,6 @@ class RunLog:
 
 class RunLogApi:
     def json_to_object(job_json):
-
         return RunLog(
             id=job_json.get("id"),
             run_id=job_json.get("run_id"),

@@ -11,7 +11,6 @@ from maestro_agent.services.running_test import (
 
 
 class EventHandlerBase:
-
     event = None
     agent = None
     agent_hooks = None
@@ -39,7 +38,6 @@ class EventHandlerBase:
 
 class StartRunEventHandler(EventHandlerBase):
     def event_type_process(self):
-
         self.agent_hooks.preparation_started()
 
         Logger.info("Preparing prerequisites to start a test")

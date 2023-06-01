@@ -28,6 +28,7 @@ class RunningTestThreadsManager:
 
         children_threads = []
         all_threads = []
+        # Starts collect metrics thread
         if MAESTRO_CSV_WRITER_ENABLED is True:
             collect_metrics = ControledThreadInstance(
                 name=RunningTestThreadsManager.COLLECT_METRICS,
@@ -37,6 +38,7 @@ class RunningTestThreadsManager:
             children_threads.append(collect_metrics)
             all_threads.append(collect_metrics)
 
+        # Starts run jmeter container thread
         running_test = ControledThreadInstance(
             name=RunningTestThreadsManager.RUNNING_TEST,
             target=run_jmeter_container_handler,

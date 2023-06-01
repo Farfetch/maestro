@@ -9,7 +9,6 @@ from maestro_agent.services.maestro_api.run_agent import (
 
 class TestRunAgentApi:
     def test_run_json_to_object(self):
-
         run_agent_id = "ra_id_1"
         run_id = "run_id_1"
         agent_id = "agent_id_1"

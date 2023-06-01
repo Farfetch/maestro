@@ -15,7 +15,6 @@ class CustomData:
 
 
 def custom_data_json_to_object(job_json):
-
     return CustomData(
         id=job_json.get("id"),
         title=job_json.get("title"),

@@ -4,7 +4,6 @@ from maestro_agent.services.maestro_api.run_log import RunLogApi, RunLog
 
 class TestRunAgentApi:
     def test_json_to_object(self):
-
         run_log_id = "ra_id_1"
         run_id = "run_id_1"
         agent_id = "agent_id_1"

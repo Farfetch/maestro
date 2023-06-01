@@ -16,21 +16,18 @@ class RunStatus(Enum):
 
 class RunHost:
     def __init__(self, host, ip):
-
         self.host = host
         self.ip = ip
 
 
 class RunCustomProperty:
     def __init__(self, name, value):
-
         self.name = name
         self.value = value
 
 
 class RunLoadProfile:
     def __init__(self, start, end, duration):
-
         self.start = start
         self.end = end
         self.duration = duration
@@ -92,14 +89,12 @@ class RunApi:
 
     @staticmethod
     def get(run_id):
-
         return MaestroApiClient.get(
             "/api/run/%s" % run_id, mapper=RunApi.run_json_to_object
         )
 
     @staticmethod
     def update(run_id, run_status):
-
         return MaestroApiClient.put(
             "/api/run/%s" % run_id,
             data={"run_status": run_status},

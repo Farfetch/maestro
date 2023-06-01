@@ -38,7 +38,6 @@ def create_run(
 
 
 def test_build_properties_dict_witout_custom_properties():
-
     run = create_run()
 
     properties = JmeterProperties(run).properties

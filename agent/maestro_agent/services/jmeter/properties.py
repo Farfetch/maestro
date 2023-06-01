@@ -115,7 +115,6 @@ class JmeterProperties:
         return {"maestro.agent_number": JMETER_PROPERTY_AGENT_NUMBER}
 
     def create_properties_file(self, file):
-
         with open(file, "w") as conf_file:
             for key in self.properties:
                 property_line = "%s=%s" % (key, self.properties[key])

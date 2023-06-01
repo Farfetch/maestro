@@ -12,7 +12,6 @@ class MaestroApiHandler(StreamHandler):
         self.agent_id = agent_id
 
     def emit(self, record):
-
         msg = self.format(record)
         level = record.levelname
 
