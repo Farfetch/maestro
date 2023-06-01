@@ -36,7 +36,6 @@ const RunConfigurationForm = ({
   const [isClone, setIsClone] = useState(false);
   const navigate = useNavigate();
   const [form] = Form.useForm();
-
   const onFinish = async ({
     title,
     labels,
@@ -46,6 +45,7 @@ const RunConfigurationForm = ({
     customData,
     runPlans,
     loadProfile,
+    isLoadProfileEnabled,
     isScheduleEnabled,
     scheduleDays,
     scheduleTime
@@ -71,7 +71,8 @@ const RunConfigurationForm = ({
       customProperties,
       loadProfile,
       isScheduleEnabled,
-      workspaceId: currentWorkspace.id
+      workspaceId: currentWorkspace.id,
+      isLoadProfileEnabled
     };
 
     if (isScheduleEnabled) {
@@ -251,6 +252,7 @@ const RunConfigurationForm = ({
             right={
               <LoadConfigurationFormItem
                 initialLoadProfile={initialValues.loadProfile}
+                initialLoadProfileEnabled={initialValues.isLoadProfileEnabled}
               />
             }
           />
@@ -306,7 +308,8 @@ RunConfigurationForm.defaultProps = {
     loadProfile: [],
     isScheduleEnabled: false,
     scheduleDays: ["Mon", "Tue", "Wed", "Thu", "Fri"],
-    scheduleTime: moment("09:00", "HH:mm")
+    scheduleTime: moment("09:00", "HH:mm"),
+    isLoadProfileEnabled: true
   },
   agents: []
 };

@@ -28,6 +28,7 @@ const CreateTestPage = () => {
       hosts,
       customProperties,
       loadProfile,
+      isLoadProfileEnabled,
       isScheduleEnabled,
       schedule
     } = await fetchRunConfigurationById(runConfigurationIdParam);
@@ -47,6 +48,7 @@ const CreateTestPage = () => {
       hosts,
       customProperties,
       loadProfile,
+      isLoadProfileEnabled,
       runPlans: [
         {
           uid: runPlan.id,

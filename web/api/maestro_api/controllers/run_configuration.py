@@ -33,6 +33,7 @@ class RunConfigurationController:
         hosts = data.get("hosts", [])
         custom_properties = data.get("custom_properties", [])
         load_profile = data.get("load_profile", [])
+        is_load_profile_enabled = data.get("is_load_profile_enabled", True)
         labels = data.get("labels", [])
         is_schedule_enabled = data.get("is_schedule_enabled", False)
         schedule = data.get("schedule", None)
@@ -46,6 +47,7 @@ class RunConfigurationController:
             "custom_data_ids": custom_data_ids,
             "custom_properties": custom_properties,
             "load_profile": load_profile,
+            "is_load_profile_enabled": is_load_profile_enabled,
             "labels": labels,
             "is_schedule_enabled": is_schedule_enabled,
         }
