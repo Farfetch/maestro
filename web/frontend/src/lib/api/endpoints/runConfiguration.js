@@ -11,7 +11,7 @@ const runConfigurationObjectMapper = (runConfiguration) => ({
   runPlanId: runConfiguration.run_plan_id,
   customProperties: runConfiguration.custom_properties,
   loadProfile: runConfiguration.load_profile,
-  isLoadProfileEnabled: runConfiguration.is_loadprofile_enabled,
+  isLoadProfileEnabled: runConfiguration.is_load_profile_enabled,
   isScheduleEnabled: runConfiguration.is_schedule_enabled,
   schedule: runConfiguration.schedule,
   createdAt: toLocalDate(runConfiguration.created_at),
@@ -54,7 +54,7 @@ export const createRunConfiguration = async ({
     custom_data_ids: customDataIds,
     custom_properties: customProperties,
     load_profile: loadProfile,
-    is_loadprofile_enabled: isLoadProfileEnabled,
+    is_load_profile_enabled: isLoadProfileEnabled,
     hosts,
     is_schedule_enabled: isScheduleEnabled,
     ...(schedule ? { schedule } : {})
@@ -106,7 +106,7 @@ export const updateRunConfiguration = async (
       custom_data_ids: customDataIds,
       custom_properties: customProperties,
       load_profile: loadProfile,
-      is_loadprofile_enabled: isLoadProfileEnabled,
+      is_load_profile_enabled: isLoadProfileEnabled,
       hosts,
       is_schedule_enabled: isScheduleEnabled,
       ...(schedule ? { schedule } : {})

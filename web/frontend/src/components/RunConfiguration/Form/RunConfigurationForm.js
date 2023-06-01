@@ -36,7 +36,6 @@ const RunConfigurationForm = ({
   const [isClone, setIsClone] = useState(false);
   const navigate = useNavigate();
   const [form] = Form.useForm();
-
   const onFinish = async ({
     title,
     labels,
@@ -46,10 +45,10 @@ const RunConfigurationForm = ({
     customData,
     runPlans,
     loadProfile,
+    isLoadProfileEnabled,
     isScheduleEnabled,
     scheduleDays,
-    scheduleTime,
-    isLoadProfileEnabled
+    scheduleTime
   }) => {
     const loadingMessageKey = "runConfigurationFormLoading";
 

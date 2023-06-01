@@ -8,7 +8,8 @@ const LoadConfiguration = ({
   initialLoadProfile,
   initialLoadProfileEnabled
 }) => {
-  const [loadConfigurationData, setLoadConfigurationData] = useState([]);
+  const [loadConfigurationData, setLoadConfigurationData] =
+    useState(initialLoadProfile);
   const [isLoadProfileRequired, setIsLoadProfileEnabled] = useState(null);
 
   useEffect(() => {

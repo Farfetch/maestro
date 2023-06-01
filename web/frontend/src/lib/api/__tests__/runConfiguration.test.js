@@ -40,7 +40,7 @@ describe("libs/api/endpoints/runConfiguration", () => {
       end: 20,
       duration: 100
     },
-    is_loadprofile_enabled: true,
+    is_load_profile_enabled: true,
     is_schedule_enabled: true,
     schedule: {
       days: ["Mon", "Tue"],
@@ -60,7 +60,7 @@ describe("libs/api/endpoints/runConfiguration", () => {
     runPlanId: apiResponse.run_plan_id,
     customProperties: apiResponse.custom_properties,
     loadProfile: apiResponse.load_profile,
-    isLoadProfileEnabled: apiResponse.is_loadprofile_enabled,
+    isLoadProfileEnabled: apiResponse.is_load_profile_enabled,
     isScheduleEnabled: apiResponse.is_schedule_enabled,
     schedule: apiResponse.schedule,
     createdAt: toLocalDate(apiResponse.created_at),
@@ -189,7 +189,7 @@ describe("libs/api/endpoints/runConfiguration", () => {
           hosts: dataToUpdate.hosts,
           custom_properties: dataToUpdate.customProperties,
           load_profile: dataToUpdate.loadProfile,
-          is_loadprofile_enabled: dataToUpdate.isLoadProfileEnabled
+          is_load_profile_enabled: dataToUpdate.isLoadProfileEnabled
         })
         .reply(200, apiResponse);
 
