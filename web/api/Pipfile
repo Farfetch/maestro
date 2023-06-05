@@ -14,7 +14,7 @@ pytest_mock = "3.10.0"
 wheel = "0.37.1"
 
 [packages]
-flask = "2.2.1"
+flask = "2.2.5"
 werkzeug = "2.2.2"
 pytz = "2022.5"
 APScheduler = "3.7.0"
