@@ -15,7 +15,7 @@ wheel = "0.37.1"
 
 [packages]
 flask = "2.2.1"
-werkzeug = "2.2.2"
+werkzeug = "2.3.6"
 pytz = "2022.5"
 APScheduler = "3.7.0"
 gunicorn = "20.1.0"
