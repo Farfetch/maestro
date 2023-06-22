@@ -253,6 +253,7 @@ const RunConfigurationForm = ({
               <LoadConfigurationFormItem
                 initialLoadProfile={initialValues.loadProfile}
                 initialLoadProfileEnabled={initialValues.isLoadProfileEnabled}
+                onChange={(loadProfile) => form.setFieldsValue({ loadProfile })}
               />
             }
           />

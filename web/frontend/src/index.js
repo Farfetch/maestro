@@ -7,7 +7,6 @@ import { UserContextProvider } from "./context/User";
 import Router from "./Router";
 
 ReactDOM.render(
-  // <React.StrictMode>
   <UserContextProvider>
     <CurrentWorkspaceContextProvider>
       <RunningContextProvider>
@@ -16,6 +15,5 @@ ReactDOM.render(
     </CurrentWorkspaceContextProvider>
   </UserContextProvider>,
 
-  // </React.StrictMode>,
   document.getElementById("root")
 );

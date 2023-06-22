@@ -32,7 +32,6 @@ const LoadConfigurationForm = ({ onInputChange, onFieldRemove }) => (
                     <Form.Item
                       {...field}
                       name={[field.name, "start"]}
-                      fieldKey={[field.fieldKey, "start"]}
                       rules={[{ required: true, message: "Missing Start RPS" }]}
                       {...formItemLayout}
                     >
@@ -49,7 +48,6 @@ const LoadConfigurationForm = ({ onInputChange, onFieldRemove }) => (
                     <Form.Item
                       {...field}
                       name={[field.name, "end"]}
-                      fieldKey={[field.fieldKey, "end"]}
                       rules={[{ required: true, message: "Missing End RPS" }]}
                       {...formItemLayout}
                     >
@@ -64,7 +62,6 @@ const LoadConfigurationForm = ({ onInputChange, onFieldRemove }) => (
                     <Form.Item
                       {...field}
                       name={[field.name, "duration"]}
-                      fieldKey={[field.fieldKey, "duration"]}
                       rules={[{ required: true, message: "Missing Duration" }]}
                       {...formItemLayout}
                     >
