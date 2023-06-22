@@ -8,7 +8,7 @@ export const RunningContext = createContext(null);
 
 export const RunningContextProvider = ({ children }) => {
   const [runs, setRuns] = useState(null);
-  const [currentlyRunnig, setCurrentRuns] = useState(null);
+  const [currentlyRunning, setCurrentRuns] = useState(null);
   const [isIntervalLoading, setIsIntervalLoading] = useState(false);
   const { currentWorkspace } = useContext(CurrentWorkspaceContext);
 
@@ -47,12 +47,12 @@ export const RunningContextProvider = ({ children }) => {
 
   useEffect(() => {
     const link = document.querySelector("link[rel~='icon']");
-    if (currentlyRunnig && currentlyRunnig.length > 0) {
+    if (currentlyRunning && currentlyRunnig.length > 0) {
       link.href = "/runningTests.ico";
     } else {
       link.href = "/favicon.ico";
     }
-  }, [currentlyRunnig]);
+  }, [currentlyRunning]);
 
   return (
     <RunningContext.Provider value={{ runs }}>
