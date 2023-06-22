@@ -47,7 +47,7 @@ export const RunningContextProvider = ({ children }) => {
 
   useEffect(() => {
     const link = document.querySelector("link[rel~='icon']");
-    if (currentlyRunning && currentlyRunnig.length > 0) {
+    if (currentlyRunning && currentlyRunning.length > 0) {
       link.href = "/runningTests.ico";
     } else {
       link.href = "/favicon.ico";
