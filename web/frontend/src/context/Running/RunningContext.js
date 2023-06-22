@@ -1,13 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 import { fetchRuns } from "../../lib/api/endpoints/run";
-import { runStatus } from "../../lib/api/models";
+import { runStatus as runStatusModel } from "../../lib/api/models";
 import { CurrentWorkspaceContext } from "../CurrentWorkspace";
 
 export const RunningContext = createContext(null);
 
 export const RunningContextProvider = ({ children }) => {
   const [runs, setRuns] = useState(null);
+  const [currentlyRunning, setCurrentRuns] = useState(null);
+  const [isIntervalLoading, setIsIntervalLoading] = useState(false);
   const { currentWorkspace } = useContext(CurrentWorkspaceContext);
 
   const updateRunsInterval = 3000;
@@ -15,16 +17,28 @@ export const RunningContextProvider = ({ children }) => {
   // Monitors runsStatus to give real-time montoring about runsning test
   useEffect(() => {
     const updateRunsData = async () => {
-      const runsData = await fetchRuns({
-        workspaceId: currentWorkspace.id,
-        run_status: runStatus.RUNNING
-      });
+      setIsIntervalLoading(true);
+      const availableRunStatuses = [
+        runStatusModel.CREATING,
+        runStatusModel.PENDING,
+        runStatusModel.RUNNING
+      ];
 
-      setRuns(runsData);
+      const runsData = await fetchRuns({ workspaceId: currentWorkspace.id });
+      const availableRuns = runsData.filter((run) =>
+        availableRunStatuses.includes(run.runStatus)
+      );
+      const currentRunningRuns = runsData.filter(
+        (run) => run.runStatus === runStatusModel.RUNNING
+      );
+
+      setRuns(availableRuns);
+      setCurrentRuns(currentRunningRuns);
+      setIsIntervalLoading(false);
     };
 
     const interval = setInterval(() => {
-      updateRunsData();
+      if (!isIntervalLoading) updateRunsData();
     }, updateRunsInterval);
 
     return () => clearInterval(interval);
@@ -33,12 +47,12 @@ export const RunningContextProvider = ({ children }) => {
 
   useEffect(() => {
     const link = document.querySelector("link[rel~='icon']");
-    if (runs && runs.length > 0) {
+    if (currentlyRunning && currentlyRunning.length > 0) {
       link.href = "/runningTests.ico";
     } else {
       link.href = "/favicon.ico";
     }
-  }, [runs]);
+  }, [currentlyRunning]);
 
   return (
     <RunningContext.Provider value={{ runs }}>
