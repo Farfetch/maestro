@@ -70,10 +70,11 @@ class JmeterProperties:
         if self.run.load_profile:
 
             def value_per_agent(value):
-                return int(value / agents_count)
+                start_rps = int(value / agents_count)
+                return 1 if start_rps < 1 else start_rps
 
             lines_list = [
-                "line(%s, %s, %ss)"
+                "line(%s,%s,%ss)"
                 % (
                     value_per_agent(step.start),
                     value_per_agent(step.end),
