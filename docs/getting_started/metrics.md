@@ -15,11 +15,11 @@ It's mandatory to insert the listener to visualize the live metrics on Maestro G
 
 Add the listener [Simple Data Writer](https://jmeter.apache.org/usermanual/component_reference.html#Simple_Data_Writer) in your Jmeter script with the defaults configurations and set the filename parameter as `${__P(maestro.run.metrics_file)}`.
 
-By default Jmeter container (created by the Maestro Agent) mounts a directory and bind it with the Virtual Machine, allowing to access the file on the path `/mnt/maestroagent/{test_id}/run_metrics.csv` inside the virtual machine.
+By default Jmeter container (created by the Maestro Agent) mounts a directory and binds it with the Virtual Machine, allowing to access the file on the path `/mnt/maestroagent/{test_id}/run_metrics.csv` inside the virtual machine.
 
 ### Downloading the metrics
 
-When the test finish, Maestro allows you download the metrics samples exporting a CSV file, with the same format as `.jtl` file.
+When the test finish, Maestro allows you to download the metrics samples by exporting a CSV file, with the same format as `.jtl` file.
 
 File example:
 
@@ -53,3 +53,22 @@ Before explaining the process, it is important to highlight the three main compo
 The process starts with the initiation of the tests. The Maestro Agent creates a new JMeter container that is responsible for running the test. The JMeter script is configured with the 'Simple Data Writer', which generates the 'run_metrics.csv' file within the container. The JMeter container is bound to the directory `/mnt/maestroagent/` of the host.
 
 The Maestro Agent includes a job that starts when the tests begin. This job reads the metrics file `run_metrics.csv` and sends the metrics data through HTTP requests to the Maestro API. The API then processes the received metrics, saving them in both aggregated and individual line formats.
+
+### Troubleshooting
+
+#### Delay in real-time metrics
+
+If you start having delay in real-time visualization, check the Maestro Agent log:
+```bash
+maestro_agent 2023-06-28 14:36:56,876 INFO run_metrics.log:213 - RunMetricsDiagnostic: {'total_metrics_sent': 35467, 'max_queue_size': 0, 'send_metrics_latency_ms_avg': 337.28}
+```
+* Maximum queue size - means the queue of metrics is increasing and there is no enough workers to process it;
+* The average latency high could means the number of metrics on each request it big, adjust it changing the parameter: `MAESTRO_METRICS_PROCESSING_BULK_SIZE`.
+
+Consider fine-tuning the parameters:
+* `MAESTRO_METRICS_PROCESSING_WORKERS` - Configure it based on the numbers of CPU cores.  but consider starting by (number of CPU - 1);
+* `MAESTRO_METRICS_PROCESSING_BULK_SIZE` - Number of JMeter metrics in each request to API, considerer starting by 750, increasing this number can results in impacts on the time taken to the API to process all the metrics;
+
+:::info
+Run tests to identify the best configuration based on the machine resources.
+:::
