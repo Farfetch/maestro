@@ -12,11 +12,11 @@ class ControledThreadInstance:
         self.children_threads = children_threads
 
         def failed(error):
-            Logger.error(f"Thread {self.thread.getName()} failed. Error: {error}")
+            Logger.error(f"Thread {self.thread.name} failed. Error: {error}")
             self.finish()
 
         def finished(msg):
-            Logger.debug(f"Thread {self.thread.getName()} finished. Msg: {msg}")
+            Logger.debug(f"Thread {self.thread.name} finished. Msg: {msg}")
             self.finish()
 
         def finish():
@@ -29,7 +29,7 @@ class ControledThreadInstance:
         )
 
     def start(self):
-        Logger.debug(f"Starting {self.thread.getName()} thread..")
+        Logger.debug(f"Starting {self.thread.name} thread..")
         self.thread.start()
 
     def is_alive(self):
@@ -37,7 +37,7 @@ class ControledThreadInstance:
 
     def finish(self):
         if self.is_alive():
-            Logger.debug(f"Finishing {self.thread.getName()} thread..")
+            Logger.debug(f"Finishing {self.thread.name} thread..")
             self._exit = True
             self._finish_children_threads()
 
