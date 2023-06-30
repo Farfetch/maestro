@@ -6,7 +6,6 @@ sidebar_position: 4
 
 The Jmeter listener [Simple Data Writer](https://jmeter.apache.org/usermanual/component_reference.html#Simple_Data_Writer) is responsible to generate the metrics. These metrics are then read by the Maestro Agent, which is responsible for sending them to the Maestro API using the HTTP protocol. Once the data is available, Maestro will present real-time results through nice graphs for the collected metrics.
 
-
 :::info
 It's mandatory to insert the listener to visualize the live metrics on Maestro GUI charts.
 :::
@@ -37,7 +36,6 @@ The metrics can be also accessed through the API: `/api/run_metrics/{run_id}`.
 
 Use the [Swagger template file](https://github.com/Farfetch/maestro/blob/master/web/api/maestro_api/swagger/template.yml) to see the documentation about how to get the metrics.
 
-
 ### Metrics processor explanation
 
 ![Metrics Flow](../assets/getting_started/metrics_flow.svg)
@@ -59,15 +57,18 @@ The Maestro Agent includes a job that starts when the tests begin. This job read
 #### Delay in real-time metrics
 
 If you start having delay in real-time visualization, check the Maestro Agent log:
+
 ```bash
 maestro_agent 2023-06-28 14:36:56,876 INFO run_metrics.log:213 - RunMetricsDiagnostic: {'total_metrics_sent': 35467, 'max_queue_size': 0, 'send_metrics_latency_ms_avg': 337.28}
 ```
-* Maximum queue size - means the queue of metrics is increasing and there is no enough workers to process it;
-* The average latency high could means the number of metrics on each request it big, adjust it changing the parameter: `MAESTRO_METRICS_PROCESSING_BULK_SIZE`.
+
+- Maximum queue size - means the queue of metrics is increasing and there is no enough workers to process it;
+- The average latency high could means the number of metrics on each request it big, adjust it changing the parameter: `MAESTRO_METRICS_PROCESSING_BULK_SIZE`.
 
 Consider fine-tuning the parameters:
-* `MAESTRO_METRICS_PROCESSING_WORKERS` - Configure it based on the numbers of CPU cores.  but consider starting by (number of CPU - 1);
-* `MAESTRO_METRICS_PROCESSING_BULK_SIZE` - Number of JMeter metrics in each request to API, considerer starting by 750, increasing this number can results in impacts on the time taken to the API to process all the metrics;
+
+- `MAESTRO_METRICS_PROCESSING_WORKERS` - Configure it based on the numbers of CPU cores. but consider starting by (number of CPU - 1);
+- `MAESTRO_METRICS_PROCESSING_BULK_SIZE` - Number of JMeter metrics in each request to API, considerer starting by 750, increasing this number can results in impacts on the time taken to the API to process all the metrics;
 
 :::info
 Run tests to identify the best configuration based on the machine resources.
