@@ -67,8 +67,8 @@ maestro_agent 2023-06-28 14:36:56,876 INFO run_metrics.log:213 - RunMetricsDiagn
 
 Consider fine-tuning the parameters:
 
-- `MAESTRO_METRICS_PROCESSING_WORKERS` - Configure it based on the numbers of CPU cores. but consider starting by (number of CPU - 1);
-- `MAESTRO_METRICS_PROCESSING_BULK_SIZE` - Number of JMeter metrics in each request to API, consider starting by 750, increasing this number can results in impacts on the time taken to the API to process all the metrics;
+- `MAESTRO_METRICS_PROCESSING_WORKERS` - Configure it based on the number of CPU cores. but consider starting by (number of CPU - 1);
+- `MAESTRO_METRICS_PROCESSING_BULK_SIZE` - Number of JMeter metrics in each request to API, consider starting by 750, increasing this number can result in impacts on the time taken to the API to process all the metrics;
 
 :::info
 Run tests to identify the best configuration based on the machine resources.
