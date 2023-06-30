@@ -10,6 +10,7 @@ import { CurrentWorkspaceContext } from "../../../context/CurrentWorkspace";
 import { createRun, startRun } from "../../../lib/api/endpoints/run";
 import { colors } from "../../../lib/colors";
 import { toUtcHourMinute } from "../../../lib/date";
+import { RunConfigurationDownloadUrl } from "../../../lib/routes";
 import AvailableAgentsFormItem from "./FormItems/AvailableAgents";
 import CustomDataFormItem from "./FormItems/CustomData";
 import LoadConfigurationFormItem from "./FormItems/LoadConfiguration";
@@ -290,6 +291,15 @@ const RunConfigurationForm = ({
               onClick={() => form.submit()}
             >
               Save
+            </Button>
+          </Col>
+          <Col>
+            <Button
+              type="link"
+              href={RunConfigurationDownloadUrl(runConfigurationId)}
+              size="large"
+            >
+              Export
             </Button>
           </Col>
         </Row>

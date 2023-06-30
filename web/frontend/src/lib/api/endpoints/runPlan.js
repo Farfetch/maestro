@@ -46,9 +46,30 @@ export const createRunPlan = async ({ title, runPlan }) => {
     }
   };
 
-  const res = await maestroClient.post(`/api/run_plan`, formData, config);
+  const res = await maestroClient.post(
+    `/api/run_plan_from_file`,
+    formData,
+    config
+  );
 
   const runPlanObject = runPlanObjectMapper(res.data);
 
+  return runPlanObject;
+};
+
+export const createRunPlanBase64 = async ({
+  title,
+  runPlanContentType,
+  runPlanFileBase64
+}) => {
+  const res = await maestroClient.post(`/api/run_plan_from_base64`, {
+    title,
+    run_plan_file_content_type: runPlanContentType,
+    run_plan_file_base64: runPlanFileBase64
+  });
+
+  const runPlanObject = runPlanObjectMapper(res.data);
+  // eslint-disable-next-line no-console
+  console.log(runPlanObject);
   return runPlanObject;
 };

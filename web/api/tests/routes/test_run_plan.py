@@ -1,3 +1,4 @@
+import base64
 import json
 import io
 
@@ -29,7 +30,7 @@ def test_create_run_plan_item(client):
     data = {"run_plan_file": run_plan_file, "title": title}
 
     response = client.post(
-        "/run_plan",
+        "/run_plan_from_file",
         data=data,
         content_type="multipart/form-data",
     )
@@ -38,6 +39,34 @@ def test_create_run_plan_item(client):
 
     res_json = json.loads(response.data)
 
+    assert expected_run_plan.items() <= res_json.items()
+
+
+def test_create_run_plan_item_with_base64_data(client):
+    title = "Example title"
+    run_plan_file_base64 = base64.b64encode((b"abcdef")).decode("utf-8")
+    run_plan_content_type = "application/octet-stream"
+    request_data = {
+        "title": title,
+        "run_plan_file_base64": run_plan_file_base64,
+        "run_plan_file_content_type": run_plan_content_type,
+    }
+
+    response = client.post(
+        "/run_plan_from_base64",
+        data=json.dumps(request_data),
+        content_type="application/json",
+    )
+
+    expected_run_plan = {"title": title}
+
+    res_json = json.loads(response.data)
+
+    assert response.status_code == 200
+    assert "id" in res_json
+    assert res_json["title"] == title
+    assert "created_at" in res_json
+    assert "updated_at" in res_json
     assert expected_run_plan.items() <= res_json.items()
 
 

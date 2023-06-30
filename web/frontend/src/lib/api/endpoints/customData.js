@@ -29,9 +29,10 @@ export const fetchCustomDataById = async (customDataId) => {
  * @param {String} name custom data file name
  * @param {file} customData custom data file object
  */
-export const createCustomData = async ({ customData }) => {
+export const createCustomData = async ({ name, customData }) => {
   const formData = new FormData();
   formData.append("custom_data_file", customData);
+  formData.append("custom_data_name", name);
 
   const config = {
     headers: {
@@ -39,9 +40,31 @@ export const createCustomData = async ({ customData }) => {
     }
   };
 
-  const res = await maestroClient.post(`/api/custom_data`, formData, config);
+  const res = await maestroClient.post(
+    `/api/custom_data_from_file`,
+    formData,
+    config
+  );
 
-  const runPlanObject = customDataObjectMapper(res.data);
+  const customDataObject = customDataObjectMapper(res.data);
+  // eslint-disable-next-line no-console
+  console.log(customDataObject);
+  return customDataObject;
+};
 
-  return runPlanObject;
+export const createCustomData64 = async ({
+  name,
+  customDataContentType,
+  customDataFileBase64
+}) => {
+  const res = await maestroClient.post(`/api/custom_data_from_base64`, {
+    name,
+    custom_data_file_content_type: customDataContentType,
+    custom_data_file_base64: customDataFileBase64
+  });
+
+  const customDataObject = customDataObjectMapper(res.data);
+  // eslint-disable-next-line no-console
+  console.log(customDataObject);
+  return customDataObject;
 };

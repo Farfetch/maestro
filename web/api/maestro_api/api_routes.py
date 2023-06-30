@@ -22,11 +22,13 @@ from maestro_api.validation_schemas import (
     run_metric_all_schema,
     run_agent_update_schema,
     run_agent_all_schema,
+    run_plan_create_schema,
     run_plan_download_schema,
     agent_create_schema,
     agent_update_schema,
     agent_log_create_schema,
     agent_log_list_schema,
+    custom_data_create_schema,
     event_update_schema,
     event_list_schema,
     user_create_or_update_schema,
@@ -118,6 +120,13 @@ def init_api_routes(flask_app):
     def run_configuration_delete_one(*args, **kwargs):
         return run_configuration_controller.delete_one(*args, **kwargs)
 
+    @flask_app.route(
+        "/run_configuration/<run_configuration_id>/download", methods=["GET"]
+    )
+    @requires_auth()
+    def run_configuration_download(*args, **kwargs):
+        return run_configuration_controller.download(*args, **kwargs)
+
     @flask_app.route("/run_configuration", methods=["POST"])
     @requires_auth()
     @validate_request(run_configuration_create_schema)
@@ -141,10 +150,16 @@ def init_api_routes(flask_app):
     def run_plan_get_one(*args, **kwargs):
         return run_plan_controller.get_one(*args, **kwargs)
 
-    @flask_app.route("/run_plan", methods=["POST"])
+    @flask_app.route("/run_plan_from_file", methods=["POST"])
     @requires_auth()
-    def run_plan_create_one(*args, **kwargs):
-        return run_plan_controller.create_one(*args, **kwargs)
+    def run_plan_create_one_from_file(*args, **kwargs):
+        return run_plan_controller.create_one_from_file(*args, **kwargs)
+
+    @flask_app.route("/run_plan_from_base64", methods=["POST"])
+    @requires_auth()
+    @validate_request(run_plan_create_schema)
+    def run_plan_create_one_from_base64(*args, **kwargs):
+        return run_plan_controller.create_one_from_base64(*args, **kwargs)
 
     @flask_app.route("/run_plan/<run_plan_id>/download", methods=["GET"])
     @requires_auth()
@@ -242,10 +257,16 @@ def init_api_routes(flask_app):
     def custom_data_get_one(*args, **kwargs):
         return custom_data_controller.get_one(*args, **kwargs)
 
-    @flask_app.route("/custom_data", methods=["POST"])
+    @flask_app.route("/custom_data_from_file", methods=["POST"])
     @requires_auth()
-    def custom_data_create_one(*args, **kwargs):
-        return custom_data_controller.create_one(*args, **kwargs)
+    def custom_data_create_one_from_file(*args, **kwargs):
+        return custom_data_controller.create_one_from_file(*args, **kwargs)
+
+    @flask_app.route("/custom_data_from_base64", methods=["POST"])
+    @requires_auth()
+    @validate_request(custom_data_create_schema)
+    def custom_data_create_one_from_base64(*args, **kwargs):
+        return custom_data_controller.create_one_from_base64(*args, **kwargs)
 
     @flask_app.route("/custom_data/<custom_data_id>/download", methods=["GET"])
     @requires_auth()

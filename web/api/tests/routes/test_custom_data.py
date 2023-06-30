@@ -1,3 +1,4 @@
+import base64
 import json
 import io
 
@@ -21,7 +22,7 @@ def test_list_custom_data(client):
     assert expected_custom_data.items() <= res_json[0].items()
 
 
-def test_create_custom_data_item(client):
+def test_create_custom_data_item_from_file(client):
 
     filename = "Example name"
     custom_data_file = (io.BytesIO(b"abcdef"), filename)
@@ -29,7 +30,7 @@ def test_create_custom_data_item(client):
     data = {"custom_data_file": custom_data_file}
 
     response = client.post(
-        "/custom_data",
+        "/custom_data_from_file",
         data=data,
         content_type="multipart/form-data",
     )
@@ -41,11 +42,40 @@ def test_create_custom_data_item(client):
     assert expected_custom_data.items() <= res_json.items()
 
 
+def test_create_custom_data_item_from_base64(client):
+
+    name = "Example title"
+    custom_data_file_base64 = base64.b64encode((b"abcdef")).decode("utf-8")
+    custom_data_content_type = "text/csv"
+    request_data = {
+        "name": name,
+        "custom_data_file_base64": custom_data_file_base64,
+        "custom_data_file_content_type": custom_data_content_type,
+    }
+
+    response = client.post(
+        "/custom_data_from_base64",
+        data=json.dumps(request_data),
+        content_type="application/json",
+    )
+
+    expected_run_plan = {"name": name}
+
+    res_json = json.loads(response.data)
+
+    assert response.status_code == 200
+    assert "id" in res_json
+    assert "name" in res_json and res_json["name"] == name
+    assert "created_at" in res_json
+    assert "updated_at" in res_json
+    assert expected_run_plan.items() <= res_json.items()
+
+
 def test_create_custom_data_item_with_bad_request(client):
     data = {}
 
     response = client.post(
-        "/custom_data",
+        "/custom_data_from_file",
         data=data,
         content_type="multipart/form-data",
     )
