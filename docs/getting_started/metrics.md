@@ -63,7 +63,7 @@ maestro_agent 2023-06-28 14:36:56,876 INFO run_metrics.log:213 - RunMetricsDiagn
 ```
 
 - Maximum queue size - means the queue of metrics is increasing and there is no enough workers to process it;
-- The average latency high could means the number of metrics on each request it big, adjust it changing the parameter: `MAESTRO_METRICS_PROCESSING_BULK_SIZE`.
+- The average latency high could means the number of metrics on each request is big, adjust it changing the parameter: `MAESTRO_METRICS_PROCESSING_BULK_SIZE`.
 
 Consider fine-tuning the parameters:
 
