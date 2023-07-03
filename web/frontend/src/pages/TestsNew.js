@@ -1,4 +1,5 @@
 /* eslint-disable max-statements */
+import { UploadOutlined } from "@ant-design/icons";
 import { Button, Col, Row, Typography } from "antd";
 import React, { useContext, useEffect, useRef, useState } from "react";
 
@@ -130,6 +131,7 @@ const TestsNewPage = () => {
             type="primary"
             size="large"
             style={{ marginRight: "10px" }}
+            icon={<UploadOutlined />}
             onClick={() => fileInputRef.current.click()}
           >
             Import

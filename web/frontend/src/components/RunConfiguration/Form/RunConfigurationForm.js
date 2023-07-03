@@ -1,5 +1,6 @@
 /* eslint-disable max-statements */
 /* eslint-disable max-lines */
+import { DownloadOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Form, message, Row, Typography } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
@@ -259,48 +260,56 @@ const RunConfigurationForm = ({
             }
           />
         </Row>
-        <Row justify="end" gutter={[8, 8]} style={{ marginTop: "20px" }}>
-          <Col>
-            <Button
-              type="link"
-              size="large"
-              key="submit"
-              onClick={() => startTest()}
-            >
-              Start
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              type="dashed"
-              size="large"
-              key="submit"
-              onClick={() => {
-                setIsClone(true);
-                form.submit();
-              }}
-            >
-              Clone
-            </Button>
-          </Col>
+        <Row
+          justify="space-between"
+          align="middle"
+          gutter={[8, 8]}
+          style={{ marginTop: "20px" }}
+        >
           <Col>
             <Button
               type="primary"
-              size="large"
-              key="submit"
-              onClick={() => form.submit()}
-            >
-              Save
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              type="link"
+              icon={<DownloadOutlined />}
               href={RunConfigurationDownloadUrl(runConfigurationId)}
               size="large"
             >
               Export
             </Button>
+          </Col>
+          <Col>
+            <div style={{ display: "flex" }}>
+              <Button
+                type="link"
+                size="large"
+                key="submit"
+                onClick={() => startTest()}
+              >
+                Start
+              </Button>
+              <div style={{ marginLeft: "8px" }}>
+                <Button
+                  type="dashed"
+                  size="large"
+                  key="submit"
+                  onClick={() => {
+                    setIsClone(true);
+                    form.submit();
+                  }}
+                >
+                  Clone
+                </Button>
+              </div>
+              <div style={{ marginLeft: "8px" }}>
+                <Button
+                  type="primary"
+                  size="large"
+                  key="submit"
+                  onClick={() => form.submit()}
+                >
+                  Save
+                </Button>
+              </div>
+            </div>
           </Col>
         </Row>
       </Form>
