@@ -13,6 +13,7 @@ import WaitingForMetricsResult from "./WaitingForMetricsResult";
 const RunningTestAnalytics = ({
   run,
   loadProfile = [],
+  isLoadProfileEnabled,
   isRunMetricsAvailable,
   setIsRunMetricsAvailable
 }) => {
@@ -123,6 +124,7 @@ const RunningTestAnalytics = ({
           run={run}
           metrics={runMetrics}
           loadProfile={loadProfile}
+          isLoadProfileEnabled={isLoadProfileEnabled}
         />
       </Col>
       <Col span={24}>
