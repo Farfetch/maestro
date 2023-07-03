@@ -34,7 +34,7 @@ class RunRepository:
             load_profile=load_profile,
             hosts=hosts,
             custom_properties=custom_properties,
-            is_load_profile_enabled=run_configuration.is_load_profile_enabled
+            is_load_profile_enabled=run_configuration.is_load_profile_enabled,
         ).save()
 
         agent_ids = run_configuration.agent_ids
