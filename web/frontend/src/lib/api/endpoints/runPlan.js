@@ -69,7 +69,5 @@ export const createRunPlanBase64 = async ({
   });
 
   const runPlanObject = runPlanObjectMapper(res.data);
-  // eslint-disable-next-line no-console
-  console.log(runPlanObject);
   return runPlanObject;
 };

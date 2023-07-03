@@ -47,8 +47,6 @@ export const createCustomData = async ({ name, customData }) => {
   );
 
   const customDataObject = customDataObjectMapper(res.data);
-  // eslint-disable-next-line no-console
-  console.log(customDataObject);
   return customDataObject;
 };
 
@@ -64,7 +62,5 @@ export const createCustomData64 = async ({
   });
 
   const customDataObject = customDataObjectMapper(res.data);
-  // eslint-disable-next-line no-console
-  console.log(customDataObject);
   return customDataObject;
 };

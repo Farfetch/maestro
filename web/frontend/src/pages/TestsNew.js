@@ -106,11 +106,6 @@ const TestsNewPage = () => {
     updateAgentsList();
   }, []);
 
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(testFormInitialValues);
-  }, [testFormInitialValues]);
-
   return (
     <>
       {isLoading ? (
