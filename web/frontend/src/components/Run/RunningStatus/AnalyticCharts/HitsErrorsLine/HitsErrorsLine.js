@@ -11,7 +11,12 @@ import { defaultChartOptions } from "../../../../../lib/charts/defaultOptions";
 
 const { Title } = Typography;
 
-const HitsErrorsLine = ({ run, metrics, loadProfile }) => {
+const HitsErrorsLine = ({
+  run,
+  metrics,
+  loadProfile,
+  isLoadProfileEnabled
+}) => {
   const { startedAt } = run;
   const finishedAt = maxBy(metrics, "maxDatetime")?.maxDatetime;
 
@@ -19,11 +24,14 @@ const HitsErrorsLine = ({ run, metrics, loadProfile }) => {
     ...defaultChartOptions(startedAt, finishedAt)
   };
 
-  const buildChartData = (dataToRender, loadProfileToRender) => {
-    const loadProfileTimeframe = loadProfileToTimeframe(
-      startedAt,
-      loadProfileToRender
-    );
+  const buildChartData = (
+    dataToRender,
+    loadProfileToRender,
+    loadProfileEnabled
+  ) => {
+    const loadProfileTimeframe = loadProfileEnabled
+      ? loadProfileToTimeframe(startedAt, loadProfileToRender)
+      : loadProfileToTimeframe(startedAt, []);
 
     return {
       datasets: [
@@ -69,7 +77,10 @@ const HitsErrorsLine = ({ run, metrics, loadProfile }) => {
   return (
     <>
       <Title level={5}>Hits vs Errors</Title>
-      <Line data={buildChartData(metrics, loadProfile)} options={options} />
+      <Line
+        data={buildChartData(metrics, loadProfile, isLoadProfileEnabled)}
+        options={options}
+      />
     </>
   );
 };

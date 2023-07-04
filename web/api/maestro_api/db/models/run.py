@@ -1,4 +1,5 @@
 from mongoengine import (
+    BooleanField,
     IntField,
     StringField,
     ObjectIdField,
@@ -58,6 +59,7 @@ class Run(CreatedUpdatedDocumentMixin):
         field=EmbeddedDocumentField(RunCustomProperty), default=[]
     )
     load_profile = ListField(field=EmbeddedDocumentField(RunLoadProfile), default=[])
+    is_load_profile_enabled = BooleanField(default=True)
     notes = StringField(required=True, default="")
     labels = ListField(field=StringField(), default=[])
 
@@ -114,6 +116,7 @@ class Run(CreatedUpdatedDocumentMixin):
                 }
                 for load_step in self.load_profile
             ],
+            "is_load_profile_enabled": self.is_load_profile_enabled,
             "notes": self.notes,
             "labels": self.labels,
             "started_at": strftime(self.started_at),
