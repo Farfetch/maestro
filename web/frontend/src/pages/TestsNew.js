@@ -112,6 +112,7 @@ const TestsNewPage = () => {
       {data ? (
         <Col span={24}>
           <RunConfigurationForm
+            handleFileSelection={handleFileSelection}
             key={JSON.stringify(testFormInitialValues)}
             initialValues={testFormInitialValues}
             agents={agents}

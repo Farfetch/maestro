@@ -162,18 +162,20 @@ const RunConfigurationForm = ({
           <Title level={2}>Test Configuration</Title>
           <Col>
             <div style={{ display: "flex" }}>
-              <Button
-                type="dashed"
-                size="large"
-                key="submit"
-                icon={<CopyOutlined />}
-                onClick={() => {
-                  setIsClone(true);
-                  form.submit();
-                }}
-              >
-                Clone
-              </Button>
+              <div hidden={!runConfigurationId}>
+                <Button
+                  type="dashed"
+                  size="large"
+                  key="submit"
+                  icon={<CopyOutlined />}
+                  onClick={() => {
+                    setIsClone(true);
+                    form.submit();
+                  }}
+                >
+                  Clone
+                </Button>
+              </div>
               <div hidden={!runConfigurationId} style={{ marginLeft: "8px" }}>
                 <Button
                   icon={<DownloadOutlined />}
