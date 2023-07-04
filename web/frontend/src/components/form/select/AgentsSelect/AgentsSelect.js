@@ -11,12 +11,12 @@ const AgentsSelect = ({ value, agents, mode, onChange }) => (
   <Select
     mode={mode}
     allowClear
-    showSearch // Enable search functionality
+    showSearch
     filterOption={(input, option) => {
       const optionText = option.children.props.text.toLowerCase();
       const inputValue = input.toLowerCase();
       return optionText.includes(inputValue);
-    }} // Filter options based on input
+    }}
     optionFilterProp="children.props.text"
     style={{ width: "100%" }}
     placeholder="Select Agent from the list"
