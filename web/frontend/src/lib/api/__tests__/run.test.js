@@ -62,6 +62,7 @@ describe("libs/api/endpoints/run", () => {
     runConfigurationId: apiResponse.run_configuration_id,
     runStatus: apiResponse.run_status,
     loadProfile: apiResponse.load_profile,
+    isLoadProfileEnabled: apiResponse.is_load_profile_enabled,
     customProperties: apiResponse.custom_properties,
     notes: apiResponse.notes,
     createdAt: toLocalDate(apiResponse.created_at),

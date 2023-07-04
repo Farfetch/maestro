@@ -114,7 +114,7 @@ const LoadConfiguration = ({
           </Form.Item>
           <span>Enable Load Profiler</span>
         </Space>
-        <Row>
+        <Row hidden={!loadConfigurationData.isLoadProfileRequired}>
           <ClearButton handleClear={handleClear} />
           <PasteButton handlePaste={handlePaste} />
         </Row>

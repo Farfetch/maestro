@@ -12,6 +12,7 @@ const runObjectMapper = (run) => ({
   runConfigurationId: run.run_configuration_id,
   customProperties: run.custom_properties,
   loadProfile: run.load_profile,
+  isLoadProfileEnabled: run.is_load_profile_enabled,
   notes: run.notes,
   labels: run.labels,
   createdAt: toLocalDate(run.created_at),

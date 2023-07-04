@@ -145,6 +145,7 @@ const RunRunningStatus = ({ run }) => {
               <RunAnalyticCharts
                 run={run}
                 loadProfile={run.loadProfile}
+                isLoadProfileEnabled={run.isLoadProfileEnabled}
                 isRunMetricsAvailable={isRunMetricsAvailable}
                 setIsRunMetricsAvailable={setIsRunMetricsAvailable}
               />
