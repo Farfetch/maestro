@@ -11,13 +11,20 @@ const AgentsSelect = ({ value, agents, mode, onChange }) => (
   <Select
     mode={mode}
     allowClear
+    showSearch // Enable search functionality
+    filterOption={(input, option) => {
+      const optionText = option.children.props.text.toLowerCase();
+      const inputValue = input.toLowerCase();
+      return optionText.includes(inputValue);
+    }} // Filter options based on input
+    optionFilterProp="children.props.text"
     style={{ width: "100%" }}
     placeholder="Select Agent from the list"
     onChange={onChange}
     value={value}
   >
     {orderBy(agents, "hostname", "asc").map((agent) => (
-      <Option key={agent.id}>
+      <Option key={agent.id} value={agent.id}>
         <AgentStatusBadge
           agentStatus={agent.agentStatus}
           text={agent.hostname}
