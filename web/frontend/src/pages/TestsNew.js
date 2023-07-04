@@ -1,7 +1,6 @@
 /* eslint-disable max-statements */
-import { UploadOutlined } from "@ant-design/icons";
-import { Button, Col, Row, Typography } from "antd";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { Col, Row } from "antd";
+import React, { useContext, useEffect, useState } from "react";
 
 import PageSpinner from "../components/layout/PageSpinner";
 import RunConfigurationForm from "../components/RunConfiguration/Form";
@@ -13,15 +12,12 @@ import { CurrentWorkspaceContext } from "../context/CurrentWorkspace";
 import { fetchAgents } from "../lib/api/endpoints/agent";
 import { customDataDownloadUrl, runPlanDownloadUrl } from "../lib/routes";
 
-const { Title } = Typography;
-
 const TestsNewPage = () => {
   const { currentWorkspace } = useContext(CurrentWorkspaceContext);
   const [testFormInitialValues, setTestFormInitialValues] = useState({});
   const [agents, setAgents] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [data, setRenderImportData] = useState(false);
-  const fileInputRef = useRef(null);
 
   const getCustomData = async (customDataFiles) => {
     const customData = await Promise.all(
@@ -111,27 +107,7 @@ const TestsNewPage = () => {
       {isLoading ? (
         <PageSpinner />
       ) : (
-        <Row justify="space-between" gutter={[16, 16]}>
-          <Title level={2}>Test Configuration</Title>
-
-          <input
-            type="file"
-            accept=".json"
-            style={{ display: "none" }}
-            onChange={handleFileSelection}
-            ref={fileInputRef}
-          />
-
-          <Button
-            type="primary"
-            size="large"
-            style={{ marginRight: "10px" }}
-            icon={<UploadOutlined />}
-            onClick={() => fileInputRef.current.click()}
-          >
-            Import
-          </Button>
-        </Row>
+        <Row justify="end" gutter={[16, 16]}></Row>
       )}
       {data ? (
         <Col span={24}>
@@ -143,7 +119,10 @@ const TestsNewPage = () => {
         </Col>
       ) : (
         <Col span={24}>
-          <RunConfigurationForm agents={agents} />
+          <RunConfigurationForm
+            agents={agents}
+            handleFileSelection={handleFileSelection}
+          />
         </Col>
       )}
     </>
