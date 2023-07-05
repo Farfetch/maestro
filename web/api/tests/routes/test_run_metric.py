@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime, timedelta
 
 from maestro_api.db.models.run import Run, RunStatus
@@ -345,6 +346,54 @@ def test_run_metrics_create_many(client):
 
     assert 200 == response.status_code
     assert 2 == res_json["metrics_count"]
+
+
+def csv_data():
+    file_path = os.path.join(os.getcwd(), "tests/routes/metrics_file.csv")
+    data = []
+    with open(file_path, "r") as file:
+        for line in file:
+            text = line.strip().replace('"', "").replace("/n", "").replace("'", '"')
+            json_object = json.loads(text)
+            data.append(json_object)
+    return data
+
+
+def test_run_metrics_create_many_performance(client):
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
+    run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    run_id = "6076d1e3a216ff15b6e95e1f"
+    title = "some example title"
+    run_id = "6076d1e3a216ff15b6e95e1f"
+    run_plan_id = "6076d1e3a216ff15b6e95e9d"
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
+
+    metrics = csv_data()
+
+    Run(
+        id=run_id,
+        workspace_id=workspace_id,
+        title=title,
+        run_configuration_id=run_configuration_id,
+        run_plan_id=run_plan_id,
+        agent_ids=agent_ids,
+        run_status=RunStatus.RUNNING.value,
+    ).save()
+
+    request_data = {
+        "metrics": metrics,
+    }
+
+    response = client.post(
+        "/run_metrics/%s" % run_id,
+        data=json.dumps(request_data),
+        content_type="application/json",
+    )
+
+    res_json = json.loads(response.data)
+
+    assert 200 == response.status_code
+    assert 450 == res_json["metrics_count"]
 
 
 def test_run_metrics_download(client):

@@ -11,6 +11,8 @@ from maestro_api.libs.flask.utils import (
 from maestro_api.libs.csv import CsvBytesIO
 
 from maestro_api.settings import MAESTRO_STORE_RAW_METRICS
+from maestro_api.logging import Logger
+import time
 
 
 class RunMetricController:
@@ -21,18 +23,38 @@ class RunMetricController:
         """
         Create list of RunMetric objects and aggregate them by label
         """
+
+        start_time = time.perf_counter()
         run = get_obj_or_404(Run, id=run_id)
+        time_get_obj = (time.perf_counter() - start_time) * 1000
 
         input_metrics = data.get("metrics")
-        jmeter_metrics = JmeterService.format_metrics(input_metrics)
 
+        start_time = time.perf_counter()
+        jmeter_metrics = JmeterService.format_metrics(input_metrics)
+        time_format = (time.perf_counter() - start_time) * 1000
+
+        start_time = time.perf_counter()
         metric_instances = [
             RunMetric(run_id=run.id, **vars(metric)) for metric in jmeter_metrics
         ]
-        MetricsAggregator().group_and_store_by_label(run_id, metric_instances)
+        time_parse = (time.perf_counter() - start_time) * 1000
 
+        start_time = time.perf_counter()
+        MetricsAggregator().group_and_store_by_label(run_id, metric_instances)
+        time_group = (time.perf_counter() - start_time) * 1000
+
+        time_store_raw = 0
         if MAESTRO_STORE_RAW_METRICS:
+            start_time = time.perf_counter()
             RunMetric.objects.insert(metric_instances)
+            time_store_raw = (time.perf_counter() - start_time) * 1000
+
+        Logger.debug(
+            f"Run: {time_get_obj:6.2f} | Fmt: {time_format:6.2f} | "
+            f"Parse: {time_parse:6.2f} | "
+            f"Group: {time_group:6.2f} | Store Raw: {time_store_raw:8.2f}"
+        )
 
         return jsonify({"metrics_count": len(jmeter_metrics)})
 
