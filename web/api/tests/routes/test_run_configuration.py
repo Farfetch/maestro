@@ -1,3 +1,5 @@
+import base64
+import io
 import json
 import pytest
 
@@ -286,6 +288,61 @@ def test_get_run_configuration_with_not_found(client):
     )
 
     assert response.status_code == 404
+
+
+def test_run_configuration_download(client):
+    run_configuration_id = "6106d1e3a216ff15b6e95e9d"
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
+    run_plan_title = "Test JMX"
+    run_plan_file = (io.BytesIO(b"abcdef"), "")
+    run_plan_file_base64 = base64.b64encode((b"abcdef")).decode("utf-8")
+    labels = ["AW", "ZW"]
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    run_configuration_title = "Example test plan"
+    hosts = [{"host": "test", "ip": "127.0.0.3"}]
+    custom_properties = [{"name": "testProperty", "value": "123"}]
+    load_profile = [{"start": 1, "end": 10, "duration": 5}]
+
+    data = {"run_plan_file": run_plan_file, "title": run_plan_title}
+
+    createRunPlan = client.post(
+        "/run_plan_from_file",
+        data=data,
+        content_type="multipart/form-data",
+    )
+
+    RunConfiguration(
+        id=run_configuration_id,
+        workspace_id=workspace_id,
+        title=run_configuration_title,
+        labels=labels,
+        agent_ids=agent_ids,
+        run_plan_id=createRunPlan.json["id"],
+        hosts=hosts,
+        custom_data_ids=[],
+        custom_properties=custom_properties,
+        load_profile=load_profile,
+    ).save()
+
+    response = client.get(f"/run_configuration/{run_configuration_id}/download")
+
+    res_json = json.loads(response.data)
+
+    assert response.status_code == 200
+    assert "created_at" in res_json
+    assert "updated_at" in res_json
+    assert res_json["id"] == run_configuration_id
+    assert res_json["workspace_id"] == workspace_id
+    assert res_json["title"] == run_configuration_title
+    assert res_json["run_plan"]["id"] == createRunPlan.json["id"]
+    assert res_json["run_plan"]["title"] == createRunPlan.json["title"]
+    assert res_json["run_plan"]["run_file_data_base64"] == run_plan_file_base64
+    assert res_json["agent_ids"] == agent_ids
+    assert res_json["labels"] == labels
+    assert res_json["custom_properties"] == custom_properties
+    assert res_json["hosts"] == hosts
+    assert res_json["custom_data_ids"] == []
+    assert res_json["load_profile"] == load_profile
 
 
 @pytest.mark.parametrize(

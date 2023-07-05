@@ -1,15 +1,24 @@
 /* eslint-disable max-statements */
 /* eslint-disable max-lines */
+import {
+  CopyOutlined,
+  DownloadOutlined,
+  PlayCircleOutlined,
+  SaveOutlined,
+  UpCircleOutlined,
+  UploadOutlined
+} from "@ant-design/icons";
 import { Button, Card, Col, Form, message, Row, Typography } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { CurrentWorkspaceContext } from "../../../context/CurrentWorkspace";
 import { createRun, startRun } from "../../../lib/api/endpoints/run";
 import { colors } from "../../../lib/colors";
 import { toUtcHourMinute } from "../../../lib/date";
+import { RunConfigurationDownloadUrl } from "../../../lib/routes";
 import AvailableAgentsFormItem from "./FormItems/AvailableAgents";
 import CustomDataFormItem from "./FormItems/CustomData";
 import LoadConfigurationFormItem from "./FormItems/LoadConfiguration";
@@ -28,6 +37,7 @@ import {
 const { Title, Text } = Typography;
 
 const RunConfigurationForm = ({
+  handleFileSelection,
   runConfigurationId,
   initialValues,
   agents
@@ -36,6 +46,8 @@ const RunConfigurationForm = ({
   const [isClone, setIsClone] = useState(false);
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const fileInputRef = useRef(null);
+
   const onFinish = async ({
     title,
     labels,
@@ -127,6 +139,10 @@ const RunConfigurationForm = ({
     <Text style={{ color: colors.grey[3] }}>{children}</Text>
   );
 
+  const handleJumpToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <>
       <Form
@@ -137,6 +153,79 @@ const RunConfigurationForm = ({
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
+        <Row
+          justify="space-between"
+          align="middle"
+          gutter={[8, 8]}
+          style={{ marginTop: "10px", marginBottom: "10px" }}
+        >
+          <Title level={2}>Test Configuration</Title>
+          <Col>
+            <div style={{ display: "flex" }}>
+              <div hidden={!runConfigurationId}>
+                <Button
+                  type="dashed"
+                  size="large"
+                  key="submit"
+                  icon={<CopyOutlined />}
+                  onClick={() => {
+                    setIsClone(true);
+                    form.submit();
+                  }}
+                >
+                  Clone
+                </Button>
+              </div>
+              <div hidden={!runConfigurationId} style={{ marginLeft: "8px" }}>
+                <Button
+                  icon={<DownloadOutlined />}
+                  href={RunConfigurationDownloadUrl(runConfigurationId)}
+                  size="large"
+                >
+                  Export
+                </Button>
+              </div>
+              <div hidden={runConfigurationId} style={{ marginLeft: "8px" }}>
+                <input
+                  type="file"
+                  accept=".json"
+                  style={{ display: "none" }}
+                  onChange={handleFileSelection}
+                  ref={fileInputRef}
+                />
+
+                <Button
+                  size="large"
+                  icon={<UploadOutlined />}
+                  onClick={() => fileInputRef.current.click()}
+                >
+                  Import
+                </Button>
+              </div>
+              <div style={{ marginLeft: "8px" }}>
+                <Button
+                  size="large"
+                  key="submit"
+                  icon={<SaveOutlined />}
+                  onClick={() => form.submit()}
+                >
+                  Save
+                </Button>
+              </div>
+              <div style={{ marginLeft: "8px" }}>
+                <Button
+                  type="primary"
+                  size="large"
+                  key="submit"
+                  icon={<PlayCircleOutlined />}
+                  onClick={() => startTest()}
+                >
+                  Start
+                </Button>
+              </div>
+            </div>
+          </Col>
+        </Row>
         <Row gutter={[0, 16]}>
           <FormBlock
             left={
@@ -203,7 +292,7 @@ const RunConfigurationForm = ({
                 <Title level={5}>Custom Data</Title>
                 <FormBlockText>
                   Select CSV files that your test uses. The data will be
-                  accessable from each agent and easily can be used inside Test
+                  accessible from each agent and easily can be used inside Test
                   Plan.
                 </FormBlockText>
               </>
@@ -216,7 +305,7 @@ const RunConfigurationForm = ({
               <>
                 <Title level={5}>Hosts Override</Title>
                 <FormBlockText>
-                  Setup DNS hosts that should be overriden in order to execute
+                  Setup DNS hosts that should be overridden in order to execute
                   tests against internal endpoints.
                 </FormBlockText>
               </>
@@ -229,7 +318,7 @@ const RunConfigurationForm = ({
               <>
                 <Title level={5}>Custom Properties</Title>
                 <FormBlockText>
-                  Custom properties will be overriden for all agents and also
+                  Custom properties will be overridden for all agents and also
                   available as JMeter properties inside JMeter Test Plan.
                 </FormBlockText>
               </>
@@ -242,10 +331,10 @@ const RunConfigurationForm = ({
               <>
                 <Title level={5}>Load Profiler</Title>
                 <FormBlockText>
-                  Load configuration is visualised and configured per each
+                  Load configuration is visualized and configured per each
                   agent. By using and configuring load in this section you also
                   will see the predicted vs real throughput during test
-                  executuion.
+                  execution.
                 </FormBlockText>
               </>
             }
@@ -258,40 +347,23 @@ const RunConfigurationForm = ({
             }
           />
         </Row>
-        <Row justify="end" gutter={[8, 8]} style={{ marginTop: "20px" }}>
-          <Col>
-            <Button
-              type="link"
-              size="large"
-              key="submit"
-              onClick={() => startTest()}
-            >
-              Start
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              type="dashed"
-              size="large"
-              key="submit"
-              onClick={() => {
-                setIsClone(true);
-                form.submit();
-              }}
-            >
-              Clone
-            </Button>
-          </Col>
-          <Col>
+        <Row justify="end">
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: "10px",
+              marginBottom: "10px"
+            }}
+          >
             <Button
               type="primary"
               size="large"
-              key="submit"
-              onClick={() => form.submit()}
+              icon={<UpCircleOutlined />}
+              onClick={handleJumpToTop}
             >
-              Save
+              Jump to top
             </Button>
-          </Col>
+          </div>
         </Row>
       </Form>
     </>

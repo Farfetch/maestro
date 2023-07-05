@@ -1,3 +1,4 @@
+import base64
 from io import BytesIO
 from flask import request, send_file
 
@@ -14,9 +15,9 @@ class CustomDataController:
     def __init__(self, flask_app):
         self.flask_app = flask_app
 
-    def create_one(self, user):
+    def create_one_from_file(self, user):
         """
-        Create CustomData object
+        Create CustomData object from a file
         """
 
         custom_data_file = request.files.get("custom_data_file", None)
@@ -29,6 +30,26 @@ class CustomDataController:
 
         new_custom_data.custom_data_file.put(
             custom_data_file, content_type=custom_data_file.content_type
+        )
+        new_custom_data.save()
+
+        return jsonify(new_custom_data.to_dict())
+
+    def create_one_from_base64(self, data, user):
+        """
+        Create CustomData object from base64 data
+        """
+
+        name = data.get("name")
+        custom_data_file_base64 = data.get("custom_data_file_base64")
+        custom_data_file_content_type = data.get("custom_data_file_content_type")
+
+        custom_data_file = base64.b64decode(custom_data_file_base64)
+
+        new_custom_data = CustomData(name=name).save()
+
+        new_custom_data.custom_data_file.put(
+            custom_data_file, content_type=custom_data_file_content_type
         )
         new_custom_data.save()
 

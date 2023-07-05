@@ -1,3 +1,9 @@
+import json
+import base64
+from io import BytesIO
+
+from flask import send_file
+
 from mongoengine import Q
 
 from maestro_api.db.models.agent import Agent
@@ -113,3 +119,66 @@ class RunConfigurationController:
         run_configuration.delete()
 
         return jsonify(run_configuration.to_dict())
+
+    def download(self, run_configuration_id, user):
+        """
+        Export a specific RunConfiguration as a JSON
+        with run_plan and custom_data as binary
+        """
+        run_configuration = get_obj_or_404(RunConfiguration, id=run_configuration_id)
+
+        data_to_export = run_configuration.to_dict()
+
+        # Fetch the associated run_plan
+        run_plan_id = data_to_export.get("run_plan_id")
+        run_plan = get_obj_or_404(RunPlan, id=run_plan_id)
+
+        run_plan_file_data = run_plan.run_plan_file.read()
+
+        run_plan_file_base64 = base64.b64encode(run_plan_file_data).decode("utf-8")
+
+        del data_to_export["run_plan_id"]
+
+        run_plan_dict = {
+            "id": run_plan_id,
+            "title": run_plan.title,
+            "run_file_content_type": run_plan.run_plan_file.content_type,
+            "run_file_data_base64": run_plan_file_base64,
+        }
+
+        data_to_export["run_plan"] = run_plan_dict
+
+        # Fetch the associated custom_data files
+        custom_data_ids = data_to_export.get("custom_data_ids", [])
+        custom_data_list = []
+
+        for custom_data_id in custom_data_ids:
+            custom_data = get_obj_or_404(CustomData, id=custom_data_id)
+            custom_data_file_data = custom_data.custom_data_file.read()
+            custom_data_file_base64 = base64.b64encode(custom_data_file_data).decode(
+                "utf-8"
+            )
+
+            custom_data_dict = {
+                "name": custom_data.name,
+                "custom_data_file_base64": custom_data_file_base64,
+                "custom_data_content_type": custom_data.custom_data_file.content_type,
+            }
+            custom_data_list.append(custom_data_dict)
+
+        data_to_export["custom_data_files"] = custom_data_list
+
+        # Generate a JSON string
+        json_data = json.dumps(data_to_export, indent=2)
+
+        # Generate a temporary file in memory
+        temp_file = BytesIO(json_data.encode())
+
+        download_title = data_to_export.get("title") + ".json"
+
+        return send_file(
+            temp_file,
+            as_attachment=True,
+            download_name=download_title,
+            mimetype="application/json",
+        )

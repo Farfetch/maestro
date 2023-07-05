@@ -1,9 +1,15 @@
-import { createCustomData } from "../../../lib/api/endpoints/customData";
+import {
+  createCustomData,
+  createCustomData64
+} from "../../../lib/api/endpoints/customData";
 import {
   createRunConfiguration,
   updateRunConfiguration
 } from "../../../lib/api/endpoints/runConfiguration";
-import { createRunPlan } from "../../../lib/api/endpoints/runPlan";
+import {
+  createRunPlan,
+  createRunPlanBase64
+} from "../../../lib/api/endpoints/runPlan";
 import { agentStatus as agentStatusModel } from "../../../lib/api/models";
 
 export const uploadCustomData = async (customData) => {
@@ -11,6 +17,7 @@ export const uploadCustomData = async (customData) => {
     customData.map(async (customDataFile) => {
       if (customDataFile.originFileObj) {
         const { id: customDataId } = await createCustomData({
+          name: "",
           customData: customDataFile.originFileObj
         });
         return customDataId;
@@ -20,6 +27,15 @@ export const uploadCustomData = async (customData) => {
     })
   );
   return customDataIds;
+};
+
+export const uploadNewCustomData = async (newCustomData) => {
+  const customData = await createCustomData64({
+    name: newCustomData.name,
+    customDataContentType: newCustomData.custom_data_content_type,
+    customDataFileBase64: newCustomData.custom_data_file_base64
+  });
+  return customData;
 };
 
 export const uploadRunPlan = async (runPlan) => {
@@ -33,6 +49,16 @@ export const uploadRunPlan = async (runPlan) => {
   }
 
   return runPlan.uid;
+};
+
+export const uploadNewRunPlan = async (newRunPlan) => {
+  const runPlan = await createRunPlanBase64({
+    title: newRunPlan.title,
+    runPlanContentType: newRunPlan.run_file_content_type,
+    runPlanFileBase64: newRunPlan.run_file_data_base64
+  });
+
+  return runPlan;
 };
 
 export const saveRunConfiguration = async (runConfigurationId, dataToSave) => {

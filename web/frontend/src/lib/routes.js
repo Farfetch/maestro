@@ -12,6 +12,9 @@ export const runMetricsDownloadUrl = (runId) =>
 export const runLogDownloadUrl = (runId) =>
   `${maestroApiUrl}/api/run_log/${runId}/download`;
 
+export const RunConfigurationDownloadUrl = (runConfigurationId) =>
+  `${maestroApiUrl}/api/run_configuration/${runConfigurationId}/download`;
+
 export const testSingleUrl = (runConfigurationId) =>
   `/test/${runConfigurationId}`;
 

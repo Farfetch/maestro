@@ -1,3 +1,4 @@
+import base64
 from io import BytesIO
 
 from flask import request, send_file
@@ -16,7 +17,7 @@ class RunPlanController:
     def __init__(self, flask_app):
         self.flask_app = flask_app
 
-    def create_one(self, user):
+    def create_one_from_file(self, user):
         """
         Create RunPlan object and store file in DB
         """
@@ -29,6 +30,27 @@ class RunPlanController:
         new_run_plan.run_plan_file.put(
             run_plan_file, content_type=run_plan_file.content_type
         )
+        new_run_plan.save()
+
+        return jsonify(new_run_plan.to_dict())
+
+    def create_one_from_base64(self, data, user):
+        """
+        Create RunPlan object and store file in DB
+        """
+
+        title = data.get("title")
+        run_plan_file_base64 = data.get("run_plan_file_base64", "")
+        run_plan_content_type = data.get("run_plan_file_content_type")
+
+        run_plan_file = base64.b64decode(run_plan_file_base64)
+
+        new_run_plan = RunPlan(title=title).save()
+
+        new_run_plan.run_plan_file.put(
+            run_plan_file, content_type=run_plan_content_type
+        )
+
         new_run_plan.save()
 
         return jsonify(new_run_plan.to_dict())

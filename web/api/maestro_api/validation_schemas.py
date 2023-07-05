@@ -240,6 +240,28 @@ run_agent_all_schema = {
     "additionalProperties": False,
 }
 
+run_plan_create_schema = {
+    "type": "object",
+    "properties": {
+        "title": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 30,
+        },
+        "run_plan_file_base64": {
+            "type": "string",
+            "minLength": 2,
+        },
+        "run_plan_file_content_type": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 50,
+        },
+    },
+    "required": ["title", "run_plan_file_base64", "run_plan_file_content_type"],
+    "additionalProperties": False,
+}
+
 run_plan_download_schema = {
     "type": "object",
     "properties": {
@@ -316,6 +338,29 @@ agent_log_list_schema = {
     "required": ["date_from"],
     "additionalProperties": False,
 }
+
+custom_data_create_schema = {
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 30,
+        },
+        "custom_data_file_base64": {
+            "type": "string",
+            "minLength": 2,
+        },
+        "custom_data_file_content_type": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 50,
+        },
+    },
+    "required": ["name", "custom_data_file_base64", "custom_data_file_content_type"],
+    "additionalProperties": False,
+}
+
 
 event_update_schema = {
     "type": "object",
