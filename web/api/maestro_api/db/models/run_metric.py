@@ -28,7 +28,7 @@ class RunMetric(Document):
     idle_time = IntField()
     connect = IntField()
 
-    meta = {"indexes": ["run_id", "datetime", ("run_id", "datetime")]}
+    meta = {"indexes": ["run_id"]}
 
     def to_dict(self):
         return {
