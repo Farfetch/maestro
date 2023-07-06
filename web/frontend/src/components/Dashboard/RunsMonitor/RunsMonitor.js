@@ -8,7 +8,7 @@ const RunsMonitor = ({ children }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       // Fetch runs data from RunningContext.js
-    }, 5000);
+    }, 15000);
 
     return () => clearInterval(interval);
   }, []);
