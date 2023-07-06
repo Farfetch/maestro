@@ -52,7 +52,15 @@ run_all_schema = {
             "minLength": 12,
             "maxLength": 24,
         },
-        "run_status": {"type": "string", "enum": RunStatus.list()},
+        "run_status": {
+            "anyOf": [
+                {
+                    "type": "array",
+                    "items": {"type": "string", "enum": RunStatus.list()},
+                },
+                {"type": "string", "enum": RunStatus.list()},
+            ]
+        },
         "notes": {"type": "string"},
         "labels": {
             "anyOf": [

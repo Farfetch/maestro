@@ -486,7 +486,11 @@ paths:
         - in: query
           name: run_status
           description: "Filter by RunStatus"
+          collectionFormat: multi
           $ref: "#/components/schemas/RunStatus"
+          type: array
+          items:
+            type: string
         - in: query
           name: skip
           description: "Skip number of documents."
@@ -1540,7 +1544,6 @@ components:
         - STOPPED
         - FINISHED
         - ERROR
-
     RunAgentStatus:
       type: string
       enum:

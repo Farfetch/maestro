@@ -1,44 +1,40 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 import { fetchRuns } from "../../lib/api/endpoints/run";
-import { runStatus as runStatusModel } from "../../lib/api/models";
 import { CurrentWorkspaceContext } from "../CurrentWorkspace";
 
 export const RunningContext = createContext(null);
 
 export const RunningContextProvider = ({ children }) => {
   const [runs, setRuns] = useState(null);
-  const [currentlyRunning, setCurrentRuns] = useState(null);
   const [isIntervalLoading, setIsIntervalLoading] = useState(false);
   const { currentWorkspace } = useContext(CurrentWorkspaceContext);
 
-  const updateRunsInterval = 3000;
+  const updateRunsInterval = 15000;
 
   // Monitors runsStatus to give real-time montoring about runsning test
   useEffect(() => {
     const updateRunsData = async () => {
       setIsIntervalLoading(true);
-      const availableRunStatuses = [
-        runStatusModel.CREATING,
-        runStatusModel.PENDING,
-        runStatusModel.RUNNING
-      ];
+      const availableRunStatuses = ["CREATING", "PENDING", "RUNNING"];
 
-      const runsData = await fetchRuns({ workspaceId: currentWorkspace.id });
-      const availableRuns = runsData.filter((run) =>
-        availableRunStatuses.includes(run.runStatus)
-      );
-      const currentRunningRuns = runsData.filter(
-        (run) => run.runStatus === runStatusModel.RUNNING
-      );
+      const availableRuns = await fetchRuns({
+        workspaceId: currentWorkspace?.id,
+        run_status: availableRunStatuses
+      });
 
       setRuns(availableRuns);
-      setCurrentRuns(currentRunningRuns);
       setIsIntervalLoading(false);
     };
 
+    if (currentWorkspace) {
+      updateRunsData();
+    }
+
     const interval = setInterval(() => {
-      if (!isIntervalLoading) updateRunsData();
+      if (!isIntervalLoading && currentWorkspace) {
+        updateRunsData();
+      }
     }, updateRunsInterval);
 
     return () => clearInterval(interval);
@@ -47,12 +43,12 @@ export const RunningContextProvider = ({ children }) => {
 
   useEffect(() => {
     const link = document.querySelector("link[rel~='icon']");
-    if (currentlyRunning && currentlyRunning.length > 0) {
+    if (runs && runs.length > 0) {
       link.href = "/runningTests.ico";
     } else {
       link.href = "/favicon.ico";
     }
-  }, [currentlyRunning]);
+  }, [runs]);
 
   return (
     <RunningContext.Provider value={{ runs }}>
