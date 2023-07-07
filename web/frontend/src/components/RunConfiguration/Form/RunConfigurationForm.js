@@ -3,6 +3,7 @@
 import {
   CopyOutlined,
   DownloadOutlined,
+  HistoryOutlined,
   PlayCircleOutlined,
   SaveOutlined,
   UpCircleOutlined,
@@ -18,7 +19,7 @@ import { CurrentWorkspaceContext } from "../../../context/CurrentWorkspace";
 import { createRun, startRun } from "../../../lib/api/endpoints/run";
 import { colors } from "../../../lib/colors";
 import { toUtcHourMinute } from "../../../lib/date";
-import { RunConfigurationDownloadUrl } from "../../../lib/routes";
+import { RunConfigurationDownloadUrl, runsHistory } from "../../../lib/routes";
 import AvailableAgentsFormItem from "./FormItems/AvailableAgents";
 import CustomDataFormItem from "./FormItems/CustomData";
 import LoadConfigurationFormItem from "./FormItems/LoadConfiguration";
@@ -163,6 +164,15 @@ const RunConfigurationForm = ({
           <Col>
             <div style={{ display: "flex" }}>
               <div hidden={!runConfigurationId}>
+                <Button
+                  icon={<HistoryOutlined />}
+                  href={runsHistory(runConfigurationId)}
+                  size="large"
+                >
+                  View Past Runs
+                </Button>
+              </div>
+              <div hidden={!runConfigurationId} style={{ marginLeft: "8px" }}>
                 <Button
                   type="dashed"
                   size="large"

@@ -1,5 +1,6 @@
 import { Col, Row } from "antd";
 import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import PageTitle from "../components/layout/PageTitle";
 import RunListTable from "../components/Run/ListTable";
@@ -10,16 +11,21 @@ import { fetchRuns } from "../lib/api/endpoints/run";
 const HistoryPage = () => {
   const [runs, setRuns] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [viewRunConfigurationId, setViewRunConfigurationIds] = useState(false);
   const { currentWorkspace } = useContext(CurrentWorkspaceContext);
   const [searchRunTile, setSearchRunTile] = useState("");
+  const { runConfigurationId } = useParams();
 
   const updateRunPlans = async () => {
     setIsLoading(true);
 
     const runsRes = await fetchRuns({
       workspaceId: currentWorkspace.id,
-      title: searchRunTile
+      title: searchRunTile,
+      run_configuration_id: runConfigurationId
     });
+
+    setViewRunConfigurationIds(!!runConfigurationId && !searchRunTile);
 
     setRuns(runsRes);
 
@@ -38,13 +44,21 @@ const HistoryPage = () => {
   return (
     <>
       <PageTitle title="History" />
-      <SearchBar onChangeSearchRunTitle={filterSearchRunTitle} />
+      <SearchBar
+        onChangeSearchRunTitle={filterSearchRunTitle}
+        placeholder={
+          viewRunConfigurationId
+            ? runConfigurationId
+            : "Search for Run Title or ID"
+        }
+      />
       <Row>
         <Col span={24}>
           <RunListTable
             isLoading={isLoading}
             runs={runs}
             refetch={updateRunPlans}
+            viewRunConfigurationId={viewRunConfigurationId}
           />
         </Col>
       </Row>

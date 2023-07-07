@@ -31,6 +31,9 @@ export const testsUrl = "/tests";
 
 export const historyUrl = "/history";
 
+export const runsHistory = (runConfigurationId) =>
+  `/history/${runConfigurationId}`;
+
 export const logoutUrl = `${maestroApiUrl}/logout`;
 
 export const workspacesUrl = "/workspaces";
