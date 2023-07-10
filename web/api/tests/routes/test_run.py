@@ -725,7 +725,9 @@ def test_run_search_run_configuration_id(client, db_data, input_params, expected
         ),
     ],
 )
-def test_run_search_run_configuration_id_in_title(client, db_data, input_params, expected_ids):
+def test_run_search_run_configuration_id_in_title(
+    client, db_data, input_params, expected_ids
+):
     "Return all runs that contain title1 in the Title"
     for document in db_data:
         run_configuration_id = "6326d1e3a216ff15b6e95e9d"
