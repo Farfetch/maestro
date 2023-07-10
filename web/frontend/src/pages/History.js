@@ -1,12 +1,15 @@
-import { Col, Row } from "antd";
+/* eslint-disable max-statements */
+import { ReloadOutlined } from "@ant-design/icons";
+import { Button, Col, Row } from "antd";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import PageTitle from "../components/layout/PageTitle";
 import RunListTable from "../components/Run/ListTable";
 import SearchBar from "../components/SearchBar";
 import { CurrentWorkspaceContext } from "../context/CurrentWorkspace";
 import { fetchRuns } from "../lib/api/endpoints/run";
+import { historyUrl } from "../lib/routes";
 
 const HistoryPage = () => {
   const [runs, setRuns] = useState([]);
@@ -37,6 +40,12 @@ const HistoryPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentWorkspace, searchRunTile]);
 
+  useEffect(() => {
+    setSearchRunTile("");
+    updateRunPlans();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [runConfigurationId]);
+
   const filterSearchRunTitle = (value) => {
     setSearchRunTile(value);
   };
@@ -52,13 +61,21 @@ const HistoryPage = () => {
             : "Search for Run Title or ID"
         }
       />
+      <Link to={historyUrl}>
+        <Button
+          hidden={!viewRunConfigurationId}
+          style={{ marginLeft: "8px" }}
+          icon={<ReloadOutlined />}
+        >
+          Reset
+        </Button>
+      </Link>
       <Row>
         <Col span={24}>
           <RunListTable
             isLoading={isLoading}
             runs={runs}
             refetch={updateRunPlans}
-            viewRunConfigurationId={viewRunConfigurationId}
           />
         </Col>
       </Row>

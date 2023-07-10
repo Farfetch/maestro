@@ -4,6 +4,7 @@ const { Search } = Input;
 
 const SearchBar = ({ onChangeSearchRunTitle, placeholder }) => (
   <Search
+    allowClear={true}
     placeholder={placeholder}
     type="text"
     onSearch={onChangeSearchRunTitle}

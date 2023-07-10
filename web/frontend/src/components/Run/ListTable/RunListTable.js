@@ -8,12 +8,14 @@ import { runSingleUrl, testSingleUrl } from "../../../lib/routes";
 import RunStatusTag from "../../tag/RunStatusTag";
 import RunDeleteButton from "./DeleteButton";
 
-const getColumns = (labels, refetch, viewRunConfigurationID) => {
+const getColumns = (labels, refetch) => {
   const columns = [
     {
       title: "Title",
       dataIndex: "title",
-      key: "title"
+      key: "title",
+      width: 350,
+      ellipsis: true
     },
     {
       title: "Notes",
@@ -24,6 +26,7 @@ const getColumns = (labels, refetch, viewRunConfigurationID) => {
       title: "Labels",
       dataIndex: "labels",
       key: "labels",
+      width: 150,
       filters: labels.map((label) => ({
         text: label,
         value: label
@@ -39,7 +42,7 @@ const getColumns = (labels, refetch, viewRunConfigurationID) => {
       title: "Status",
       dataIndex: "runStatus",
       key: "runStatus",
-      width: 100,
+      width: 120,
       filters: Object.values(runStatusModel).map((runStatus) => ({
         text: runStatus,
         value: runStatus
@@ -58,35 +61,27 @@ const getColumns = (labels, refetch, viewRunConfigurationID) => {
       },
       defaultSortOrder: "descend",
       render: (text, record) => record.createdAt.format("L HH:mm:ss"),
-      width: 180
+      width: 160
     },
     {
       title: "Action",
       key: "action",
-      width: 160,
       render: (text, record) => (
         <Space size="small">
-          <RunDeleteButton runId={record.key} refetch={refetch} />
-          <Link to={testSingleUrl(record.runConfigurationId)}>
-            <Button type="link" icon={<SettingOutlined />}></Button>
-          </Link>
           <Link to={runSingleUrl(record.key)}>
             <Button type="link" icon={<FolderOpenOutlined />}>
               Open
             </Button>
           </Link>
+          <Link to={testSingleUrl(record.runConfigurationId)}>
+            <Button type="link" icon={<SettingOutlined />}></Button>
+          </Link>
+          <RunDeleteButton runId={record.key} refetch={refetch} />
         </Space>
-      )
+      ),
+      width: 230
     }
   ];
-
-  if (viewRunConfigurationID) {
-    columns.unshift({
-      title: "Run Configuration ID",
-      dataIndex: "runConfigurationId",
-      key: "runConfigurationId"
-    });
-  }
 
   return columns;
 };
@@ -109,7 +104,7 @@ const runMapper = ({
   runConfigurationId
 });
 
-const RunListTable = ({ runs, isLoading, refetch, viewRunConfigurationId }) => {
+const RunListTable = ({ runs, isLoading, refetch }) => {
   const runsDataSource = runs.map(runMapper);
   const labels = runs.reduce((previousValue, run) => {
     run.labels.forEach((label) => {
@@ -128,7 +123,7 @@ const RunListTable = ({ runs, isLoading, refetch, viewRunConfigurationId }) => {
           size="small"
           loading={isLoading}
           dataSource={runsDataSource}
-          columns={getColumns(labels, refetch, viewRunConfigurationId)}
+          columns={getColumns(labels, refetch)}
           pagination={{
             defaultPageSize: 50,
             hideOnSinglePage: true,
