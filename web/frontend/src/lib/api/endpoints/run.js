@@ -79,7 +79,10 @@ export const fetchRuns = async (filters = {}) => {
     params: {
       ...(filters.workspaceId ? { workspace_id: filters.workspaceId } : {}),
       ...(filters.title ? { title: filters.title } : {}),
-      ...(filters.run_status ? { run_status: filters.run_status } : {})
+      ...(filters.run_status ? { run_status: filters.run_status } : {}),
+      ...(filters.run_configuration_id
+        ? { run_configuration_id: filters.run_configuration_id }
+        : {})
     }
   };
   const res = await maestroClient.get(`/api/runs`, params);

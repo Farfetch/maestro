@@ -657,3 +657,103 @@ def test_run_search_run_title(client, db_data, input_params, expected_ids):
     assert response.status_code == 200
     assert len(res_json) == 3
     assert [e["id"] for e in res_json] == expected_ids
+
+
+@pytest.mark.parametrize(
+    "db_data",
+    [default_runs_data],
+)
+@pytest.mark.parametrize(
+    "input_params,expected_ids",
+    [
+        (
+            "?run_configuration_id=6326d1e3a216ff15b6e95e9d",
+            [
+                "6076d69ba216ff15b6e95ea5",
+                "6076d69ba216ff15b6e95ea4",
+                "6076d69ba216ff15b6e95ea3",
+                "6076d69ba216ff15b6e95ea2",
+                "6076d69ba216ff15b6e95ea1",
+            ],
+        ),
+    ],
+)
+def test_run_search_run_by_configuration_id(
+    client, db_data, input_params, expected_ids
+):
+    "Return all runs that contain the run_configuration_id"
+    for document in db_data:
+        run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+        run_plan_id = "6076d1e3a216ff15b6e95e9d"
+        agent_ids = ["6076d1bfb28b871d6bdb6095"]
+
+        Run(
+            id=document["run_id"],
+            workspace_id=document["workspace_id"],
+            run_configuration_id=run_configuration_id,
+            title=document["title"],
+            run_plan_id=run_plan_id,
+            agent_ids=agent_ids,
+            run_status=document["run_status"],
+            labels=document["labels"],
+            started_at=document["started_at"],
+        ).save()
+
+    response = client.get("/runs%s" % input_params)
+
+    res_json = json.loads(response.data)
+
+    assert response.status_code == 200
+    assert len(res_json) == 5
+    assert [e["id"] for e in res_json] == expected_ids
+    assert [e["run_configuration_id"] == "6326d1e3a216ff15b6e95e9d" for e in res_json]
+
+
+@pytest.mark.parametrize(
+    "db_data",
+    [default_runs_data],
+)
+@pytest.mark.parametrize(
+    "input_params,expected_ids",
+    [
+        (
+            "?title=6326d1e3a216ff15b6e95e9d",
+            [
+                "6076d69ba216ff15b6e95ea5",
+                "6076d69ba216ff15b6e95ea4",
+                "6076d69ba216ff15b6e95ea3",
+                "6076d69ba216ff15b6e95ea2",
+                "6076d69ba216ff15b6e95ea1",
+            ],
+        ),
+    ],
+)
+def test_run_search_by_title_or_run_configuration_id(
+    client, db_data, input_params, expected_ids
+):
+    "Return all runs that contain the search term in title or run_configuration_id"
+    for document in db_data:
+        run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+        run_plan_id = "6076d1e3a216ff15b6e95e9d"
+        agent_ids = ["6076d1bfb28b871d6bdb6095"]
+
+        Run(
+            id=document["run_id"],
+            workspace_id=document["workspace_id"],
+            run_configuration_id=run_configuration_id,
+            title=document["title"],
+            run_plan_id=run_plan_id,
+            agent_ids=agent_ids,
+            run_status=document["run_status"],
+            labels=document["labels"],
+            started_at=document["started_at"],
+        ).save()
+
+    response = client.get("/runs%s" % input_params)
+
+    res_json = json.loads(response.data)
+
+    assert response.status_code == 200
+    assert len(res_json) == 5
+    assert [e["id"] for e in res_json] == expected_ids
+    assert [e["run_configuration_id"] == "6326d1e3a216ff15b6e95e9d" for e in res_json]

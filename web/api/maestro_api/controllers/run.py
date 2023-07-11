@@ -1,3 +1,4 @@
+import re
 from mongoengine import Q
 
 from maestro_api.db.models.run import Run
@@ -45,6 +46,7 @@ class RunController:
         skip = int(data.get("skip", 0))
         limit = int(data.get("limit", 1000))
         sort = data.get("sort", "-started_at")
+        run_configuration_id = data.get("run_configuration_id", None)
 
         filter_query = Q()
 
@@ -56,6 +58,22 @@ class RunController:
 
         if run_status is not None:
             filter_query = filter_query & Q(run_status__in=str_to_list(run_status))
+
+        # Allows to search runs by title or run_configuration_id
+        if run_configuration_id is not None or title is not None:
+            # Evaluates if title value is an run_configuration_id ObjectID
+            # ex: 64a4503abaf5a77a9de33694
+            pattern = re.compile(r"^[a-f\d]{24}$", re.IGNORECASE)
+            if run_configuration_id is not None and pattern.match(run_configuration_id):
+                filter_query &= Q(run_configuration_id=run_configuration_id)
+            if title is not None and pattern.match(title):
+                if run_configuration_id is not None:
+                    filter_query &= Q(run_configuration_id=title) | Q(
+                        run_configuration_id=run_configuration_id
+                    )
+                else:
+                    filter_query &= Q(run_configuration_id=title)
+                title = None
 
         if title is not None:
             filter_query = filter_query & Q(title__contains=title)

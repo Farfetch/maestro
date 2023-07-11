@@ -2,9 +2,10 @@ import { Input } from "antd";
 
 const { Search } = Input;
 
-const SearchBar = ({ onChangeSearchRunTitle }) => (
+const SearchBar = ({ onChangeSearchRunTitle, placeholder }) => (
   <Search
-    placeholder="Search Run Title"
+    allowClear={true}
+    placeholder={placeholder}
     type="text"
     onSearch={onChangeSearchRunTitle}
     enterButton

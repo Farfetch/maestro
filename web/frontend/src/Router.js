@@ -37,6 +37,7 @@ const Router = () => (
         </Route>
         <Route path="history">
           <Route index element={<HistoryPage />} />
+          <Route path=":runConfigurationId" element={<HistoryPage />} />
         </Route>
         <Route path="run">
           <Route index element={<NotFoundPage />} />

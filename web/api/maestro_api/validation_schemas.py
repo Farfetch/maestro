@@ -74,6 +74,11 @@ run_all_schema = {
         "limit": {"type": "string", "minLength": 1},
         "skip": {"type": "string", "minLength": 1},
         "sort": {"type": "string", "enum": ["started_at", "-started_at"]},
+        "run_configuration_id": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 24,
+        },
     },
     "additionalProperties": False,
 }
