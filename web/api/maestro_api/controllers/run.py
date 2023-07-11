@@ -59,7 +59,10 @@ class RunController:
         if run_status is not None:
             filter_query = filter_query & Q(run_status__in=str_to_list(run_status))
 
+        # Allows to search runs by title or run_configuration_id
         if run_configuration_id is not None or title is not None:
+            # Evaluates if title value is an run_configuration_id ObjectID
+            # ex: 64a4503abaf5a77a9de33694
             pattern = re.compile(r"^[a-f\d]{24}$", re.IGNORECASE)
             if run_configuration_id is not None and pattern.match(run_configuration_id):
                 filter_query &= Q(run_configuration_id=run_configuration_id)

@@ -681,7 +681,7 @@ def test_run_search_run_title(client, db_data, input_params, expected_ids):
 def test_run_search_run_by_configuration_id(
     client, db_data, input_params, expected_ids
 ):
-    "Return all runs that contain the given run_configuration_id"
+    "Return all runs that contain the run_configuration_id"
     for document in db_data:
         run_configuration_id = "6326d1e3a216ff15b6e95e9d"
         run_plan_id = "6076d1e3a216ff15b6e95e9d"
@@ -728,12 +728,10 @@ def test_run_search_run_by_configuration_id(
         ),
     ],
 )
-def test_run_search_by_title_using_run_configuration_id(
+def test_run_search_by_title_or_run_configuration_id(
     client, db_data, input_params, expected_ids
 ):
-    """Given a title that is a run_configuration_id,
-    Return all runs that contain the given title
-    as well as the same run_configuration_id"""
+    "Return all runs that contain the search term in title or run_configuration_id"
     for document in db_data:
         run_configuration_id = "6326d1e3a216ff15b6e95e9d"
         run_plan_id = "6076d1e3a216ff15b6e95e9d"
