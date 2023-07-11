@@ -704,6 +704,7 @@ def test_run_search_run_configuration_id(client, db_data, input_params, expected
     assert response.status_code == 200
     assert len(res_json) == 5
     assert [e["id"] for e in res_json] == expected_ids
+    assert [e["run_configuration_id"] == "6326d1e3a216ff15b6e95e9d" for e in res_json]
 
 
 @pytest.mark.parametrize(
@@ -728,7 +729,7 @@ def test_run_search_run_configuration_id(client, db_data, input_params, expected
 def test_run_search_run_configuration_id_in_title(
     client, db_data, input_params, expected_ids
 ):
-    "Return all runs that contain title1 in the Title"
+    "Return all runs that contain the same run_configuration_id"
     for document in db_data:
         run_configuration_id = "6326d1e3a216ff15b6e95e9d"
         run_plan_id = "6076d1e3a216ff15b6e95e9d"
@@ -753,3 +754,4 @@ def test_run_search_run_configuration_id_in_title(
     assert response.status_code == 200
     assert len(res_json) == 5
     assert [e["id"] for e in res_json] == expected_ids
+    assert [e["run_configuration_id"] == "6326d1e3a216ff15b6e95e9d" for e in res_json]
