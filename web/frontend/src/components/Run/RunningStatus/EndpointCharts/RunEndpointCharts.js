@@ -7,11 +7,11 @@ import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
 import PageSpinner from "../../../layout/PageSpinner";
 import HitsErrorsLabelLine from "./HitsErrorsLabelLine";
 
-const RunEndpointsCharts = ({ run }) => {
+const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
   const defaultTimeInterval = 5;
   const showLabels = true;
   const [runMetrics, setRunMetrics] = useState([]);
-  const [labelsToShow, setLabelsToShow] = useState([]);
+  const [labelsToShow, setLabelsToShow] = useState([labelToShowGraph]);
   const [timeInterval, setTimeInterval] = useState(defaultTimeInterval);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -38,6 +38,10 @@ const RunEndpointsCharts = ({ run }) => {
   const labels = orderBy(
     Array.from(new Set(runMetrics.map(({ label }) => label)))
   );
+
+  useEffect(() => {
+    setLabelsToShow(labelToShowGraph);
+  }, [labelToShowGraph]);
 
   return (
     <>
@@ -76,6 +80,7 @@ const RunEndpointsCharts = ({ run }) => {
                     onChange={(value) => {
                       setLabelsToShow(value);
                     }}
+                    value={labelsToShow}
                     maxTagCount="responsive"
                     allowClear={true}
                   >

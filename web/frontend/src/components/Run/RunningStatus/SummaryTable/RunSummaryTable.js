@@ -1,187 +1,212 @@
-import { Table, Typography } from "antd";
+import { Button, Table, Typography } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 
 import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
 import { avg } from "../../../../lib/utils";
 
-const calculateErrorRate = (successCount, totalCount) => {
-  const errorRate = parseFloat((1 - successCount / totalCount) * 100).toFixed(
-    2
-  );
+const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
+  const [urlMetrics, setUrlMetrics] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  return errorRate;
-};
+  const calculateErrorRate = (successCount, totalCount) => {
+    const errorRate = parseFloat((1 - successCount / totalCount) * 100).toFixed(
+      2
+    );
 
-const columns = [
-  {
-    title: "Label",
-    dataIndex: "label",
-    key: "label",
-    sorter: {
-      compare: (recordA, recordB) => {
-        if (recordA.url < recordB.label) {
-          return -1;
+    return errorRate;
+  };
+
+  const columns = [
+    {
+      title: "Label",
+      dataIndex: "label",
+      key: "label",
+      sorter: {
+        compare: (recordA, recordB) => {
+          if (recordA.url < recordB.label) {
+            return -1;
+          }
+          if (recordA.label > recordB.label) {
+            return 1;
+          }
+          return 0;
         }
-        if (recordA.label > recordB.label) {
-          return 1;
-        }
-        return 0;
       }
-    }
-  },
-  {
-    title: "Latency (p50)",
-    dataIndex: "latencyP50",
-    key: "latencyP50",
-    render: (text, record) => (
-      <span key={`${record.url}-latencyP50`}>
-        {`${record.latencyP50}`} <span style={{ fontSize: 11 }}>ms</span>
-      </span>
-    ),
-    sorter: {
-      compare: (recordA, recordB) => recordA.latencyP50 - recordB.latencyP50
-    },
-    width: 100
-  },
-  {
-    title: "Latency (p99)",
-    dataIndex: "latencyP99",
-    key: "latencyP99",
-    render: (text, record) => (
-      <span key={`${record.url}-latencyP99`}>
-        {`${record.latencyP99}`} <span style={{ fontSize: 11 }}>ms</span>
-      </span>
-    ),
-    sorter: {
-      compare: (recordA, recordB) => recordA.latencyP99 - recordB.latencyP99
-    },
-    width: 100
-  },
-  {
-    title: "Total",
-    dataIndex: "totalCount",
-    key: "totalCount",
-    render: (text, record) => (
-      <span key={`${record.url}-totalCount`}>{`${record.totalCount}`}</span>
-    ),
-    sorter: {
-      compare: (recordA, recordB) => recordA.totalCount - recordB.totalCount
-    },
-    width: 100
-  },
-  {
-    title: "Success",
-    dataIndex: "successCount",
-    key: "successCount",
-    render: (text, record) => (
-      <span key={`${record.url}-successCount`}>{`${record.successCount}`}</span>
-    ),
-    sorter: {
-      compare: (recordA, recordB) => recordA.successCount - recordB.successCount
-    },
-    width: 100
-  },
-  {
-    title: "Error count",
-    dataIndex: "errorCount",
-    key: "errorCount",
-    defaultSortOrder: "descend",
-    render: (text, record) => (
-      <span key={`${record.url}-error_count`}>{record.errorsCount}</span>
-    ),
-    sorter: {
-      compare: (recordA, recordB) => recordA.errorsCount - recordB.errorsCount
-    },
-    width: 110
-  },
-  {
-    title: "Error rate",
-    dataIndex: "errorRate",
-    key: "errorRate",
-    defaultSortOrder: "descend",
-    render: (text, record) => (
-      <span key={`${record.url}-error_rate`}>
-        {record.errorRate}
-        <span style={{ fontSize: 11 }}>%</span>
-      </span>
-    ),
-    sorter: {
-      compare: (recordA, recordB) => recordA.errorRate - recordB.errorRate
-    },
-    width: 100
-  },
-  {
-    title: "RPM",
-    dataIndex: "rpm",
-    key: "rpm",
-    render: (text, record) => (
-      <span key={`${record.url}-rpm`}>
-        {record.rpm} <span style={{ fontSize: 11 }}>req/min</span>
-      </span>
-    ),
-    sorter: {
-      compare: (recordA, recordB) => recordA.rpm - recordB.rpm
-    },
-    width: 120
-  }
-];
-
-const expandedRowRender = (record) => {
-  const expendedRowColumns = [
-    {
-      title: "Response code",
-      dataIndex: "responseCode",
-      key: `${record.label}-responseCode-col`
     },
     {
-      title: "Messages",
-      key: `${record.label}-messages-col`,
-      render: (text, { messages }) => (
-        <span>
-          {messages.map((message) => (
-            <p key={message}>{message}</p>
-          ))}
+      title: "Latency (p50)",
+      dataIndex: "latencyP50",
+      key: "latencyP50",
+      render: (text, record) => (
+        <span key={`${record.url}-latencyP50`}>
+          {`${record.latencyP50}`} <span style={{ fontSize: 11 }}>ms</span>
         </span>
-      )
+      ),
+      sorter: {
+        compare: (recordA, recordB) => recordA.latencyP50 - recordB.latencyP50
+      },
+      width: 100
     },
     {
-      title: "Success",
-      dataIndex: "successCount",
-      key: `${record.label}-successCount-col`
+      title: "Latency (p99)",
+      dataIndex: "latencyP99",
+      key: "latencyP99",
+      render: (text, record) => (
+        <span key={`${record.url}-latencyP99`}>
+          {`${record.latencyP99}`} <span style={{ fontSize: 11 }}>ms</span>
+        </span>
+      ),
+      sorter: {
+        compare: (recordA, recordB) => recordA.latencyP99 - recordB.latencyP99
+      },
+      width: 100
     },
     {
       title: "Total",
       dataIndex: "totalCount",
-      key: `${record.label}-totalCount-col`
+      key: "totalCount",
+      render: (text, record) => (
+        <span key={`${record.url}-totalCount`}>{`${record.totalCount}`}</span>
+      ),
+      sorter: {
+        compare: (recordA, recordB) => recordA.totalCount - recordB.totalCount
+      },
+      width: 100
     },
     {
-      title: "Errors",
-      key: `${record.label}-errors-col`,
-      render: (text, { successCount, totalCount }) => (
-        <span>
-          {calculateErrorRate(successCount, totalCount)}{" "}
+      title: "Success",
+      dataIndex: "successCount",
+      key: "successCount",
+      render: (text, record) => (
+        <span
+          key={`${record.url}-successCount`}
+        >{`${record.successCount}`}</span>
+      ),
+      sorter: {
+        compare: (recordA, recordB) =>
+          recordA.successCount - recordB.successCount
+      },
+      width: 100
+    },
+    {
+      title: "Error count",
+      dataIndex: "errorCount",
+      key: "errorCount",
+      defaultSortOrder: "descend",
+      render: (text, record) => (
+        <span key={`${record.url}-error_count`}>{record.errorsCount}</span>
+      ),
+      sorter: {
+        compare: (recordA, recordB) => recordA.errorsCount - recordB.errorsCount
+      },
+      width: 110
+    },
+    {
+      title: "Error rate",
+      dataIndex: "errorRate",
+      key: "errorRate",
+      defaultSortOrder: "descend",
+      render: (text, record) => (
+        <span key={`${record.url}-error_rate`}>
+          {record.errorRate}
           <span style={{ fontSize: 11 }}>%</span>
         </span>
+      ),
+      sorter: {
+        compare: (recordA, recordB) => recordA.errorRate - recordB.errorRate
+      },
+      width: 100
+    },
+    {
+      title: "RPM",
+      dataIndex: "rpm",
+      key: "rpm",
+      render: (text, record) => (
+        <span key={`${record.url}-rpm`}>
+          {record.rpm} <span style={{ fontSize: 11 }}>req/min</span>
+        </span>
+      ),
+      sorter: {
+        compare: (recordA, recordB) => recordA.rpm - recordB.rpm
+      },
+      width: 120
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (text, record) => (
+        <Button
+          onClick={() => {
+            setLabelToShowGraph(record.label);
+            setActiveTabKey("endpoints");
+          }}
+        >
+          Show Chart
+        </Button>
       )
     }
   ];
 
-  return (
-    <span key={`${record.label}-extended-table`}>
-      <Table
-        columns={expendedRowColumns}
-        dataSource={record.responses}
-        pagination={false}
-        rowKey="responseCode"
-      />
-    </span>
-  );
-};
+  const expandedRowRender = (record) => {
+    const expendedRowColumns = [
+      {
+        title: "Response code",
+        dataIndex: "responseCode",
+        key: `${record.label}-responseCode-col`
+      },
+      {
+        title: "Messages",
+        key: `${record.label}-messages-col`,
+        render: (text, { messages }) => (
+          <span>
+            {messages.map((message) => (
+              <p key={message}>{message}</p>
+            ))}
+          </span>
+        )
+      },
+      {
+        title: "Success",
+        dataIndex: "successCount",
+        key: `${record.label}-successCount-col`
+      },
+      {
+        title: "Total",
+        dataIndex: "totalCount",
+        key: `${record.label}-totalCount-col`
+      },
+      {
+        title: "Errors",
+        key: `${record.label}-errors-col`,
+        render: (text, { successCount, totalCount }) => (
+          <span>
+            {calculateErrorRate(successCount, totalCount)}{" "}
+            <span style={{ fontSize: 11 }}>%</span>
+          </span>
+        )
+      }
+    ];
 
-const RunSummaryTable = ({ runId }) => {
-  const [urlMetrics, setUrlMetrics] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+    return (
+      <span key={`${record.label}-extended-table`}>
+        <Table
+          columns={expendedRowColumns}
+          dataSource={record.responses}
+          pagination={false}
+          rowKey="responseCode"
+        />
+        <Button
+          onClick={() => {
+            setLabelToShowGraph(record.label);
+            setActiveTabKey("endpoints");
+          }}
+        >
+          Show Chart
+        </Button>
+      </span>
+    );
+  };
 
   const updateUrlMetrics = async (runIdToFetch) => {
     setIsLoading(true);
