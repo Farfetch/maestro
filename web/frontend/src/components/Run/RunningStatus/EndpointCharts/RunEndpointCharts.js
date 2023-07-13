@@ -80,7 +80,7 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
                     onChange={(value) => {
                       setLabelsToShow(value);
                     }}
-                    value={labelsToShow}
+                    value={labelsToShow ? [labelsToShow].flat() : []}
                     maxTagCount="responsive"
                     allowClear={true}
                   >
