@@ -120,7 +120,7 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
                   ]}
                 >
                   <Input
-                    placeholder="Enter the prefix to exclude"
+                    placeholder="Enter prefix to exclude"
                     value={excludedPrefix}
                     onChange={(e) => setExcludedPrefix(e.target.value)}
                     style={{ width: "200px" }}
