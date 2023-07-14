@@ -26,9 +26,13 @@ import RunRunningTime from "./RunningTime";
 import StopExecutionButton from "./StopExecutionButton";
 import RunSummaryTable from "./SummaryTable";
 
+// eslint-disable-next-line max-statements
 const RunRunningStatus = ({ run }) => {
   const navigate = useNavigate();
   const [isRunMetricsAvailable, setIsRunMetricsAvailable] = useState(false);
+  const [labelToShow, setLabelToShow] = useState("");
+  const [renderLabel, setRenderLabel] = useState(false);
+  const [activeTabKey, setActiveTabKey] = useState("overview");
 
   const routes = [
     {
@@ -82,6 +86,11 @@ const RunRunningStatus = ({ run }) => {
         if (!isRunMetricsAvailable) return [];
         return [<StopExecutionButton runId={run.id} key="stopExecution" />];
     }
+  };
+
+  const setLabelToShowGraph = (label) => {
+    setLabelToShow(label);
+    setRenderLabel(true);
   };
 
   return (
@@ -140,7 +149,11 @@ const RunRunningStatus = ({ run }) => {
         </Col>
 
         <Col span={24}>
-          <Tabs defaultActiveKey="analytics">
+          <Tabs
+            defaultActiveKey={activeTabKey}
+            activeKey={activeTabKey}
+            onChange={setActiveTabKey}
+          >
             <Tabs.TabPane tab="Overview" key="overview">
               <RunAnalyticCharts
                 run={run}
@@ -155,15 +168,29 @@ const RunRunningStatus = ({ run }) => {
               key="summary"
               disabled={!isRunMetricsAvailable}
             >
-              <RunSummaryTable runId={run.id} />
+              <RunSummaryTable
+                runId={run.id}
+                setLabelToShowGraph={setLabelToShowGraph}
+                setActiveTabKey={setActiveTabKey}
+              />
             </Tabs.TabPane>
-            <Tabs.TabPane
-              tab="Endpoints"
-              key="endpoints"
-              disabled={!isRunMetricsAvailable}
-            >
-              <RunEndpointCharts run={run} />
-            </Tabs.TabPane>
+            {renderLabel ? (
+              <Tabs.TabPane
+                tab="Endpoints"
+                key="endpoints"
+                disabled={!isRunMetricsAvailable}
+              >
+                <RunEndpointCharts run={run} labelToShowGraph={labelToShow} />
+              </Tabs.TabPane>
+            ) : (
+              <Tabs.TabPane
+                tab="Endpoints"
+                key="endpoints"
+                disabled={!isRunMetricsAvailable}
+              >
+                <RunEndpointCharts run={run} />
+              </Tabs.TabPane>
+            )}
           </Tabs>
         </Col>
       </Row>

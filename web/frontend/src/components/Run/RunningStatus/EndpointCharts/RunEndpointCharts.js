@@ -1,5 +1,5 @@
 /* eslint-disable max-statements */
-import { Button, Col, Row, Select, Space } from "antd";
+import { Button, Col, Form, Input, Row, Select, Space } from "antd";
 import { orderBy } from "lodash";
 import React, { useEffect, useState } from "react";
 
@@ -7,13 +7,14 @@ import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
 import PageSpinner from "../../../layout/PageSpinner";
 import HitsErrorsLabelLine from "./HitsErrorsLabelLine";
 
-const RunEndpointsCharts = ({ run }) => {
+const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
   const defaultTimeInterval = 5;
   const showLabels = true;
   const [runMetrics, setRunMetrics] = useState([]);
-  const [labelsToShow, setLabelsToShow] = useState([]);
+  const [labelsToShow, setLabelsToShow] = useState([labelToShowGraph]);
   const [timeInterval, setTimeInterval] = useState(defaultTimeInterval);
   const [isLoading, setIsLoading] = useState(false);
+  const [excludedPrefix, setExcludedPrefix] = useState("UJ");
 
   const updateRunMetrics = async (runIdToFetch) => {
     setIsLoading(true);
@@ -39,8 +40,28 @@ const RunEndpointsCharts = ({ run }) => {
     Array.from(new Set(runMetrics.map(({ label }) => label)))
   );
 
+  useEffect(() => {
+    setLabelsToShow(labelToShowGraph);
+  }, [labelToShowGraph]);
+
+  const handleExcludePrefix = () => {
+    if (excludedPrefix) {
+      if (labelsToShow) {
+        setLabelsToShow(
+          labelsToShow.filter((label) => !label.startsWith(excludedPrefix))
+        );
+      }
+      const updatedLabels = labels.filter(
+        (label) => !label.startsWith(excludedPrefix)
+      );
+      setRunMetrics(
+        runMetrics.filter((metric) => updatedLabels.includes(metric.label))
+      );
+    }
+  };
+
   return (
-    <>
+    <Form>
       {isLoading ? (
         <PageSpinner />
       ) : (
@@ -76,6 +97,7 @@ const RunEndpointsCharts = ({ run }) => {
                     onChange={(value) => {
                       setLabelsToShow(value);
                     }}
+                    value={labelsToShow ? [labelsToShow].flat() : []}
                     maxTagCount="responsive"
                     allowClear={true}
                   >
@@ -86,6 +108,27 @@ const RunEndpointsCharts = ({ run }) => {
                 </>
                 <Button type="primary" onClick={refreshChart}>
                   Refresh
+                </Button>
+                <Form.Item
+                  name="excludedPrefix"
+                  noStyle
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter the prefix to exclude"
+                    }
+                  ]}
+                >
+                  <Input
+                    placeholder="Enter prefix to exclude"
+                    value={excludedPrefix}
+                    onChange={(e) => setExcludedPrefix(e.target.value)}
+                    style={{ width: "200px" }}
+                    allowClear={true}
+                  />
+                </Form.Item>
+                <Button type="primary" onClick={handleExcludePrefix}>
+                  Exclude
                 </Button>
               </Space>
             </Col>
@@ -108,7 +151,7 @@ const RunEndpointsCharts = ({ run }) => {
           </Row>
         </>
       )}
-    </>
+    </Form>
   );
 };
 export default RunEndpointsCharts;
