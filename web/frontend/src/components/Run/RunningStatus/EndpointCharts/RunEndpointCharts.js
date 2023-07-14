@@ -1,5 +1,5 @@
 /* eslint-disable max-statements */
-import { Button, Col, Row, Select, Space } from "antd";
+import { Button, Col, Form, Input, Row, Select, Space } from "antd";
 import { orderBy } from "lodash";
 import React, { useEffect, useState } from "react";
 
@@ -14,6 +14,7 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
   const [labelsToShow, setLabelsToShow] = useState([labelToShowGraph]);
   const [timeInterval, setTimeInterval] = useState(defaultTimeInterval);
   const [isLoading, setIsLoading] = useState(false);
+  const [excludedPrefix, setExcludedPrefix] = useState("UJ");
 
   const updateRunMetrics = async (runIdToFetch) => {
     setIsLoading(true);
@@ -43,8 +44,24 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
     setLabelsToShow(labelToShowGraph);
   }, [labelToShowGraph]);
 
+  const handleExcludePrefix = () => {
+    if (excludedPrefix) {
+      if (labelsToShow) {
+        setLabelsToShow(
+          labelsToShow.filter((label) => !label.startsWith(excludedPrefix))
+        );
+      }
+      const updatedLabels = labels.filter(
+        (label) => !label.startsWith(excludedPrefix)
+      );
+      setRunMetrics(
+        runMetrics.filter((metric) => updatedLabels.includes(metric.label))
+      );
+    }
+  };
+
   return (
-    <>
+    <Form>
       {isLoading ? (
         <PageSpinner />
       ) : (
@@ -92,6 +109,27 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
                 <Button type="primary" onClick={refreshChart}>
                   Refresh
                 </Button>
+                <Form.Item
+                  name="excludedPrefix"
+                  noStyle
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter the prefix to exclude"
+                    }
+                  ]}
+                >
+                  <Input
+                    placeholder="Enter the prefix to exclude"
+                    value={excludedPrefix}
+                    onChange={(e) => setExcludedPrefix(e.target.value)}
+                    style={{ width: "200px" }}
+                    allowClear={true}
+                  />
+                </Form.Item>
+                <Button type="primary" onClick={handleExcludePrefix}>
+                  Exclude
+                </Button>
               </Space>
             </Col>
             <Col span={24}>
@@ -113,7 +151,7 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
           </Row>
         </>
       )}
-    </>
+    </Form>
   );
 };
 export default RunEndpointsCharts;

@@ -1,3 +1,4 @@
+import { LineChartOutlined } from "@ant-design/icons";
 import { Button, Table, Typography } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -93,7 +94,6 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
       title: "Error count",
       dataIndex: "errorCount",
       key: "errorCount",
-      defaultSortOrder: "descend",
       render: (text, record) => (
         <span key={`${record.url}-error_count`}>{record.errorsCount}</span>
       ),
@@ -133,17 +133,16 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
       width: 120
     },
     {
-      title: "Actions",
       key: "actions",
+      width: 50,
       render: (text, record) => (
         <Button
+          icon={<LineChartOutlined />}
           onClick={() => {
             setLabelToShowGraph(record.label);
             setActiveTabKey("endpoints");
           }}
-        >
-          Show Chart
-        </Button>
+        ></Button>
       )
     }
   ];
@@ -197,13 +196,12 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
           rowKey="responseCode"
         />
         <Button
+          icon={<LineChartOutlined />}
           onClick={() => {
             setLabelToShowGraph(record.label);
             setActiveTabKey("endpoints");
           }}
-        >
-          Show Chart
-        </Button>
+        ></Button>
       </span>
     );
   };
@@ -260,6 +258,7 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
 
   useEffect(() => {
     updateUrlMetrics(runId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [runId]);
 
   return (
