@@ -87,7 +87,7 @@ const InitialConfiguration = ({ run }) => {
           <Panel header="Agents" key="agents">
             <Descriptions column={2} bordered>
               <Descriptions.Item
-                label="N. of agents"
+                label="N. of Agents"
                 key="numberOfAgents"
                 span={2}
                 style={{ width: "50%", textAlign: "center" }}
