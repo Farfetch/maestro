@@ -223,22 +223,6 @@ InitialConfiguration.propTypes = {
         value: PropTypes.string.isRequired
       })
     ).isRequired,
-    // runPlans: PropTypes.arrayOf(
-    //   PropTypes.shape({
-    //     uid: PropTypes.string.isRequired,
-    //     name: PropTypes.string.isRequired,
-    //     status: PropTypes.string.isRequired,
-    //     url: PropTypes.string.isRequired
-    //   })
-    // ).isRequired,
-    // customData: PropTypes.arrayOf(
-    //   PropTypes.shape({
-    //     uid: PropTypes.string.isRequired,
-    //     name: PropTypes.string.isRequired,
-    //     status: PropTypes.string.isRequired,
-    //     url: PropTypes.string.isRequired
-    //   })
-    // ).isRequired,
     loadProfile: PropTypes.any.isRequired
   }).isRequired
 };
