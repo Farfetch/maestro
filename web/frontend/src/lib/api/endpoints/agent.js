@@ -17,3 +17,11 @@ export const fetchAgents = async () => {
 
   return agents;
 };
+
+export const fetchAgentById = async (agentId) => {
+  const res = await maestroClient.get(`/api/agent/${agentId}`);
+
+  const agents = agentObjectMapper(res.data);
+
+  return agents;
+};

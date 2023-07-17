@@ -20,6 +20,7 @@ import RunAnalyticCharts from "./AnalyticCharts";
 import DownloadMetricsButton from "./DownloadMetricsButton";
 import RunEditableLabelsGroup from "./EditableLabelsGroup";
 import RunEndpointCharts from "./EndpointCharts";
+import InitialConfiguration from "./InitialConfiguration/InitialConfiguration";
 import MoreButtonsMenu from "./MoreButtonsMenu";
 import RunNotesInput from "./NotesInput";
 import RunRunningTime from "./RunningTime";
@@ -191,6 +192,12 @@ const RunRunningStatus = ({ run }) => {
                 <RunEndpointCharts run={run} />
               </Tabs.TabPane>
             )}
+            <Tabs.TabPane
+              tab="Initial Configuration"
+              key="initialConfiguration"
+            >
+              <InitialConfiguration run={run} />
+            </Tabs.TabPane>
           </Tabs>
         </Col>
       </Row>
