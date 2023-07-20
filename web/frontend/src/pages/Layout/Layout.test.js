@@ -3,6 +3,7 @@ import React from "react";
 import { MemoryRouter } from "react-router-dom";
 
 import { CurrentWorkspaceContext } from "../../context/CurrentWorkspace";
+import { RunningContext } from "../../context/Running";
 import { UserContext } from "../../context/User";
 import Layout from "./Layout";
 
@@ -23,15 +24,27 @@ describe("pages/Layout", () => {
         name: "workspace-2"
       }
     ];
+    const runs = [
+      {
+        id: "run-id",
+        title: "run-title"
+      },
+      {
+        id: "run-id2",
+        title: "run-title2"
+      }
+    ];
 
     const rendered = render(
       <UserContext.Provider value={{ user, workspaces }}>
         <CurrentWorkspaceContext.Provider
           value={{ currentWorkspace: workspaces[0] }}
         >
-          <MemoryRouter initialEntries={["/"]}>
-            <Layout />
-          </MemoryRouter>
+          <RunningContext.Provider value={{ runs }}>
+            <MemoryRouter initialEntries={["/"]}>
+              <Layout />
+            </MemoryRouter>
+          </RunningContext.Provider>
         </CurrentWorkspaceContext.Provider>
       </UserContext.Provider>
     );

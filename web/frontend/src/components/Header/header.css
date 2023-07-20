@@ -5,3 +5,13 @@ header {
 .ant-menu-horizontal {
   border-bottom: 1px solid transparent;
 }
+
+.ant-descriptions-bordered .ant-descriptions-view {
+  border-color: #d6d6d6;
+  border-radius: 20px;
+}
+
+.ant-descriptions-bordered.ant-descriptions-small .ant-descriptions-item-label, .ant-descriptions-bordered.ant-descriptions-small .ant-descriptions-item-content {
+  padding: 4px 12px;
+  border-color: solid #f0f0f0;
+}
