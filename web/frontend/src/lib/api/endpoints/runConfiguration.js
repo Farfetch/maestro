@@ -1,3 +1,4 @@
+import ErrorHandler from "../../../ErrorHandler";
 import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 
@@ -45,24 +46,29 @@ export const createRunConfiguration = async ({
   isScheduleEnabled,
   schedule
 }) => {
-  const res = await maestroClient.post(`/api/run_configuration`, {
-    title,
-    labels,
-    run_plan_id: runPlanId,
-    workspace_id: workspaceId,
-    agent_ids: agentIds,
-    custom_data_ids: customDataIds,
-    custom_properties: customProperties,
-    load_profile: loadProfile,
-    is_load_profile_enabled: isLoadProfileEnabled,
-    hosts,
-    is_schedule_enabled: isScheduleEnabled,
-    ...(schedule ? { schedule } : {})
-  });
+  try {
+    const res = await maestroClient.post(`/api/run_configuration`, {
+      title,
+      labels,
+      run_plan_id: runPlanId,
+      workspace_id: workspaceId,
+      agent_ids: agentIds,
+      custom_data_ids: customDataIds,
+      custom_properties: customProperties,
+      load_profile: loadProfile,
+      is_load_profile_enabled: isLoadProfileEnabled,
+      hosts,
+      is_schedule_enabled: isScheduleEnabled,
+      ...(schedule ? { schedule } : {})
+    });
 
-  const runConfiguration = runConfigurationObjectMapper(res.data);
+    const runConfiguration = runConfigurationObjectMapper(res.data);
 
-  return runConfiguration;
+    return runConfiguration;
+  } catch (error) {
+    ErrorHandler.handleError(error, "run configuration");
+    return [];
+  }
 };
 
 /**
@@ -95,27 +101,32 @@ export const updateRunConfiguration = async (
     schedule
   }
 ) => {
-  const res = await maestroClient.put(
-    `/api/run_configuration/${runConfigurationId}`,
-    {
-      title,
-      labels,
-      run_plan_id: runPlanId,
-      workspace_id: workspaceId,
-      agent_ids: agentIds,
-      custom_data_ids: customDataIds,
-      custom_properties: customProperties,
-      load_profile: loadProfile,
-      is_load_profile_enabled: isLoadProfileEnabled,
-      hosts,
-      is_schedule_enabled: isScheduleEnabled,
-      ...(schedule ? { schedule } : {})
-    }
-  );
+  try {
+    const res = await maestroClient.put(
+      `/api/run_configuration/${runConfigurationId}`,
+      {
+        title,
+        labels,
+        run_plan_id: runPlanId,
+        workspace_id: workspaceId,
+        agent_ids: agentIds,
+        custom_data_ids: customDataIds,
+        custom_properties: customProperties,
+        load_profile: loadProfile,
+        is_load_profile_enabled: isLoadProfileEnabled,
+        hosts,
+        is_schedule_enabled: isScheduleEnabled,
+        ...(schedule ? { schedule } : {})
+      }
+    );
 
-  const runConfiguration = runConfigurationObjectMapper(res.data);
+    const runConfiguration = runConfigurationObjectMapper(res.data);
 
-  return runConfiguration;
+    return runConfiguration;
+  } catch (error) {
+    ErrorHandler.handleError(error, "run configuration");
+    return [];
+  }
 };
 
 /**
@@ -124,13 +135,21 @@ export const updateRunConfiguration = async (
  * @returns {} runConfiguration
  */
 export const fetchRunConfigurationById = async (runConfigurationId) => {
-  const res = await maestroClient.get(
-    `/api/run_configuration/${runConfigurationId}`
-  );
+  try {
+    const res = await maestroClient.get(
+      `/api/run_configuration/${runConfigurationId}`
+    );
 
-  const runConfiguration = runConfigurationObjectMapper(res.data);
+    const runConfiguration = runConfigurationObjectMapper(res.data);
 
-  return runConfiguration;
+    return runConfiguration;
+  } catch (error) {
+    ErrorHandler.handleError(
+      error,
+      `run configuration with ID: ${runConfigurationId}`
+    );
+    return [];
+  }
 };
 
 /**
@@ -138,16 +157,21 @@ export const fetchRunConfigurationById = async (runConfigurationId) => {
  * @returns  [] runConfiguration
  */
 export const fetchRunConfigurations = async (filters = {}) => {
-  const params = {
-    params: {
-      ...(filters.workspaceId ? { workspace_id: filters.workspaceId } : {})
-    }
-  };
-  const res = await maestroClient.get("/api/run_configurations", params);
+  try {
+    const params = {
+      params: {
+        ...(filters.workspaceId ? { workspace_id: filters.workspaceId } : {})
+      }
+    };
+    const res = await maestroClient.get("/api/run_configurations", params);
 
-  const runConfigurations = res.data.map(runConfigurationObjectMapper);
+    const runConfigurations = res.data.map(runConfigurationObjectMapper);
 
-  return runConfigurations;
+    return runConfigurations;
+  } catch (error) {
+    ErrorHandler.handleError(error, "run configurations");
+    return [];
+  }
 };
 
 /**
@@ -155,11 +179,16 @@ export const fetchRunConfigurations = async (filters = {}) => {
  * @returns {RunConfiguration}
  */
 export const deleteRunConfiguration = async (runConfigurationId) => {
-  const res = await maestroClient.delete(
-    `/api/run_configuration/${runConfigurationId}`
-  );
+  try {
+    const res = await maestroClient.delete(
+      `/api/run_configuration/${runConfigurationId}`
+    );
 
-  const runConfiguration = runConfigurationObjectMapper(res.data);
+    const runConfiguration = runConfigurationObjectMapper(res.data);
 
-  return runConfiguration;
+    return runConfiguration;
+  } catch (error) {
+    ErrorHandler.handleError(error, "run configuration");
+    return [];
+  }
 };

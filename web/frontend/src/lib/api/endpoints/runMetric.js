@@ -1,3 +1,4 @@
+import ErrorHandler from "../../../ErrorHandler";
 import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 
@@ -26,16 +27,21 @@ export const fetchMetrics = async (
   timeInterval = 15,
   showLabels = false
 ) => {
-  const res = await maestroClient.get(`/api/run_metrics/${runId}`, {
-    params: {
-      time_interval: timeInterval,
-      ...(showLabels ? { show_labels: 1 } : {})
-    }
-  });
+  try {
+    const res = await maestroClient.get(`/api/run_metrics/${runId}`, {
+      params: {
+        time_interval: timeInterval,
+        ...(showLabels ? { show_labels: 1 } : {})
+      }
+    });
 
-  const metrics = res.data
-    .map(testRunMetricMapper)
-    .sort((firstEl, secondEl) => firstEl.minDatetime - secondEl.minDatetime);
+    const metrics = res.data
+      .map(testRunMetricMapper)
+      .sort((firstEl, secondEl) => firstEl.minDatetime - secondEl.minDatetime);
 
-  return metrics;
+    return metrics;
+  } catch (error) {
+    ErrorHandler.handleError(error, "metrics");
+    return [];
+  }
 };

@@ -1,3 +1,4 @@
+import ErrorHandler from "../../../ErrorHandler";
 import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 
@@ -10,11 +11,16 @@ const runPlanObjectMapper = (runPlan) => ({
 });
 
 export const fetchRunPlans = async () => {
-  const res = await maestroClient.get("/api/run_plans");
+  try {
+    const res = await maestroClient.get("/api/run_plans");
 
-  const runPlans = res.data.map(runPlanObjectMapper);
+    const runPlans = res.data.map(runPlanObjectMapper);
 
-  return runPlans;
+    return runPlans;
+  } catch (error) {
+    ErrorHandler.handleError(error, "run plans");
+    return [];
+  }
 };
 
 /**
@@ -23,11 +29,16 @@ export const fetchRunPlans = async () => {
  * @returns runPlan object
  */
 export const fetchRunPlanById = async (runPlanId) => {
-  const res = await maestroClient.get(`/api/run_plan/${runPlanId}`);
+  try {
+    const res = await maestroClient.get(`/api/run_plan/${runPlanId}`);
 
-  const runPlans = runPlanObjectMapper(res.data);
+    const runPlans = runPlanObjectMapper(res.data);
 
-  return runPlans;
+    return runPlans;
+  } catch (error) {
+    ErrorHandler.handleError(error, `run plan with ID: ${runPlanId}`);
+    return [];
+  }
 };
 
 /**
@@ -37,24 +48,29 @@ export const fetchRunPlanById = async (runPlanId) => {
  * @returns {runPlan} test plan object with id
  */
 export const createRunPlan = async ({ title, runPlan }) => {
-  const formData = new FormData();
-  formData.append("run_plan_file", runPlan);
-  formData.append("title", title);
-  const config = {
-    headers: {
-      "content-type": "multipart/form-data"
-    }
-  };
+  try {
+    const formData = new FormData();
+    formData.append("run_plan_file", runPlan);
+    formData.append("title", title);
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data"
+      }
+    };
 
-  const res = await maestroClient.post(
-    `/api/run_plan_from_file`,
-    formData,
-    config
-  );
+    const res = await maestroClient.post(
+      `/api/run_plan_from_file`,
+      formData,
+      config
+    );
 
-  const runPlanObject = runPlanObjectMapper(res.data);
+    const runPlanObject = runPlanObjectMapper(res.data);
 
-  return runPlanObject;
+    return runPlanObject;
+  } catch (error) {
+    ErrorHandler.handleError(error, "run plan");
+    return [];
+  }
 };
 
 export const createRunPlanBase64 = async ({
@@ -62,12 +78,17 @@ export const createRunPlanBase64 = async ({
   runPlanContentType,
   runPlanFileBase64
 }) => {
-  const res = await maestroClient.post(`/api/run_plan_from_base64`, {
-    title,
-    run_plan_file_content_type: runPlanContentType,
-    run_plan_file_base64: runPlanFileBase64
-  });
+  try {
+    const res = await maestroClient.post(`/api/run_plan_from_base64`, {
+      title,
+      run_plan_file_content_type: runPlanContentType,
+      run_plan_file_base64: runPlanFileBase64
+    });
 
-  const runPlanObject = runPlanObjectMapper(res.data);
-  return runPlanObject;
+    const runPlanObject = runPlanObjectMapper(res.data);
+    return runPlanObject;
+  } catch (error) {
+    ErrorHandler.handleError(error, "run plan");
+    return [];
+  }
 };

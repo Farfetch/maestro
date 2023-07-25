@@ -1,3 +1,4 @@
+import ErrorHandler from "../../../ErrorHandler";
 import { toLocalDate, toUtcString } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 import { agentLogLevel } from "../models";
@@ -18,15 +19,20 @@ const agentLogObjectMapper = (agentLog) => ({
  * @returns
  */
 export const fetchAgentLogs = async ({ dateFrom, level, agentIds = [] }) => {
-  const res = await maestroClient.get("/api/agent_logs", {
-    params: {
-      date_from: toUtcString(dateFrom),
-      level,
-      agent_ids: agentIds
-    }
-  });
+  try {
+    const res = await maestroClient.get("/api/agent_logs", {
+      params: {
+        date_from: toUtcString(dateFrom),
+        level,
+        agent_ids: agentIds
+      }
+    });
 
-  const agentLogs = res.data.map(agentLogObjectMapper);
+    const agentLogs = res.data.map(agentLogObjectMapper);
 
-  return agentLogs;
+    return agentLogs;
+  } catch (error) {
+    ErrorHandler.handleError(error, "agent logs");
+    return [];
+  }
 };

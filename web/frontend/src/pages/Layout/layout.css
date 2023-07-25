@@ -36,3 +36,16 @@ main {
     max-width: none;
   }
 }
+
+/* Custom Error Message */
+.ant-message-notice-content {
+  display: inline-block;
+  background: #e65353;
+  border-radius: 5px;
+  white-space: pre-wrap;
+  color: whitesmoke;
+}
+
+.ant-message {
+    top: 20px;
+}

@@ -1,3 +1,4 @@
+import ErrorHandler from "../../../ErrorHandler";
 import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 
@@ -11,17 +12,27 @@ const customDataObjectMapper = (customData) => ({
 });
 
 export const fetchCustomData = async () => {
-  const res = await maestroClient.get("/api/custom_data");
+  try {
+    const res = await maestroClient.get("/api/custom_data");
 
-  const customData = res.data.map(customDataObjectMapper);
+    const customData = res.data.map(customDataObjectMapper);
 
-  return customData;
+    return customData;
+  } catch (error) {
+    ErrorHandler.handleError(error, "custom data");
+    return [];
+  }
 };
 
 export const fetchCustomDataById = async (customDataId) => {
-  const res = await maestroClient.get(`/api/custom_data/${customDataId}`);
+  try {
+    const res = await maestroClient.get(`/api/custom_data/${customDataId}`);
 
-  return customDataObjectMapper(res.data);
+    return customDataObjectMapper(res.data);
+  } catch (error) {
+    ErrorHandler.handleError(error, `custom data with the ID: ${customDataId}`);
+    return [];
+  }
 };
 
 /**
@@ -30,24 +41,29 @@ export const fetchCustomDataById = async (customDataId) => {
  * @param {file} customData custom data file object
  */
 export const createCustomData = async ({ name, customData }) => {
-  const formData = new FormData();
-  formData.append("custom_data_file", customData);
-  formData.append("custom_data_name", name);
+  try {
+    const formData = new FormData();
+    formData.append("custom_data_file", customData);
+    formData.append("custom_data_name", name);
 
-  const config = {
-    headers: {
-      "content-type": "multipart/form-data"
-    }
-  };
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data"
+      }
+    };
 
-  const res = await maestroClient.post(
-    `/api/custom_data_from_file`,
-    formData,
-    config
-  );
+    const res = await maestroClient.post(
+      `/api/custom_data_from_file`,
+      formData,
+      config
+    );
 
-  const customDataObject = customDataObjectMapper(res.data);
-  return customDataObject;
+    const customDataObject = customDataObjectMapper(res.data);
+    return customDataObject;
+  } catch (error) {
+    ErrorHandler.handleError(error, "custom data");
+    return [];
+  }
 };
 
 export const createCustomData64 = async ({
@@ -55,12 +71,17 @@ export const createCustomData64 = async ({
   customDataContentType,
   customDataFileBase64
 }) => {
-  const res = await maestroClient.post(`/api/custom_data_from_base64`, {
-    name,
-    custom_data_file_content_type: customDataContentType,
-    custom_data_file_base64: customDataFileBase64
-  });
+  try {
+    const res = await maestroClient.post(`/api/custom_data_from_base64`, {
+      name,
+      custom_data_file_content_type: customDataContentType,
+      custom_data_file_base64: customDataFileBase64
+    });
 
-  const customDataObject = customDataObjectMapper(res.data);
-  return customDataObject;
+    const customDataObject = customDataObjectMapper(res.data);
+    return customDataObject;
+  } catch (error) {
+    ErrorHandler.handleError(error, "custom data");
+    return [];
+  }
 };

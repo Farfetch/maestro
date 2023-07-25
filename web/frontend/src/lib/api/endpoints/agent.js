@@ -1,3 +1,4 @@
+import ErrorHandler from "../../../ErrorHandler";
 import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 
@@ -11,17 +12,27 @@ const agentObjectMapper = (agent) => ({
 });
 
 export const fetchAgents = async () => {
-  const res = await maestroClient.get("/api/agents");
+  try {
+    const res = await maestroClient.get("/api/agents");
 
-  const agents = res.data.map(agentObjectMapper);
+    const agents = res.data.map(agentObjectMapper);
 
-  return agents;
+    return agents;
+  } catch (error) {
+    ErrorHandler.handleError(error, "agents");
+    return [];
+  }
 };
 
 export const fetchAgentById = async (agentId) => {
-  const res = await maestroClient.get(`/api/agent/${agentId}`);
+  try {
+    const res = await maestroClient.get(`/api/agent/${agentId}`);
 
-  const agents = agentObjectMapper(res.data);
+    const agents = agentObjectMapper(res.data);
 
-  return agents;
+    return agents;
+  } catch (error) {
+    ErrorHandler.handleError(error, `agent with the ID: ${agentId}`);
+    return [];
+  }
 };

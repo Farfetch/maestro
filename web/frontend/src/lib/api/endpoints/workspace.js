@@ -1,3 +1,4 @@
+import ErrorHandler from "../../../ErrorHandler";
 import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 
@@ -16,45 +17,65 @@ const workspaceObjectMapper = (workspace) => ({
  * @returns
  */
 export const fetchWorkspaces = async (filters = false) => {
-  const res = await maestroClient.get("/api/workspaces");
+  try {
+    const res = await maestroClient.get("/api/workspaces");
 
-  const workspaces = res.data.map(workspaceObjectMapper);
+    const workspaces = res.data.map(workspaceObjectMapper);
 
-  if (filters) {
-    return workspaces.filter(
-      ({ isDefault }) => isDefault === filters.isDefault
-    );
+    if (filters) {
+      return workspaces.filter(
+        ({ isDefault }) => isDefault === filters.isDefault
+      );
+    }
+
+    return workspaces;
+  } catch (error) {
+    ErrorHandler.handleError(error, "workspaces");
+    return [];
   }
-
-  return workspaces;
 };
 
 export const createWorkspace = async ({ name, usersEmail }) => {
-  const res = await maestroClient.post("/api/workspace", {
-    name,
-    users_email: usersEmail
-  });
+  try {
+    const res = await maestroClient.post("/api/workspace", {
+      name,
+      users_email: usersEmail
+    });
 
-  const createdWorkspace = workspaceObjectMapper(res.data);
+    const createdWorkspace = workspaceObjectMapper(res.data);
 
-  return createdWorkspace;
+    return createdWorkspace;
+  } catch (error) {
+    ErrorHandler.handleError(error, "workspace");
+    return [];
+  }
 };
 
 export const updateWorkspace = async (workspaceId, { name, usersEmail }) => {
-  const res = await maestroClient.put(`/api/workspace/${workspaceId}`, {
-    name,
-    users_email: usersEmail
-  });
+  try {
+    const res = await maestroClient.put(`/api/workspace/${workspaceId}`, {
+      name,
+      users_email: usersEmail
+    });
 
-  const updatedWorkspace = workspaceObjectMapper(res.data);
+    const updatedWorkspace = workspaceObjectMapper(res.data);
 
-  return updatedWorkspace;
+    return updatedWorkspace;
+  } catch (error) {
+    ErrorHandler.handleError(error, "workspace");
+    return [];
+  }
 };
 
 export const deleteWorkspace = async (workspaceId) => {
-  const res = await maestroClient.delete(`/api/workspace/${workspaceId}`);
+  try {
+    const res = await maestroClient.delete(`/api/workspace/${workspaceId}`);
 
-  const deletedWorkspace = workspaceObjectMapper(res.data);
+    const deletedWorkspace = workspaceObjectMapper(res.data);
 
-  return deletedWorkspace;
+    return deletedWorkspace;
+  } catch (error) {
+    ErrorHandler.handleError(error, "workspace");
+    return [];
+  }
 };
