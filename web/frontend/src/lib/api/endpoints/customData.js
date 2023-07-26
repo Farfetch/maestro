@@ -20,7 +20,7 @@ export const fetchCustomData = async () => {
     return customData;
   } catch (error) {
     ErrorHandler.handleError(error, "custom data");
-    return [];
+    throw error;
   }
 };
 
@@ -31,7 +31,7 @@ export const fetchCustomDataById = async (customDataId) => {
     return customDataObjectMapper(res.data);
   } catch (error) {
     ErrorHandler.handleError(error, `custom data with the ID: ${customDataId}`);
-    return [];
+    throw error;
   }
 };
 
@@ -62,7 +62,7 @@ export const createCustomData = async ({ name, customData }) => {
     return customDataObject;
   } catch (error) {
     ErrorHandler.handleError(error, "custom data");
-    return [];
+    throw error;
   }
 };
 
@@ -82,6 +82,6 @@ export const createCustomData64 = async ({
     return customDataObject;
   } catch (error) {
     ErrorHandler.handleError(error, "custom data");
-    return [];
+    throw error;
   }
 };

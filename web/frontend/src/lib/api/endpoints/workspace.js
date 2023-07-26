@@ -31,7 +31,7 @@ export const fetchWorkspaces = async (filters = false) => {
     return workspaces;
   } catch (error) {
     ErrorHandler.handleError(error, "workspaces");
-    return [];
+    throw error;
   }
 };
 
@@ -47,7 +47,7 @@ export const createWorkspace = async ({ name, usersEmail }) => {
     return createdWorkspace;
   } catch (error) {
     ErrorHandler.handleError(error, "workspace");
-    return [];
+    throw error;
   }
 };
 
@@ -63,7 +63,7 @@ export const updateWorkspace = async (workspaceId, { name, usersEmail }) => {
     return updatedWorkspace;
   } catch (error) {
     ErrorHandler.handleError(error, "workspace");
-    return [];
+    throw error;
   }
 };
 
@@ -76,6 +76,6 @@ export const deleteWorkspace = async (workspaceId) => {
     return deletedWorkspace;
   } catch (error) {
     ErrorHandler.handleError(error, "workspace");
-    return [];
+    throw error;
   }
 };

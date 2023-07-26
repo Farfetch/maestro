@@ -22,7 +22,7 @@ export const fetchMe = async () => {
     return user;
   } catch (error) {
     ErrorHandler.handleError(error, "user");
-    return [];
+    throw error;
   }
 };
 
@@ -35,7 +35,7 @@ export const fetchUsers = async () => {
     return users;
   } catch (error) {
     ErrorHandler.handleError(error, "users");
-    return [];
+    throw error;
   }
 };
 
@@ -58,7 +58,7 @@ export const createUser = async ({ name, email, role, workspaceIds }) => {
     return createdUser;
   } catch (error) {
     ErrorHandler.handleError(error, "user");
-    return [];
+    throw error;
   }
 };
 
@@ -85,7 +85,7 @@ export const updateUser = async (
     return updatedUser;
   } catch (error) {
     ErrorHandler.handleError(error, `userwith ID: ${userId}`);
-    return [];
+    throw error;
   }
 };
 
@@ -103,6 +103,6 @@ export const deleteUser = async (userId) => {
     return deletedUser;
   } catch (error) {
     ErrorHandler.handleError(error, "user");
-    return [];
+    throw error;
   }
 };

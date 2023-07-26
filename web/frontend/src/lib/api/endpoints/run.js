@@ -36,7 +36,7 @@ export const fetchRunById = async (runId) => {
     return run;
   } catch (error) {
     ErrorHandler.handleError(error, `run with the ID: ${runId}`);
-    return [];
+    throw error;
   }
 };
 
@@ -56,7 +56,7 @@ export const createRun = async (runConfigurationId) => {
     return run;
   } catch (error) {
     ErrorHandler.handleError(error, "run");
-    return [];
+    throw error;
   }
 };
 
@@ -69,7 +69,7 @@ export const startRun = async (runId) => {
     return run;
   } catch (error) {
     ErrorHandler.handleError(error, "run");
-    return [];
+    throw error;
   }
 };
 
@@ -82,7 +82,7 @@ export const stopRun = async (runId) => {
     return run;
   } catch (error) {
     ErrorHandler.handleError(error, "run");
-    return [];
+    throw error;
   }
 };
 
@@ -95,7 +95,7 @@ export const restartRun = async (runId) => {
     return run;
   } catch (error) {
     ErrorHandler.handleError(error, "run");
-    return [];
+    throw error;
   }
 };
 
@@ -118,7 +118,7 @@ export const fetchRuns = async (filters = {}) => {
     return runs;
   } catch (error) {
     ErrorHandler.handleError(error, "runs");
-    return [];
+    throw error;
   }
 };
 
@@ -137,7 +137,7 @@ export const updateRun = async (runId, params) => {
     return run;
   } catch (error) {
     ErrorHandler.handleError(error, "run");
-    return [];
+    throw error;
   }
 };
 
@@ -154,6 +154,6 @@ export const deleteRun = async (runId) => {
     return run;
   } catch (error) {
     ErrorHandler.handleError(error, "run");
-    return [];
+    throw error;
   }
 };

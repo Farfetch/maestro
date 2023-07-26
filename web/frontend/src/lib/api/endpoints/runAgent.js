@@ -26,6 +26,6 @@ export const fetchRunAgents = async ({ runId }) => {
     return agents;
   } catch (error) {
     ErrorHandler.handleError(error, "run agents");
-    return [];
+    throw error;
   }
 };

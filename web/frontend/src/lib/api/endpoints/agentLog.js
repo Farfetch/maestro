@@ -33,6 +33,6 @@ export const fetchAgentLogs = async ({ dateFrom, level, agentIds = [] }) => {
     return agentLogs;
   } catch (error) {
     ErrorHandler.handleError(error, "agent logs");
-    return [];
+    throw error;
   }
 };

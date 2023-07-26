@@ -19,7 +19,7 @@ export const fetchRunPlans = async () => {
     return runPlans;
   } catch (error) {
     ErrorHandler.handleError(error, "run plans");
-    return [];
+    throw error;
   }
 };
 
@@ -37,7 +37,7 @@ export const fetchRunPlanById = async (runPlanId) => {
     return runPlans;
   } catch (error) {
     ErrorHandler.handleError(error, `run plan with ID: ${runPlanId}`);
-    return [];
+    throw error;
   }
 };
 
@@ -69,7 +69,7 @@ export const createRunPlan = async ({ title, runPlan }) => {
     return runPlanObject;
   } catch (error) {
     ErrorHandler.handleError(error, "run plan");
-    return [];
+    throw error;
   }
 };
 
@@ -89,6 +89,6 @@ export const createRunPlanBase64 = async ({
     return runPlanObject;
   } catch (error) {
     ErrorHandler.handleError(error, "run plan");
-    return [];
+    throw error;
   }
 };

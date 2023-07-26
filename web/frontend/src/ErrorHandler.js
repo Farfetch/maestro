@@ -47,7 +47,7 @@ class ErrorHandler {
       }
     } else {
       // eslint-disable-next-line no-console
-      console.error("Non-Axios error:", error);
+      showError(error.message);
     }
   }
 
@@ -56,7 +56,7 @@ class ErrorHandler {
     let errorMessage = `Unexpected behavior\nError: ${status} - ${statusText}\n`;
 
     if (status === 400) {
-      errorMessage += "Request not corrected.";
+      errorMessage += "Request not correct.";
     } else if (status === 401) {
       errorMessage += "Unauthorized. Please log in.";
     } else if (status === 403) {

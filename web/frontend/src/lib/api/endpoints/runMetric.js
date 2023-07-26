@@ -42,6 +42,6 @@ export const fetchMetrics = async (
     return metrics;
   } catch (error) {
     ErrorHandler.handleError(error, "metrics");
-    return [];
+    throw error;
   }
 };

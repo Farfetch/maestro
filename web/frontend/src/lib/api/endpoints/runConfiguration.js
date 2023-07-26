@@ -67,7 +67,7 @@ export const createRunConfiguration = async ({
     return runConfiguration;
   } catch (error) {
     ErrorHandler.handleError(error, "run configuration");
-    return [];
+    throw error;
   }
 };
 
@@ -125,7 +125,7 @@ export const updateRunConfiguration = async (
     return runConfiguration;
   } catch (error) {
     ErrorHandler.handleError(error, "run configuration");
-    return [];
+    throw error;
   }
 };
 
@@ -148,7 +148,7 @@ export const fetchRunConfigurationById = async (runConfigurationId) => {
       error,
       `run configuration with ID: ${runConfigurationId}`
     );
-    return [];
+    throw error;
   }
 };
 
@@ -170,7 +170,7 @@ export const fetchRunConfigurations = async (filters = {}) => {
     return runConfigurations;
   } catch (error) {
     ErrorHandler.handleError(error, "run configurations");
-    return [];
+    throw error;
   }
 };
 
@@ -189,6 +189,6 @@ export const deleteRunConfiguration = async (runConfigurationId) => {
     return runConfiguration;
   } catch (error) {
     ErrorHandler.handleError(error, "run configuration");
-    return [];
+    throw error;
   }
 };

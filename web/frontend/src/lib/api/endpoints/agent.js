@@ -20,7 +20,7 @@ export const fetchAgents = async () => {
     return agents;
   } catch (error) {
     ErrorHandler.handleError(error, "agents");
-    return [];
+    throw error;
   }
 };
 
@@ -33,6 +33,6 @@ export const fetchAgentById = async (agentId) => {
     return agents;
   } catch (error) {
     ErrorHandler.handleError(error, `agent with the ID: ${agentId}`);
-    return [];
+    throw error;
   }
 };
