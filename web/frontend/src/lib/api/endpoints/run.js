@@ -1,3 +1,4 @@
+import ErrorHandler from "../../../ErrorHandler";
 import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 
@@ -27,12 +28,16 @@ const runObjectMapper = (run) => ({
  * @returns
  */
 export const fetchRunById = async (runId) => {
-  // TODO: handle 404 errors
-  const res = await maestroClient.get(`/api/run/${runId}`);
+  try {
+    const res = await maestroClient.get(`/api/run/${runId}`);
 
-  const run = runObjectMapper(res.data);
+    const run = runObjectMapper(res.data);
 
-  return run;
+    return run;
+  } catch (error) {
+    ErrorHandler.handleError(error, `run with the ID: ${runId}`);
+    throw error;
+  }
 };
 
 /**
@@ -41,55 +46,80 @@ export const fetchRunById = async (runId) => {
  * @returns run object
  */
 export const createRun = async (runConfigurationId) => {
-  const res = await maestroClient.post(`/api/run`, {
-    run_configuration_id: runConfigurationId
-  });
+  try {
+    const res = await maestroClient.post(`/api/run`, {
+      run_configuration_id: runConfigurationId
+    });
 
-  const run = runObjectMapper(res.data);
+    const run = runObjectMapper(res.data);
 
-  return run;
+    return run;
+  } catch (error) {
+    ErrorHandler.handleError(error, "run");
+    throw error;
+  }
 };
 
 export const startRun = async (runId) => {
-  const res = await maestroClient.post(`/api/run_status/${runId}/start`);
+  try {
+    const res = await maestroClient.post(`/api/run_status/${runId}/start`);
 
-  const run = runObjectMapper(res.data);
+    const run = runObjectMapper(res.data);
 
-  return run;
+    return run;
+  } catch (error) {
+    ErrorHandler.handleError(error, "run");
+    throw error;
+  }
 };
 
 export const stopRun = async (runId) => {
-  const res = await maestroClient.post(`/api/run_status/${runId}/stop`);
+  try {
+    const res = await maestroClient.post(`/api/run_status/${runId}/stop`);
 
-  const run = runObjectMapper(res.data);
+    const run = runObjectMapper(res.data);
 
-  return run;
+    return run;
+  } catch (error) {
+    ErrorHandler.handleError(error, "run");
+    throw error;
+  }
 };
 
 export const restartRun = async (runId) => {
-  const res = await maestroClient.post(`/api/run_status/${runId}/restart`);
+  try {
+    const res = await maestroClient.post(`/api/run_status/${runId}/restart`);
 
-  const run = runObjectMapper(res.data);
+    const run = runObjectMapper(res.data);
 
-  return run;
+    return run;
+  } catch (error) {
+    ErrorHandler.handleError(error, "run");
+    throw error;
+  }
 };
 
 export const fetchRuns = async (filters = {}) => {
-  const params = {
-    params: {
-      ...(filters.workspaceId ? { workspace_id: filters.workspaceId } : {}),
-      ...(filters.title ? { title: filters.title } : {}),
-      ...(filters.run_status ? { run_status: filters.run_status } : {}),
-      ...(filters.run_configuration_id
-        ? { run_configuration_id: filters.run_configuration_id }
-        : {})
-    }
-  };
-  const res = await maestroClient.get(`/api/runs`, params);
+  try {
+    const params = {
+      params: {
+        ...(filters.workspaceId ? { workspace_id: filters.workspaceId } : {}),
+        ...(filters.title ? { title: filters.title } : {}),
+        ...(filters.run_status ? { run_status: filters.run_status } : {}),
+        ...(filters.run_configuration_id
+          ? { run_configuration_id: filters.run_configuration_id }
+          : {})
+      }
+    };
+    const res = await maestroClient.get(`/api/runs`, params);
 
-  const runs = res.data.map(runObjectMapper);
+    const runs = res.data.map(runObjectMapper);
 
-  return runs;
+    return runs;
+  } catch (error) {
+    ErrorHandler.handleError(error, "runs");
+    throw error;
+  }
 };
 
 /**
@@ -99,11 +129,16 @@ export const fetchRuns = async (filters = {}) => {
  * @returns {Run}
  */
 export const updateRun = async (runId, params) => {
-  const res = await maestroClient.put(`/api/run/${runId}`, params);
+  try {
+    const res = await maestroClient.put(`/api/run/${runId}`, params);
 
-  const run = runObjectMapper(res.data);
+    const run = runObjectMapper(res.data);
 
-  return run;
+    return run;
+  } catch (error) {
+    ErrorHandler.handleError(error, "run");
+    throw error;
+  }
 };
 
 /**
@@ -111,9 +146,14 @@ export const updateRun = async (runId, params) => {
  * @returns {Run}
  */
 export const deleteRun = async (runId) => {
-  const res = await maestroClient.delete(`/api/run/${runId}`);
+  try {
+    const res = await maestroClient.delete(`/api/run/${runId}`);
 
-  const run = runObjectMapper(res.data);
+    const run = runObjectMapper(res.data);
 
-  return run;
+    return run;
+  } catch (error) {
+    ErrorHandler.handleError(error, "run");
+    throw error;
+  }
 };

@@ -5,7 +5,7 @@ import AgentsListTable from "../components/Agents/ListTable";
 import PageTitle from "../components/layout/PageTitle";
 import { fetchAgents } from "../lib/api/endpoints/agent";
 
-const TestsPage = () => {
+const AgentsPage = () => {
   const [agents, setAgents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,4 +34,4 @@ const TestsPage = () => {
   );
 };
 
-export default TestsPage;
+export default AgentsPage;

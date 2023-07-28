@@ -1,3 +1,4 @@
+import ErrorHandler from "../../../ErrorHandler";
 import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 
@@ -13,13 +14,18 @@ const runAgentObjectMapper = (runAgent) => ({
 });
 
 export const fetchRunAgents = async ({ runId }) => {
-  const res = await maestroClient.get("/api/run_agents", {
-    params: {
-      run_id: runId
-    }
-  });
+  try {
+    const res = await maestroClient.get("/api/run_agents", {
+      params: {
+        run_id: runId
+      }
+    });
 
-  const agents = res.data.map(runAgentObjectMapper);
+    const agents = res.data.map(runAgentObjectMapper);
 
-  return agents;
+    return agents;
+  } catch (error) {
+    ErrorHandler.handleError(error, "run agents");
+    throw error;
+  }
 };

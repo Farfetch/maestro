@@ -1,3 +1,4 @@
+import ErrorHandler from "../../../ErrorHandler";
 import { toLocalDate } from "../../date";
 import { maestroClient } from "../../services/maestroApi";
 
@@ -13,19 +14,29 @@ const userObjectMapper = (user) => ({
 });
 
 export const fetchMe = async () => {
-  const res = await maestroClient.get("/api/me");
+  try {
+    const res = await maestroClient.get("/api/me");
 
-  const user = userObjectMapper(res.data);
+    const user = userObjectMapper(res.data);
 
-  return user;
+    return user;
+  } catch (error) {
+    ErrorHandler.handleError(error, "user");
+    throw error;
+  }
 };
 
 export const fetchUsers = async () => {
-  const res = await maestroClient.get("/api/users");
+  try {
+    const res = await maestroClient.get("/api/users");
 
-  const users = res.data.map(userObjectMapper);
+    const users = res.data.map(userObjectMapper);
 
-  return users;
+    return users;
+  } catch (error) {
+    ErrorHandler.handleError(error, "users");
+    throw error;
+  }
 };
 
 /**
@@ -34,16 +45,21 @@ export const fetchUsers = async () => {
  * @returns User object
  */
 export const createUser = async ({ name, email, role, workspaceIds }) => {
-  const res = await maestroClient.post("/api/user", {
-    name,
-    email,
-    role,
-    workspace_ids: workspaceIds
-  });
+  try {
+    const res = await maestroClient.post("/api/user", {
+      name,
+      email,
+      role,
+      workspace_ids: workspaceIds
+    });
 
-  const createdUser = userObjectMapper(res.data);
+    const createdUser = userObjectMapper(res.data);
 
-  return createdUser;
+    return createdUser;
+  } catch (error) {
+    ErrorHandler.handleError(error, "user");
+    throw error;
+  }
 };
 
 /**
@@ -56,16 +72,21 @@ export const updateUser = async (
   userId,
   { name, email, role, workspaceIds }
 ) => {
-  const res = await maestroClient.put(`/api/user/${userId}`, {
-    name,
-    email,
-    role,
-    workspace_ids: workspaceIds
-  });
+  try {
+    const res = await maestroClient.put(`/api/user/${userId}`, {
+      name,
+      email,
+      role,
+      workspace_ids: workspaceIds
+    });
 
-  const updatedUser = userObjectMapper(res.data);
+    const updatedUser = userObjectMapper(res.data);
 
-  return updatedUser;
+    return updatedUser;
+  } catch (error) {
+    ErrorHandler.handleError(error, `userwith ID: ${userId}`);
+    throw error;
+  }
 };
 
 /**
@@ -74,9 +95,14 @@ export const updateUser = async (
  * @returns User object
  */
 export const deleteUser = async (userId) => {
-  const res = await maestroClient.delete(`/api/user/${userId}`);
+  try {
+    const res = await maestroClient.delete(`/api/user/${userId}`);
 
-  const deletedUser = userObjectMapper(res.data);
+    const deletedUser = userObjectMapper(res.data);
 
-  return deletedUser;
+    return deletedUser;
+  } catch (error) {
+    ErrorHandler.handleError(error, "user");
+    throw error;
+  }
 };
