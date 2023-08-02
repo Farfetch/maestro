@@ -68,17 +68,6 @@ def test_create_run_with_title_tokens(client):
     labels = ["label1", "label2"]
     custom_properties = [{"name": "testProperty", "value": "123"}]
 
-    available_in_response = {
-        "run_status": RunStatus.PENDING.value,
-        "title": title,
-        "run_configuration_id": run_configuration_id,
-        "run_plan_id": run_plan_id,
-        "workspace_id": workspace_id,
-        "agent_ids": agent_ids,
-        "labels": labels,
-        "custom_properties": custom_properties,
-    }
-
     RunConfiguration(
         id=run_configuration_id,
         workspace_id=workspace_id,
