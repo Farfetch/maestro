@@ -13,7 +13,7 @@ class RunRepository:
     Repository to manage common opperation over run and related agents
     """
 
-    def parse_title(self, title, num_agents, custom_properties, max_RPS):
+    def parse_title(self, title, num_agents, custom_properties, max_rps):
         token_regex = r"\{(.+?)\}"
 
         has_tokens = bool(re.search(token_regex, title))
@@ -22,7 +22,7 @@ class RunRepository:
 
         token_replacements = {
             "NUM_AGENTS": num_agents,
-            "MAX_RPS": "" if max_RPS == 0 else max_RPS,
+            "MAX_RPS": "" if max_rps == 0 else max_rps,
         }
 
         def replace_token(match):

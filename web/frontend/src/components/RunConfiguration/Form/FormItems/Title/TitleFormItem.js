@@ -29,7 +29,7 @@ const TitleFormItem = () => (
               <strong>{"{MAX_RPS}"}</strong> returns the maximum RPS value.{" "}
               <br />
               Any <strong>{"{Custom Property Name}"}</strong> will return the
-              and custom property value.
+              custom property value.
             </div>
           }
           placement="topRight"
