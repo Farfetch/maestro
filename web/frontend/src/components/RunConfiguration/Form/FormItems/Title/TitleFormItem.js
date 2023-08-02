@@ -1,21 +1,42 @@
-import { Form, Input, Select } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { Form, Input, Select, Tooltip } from "antd";
 import React from "react";
 
 const TitleFormItem = () => (
   <>
     <Form.Item label="Title">
-      <Form.Item
-        name="title"
-        noStyle
-        rules={[
-          {
-            required: true,
-            message: "Please enter Title"
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Form.Item
+          name="title"
+          noStyle
+          rules={[
+            {
+              required: true,
+              message: "Please enter Title"
+            }
+          ]}
+          style={{ flex: 1 }}
+        >
+          <Input />
+        </Form.Item>
+        <Tooltip
+          title={
+            <div>
+              You can use tokens in curly braces to dynamically replace them
+              with actual values. <br />
+              <strong>{"{NUM_AGENTS}"}</strong> returns the number of agents.{" "}
+              <br />
+              <strong>{"{MAX_RPS}"}</strong> returns the maximum RPS value.{" "}
+              <br />
+              Any <strong>{"{Custom Property Name}"}</strong> will return the
+              and custom property value.
+            </div>
           }
-        ]}
-      >
-        <Input />
-      </Form.Item>
+          placement="topRight"
+        >
+          <QuestionCircleOutlined style={{ marginLeft: "5px" }} />
+        </Tooltip>
+      </div>
     </Form.Item>
     <Form.Item label="Labels">
       <Form.Item name="labels" noStyle rules={[]}>

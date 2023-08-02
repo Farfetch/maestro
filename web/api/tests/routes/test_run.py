@@ -57,6 +57,57 @@ def test_create_run(client):
     assert available_in_response.items() <= res_json.items()
 
 
+def test_create_run_with_title_tokens(client):
+    workspace_id = "6076d1e3a216ff15b6e95e9a"
+    run_plan_id = "6076d1e3a216ff15b6e95e9d"
+    run_configuration_id = "6326d1e3a216ff15b6e95e9d"
+    agent_ids = ["6076d1bfb28b871d6bdb6095"]
+    agent_hostname = "agent1.net"
+    agent_ip = "127.0.0.5"
+    title = "Example test agents: {NUM_AGENTS} and custom property: {testProperty}"
+    labels = ["label1", "label2"]
+    custom_properties = [{"name": "testProperty", "value": "123"}]
+
+    available_in_response = {
+        "run_status": RunStatus.PENDING.value,
+        "title": title,
+        "run_configuration_id": run_configuration_id,
+        "run_plan_id": run_plan_id,
+        "workspace_id": workspace_id,
+        "agent_ids": agent_ids,
+        "labels": labels,
+        "custom_properties": custom_properties,
+    }
+
+    RunConfiguration(
+        id=run_configuration_id,
+        workspace_id=workspace_id,
+        title=title,
+        run_plan_id=run_plan_id,
+        agent_ids=agent_ids,
+        labels=labels,
+        custom_properties=custom_properties,
+    ).save()
+
+    Agent(id=agent_ids[0], ip=agent_ip, hostname=agent_hostname).save()
+
+    request_data = {
+        "run_configuration_id": run_configuration_id,
+    }
+    response = client.post(
+        "/run",
+        data=json.dumps(request_data),
+        content_type="application/json",
+    )
+    res_json = json.loads(response.data)
+
+    assert response.status_code == 200
+    assert "id" in res_json
+    assert "created_at" in res_json
+    assert "updated_at" in res_json
+    assert res_json["title"] == "Example test agents: 1 and custom property: 123"
+
+
 def test_create_run_with_agent_runs(client):
     workspace_id = "6076d1e3a216ff15b6e95e9a"
     run_plan_id = "6076d1e3a216ff15b6e95e9d"
