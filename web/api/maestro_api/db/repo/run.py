@@ -64,7 +64,7 @@ class RunRepository:
             run_configuration.title,
             len(run_configuration.agent_ids),
             run_configuration.custom_properties,
-            max_rps
+            max_rps,
         )
 
         new_run = Run(
