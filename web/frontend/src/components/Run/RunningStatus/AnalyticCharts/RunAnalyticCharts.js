@@ -121,17 +121,16 @@ const RunningTestAnalytics = ({
 
       <Col span={24}>
         <HitsErrorsLine
-          run={run}
           metrics={runMetrics}
           loadProfile={loadProfile}
           isLoadProfileEnabled={isLoadProfileEnabled}
         />
       </Col>
       <Col span={24}>
-        <ResponseTimeLine run={run} metrics={runMetrics} />
+        <ResponseTimeLine metrics={runMetrics} />
       </Col>
       <Col span={24}>
-        <ResponseCodesLine run={run} metrics={runMetrics} />
+        <ResponseCodesLine metrics={runMetrics} />
       </Col>
     </Row>
   );
