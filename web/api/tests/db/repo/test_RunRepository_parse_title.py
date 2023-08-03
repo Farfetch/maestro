@@ -82,4 +82,3 @@ def test_parse_title_invalid_token():
 
     expected_title = "SS23 Portal 100x1 - Duration:600 - loop:{bananinha}"
     assert parsed_title == expected_title
-
