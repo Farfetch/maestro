@@ -30,11 +30,13 @@ update_run_schema = {
             "type": "array",
             "items": {"type": "string"},
         },
+        "title": {"type": "string"},
     },
     "oneOf": [
         {"required": ["run_status"]},
         {"required": ["notes"]},
         {"required": ["labels"]},
+        {"required": ["title"]},
     ],
     "additionalProperties": False,
 }
