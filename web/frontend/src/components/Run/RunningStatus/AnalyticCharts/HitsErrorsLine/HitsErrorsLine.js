@@ -2,7 +2,7 @@ import "chartjs-adapter-moment";
 
 import { green, red } from "@ant-design/colors";
 import { Typography } from "antd";
-import { maxBy } from "lodash";
+import { maxBy, minBy } from "lodash";
 import React from "react";
 import { Line } from "react-chartjs-2";
 
@@ -17,7 +17,8 @@ const HitsErrorsLine = ({
   loadProfile,
   isLoadProfileEnabled
 }) => {
-  const { startedAt } = run;
+  // const { startedAt } = run;
+  const startedAt = minBy(metrics, "minDatetime")?.minDatetime;
   const finishedAt = maxBy(metrics, "maxDatetime")?.maxDatetime;
 
   const options = {
