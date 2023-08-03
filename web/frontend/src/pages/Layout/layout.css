@@ -49,3 +49,8 @@ main {
 .ant-message {
     top: 20px;
 }
+
+/* Page Header */
+.ant-page-header-heading {
+  align-items: center;
+}

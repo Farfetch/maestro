@@ -19,6 +19,7 @@ import RunStatusTag from "../../tag/RunStatusTag";
 import RunAnalyticCharts from "./AnalyticCharts";
 import DownloadMetricsButton from "./DownloadMetricsButton";
 import RunEditableLabelsGroup from "./EditableLabelsGroup";
+import EditableTitle from "./EditableTitle";
 import RunEndpointCharts from "./EndpointCharts";
 import InitialConfiguration from "./InitialConfiguration/InitialConfiguration";
 import MoreButtonsMenu from "./MoreButtonsMenu";
@@ -98,7 +99,7 @@ const RunRunningStatus = ({ run }) => {
     <PageHeader
       ghost={false}
       onBack={() => navigate(-1)}
-      title={run.title}
+      title={<EditableTitle runId={run.id} currentTitle={run.title} />}
       subTitle={
         <RunStatusTag
           runStatus={run.runStatus}

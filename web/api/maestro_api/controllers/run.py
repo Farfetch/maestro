@@ -106,6 +106,7 @@ class RunController:
         run_status = data.get("run_status", None)
         run_notes = data.get("notes", None)
         run_labels = data.get("labels", None)
+        run_title = data.get("title", None)
 
         if run_status is not None:
             run.update_status(run_status)
@@ -113,6 +114,8 @@ class RunController:
             run.notes = run_notes
         if run_labels is not None:
             run.labels = run_labels
+        if run_title is not None:
+            run.title = run_title
 
         run.save()
 
