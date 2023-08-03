@@ -11,13 +11,7 @@ import { defaultChartOptions } from "../../../../../lib/charts/defaultOptions";
 
 const { Title } = Typography;
 
-const HitsErrorsLine = ({
-  run,
-  metrics,
-  loadProfile,
-  isLoadProfileEnabled
-}) => {
-  // const { startedAt } = run;
+const HitsErrorsLine = ({ metrics, loadProfile, isLoadProfileEnabled }) => {
   const startedAt = minBy(metrics, "minDatetime")?.minDatetime;
   const finishedAt = maxBy(metrics, "maxDatetime")?.maxDatetime;
 
