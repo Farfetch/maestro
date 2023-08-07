@@ -202,6 +202,7 @@ agent_db_data = [
     ),
 ]
 
+
 @pytest.mark.parametrize(
     "db_data",
     [agent_db_data],
