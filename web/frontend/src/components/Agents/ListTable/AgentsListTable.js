@@ -1,9 +1,18 @@
-import { Table } from "antd";
+import { DisconnectOutlined } from "@ant-design/icons";
+import { Button, message, Space, Table } from "antd";
 import PropTypes from "prop-types";
 import React from "react";
 
+import { updateAgent } from "../../../lib/api/endpoints/agent";
 import { agentStatus as agentStatusModel } from "../../../lib/api/models";
 import AgentStatusBadge from "../../badge/AgentStatusBadge";
+
+const disableAgent = async (agentId) => {
+  await updateAgent(agentId, {
+    agent_status: "DISABLED"
+  });
+  message.success({ content: "Agent Disabled" });
+};
 
 const columns = [
   {
@@ -20,7 +29,7 @@ const columns = [
     title: "IP",
     dataIndex: "ip",
     key: "ip",
-    width: 180
+    width: 150
   },
   {
     title: "Status",
@@ -59,6 +68,27 @@ const columns = [
       compare: (recordA, recordB) => recordB.updatedAt.diff(recordA.updatedAt)
     },
     render: (text, record) => record.updatedAt.format("L HH:mm:ss")
+  },
+  {
+    key: "action",
+    width: 100,
+    render: (text, record) => (
+      <Space size="small">
+        <Button
+          type="link"
+          icon={<DisconnectOutlined />}
+          onClick={() => {
+            disableAgent(record.key);
+          }}
+          disabled={
+            record.agentStatus === "DISABLED" ||
+            record.agentStatus === "AVAILABLE"
+          }
+        >
+          Disable
+        </Button>
+      </Space>
+    )
   }
 ];
 

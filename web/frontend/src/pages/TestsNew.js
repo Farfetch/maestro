@@ -93,7 +93,9 @@ const TestsNewPage = () => {
 
   const updateAgentsList = async () => {
     setLoading(true);
-    const agentsRes = await fetchAgents();
+    const agentsRes = await fetchAgents({
+      agent_status: "DISABLED"
+    });
     setAgents(agentsRes);
     setLoading(false);
   };

@@ -26,6 +26,7 @@ from maestro_api.validation_schemas import (
     run_plan_download_schema,
     agent_create_schema,
     agent_update_schema,
+    agent_all_schema,
     agent_log_create_schema,
     agent_log_list_schema,
     custom_data_create_schema,
@@ -230,6 +231,7 @@ def init_api_routes(flask_app):
 
     @flask_app.route("/agents", methods=["GET"])
     @requires_auth()
+    @validate_request(agent_all_schema)
     def agent_all(*args, **kwargs):
         return agent_controller.all(*args, **kwargs)
 

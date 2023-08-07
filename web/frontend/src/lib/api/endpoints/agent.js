@@ -11,9 +11,14 @@ const agentObjectMapper = (agent) => ({
   updatedAt: toLocalDate(agent.updated_at)
 });
 
-export const fetchAgents = async () => {
+export const fetchAgents = async (filters = {}) => {
   try {
-    const res = await maestroClient.get("/api/agents");
+    const params = {
+      params: {
+        ...(filters.agent_status ? { agent_status: filters.agent_status } : {})
+      }
+    };
+    const res = await maestroClient.get(`/api/agents`, params);
 
     const agents = res.data.map(agentObjectMapper);
 
@@ -33,6 +38,19 @@ export const fetchAgentById = async (agentId) => {
     return agents;
   } catch (error) {
     ErrorHandler.handleError(error, `agent with the ID: ${agentId}`);
+    throw error;
+  }
+};
+
+export const updateAgent = async (agentId, params) => {
+  try {
+    const res = await maestroClient.put(`/api/agent/${agentId}`, params);
+
+    const agent = agentObjectMapper(res.data);
+
+    return agent;
+  } catch (error) {
+    ErrorHandler.handleError(error, "agent");
     throw error;
   }
 };

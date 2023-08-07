@@ -1,5 +1,5 @@
 from maestro_api.db.models.agent import Agent
-
+from mongoengine import Q
 from maestro_api.libs.flask.utils import (
     get_obj_or_404,
     jsonify_list_of_docs,
@@ -55,10 +55,20 @@ class AgentController:
 
         return jsonify(agent.to_dict())
 
-    def all(self, user):
+    def all(self, data, user):
         """
         Get list of Agents
         """
-        agents = Agent.objects()
+
+        agent_status = data.get("agent_status", None)
+        skip = int(data.get("skip", 0))
+        limit = int(data.get("limit", 1000))
+
+        filter_query = Q()
+
+        if agent_status is not None:
+            filter_query = filter_query & Q(agent_status__ne=agent_status)
+
+        agents = Agent.objects().filter(filter_query).skip(skip).limit(limit)
 
         return jsonify_list_of_docs(agents)
