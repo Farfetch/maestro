@@ -202,7 +202,10 @@ agent_db_data = [
     ),
 ]
 
-
+@pytest.mark.parametrize(
+    "db_data",
+    [agent_db_data],
+)
 @pytest.mark.parametrize(
     "input_params,expected_ids",
     [
