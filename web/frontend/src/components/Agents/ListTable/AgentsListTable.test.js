@@ -14,6 +14,14 @@ describe("components/Agents/ListTable", () => {
       agentStatus: "CREATING",
       createdAt: moment("2018-05-24T13:48:04.313000"),
       updatedAt: moment("2018-05-24T13:48:04.313000")
+    },
+    {
+      id: "agent-id",
+      ip: "agent IP",
+      hostname: "agent hostname",
+      agentStatus: "DISABLED",
+      createdAt: moment("2019-05-24T13:48:04.313000"),
+      updatedAt: moment("2019-05-24T13:48:04.313000")
     }
   ];
   test(`should render AgentsListTable component`, async () => {

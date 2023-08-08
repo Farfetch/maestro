@@ -27,7 +27,11 @@ const AgentsPage = () => {
       <PageTitle title={"Agents"} />
       <Row gutter={[32, 32]} justify="start" align="middle">
         <Col span={24}>
-          <AgentsListTable isLoading={isLoading} agents={agents} />
+          <AgentsListTable
+            isLoading={isLoading}
+            agents={agents}
+            updateTestPlans={updateTestPlans}
+          />
         </Col>
       </Row>
     </>

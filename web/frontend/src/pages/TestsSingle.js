@@ -38,7 +38,9 @@ const CreateTestPage = () => {
     );
     const runPlan = await fetchRunPlanById(runPlanId);
 
-    const agentsRes = await fetchAgents();
+    const agentsRes = await fetchAgents({
+      agent_status: "DISABLED"
+    });
     setAgents(agentsRes);
 
     setTestFormItialValues({

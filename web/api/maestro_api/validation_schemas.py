@@ -318,6 +318,20 @@ agent_update_schema = {
     "additionalProperties": False,
 }
 
+agent_all_schema = {
+    "type": "object",
+    "properties": {
+        "agent_status": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 20,
+        },
+        "limit": {"type": "string", "minLength": 1},
+        "skip": {"type": "string", "minLength": 1},
+    },
+    "additionalProperties": False,
+}
+
 agent_log_create_schema = {
     "properties": {
         "agent_id": {

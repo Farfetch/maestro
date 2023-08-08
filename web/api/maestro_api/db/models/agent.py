@@ -15,6 +15,7 @@ class AgentStatus(ExtendedEnum):
     PROCESSING_EVENT = "PROCESSING_EVENT"
     RUNNING_TEST = "RUNNING_TEST"
     UNAVAILABLE = "UNAVAILABLE"
+    DISABLED = "DISABLED"
 
 
 class Agent(CreatedUpdatedDocumentMixin):
