@@ -1,7 +1,7 @@
 import { DisconnectOutlined } from "@ant-design/icons";
-import { Button, message, Space, Table } from "antd";
+import { Button, Col, message, Row, Space, Switch, Table } from "antd";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 
 import { updateAgent } from "../../../lib/api/endpoints/agent";
 import { agentStatus as agentStatusModel } from "../../../lib/api/models";
@@ -82,7 +82,8 @@ const columns = [
           }}
           disabled={
             record.agentStatus === "DISABLED" ||
-            record.agentStatus === "AVAILABLE"
+            record.agentStatus === "AVAILABLE" ||
+            record.agentStatus === "RUNNING_TEST"
           }
         >
           Disable
@@ -109,16 +110,45 @@ const agentMapper = ({
 });
 
 const AgentsListTable = ({ agents, isLoading }) => {
-  const agentsDataSource = agents.map(agentMapper);
+  const [showDisabledAgents, setShowDisabledAgents] = useState(true);
+  const agentsDataSource = agents
+    .map(agentMapper)
+    .filter((agent) => showDisabledAgents || agent.agentStatus !== "DISABLED");
+
+  const handleDisabledAgents = (value) => {
+    setShowDisabledAgents(value);
+  };
 
   return (
-    <Table
-      size="small"
-      isLoading={isLoading}
-      dataSource={agentsDataSource}
-      columns={columns}
-      pagination={false}
-    />
+    <Row justify="end" align="middle">
+      <Col
+        span={12}
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          paddingBottom: "10px"
+        }}
+      >
+        <span>Show Disabled Agents</span>
+        <Switch
+          onChange={(value) => {
+            handleDisabledAgents(value);
+          }}
+          checked={showDisabledAgents}
+          style={{ marginLeft: 8 }}
+        />
+      </Col>
+      <Col span={24}>
+        <Table
+          size="small"
+          isLoading={isLoading}
+          dataSource={agentsDataSource}
+          columns={columns}
+          pagination={false}
+        />
+      </Col>
+    </Row>
   );
 };
 
