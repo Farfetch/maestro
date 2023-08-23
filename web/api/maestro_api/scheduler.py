@@ -65,9 +65,9 @@ def update_agent_status():
     Logger.info("backgroundJob: update_agent_status started")
     min_ago_date = now() - datetime.timedelta(minutes=1)
 
-    Agent.objects(updated_at__lte=min_ago_date).update(
-        set__agent_status=AgentStatus.UNAVAILABLE.value
-    )
+    Agent.objects(
+        updated_at__lte=min_ago_date, agent_status__ne=AgentStatus.DISABLED.value
+    ).update(set__agent_status=AgentStatus.UNAVAILABLE.value)
 
     Logger.info("backgroundJob: update_agent_status job finished")
 
