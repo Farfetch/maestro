@@ -2,14 +2,14 @@ import pytest
 from freezegun import freeze_time
 from datetime import datetime
 
-from maestro_api.db.models.agent import Agent
+from maestro_api.db.models.agent import Agent, AgentStatus
 from maestro_api.db.models.run_plan import RunPlan
 from maestro_api.db.models.run import Run
 from maestro_api.db.models.run_configuration import RunConfiguration
 from maestro_api.db.repo.run import RunRepository
 from maestro_api.enums import DaysOfTheWeek
 
-from maestro_api.scheduler import start_scheduled_run
+from maestro_api.scheduler import start_scheduled_run, update_agent_status
 
 
 @pytest.mark.parametrize(
@@ -123,3 +123,35 @@ def test_start_scheduled_run_second_time(app):
     assert "2012-01-02 10:02:00" == run_configurations[0].last_scheduled_at.strftime(
         "%Y-%m-%d %H:%M:%S"
     )
+
+
+@freeze_time("2012-01-02 10:02:00")
+def test_update_agent_status(app):
+    Agent(
+        id="6076d1e3a216ff15b6e95e8a",
+        hostname="host_1",
+        ip="ip_1",
+        agent_status=AgentStatus.AVAILABLE.value,
+    ).save()
+    Agent(
+        id="6076d1e3a216ff15b6e95e8b",
+        hostname="host_2",
+        ip="ip_2",
+        agent_status=AgentStatus.UNAVAILABLE.value,
+    ).save()
+    Agent(
+        id="6076d1e3a216ff15b6e95e8c",
+        hostname="host_3",
+        ip="ip_3",
+        agent_status=AgentStatus.DISABLED.value,
+    ).save()
+
+    update_agent_status()
+
+    agent1 = Agent.objects(id="6076d1e3a216ff15b6e95e8a").first()
+    agent2 = Agent.objects(id="6076d1e3a216ff15b6e95e8b").first()
+    agent3 = Agent.objects(id="6076d1e3a216ff15b6e95e8c").first()
+
+    assert agent1.agent_status == AgentStatus.AVAILABLE.value
+    assert agent2.agent_status == AgentStatus.UNAVAILABLE.value
+    assert agent3.agent_status == AgentStatus.DISABLED.value
