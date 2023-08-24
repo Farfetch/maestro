@@ -9,6 +9,7 @@ from maestro_api.db.models.run_configuration import RunConfiguration
 from maestro_api.db.repo.run import RunRepository
 from maestro_api.enums import DaysOfTheWeek
 
+
 from maestro_api.scheduler import start_scheduled_run, update_agent_status
 
 
@@ -125,7 +126,6 @@ def test_start_scheduled_run_second_time(app):
     )
 
 
-@freeze_time("2012-01-02 10:02:00")
 def test_update_agent_status(app):
     Agent(
         id="6076d1e3a216ff15b6e95e8a",
@@ -155,3 +155,20 @@ def test_update_agent_status(app):
     assert agent1.agent_status == AgentStatus.AVAILABLE.value
     assert agent2.agent_status == AgentStatus.UNAVAILABLE.value
     assert agent3.agent_status == AgentStatus.DISABLED.value
+
+
+def test_update_agent_status_with_agent_not_updating(app):
+    with freeze_time("2012-01-02 09:57:00") as frozen_datetime:
+        Agent(
+            id="6076d1e3a216ff15b6e95e8d",
+            hostname="host_4",
+            ip="ip_4",
+            agent_status=AgentStatus.AVAILABLE.value,
+        ).save()
+
+        frozen_datetime.move_to("2012-01-02 10:02:00")
+        update_agent_status()
+
+        agent1 = Agent.objects(id="6076d1e3a216ff15b6e95e8d").first()
+
+        assert agent1.agent_status == AgentStatus.UNAVAILABLE.value
