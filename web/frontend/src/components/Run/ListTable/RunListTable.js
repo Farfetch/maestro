@@ -15,7 +15,8 @@ const getColumns = (labels, refetch) => {
       dataIndex: "title",
       key: "title",
       width: 350,
-      ellipsis: true
+      ellipsis: true,
+      className: "truncate-column"
     },
     {
       title: "Notes",
@@ -119,6 +120,16 @@ const RunListTable = ({ runs, isLoading, refetch }) => {
   return (
     <Row gutter={[32, 32]} justify="start" align="middle">
       <Col span={24}>
+        <style>
+          {`
+          .truncate-column {
+            max-width: 300px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        `}
+        </style>
         <Table
           size="small"
           loading={isLoading}

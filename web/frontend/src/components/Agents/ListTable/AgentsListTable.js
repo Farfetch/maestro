@@ -42,6 +42,7 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
       title: "Hostname",
       dataIndex: "hostname",
       key: "hostname",
+      className: "truncate-column",
       sorter: {
         compare: (recordA, recordB) =>
           recordB.hostname.localeCompare(recordA.hostname)
@@ -140,6 +141,16 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
         />
       </Col>
       <Col span={24}>
+        <style>
+          {`
+          .truncate-column {
+            max-width: 200px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        `}
+        </style>
         <Table
           size="small"
           isLoading={isLoading}

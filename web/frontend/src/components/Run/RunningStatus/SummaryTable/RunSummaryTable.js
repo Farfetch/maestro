@@ -23,6 +23,7 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
       title: "Label",
       dataIndex: "label",
       key: "label",
+      className: "truncate-column",
       sorter: {
         compare: (recordA, recordB) => {
           if (recordA.url < recordB.label) {
@@ -263,6 +264,16 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
 
   return (
     <>
+      <style>
+        {`
+          .truncate-column {
+            max-width: 200px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        `}
+      </style>
       <Table
         size="small"
         loading={isLoading}
