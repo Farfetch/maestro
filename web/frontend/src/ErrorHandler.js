@@ -1,5 +1,3 @@
-import "./components/CustomErrorMessage/custom.css";
-
 import { message } from "antd";
 import axios from "axios";
 

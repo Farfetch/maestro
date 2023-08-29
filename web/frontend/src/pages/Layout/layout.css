@@ -40,10 +40,10 @@ main {
 /* Custom Error Message */
 .ant-message-notice-content {
   display: inline-block;
-  background: #e65353;
+  /* background: #efecec; */
   border-radius: 5px;
   white-space: pre-wrap;
-  color: whitesmoke;
+  color: rgb(44, 42, 42);
 }
 
 .ant-message {
