@@ -60,7 +60,7 @@ class ErrorHandler {
     } else if (status === 403) {
       errorMessage += "You do not have access rights to this resource.";
     } else if (status === 404) {
-      errorMessage += `The ${endpoint} was not found.`;
+      errorMessage += `The ${endpoint} endpoint was not found.`;
     } else if (status === 429) {
       errorMessage += "Please wait and try again.";
     } else if (status >= 500) {
