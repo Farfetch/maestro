@@ -1,7 +1,8 @@
 import { Collapse, Descriptions, Table } from "antd";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
+import { UserContext } from "../../../../context/User";
 import { fetchAgentById } from "../../../../lib/api/endpoints/agent";
 import { fetchCustomDataById } from "../../../../lib/api/endpoints/customData";
 import { fetchRunConfigurationById } from "../../../../lib/api/endpoints/runConfiguration";
@@ -16,6 +17,7 @@ import LoadConfigurationChart from "../../../RunConfiguration/Form/FormItems/Loa
 const { Panel } = Collapse;
 
 const InitialConfiguration = ({ run }) => {
+  const { user } = useContext(UserContext);
   const [isLoading, setLoading] = useState(true);
   const [initialValues, setInitialValues] = useState(null);
   const defaultActivePanels = [
@@ -84,6 +86,19 @@ const InitialConfiguration = ({ run }) => {
         <PageSpinner />
       ) : (
         <Collapse defaultActiveKey={defaultActivePanels}>
+          <Panel header="User" key="user">
+            <Descriptions column={2} bordered>
+              <Descriptions.Item
+                label="User Name"
+                key="userName"
+                span={2}
+                style={{ width: "50%", textAlign: "center" }}
+              >
+                {user.name}
+              </Descriptions.Item>
+            </Descriptions>
+          </Panel>
+
           <Panel header="Agents" key="agents">
             <Descriptions column={2} bordered>
               <Descriptions.Item
