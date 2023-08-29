@@ -86,19 +86,6 @@ const InitialConfiguration = ({ run }) => {
         <PageSpinner />
       ) : (
         <Collapse defaultActiveKey={defaultActivePanels}>
-          <Panel header="User" key="user">
-            <Descriptions column={2} bordered>
-              <Descriptions.Item
-                label="User Name"
-                key="userName"
-                span={2}
-                style={{ width: "50%", textAlign: "center" }}
-              >
-                {user.name}
-              </Descriptions.Item>
-            </Descriptions>
-          </Panel>
-
           <Panel header="Agents" key="agents">
             <Descriptions column={2} bordered>
               <Descriptions.Item
@@ -216,6 +203,19 @@ const InitialConfiguration = ({ run }) => {
                 <p> Load Profiler was disabled. </p>
               )}
             </div>
+          </Panel>
+
+          <Panel header="User" key="user">
+            <Descriptions column={2} bordered>
+              <Descriptions.Item
+                label="User Name"
+                key="userName"
+                span={2}
+                style={{ width: "50%", textAlign: "center" }}
+              >
+                {user ? user.name : " - "}
+              </Descriptions.Item>
+            </Descriptions>
           </Panel>
         </Collapse>
       )}
