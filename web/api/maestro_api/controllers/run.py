@@ -76,7 +76,7 @@ class RunController:
                 title = None
 
         if title is not None:
-            filter_query = filter_query & Q(title__contains=title)
+            filter_query = filter_query & Q(title__icontains=title)
 
         runs = Run.objects.filter(filter_query).order_by(sort).skip(skip).limit(limit)
 
