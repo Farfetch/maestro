@@ -108,18 +108,21 @@ const ResponseCodes = ({ runId }) => {
             ) {
               return (
                 <Panel header={`${responseCode}`} key={responseCode}>
-                  <Table
-                    dataSource={metrics.map((metric) => ({
-                      label: metric.key,
-                      errorsCount: metric.errorsCount,
-                      responses: metric.responses.filter(
-                        (response) =>
-                          response.responseCode.toString() === responseCode
-                      )
-                    }))}
-                    columns={columns}
-                    pagination={false}
-                  />
+                  <div key={`table-${responseCode}`}>
+                    <Table
+                      dataSource={metrics.map((metric, index) => ({
+                        key: `${metric.key}-${index}`,
+                        label: metric.key,
+                        errorsCount: metric.errorsCount,
+                        responses: metric.responses.filter(
+                          (response) =>
+                            response.responseCode.toString() === responseCode
+                        )
+                      }))}
+                      columns={columns}
+                      pagination={false}
+                    />
+                  </div>
                 </Panel>
               );
             }
