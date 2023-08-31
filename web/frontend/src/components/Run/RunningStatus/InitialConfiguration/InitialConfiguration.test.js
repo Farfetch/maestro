@@ -1,9 +1,16 @@
 import { render } from "@testing-library/react";
 import React from "react";
 
+import { UserContext } from "../../../../context/User";
 import InitialConfiguration from "./InitialConfiguration";
 
 describe("InitialConfiguration", () => {
+  const mockUserContext = {
+    user: {
+      name: "Test User"
+    }
+  };
+
   const mockRun = {
     runConfigurationId: "123",
     runPlans: [
@@ -72,7 +79,11 @@ describe("InitialConfiguration", () => {
   };
 
   test("should render InitialConfiguration component", () => {
-    const rendered = render(<InitialConfiguration run={mockRun} />);
+    const rendered = render(
+      <UserContext.Provider value={mockUserContext}>
+        <InitialConfiguration run={mockRun} />
+      </UserContext.Provider>
+    );
     const component = rendered.container;
     expect(component.outerHTML).toMatchSnapshot();
   });
