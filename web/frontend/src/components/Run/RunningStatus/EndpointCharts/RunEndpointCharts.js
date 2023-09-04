@@ -1,5 +1,15 @@
 /* eslint-disable max-statements */
-import { Button, Col, Form, Input, Row, Select, Space, Tag } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  Row,
+  Select,
+  Space,
+  Tag,
+  Typography
+} from "antd";
 import { orderBy } from "lodash";
 import React, { useEffect, useState } from "react";
 
@@ -146,18 +156,21 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
                   Exclude
                 </Button>
               </Space>
-              <div style={{ marginTop: "10px" }}>
-                {excludedPrefixes.map((prefix) => (
-                  <Tag
-                    key={prefix}
-                    closable={true}
-                    onClose={() => handleRemoveExcludedPrefix(prefix)}
-                    style={{ margin: "2px" }}
-                  >
-                    {prefix}
-                  </Tag>
-                ))}
-              </div>
+              {excludedPrefixes.length > 0 && (
+                <div style={{ marginTop: "10px" }}>
+                  <Typography.Text strong>Excluded Prefixes:</Typography.Text>
+                  {excludedPrefixes.map((prefix) => (
+                    <Tag
+                      key={prefix}
+                      closable={true}
+                      onClose={() => handleRemoveExcludedPrefix(prefix)}
+                      style={{ margin: "2px" }}
+                    >
+                      {prefix}
+                    </Tag>
+                  ))}
+                </div>
+              )}
             </Col>
             <Col span={24}>
               <HitsErrorsLabelLine
