@@ -82,7 +82,14 @@ const ResponseCodes = ({ runId }) => {
         <div>
           {responses.map((response, idx) => (
             <Text key={`${response.responseCode}-${idx}`}>
-              {response.messages}
+              {response.messages.map((message, msgIdx) => (
+                <React.Fragment
+                  key={`${response.responseCode}-${idx}-${msgIdx}`}
+                >
+                  {message}
+                  {msgIdx !== response.messages.length - 1 && <br />}
+                </React.Fragment>
+              ))}
               <br />
             </Text>
           ))}
