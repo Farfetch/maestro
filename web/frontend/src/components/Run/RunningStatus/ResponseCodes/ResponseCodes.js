@@ -1,4 +1,4 @@
-import { Collapse, Table, Typography } from "antd";
+import { Badge, Collapse, Table, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 
 import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
@@ -67,14 +67,6 @@ const ResponseCodes = ({ runId }) => {
       sorter: (a, b) => a.label.localeCompare(b.label)
     },
     {
-      title: "Errors Count",
-      dataIndex: "errorsCount",
-      key: "errorsCount",
-      width: 150,
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.errorsCount - b.errorsCount
-    },
-    {
       title: "Response Messages",
       dataIndex: "responses",
       key: "responses",
@@ -95,11 +87,22 @@ const ResponseCodes = ({ runId }) => {
           ))}
         </div>
       )
+    },
+    {
+      title: "Errors Count",
+      dataIndex: "errorsCount",
+      key: "errorsCount",
+      width: 150,
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.errorsCount - b.errorsCount
     }
   ];
 
   return (
     <>
+      <div>
+        <h3>{`Error Codes ( Filter applied: < 100 and > 400 )`}</h3>
+      </div>
       {isLoading ? (
         <PageSpinner />
       ) : (
@@ -113,8 +116,22 @@ const ResponseCodes = ({ runId }) => {
               numericResponseCode > 399 ||
               typeof responseCode !== "string"
             ) {
+              // Calculate the total errors count for this group
+              const totalErrorsCount = metrics.reduce(
+                (acc, metric) => acc + metric.errorsCount,
+                0
+              );
+
               return (
-                <Panel header={`${responseCode}`} key={responseCode}>
+                <Panel
+                  header={
+                    <span>
+                      {responseCode}{" "}
+                      <Badge count={totalErrorsCount} overflowCount={99999} />
+                    </span>
+                  }
+                  key={responseCode}
+                >
                   <div key={`table-${responseCode}`}>
                     <Table
                       dataSource={metrics.map((metric, index) => ({
