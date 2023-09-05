@@ -194,7 +194,7 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
                   </Button>
                   {excludedPrefixes.length > 0 && (
                     <div style={{ marginTop: "4px" }}>
-                      Prefixes:
+                      Currently Excluded :
                       {excludedPrefixes.map((prefix) => (
                         <Tag
                           key={prefix}
