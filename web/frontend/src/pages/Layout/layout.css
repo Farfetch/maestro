@@ -54,3 +54,9 @@ main {
 .ant-page-header-heading {
   align-items: center;
 }
+
+.truncate-option {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
