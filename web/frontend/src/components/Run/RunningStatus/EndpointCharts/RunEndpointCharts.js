@@ -1,15 +1,5 @@
 /* eslint-disable max-statements */
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  Row,
-  Select,
-  Space,
-  Tag,
-  Typography
-} from "antd";
+import { Button, Col, Form, Input, Row, Select, Space, Tag } from "antd";
 import { orderBy } from "lodash";
 import React, { useEffect, useState } from "react";
 
@@ -164,43 +154,45 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
                 </>
               </Space>
               <Space align="center">
-                <Form.Item
-                  name="excludedPrefix"
-                  noStyle
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter the prefix to exclude"
-                    }
-                  ]}
-                >
-                  <Input
-                    placeholder="Enter prefix to exclude"
-                    value={excludedPrefix}
-                    onChange={(e) => setExcludedPrefix(e.target.value)}
-                    style={{ width: "200px", marginRight: "5px" }}
-                    allowClear={true}
-                  />
-                </Form.Item>
-                <Button type="primary" onClick={handleExcludePrefix}>
-                  Exclude
-                </Button>
-
-                {excludedPrefixes.length > 0 && (
-                  <div style={{ marginTop: "4px" }}>
-                    <Typography.Text strong>Excluded Prefixes:</Typography.Text>
-                    {excludedPrefixes.map((prefix) => (
-                      <Tag
-                        key={prefix}
-                        closable={true}
-                        onClose={() => handleRemoveExcludedPrefix(prefix)}
-                        style={{ margin: "2px" }}
-                      >
-                        {prefix}
-                      </Tag>
-                    ))}
-                  </div>
-                )}
+                <>
+                  <div style={{ marginRight: "-4px" }}>Prefixes:</div>
+                  <Form.Item
+                    name="excludedPrefix"
+                    noStyle
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter the prefix to exclude"
+                      }
+                    ]}
+                  >
+                    <Input
+                      placeholder="Enter prefix to exclude"
+                      value={excludedPrefix}
+                      onChange={(e) => setExcludedPrefix(e.target.value)}
+                      style={{ width: "200px", marginRight: "5px" }}
+                      allowClear={true}
+                    />
+                  </Form.Item>
+                  <Button type="primary" onClick={handleExcludePrefix}>
+                    Exclude
+                  </Button>
+                  {excludedPrefixes.length > 0 && (
+                    <div style={{ marginTop: "4px" }}>
+                      Currently Excluded :
+                      {excludedPrefixes.map((prefix) => (
+                        <Tag
+                          key={prefix}
+                          closable={true}
+                          onClose={() => handleRemoveExcludedPrefix(prefix)}
+                          style={{ margin: "2px" }}
+                        >
+                          {prefix}
+                        </Tag>
+                      ))}
+                    </div>
+                  )}
+                </>
               </Space>
             </Col>
             <Col span={24}>
