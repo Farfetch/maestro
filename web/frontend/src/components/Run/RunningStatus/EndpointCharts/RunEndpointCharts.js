@@ -1,4 +1,5 @@
 /* eslint-disable max-statements */
+
 import { Button, Col, Form, Input, Row, Select, Space, Tag } from "antd";
 import { orderBy } from "lodash";
 import React, { useEffect, useState } from "react";
@@ -85,6 +86,7 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
   const truncateLabel = (label, maxLength) => {
     if (label.length <= maxLength) {
       return label;
+
     }
     return `${label.slice(0, maxLength)}...`;
   };
@@ -95,6 +97,13 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
 
   const handleUnselectAll = () => {
     setLabelsToShow([]);
+  };
+
+  const handleRemoveExcludedPrefix = (prefixToRemove) => {
+    setExcludedPrefixes((prevExcludedPrefixes) =>
+      prevExcludedPrefixes.filter((prefix) => prefix !== prefixToRemove)
+    );
+    refreshChart();
   };
 
   return (
@@ -194,6 +203,21 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
                   )}
                 </>
               </Space>
+              {excludedPrefixes.length > 0 && (
+                <div style={{ marginTop: "10px" }}>
+                  <Typography.Text strong>Excluded Prefixes:</Typography.Text>
+                  {excludedPrefixes.map((prefix) => (
+                    <Tag
+                      key={prefix}
+                      closable={true}
+                      onClose={() => handleRemoveExcludedPrefix(prefix)}
+                      style={{ margin: "2px" }}
+                    >
+                      {prefix}
+                    </Tag>
+                  ))}
+                </div>
+              )}
             </Col>
             <Col span={24}>
               <HitsErrorsLabelLine

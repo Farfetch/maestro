@@ -21,9 +21,10 @@ import DownloadMetricsButton from "./DownloadMetricsButton";
 import RunEditableLabelsGroup from "./EditableLabelsGroup";
 import EditableTitle from "./EditableTitle";
 import RunEndpointCharts from "./EndpointCharts";
-import InitialConfiguration from "./InitialConfiguration/InitialConfiguration";
+import InitialConfiguration from "./InitialConfiguration";
 import MoreButtonsMenu from "./MoreButtonsMenu";
 import RunNotesInput from "./NotesInput";
+import ResponseCodes from "./ResponseCodes";
 import RunRunningTime from "./RunningTime";
 import StopExecutionButton from "./StopExecutionButton";
 import RunSummaryTable from "./SummaryTable";
@@ -175,6 +176,13 @@ const RunRunningStatus = ({ run }) => {
                 setLabelToShowGraph={setLabelToShowGraph}
                 setActiveTabKey={setActiveTabKey}
               />
+            </Tabs.TabPane>
+            <Tabs.TabPane
+              tab="Errors"
+              key="responseCodes"
+              disabled={!isRunMetricsAvailable}
+            >
+              <ResponseCodes runId={run.id} />
             </Tabs.TabPane>
             {renderLabel ? (
               <Tabs.TabPane
