@@ -20,7 +20,7 @@ const HitsErrorsLine = ({ metrics, loadProfile, isLoadProfileEnabled }) => {
     ...defaultChartOptions(startedAt, finishedAt)
   };
 
-  if (isLoadProfileEnabled && startedAt) {
+  if (isLoadProfileEnabled && startedAt && loadProfile.length !== 0) {
     const loadProfileTimeframe = loadProfileToTimeframe(startedAt, loadProfile);
     const loadProfileDuration = moment.duration(
       loadProfileTimeframe[loadProfileTimeframe.length - 1].datetime.diff(
