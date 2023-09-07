@@ -43,7 +43,7 @@ const RunStatusStepsMonitor = ({ runId, children }) => {
     }, updateRunInterval);
 
     return () => clearInterval(interval);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [runId, isIntervalLoading]);
 
   return children({ isLoading, run });
