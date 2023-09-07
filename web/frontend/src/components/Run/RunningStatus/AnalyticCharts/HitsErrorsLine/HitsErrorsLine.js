@@ -25,12 +25,9 @@ const HitsErrorsLine = ({
     ...defaultChartOptions(startedAt, finishedAt)
   };
 
-  if (isLoadProfileEnabled && startedAt) {
-    const loadProfileTimeframe = loadProfileToTimeframe(
-      startedAt,
-      loadProfile,
-      numAgents
-    );
+  if (isLoadProfileEnabled && startedAt && loadProfile.length !== 0) {
+    const loadProfileTimeframe = loadProfileToTimeframe(startedAt, loadProfile);
+
     const loadProfileDuration = moment.duration(
       loadProfileTimeframe[loadProfileTimeframe.length - 1].datetime.diff(
         startedAt
