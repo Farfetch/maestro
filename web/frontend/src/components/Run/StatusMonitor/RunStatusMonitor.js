@@ -4,18 +4,10 @@ import { fetchRunById } from "../../../lib/api/endpoints/run";
 
 const RunStatusStepsMonitor = ({ runId, children }) => {
   const [isIntervalLoading, setIsIntervalLoading] = useState(false);
-  const [run, setRun] = useState(null);
+  const [run, setRun] = useState({ runStatus: "PENDING" });
   const [isLoading, setIsLoading] = useState(true);
 
   const updateRunInterval = 5000;
-
-  const updateRunData = async (runIdToUpdate) => {
-    setIsIntervalLoading(true);
-    const runData = await fetchRunById(runIdToUpdate);
-
-    setRun(runData);
-    setIsIntervalLoading(false);
-  };
 
   // The function is executed only first time to make page load
   const loadRunData = async (runIdToLoad) => {
@@ -25,6 +17,24 @@ const RunStatusStepsMonitor = ({ runId, children }) => {
     setIsLoading(false);
   };
 
+  const updateRunData = async (runIdToUpdate) => {
+    if (
+      run?.runStatus === "PENDING" ||
+      run?.runStatus === "CREATING" ||
+      run?.runStatus === "RUNNING"
+    ) {
+      setIsIntervalLoading(true);
+      const runData = await fetchRunById(runIdToUpdate);
+
+      setRun(runData);
+      setIsIntervalLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadRunData(runId);
+  }, [runId]);
+
   // Monitors runStatus to give real-time montoring about running test
   useEffect(() => {
     const interval = setInterval(() => {
@@ -33,11 +43,8 @@ const RunStatusStepsMonitor = ({ runId, children }) => {
     }, updateRunInterval);
 
     return () => clearInterval(interval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [runId, isIntervalLoading]);
-
-  useEffect(() => {
-    loadRunData(runId);
-  }, [runId]);
 
   return children({ isLoading, run });
 };
