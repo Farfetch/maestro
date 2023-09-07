@@ -124,6 +124,7 @@ const RunningTestAnalytics = ({
           metrics={runMetrics}
           loadProfile={loadProfile}
           isLoadProfileEnabled={isLoadProfileEnabled}
+          numAgents={run.agentIds.length}
         />
       </Col>
       <Col span={24}>

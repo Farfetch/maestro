@@ -1,10 +1,13 @@
 import moment from "moment";
 
-const loadProfileToTimeframe = (firstDatetime, loadProfile) => {
+const loadProfileToTimeframe = (firstDatetime, loadProfile, numAgents) => {
   const getTime = (datetime) =>
     moment.utc(datetime.diff(firstDatetime)).format("mm:ss");
 
   const createTimeframeReducer = (previous, { start, end, duration }) => {
+    const allAgentsStart = start * numAgents;
+    const allAgentsEnd = end * numAgents;
+
     const lastDatetime = moment(
       previous.length > 0
         ? previous[previous.length - 1].datetime
@@ -12,7 +15,7 @@ const loadProfileToTimeframe = (firstDatetime, loadProfile) => {
     );
 
     previous.push({
-      rps: start,
+      rps: allAgentsStart,
       datetime: lastDatetime,
       time: previous.length === 0 ? 0 : getTime(lastDatetime)
     });
@@ -20,7 +23,7 @@ const loadProfileToTimeframe = (firstDatetime, loadProfile) => {
     const endDatetime = moment(lastDatetime).add(duration, "seconds");
 
     previous.push({
-      rps: end,
+      rps: allAgentsEnd,
       datetime: endDatetime,
       time: getTime(endDatetime)
     });

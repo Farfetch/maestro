@@ -12,7 +12,12 @@ import { defaultChartOptions } from "../../../../../lib/charts/defaultOptions";
 
 const { Title } = Typography;
 
-const HitsErrorsLine = ({ metrics, loadProfile, isLoadProfileEnabled }) => {
+const HitsErrorsLine = ({
+  metrics,
+  loadProfile,
+  isLoadProfileEnabled,
+  numAgents
+}) => {
   const startedAt = minBy(metrics, "minDatetime")?.minDatetime;
   const finishedAt = maxBy(metrics, "maxDatetime")?.maxDatetime;
 
@@ -22,6 +27,7 @@ const HitsErrorsLine = ({ metrics, loadProfile, isLoadProfileEnabled }) => {
 
   if (isLoadProfileEnabled && startedAt && loadProfile.length !== 0) {
     const loadProfileTimeframe = loadProfileToTimeframe(startedAt, loadProfile);
+
     const loadProfileDuration = moment.duration(
       loadProfileTimeframe[loadProfileTimeframe.length - 1].datetime.diff(
         startedAt
@@ -41,8 +47,8 @@ const HitsErrorsLine = ({ metrics, loadProfile, isLoadProfileEnabled }) => {
     loadProfileEnabled
   ) => {
     const loadProfileTimeframe = loadProfileEnabled
-      ? loadProfileToTimeframe(startedAt, loadProfileToRender)
-      : loadProfileToTimeframe(startedAt, []);
+      ? loadProfileToTimeframe(startedAt, loadProfileToRender, numAgents)
+      : loadProfileToTimeframe(startedAt, [], numAgents);
 
     return {
       datasets: [

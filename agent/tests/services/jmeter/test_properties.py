@@ -156,7 +156,7 @@ def test_jmeter_properties_get_load_profile_properties_with_two_agents():
 
     properties = JmeterProperties(run).properties
 
-    assert properties["load_profile"] == "line(5,10,60s) line(10,15,120s)"
+    assert properties["load_profile"] == "line(10,20,60s) line(20,30,120s)"
 
 
 def test_jmeter_props_get_load_profile_props_with_two_agents_starting_with_min_of_one():
@@ -169,4 +169,4 @@ def test_jmeter_props_get_load_profile_props_with_two_agents_starting_with_min_o
 
     properties = JmeterProperties(run).properties
 
-    assert properties["load_profile"] == "line(1,10,60s) line(1,15,120s)"
+    assert properties["load_profile"] == "line(1,20,60s) line(2,30,120s)"
