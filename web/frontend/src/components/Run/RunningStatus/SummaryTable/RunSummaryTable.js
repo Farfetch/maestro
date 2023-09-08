@@ -1,9 +1,7 @@
-/* eslint-disable max-lines */
 import { LineChartOutlined } from "@ant-design/icons";
 import { Button, Table, Typography } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { Resizable } from "react-resizable";
 
 import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
 import { avg } from "../../../../lib/utils";
@@ -20,40 +18,13 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
     return errorRate;
   };
 
-  const ResizableTitle = (props) => {
-    const { onResizeStart, onResize, width, ...restProps } = props;
-    if (!width) {
-      return <th {...restProps} />;
-    }
-    return (
-      <Resizable
-        width={width}
-        height={0}
-        handle={
-          <span
-            className="react-resizable-handle"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          />
-        }
-        onResize={onResize}
-        onResizeStart={onResizeStart}
-        draggableOpts={{
-          enableUserSelectHack: false
-        }}
-      >
-        <th {...restProps} />
-      </Resizable>
-    );
-  };
-
-  const [columns, setColumns] = useState([
+  const columns = [
     {
       title: "Label",
       dataIndex: "label",
       key: "label",
-      width: 200,
+      width: 300,
+      ellipsis: true,
       sorter: {
         compare: (recordA, recordB) => {
           if (recordA.url < recordB.label) {
@@ -77,7 +48,8 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
       ),
       sorter: {
         compare: (recordA, recordB) => recordA.latencyP50 - recordB.latencyP50
-      }
+      },
+      width: 100
     },
     {
       title: "Latency (p99)",
@@ -90,7 +62,8 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
       ),
       sorter: {
         compare: (recordA, recordB) => recordA.latencyP99 - recordB.latencyP99
-      }
+      },
+      width: 100
     },
     {
       title: "Total",
@@ -101,7 +74,8 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
       ),
       sorter: {
         compare: (recordA, recordB) => recordA.totalCount - recordB.totalCount
-      }
+      },
+      width: 100
     },
     {
       title: "Success",
@@ -115,7 +89,8 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
       sorter: {
         compare: (recordA, recordB) =>
           recordA.successCount - recordB.successCount
-      }
+      },
+      width: 100
     },
     {
       title: "Error count",
@@ -126,7 +101,8 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
       ),
       sorter: {
         compare: (recordA, recordB) => recordA.errorsCount - recordB.errorsCount
-      }
+      },
+      width: 110
     },
     {
       title: "Error rate",
@@ -141,7 +117,8 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
       ),
       sorter: {
         compare: (recordA, recordB) => recordA.errorRate - recordB.errorRate
-      }
+      },
+      width: 100
     },
     {
       title: "RPM",
@@ -154,7 +131,8 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
       ),
       sorter: {
         compare: (recordA, recordB) => recordA.rpm - recordB.rpm
-      }
+      },
+      width: 120
     },
     {
       key: "actions",
@@ -169,7 +147,7 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
         ></Button>
       )
     }
-  ]);
+  ];
 
   const expandedRowRender = (record) => {
     const expendedRowColumns = [
@@ -280,25 +258,6 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
     setIsLoading(false);
   };
 
-  const handleResize =
-    (index) =>
-    (_, { size }) => {
-      const newColumns = [...columns];
-      newColumns[index] = {
-        ...newColumns[index],
-        width: size.width
-      };
-      setColumns(newColumns);
-    };
-
-  const mergeColumns = columns.map((col, index) => ({
-    ...col,
-    onHeaderCell: (column) => ({
-      width: column.width,
-      onResize: handleResize(index)
-    })
-  }));
-
   useEffect(() => {
     updateUrlMetrics(runId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -307,16 +266,10 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
   return (
     <>
       <Table
-        className="custom-table"
         size="small"
         loading={isLoading}
         dataSource={urlMetrics}
-        components={{
-          header: {
-            cell: ResizableTitle
-          }
-        }}
-        columns={mergeColumns}
+        columns={columns}
         pagination={false}
         expandable={{
           expandedRowRender

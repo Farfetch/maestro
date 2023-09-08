@@ -69,8 +69,3 @@ main {
   height: 100%;
   cursor: col-resize;
 }
-
-.custom-table {
-  table-layout: fixed;
-  width: 100%; /* Adjust this as needed */
-}
