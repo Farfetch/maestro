@@ -44,7 +44,12 @@ const RunningTestAnalytics = ({
   useEffect(() => {
     const interval = setInterval(async () => {
       // Checks is there any request that is made to API that should be finished before
-      if (autoRefresh && !isLoading && !isIntervalLoading) {
+      if (
+        autoRefresh &&
+        !isLoading &&
+        !isIntervalLoading &&
+        run.runStatus === runStatusModel.RUNNING
+      ) {
         setIsIntervalLoading(true);
         const metrics = await fetchMetrics(run.id, timeInterval);
 
@@ -54,7 +59,14 @@ const RunningTestAnalytics = ({
     }, updateChartsInterval);
 
     return () => clearInterval(interval);
-  }, [autoRefresh, isLoading, isIntervalLoading, run.id, timeInterval]);
+  }, [
+    autoRefresh,
+    isLoading,
+    isIntervalLoading,
+    run.id,
+    timeInterval,
+    run.runStatus
+  ]);
 
   // Enable all tabs once Metrics are available
   useEffect(() => {
@@ -124,6 +136,7 @@ const RunningTestAnalytics = ({
           metrics={runMetrics}
           loadProfile={loadProfile}
           isLoadProfileEnabled={isLoadProfileEnabled}
+          numAgents={run.agentIds.length}
         />
       </Col>
       <Col span={24}>

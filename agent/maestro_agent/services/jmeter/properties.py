@@ -65,12 +65,11 @@ class JmeterProperties:
         Details: https://jmeter-plugins.org/wiki/ThroughputShapingTimer
         """
         load_profile_prop = {}
-        agents_count = len(self.run.agent_ids)
 
         if self.run.load_profile:
 
             def value_per_agent(value):
-                start_rps = int(value / agents_count)
+                start_rps = int(value)
                 return 1 if start_rps < 1 else start_rps
 
             lines_list = [

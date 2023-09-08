@@ -3,7 +3,7 @@ import moment from "moment";
 import React from "react";
 import { Line } from "react-chartjs-2";
 
-import laodProfileToTimeframe from "../../../../../../lib/charts/datasets/loadProfileToTimeframe";
+import loadProfileToTimeframe from "../../../../../../lib/charts/datasets/loadProfileToTimeframe";
 
 const LoadConfigurationChart = ({ data }) => {
   // Skip items if they are not valid
@@ -25,9 +25,10 @@ const LoadConfigurationChart = ({ data }) => {
 
   const buildChartData = (loadConfiguration) => {
     const firstDatetime = moment.utc().milliseconds(0);
-    const loadProfileTimeframe = laodProfileToTimeframe(
+    const loadProfileTimeframe = loadProfileToTimeframe(
       firstDatetime,
-      loadConfiguration
+      loadConfiguration,
+      1
     );
 
     const labels = Array.from(

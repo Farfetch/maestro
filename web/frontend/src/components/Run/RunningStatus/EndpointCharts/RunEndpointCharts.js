@@ -1,5 +1,16 @@
 /* eslint-disable max-statements */
-import { Button, Col, Form, Input, Row, Select, Space } from "antd";
+
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  message,
+  Row,
+  Select,
+  Space,
+  Tag
+} from "antd";
 import { orderBy } from "lodash";
 import React, { useEffect, useState } from "react";
 
@@ -11,17 +22,19 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
   const defaultTimeInterval = 5;
   const showLabels = true;
   const [runMetrics, setRunMetrics] = useState([]);
+  const [copyRunMetrics, setCopyRunMetrics] = useState([]);
   const [labelsToShow, setLabelsToShow] = useState([labelToShowGraph]);
   const [timeInterval, setTimeInterval] = useState(defaultTimeInterval);
   const [isLoading, setIsLoading] = useState(false);
   const [excludedPrefix, setExcludedPrefix] = useState("UJ");
+  const [excludedPrefixes, setExcludedPrefixes] = useState([]);
 
   const updateRunMetrics = async (runIdToFetch) => {
     setIsLoading(true);
     const metrics = await fetchMetrics(runIdToFetch, timeInterval, showLabels);
 
     setRunMetrics(metrics);
-
+    setCopyRunMetrics(metrics);
     setIsLoading(false);
   };
 
@@ -31,7 +44,13 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
   }, [run]);
 
   const refreshChart = async () => {
-    const metrics = await fetchMetrics(run.id, timeInterval, showLabels);
+    let metrics = [];
+    if (run.runStatus === "RUNNING") {
+      metrics = await fetchMetrics(run.id, timeInterval, showLabels);
+    } else {
+      metrics = copyRunMetrics;
+      setExcludedPrefixes([]);
+    }
 
     setRunMetrics(metrics);
   };
@@ -45,19 +64,52 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
   }, [labelToShowGraph]);
 
   const handleExcludePrefix = () => {
-    if (excludedPrefix) {
-      if (labelsToShow) {
-        setLabelsToShow(
-          labelsToShow.filter((label) => !label.startsWith(excludedPrefix))
+    if (!excludedPrefixes.includes(excludedPrefix)) {
+      if (excludedPrefix) {
+        if (labelsToShow) {
+          setLabelsToShow(
+            labelsToShow.filter((label) => !label.startsWith(excludedPrefix))
+          );
+        }
+        const updatedLabels = labels.filter(
+          (label) => !label.startsWith(excludedPrefix)
         );
+        setRunMetrics(
+          runMetrics.filter((metric) => updatedLabels.includes(metric.label))
+        );
+
+        setExcludedPrefixes((prevExcludedPrefixes) => [
+          ...prevExcludedPrefixes,
+          excludedPrefix
+        ]);
+
+        setExcludedPrefix("");
       }
-      const updatedLabels = labels.filter(
-        (label) => !label.startsWith(excludedPrefix)
-      );
-      setRunMetrics(
-        runMetrics.filter((metric) => updatedLabels.includes(metric.label))
-      );
+    } else {
+      message.warning({ content: "Prefix already added", duration: 3 });
     }
+  };
+
+  const handleRemoveExcludedPrefix = (prefixToRemove) => {
+    setExcludedPrefixes((prevExcludedPrefixes) =>
+      prevExcludedPrefixes.filter((prefix) => prefix !== prefixToRemove)
+    );
+    refreshChart();
+  };
+
+  const truncateLabel = (label, maxLength) => {
+    if (label.length <= maxLength) {
+      return label;
+    }
+    return `${label.slice(0, maxLength)}...`;
+  };
+
+  const handleSelectAll = () => {
+    setLabelsToShow(labels);
+  };
+
+  const handleUnselectAll = () => {
+    setLabelsToShow([]);
   };
 
   return (
@@ -68,7 +120,7 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
         <>
           <Row type="flex" gutter={[10, 24]}>
             <Col span={16}>
-              <Space align="center">
+              <Space align="center" style={{ marginBottom: "16px" }}>
                 <>
                   Interval:
                   <Select
@@ -102,34 +154,60 @@ const RunEndpointsCharts = ({ run, labelToShowGraph }) => {
                     allowClear={true}
                   >
                     {labels.map((label) => (
-                      <Select.Option key={label}>{label}</Select.Option>
+                      <Select.Option key={label} className="truncate-option">
+                        {truncateLabel(label, 40)}
+                      </Select.Option>
                     ))}
                   </Select>
+                  <Button type="primary" onClick={handleSelectAll}>
+                    Select All
+                  </Button>
+                  <Button type="danger" onClick={handleUnselectAll}>
+                    Unselect All
+                  </Button>
+                  <Button onClick={refreshChart}>Refresh</Button>
                 </>
-                <Button type="primary" onClick={refreshChart}>
-                  Refresh
-                </Button>
-                <Form.Item
-                  name="excludedPrefix"
-                  noStyle
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter the prefix to exclude"
-                    }
-                  ]}
-                >
-                  <Input
-                    placeholder="Enter prefix to exclude"
-                    value={excludedPrefix}
-                    onChange={(e) => setExcludedPrefix(e.target.value)}
-                    style={{ width: "200px" }}
-                    allowClear={true}
-                  />
-                </Form.Item>
-                <Button type="primary" onClick={handleExcludePrefix}>
-                  Exclude
-                </Button>
+              </Space>
+              <Space align="center">
+                <>
+                  <div style={{ marginRight: "-4px" }}>Prefixes:</div>
+                  <Form.Item
+                    name="excludedPrefix"
+                    noStyle
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter the prefix to exclude"
+                      }
+                    ]}
+                  >
+                    <Input
+                      placeholder="Enter prefix to exclude"
+                      value={excludedPrefix}
+                      onChange={(e) => setExcludedPrefix(e.target.value)}
+                      style={{ width: "200px", marginRight: "5px" }}
+                      allowClear={true}
+                    />
+                  </Form.Item>
+                  <Button type="primary" onClick={handleExcludePrefix}>
+                    Exclude
+                  </Button>
+                  {excludedPrefixes.length > 0 && (
+                    <div style={{ marginTop: "4px" }}>
+                      Currently Excluded :
+                      {excludedPrefixes.map((prefix) => (
+                        <Tag
+                          key={prefix}
+                          closable={true}
+                          onClose={() => handleRemoveExcludedPrefix(prefix)}
+                          style={{ margin: "2px" }}
+                        >
+                          {prefix}
+                        </Tag>
+                      ))}
+                    </div>
+                  )}
+                </>
               </Space>
             </Col>
             <Col span={24}>
