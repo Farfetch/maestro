@@ -14,7 +14,7 @@ const getColumns = (refetch) => [
     title: "Title",
     dataIndex: "title",
     key: "title",
-    width: 400,
+    width: 500,
     ellipsis: true
   },
   {
