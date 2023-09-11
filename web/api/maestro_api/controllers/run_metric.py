@@ -76,7 +76,6 @@ class RunMetricController:
         zip_buffer = BytesIO()
         zip_filename = f"run_metrics_{run.id}.zip"
 
-
         with ZipFile(zip_buffer, "w", compression=ZIP_DEFLATED) as zip_file:
             csv_info = ZipInfo(filename)
             csv_info.date_time = time.localtime(time.time())[:6]
