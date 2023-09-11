@@ -1,3 +1,5 @@
+import io
+import zipfile
 import json
 from datetime import datetime, timedelta
 
@@ -409,4 +411,12 @@ def test_run_metrics_download(client):
     )
 
     assert 200 == response.status_code
-    assert file_content == response.data.decode("utf-8")
+    assert "application/zip" in response.content_type
+
+    zip_data = io.BytesIO(response.data)
+    with zipfile.ZipFile(zip_data, "r") as zip_file:
+        assert len(zip_file.namelist()) == 1
+        csv_file_name = zip_file.namelist()[0]
+
+        csv_content = zip_file.read(csv_file_name).decode("utf-8")
+        assert csv_content == file_content

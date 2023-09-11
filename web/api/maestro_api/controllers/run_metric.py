@@ -1,3 +1,6 @@
+import time
+from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
+from io import BytesIO
 from flask import request, jsonify, send_file
 
 from maestro_api.db.models.run import Run
@@ -67,16 +70,25 @@ class RunMetricController:
         ]
 
         filename = f"metrics_{run.id}.csv"
-        content_type = "text/csv"
 
         binary_file = CsvBytesIO.create_from_dict(headers, jmeter_metrics)
 
+        zip_buffer = BytesIO()
+        zip_filename = f"metrics_{run.id}.zip"
+
+        with ZipFile(zip_buffer, "w", compression=ZIP_DEFLATED) as zip_file:
+            csv_info = ZipInfo(filename)
+            csv_info.date_time = time.localtime(time.time())[:6]
+            zip_file.writestr(csv_info, binary_file.getvalue())
+
+        zip_buffer.seek(0)
+
         return (
             send_file(
-                binary_file,
+                zip_buffer,
                 as_attachment=True,
-                download_name=filename,
-                mimetype=content_type,
+                download_name=zip_filename,
+                mimetype="application/zip",
             ),
             200,
         )
