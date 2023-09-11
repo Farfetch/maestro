@@ -1,3 +1,4 @@
+import { DeleteOutlined } from "@ant-design/icons";
 import { Button, message, Popconfirm } from "antd";
 import PropTypes from "prop-types";
 
@@ -26,7 +27,7 @@ const RunConfigurationDeleteButton = ({ runConfigurationId, refetch }) => (
       });
     }}
   >
-    <Button type="link" danger>
+    <Button type="link" danger icon={<DeleteOutlined />}>
       Delete
     </Button>
   </Popconfirm>

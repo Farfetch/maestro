@@ -1,3 +1,4 @@
+import { FolderOpenOutlined } from "@ant-design/icons";
 import { Button, Col, Row, Space, Table } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
@@ -12,7 +13,9 @@ const getColumns = (refetch) => [
   {
     title: "Title",
     dataIndex: "title",
-    key: "title"
+    key: "title",
+    width: 500,
+    ellipsis: true
   },
   {
     title: "Next Run",
@@ -24,7 +27,7 @@ const getColumns = (refetch) => [
     },
     render: (text, record) =>
       record.nextRun ? record.nextRun.format("L HH:mm") : null,
-    width: 180
+    width: 80
   },
   {
     title: "Created",
@@ -47,7 +50,9 @@ const getColumns = (refetch) => [
       <>
         <Space size="small">
           <Link to={testSingleUrl(record.key)}>
-            <Button type="link">Open</Button>
+            <Button type="link" icon={<FolderOpenOutlined />}>
+              Open
+            </Button>
           </Link>
           <RunConfigurationDeleteButton
             runConfigurationId={record.key}

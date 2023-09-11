@@ -42,6 +42,8 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
       title: "Hostname",
       dataIndex: "hostname",
       key: "hostname",
+      width: 400,
+      ellipsis: true,
       sorter: {
         compare: (recordA, recordB) =>
           recordB.hostname.localeCompare(recordA.hostname)

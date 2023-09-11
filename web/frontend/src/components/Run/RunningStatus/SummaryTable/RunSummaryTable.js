@@ -23,6 +23,8 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
       title: "Label",
       dataIndex: "label",
       key: "label",
+      width: 300,
+      ellipsis: true,
       sorter: {
         compare: (recordA, recordB) => {
           if (recordA.url < recordB.label) {
