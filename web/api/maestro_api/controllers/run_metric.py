@@ -74,7 +74,7 @@ class RunMetricController:
         binary_file = CsvBytesIO.create_from_dict(headers, jmeter_metrics)
 
         zip_buffer = BytesIO()
-        zip_filename = f"metrics_{run.id}.zip"
+        zip_filename = f"run_metrics_{run.id}.zip"
 
         with ZipFile(zip_buffer, "w", compression=ZIP_DEFLATED) as zip_file:
             csv_info = ZipInfo(filename)
