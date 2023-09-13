@@ -1,10 +1,12 @@
-import { DisconnectOutlined } from "@ant-design/icons";
+import { DisconnectOutlined, FileTextOutlined } from "@ant-design/icons";
 import { Button, Col, message, Row, Space, Switch, Table } from "antd";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import { updateAgent } from "../../../lib/api/endpoints/agent";
 import { agentStatus as agentStatusModel } from "../../../lib/api/models";
+import { agentLogsUrl } from "../../../lib/routes";
 import AgentStatusBadge from "../../badge/AgentStatusBadge";
 
 const agentMapper = ({
@@ -113,6 +115,9 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
           >
             Disable
           </Button>
+          <Link to={agentLogsUrl(record.key)}>
+            <Button icon={<FileTextOutlined />}></Button>
+          </Link>{" "}
         </Space>
       )
     }
