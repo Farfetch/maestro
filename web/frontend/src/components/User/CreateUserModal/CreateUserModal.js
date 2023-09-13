@@ -26,7 +26,7 @@ const CreateUserModal = ({
     <Modal
       title="New User"
       okText="Create"
-      visible={isVisible}
+      open={isVisible}
       onOk={() => form.submit()}
       onCancel={onCancel}
     >

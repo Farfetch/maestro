@@ -1,5 +1,6 @@
 import { CloseCircleOutlined } from "@ant-design/icons";
-import { Button, PageHeader, Result, Space, Typography } from "antd";
+import { PageHeader } from "@ant-design/pro-layout";
+import { Button, Result, Space, Typography } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 

@@ -1,5 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/layout/Avatar should render Avatar with first letter from email 1`] = `"<div><span style=\\"background-color: rgb(250, 140, 22);\\" class=\\"ant-avatar ant-avatar-circle\\"><span class=\\"ant-avatar-string\\" style=\\"transform: scale(1) translateX(-50%);\\">T</span></span></div>"`;
+exports[`components/layout/Avatar should render Avatar with first letter from email 1`] = `"<div><span style=\\"background-color: rgb(250, 140, 22);\\" class=\\"ant-avatar ant-avatar-circle css-dev-only-do-not-override-nnuwmp\\"><span class=\\"ant-avatar-string\\" style=\\"transform: scale(1) translateX(-50%);\\">T</span></span></div>"`;
 
-exports[`components/layout/Avatar should render Avatar with initials from name 1`] = `"<div><span style=\\"background-color: rgb(250, 140, 22);\\" class=\\"ant-avatar ant-avatar-circle\\"><span class=\\"ant-avatar-string\\" style=\\"transform: scale(1) translateX(-50%);\\">TU</span></span></div>"`;
+exports[`components/layout/Avatar should render Avatar with initials from name 1`] = `"<div><span style=\\"background-color: rgb(250, 140, 22);\\" class=\\"ant-avatar ant-avatar-circle css-dev-only-do-not-override-nnuwmp\\"><span class=\\"ant-avatar-string\\" style=\\"transform: scale(1) translateX(-50%);\\">TU</span></span></div>"`;

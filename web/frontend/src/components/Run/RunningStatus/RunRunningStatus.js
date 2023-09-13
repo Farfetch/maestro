@@ -1,13 +1,5 @@
-import {
-  Button,
-  Col,
-  PageHeader,
-  Popconfirm,
-  Row,
-  Space,
-  Tabs,
-  Typography
-} from "antd";
+import { PageHeader } from "@ant-design/pro-layout";
+import { Button, Col, Popconfirm, Row, Space, Tabs, Typography } from "antd";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 

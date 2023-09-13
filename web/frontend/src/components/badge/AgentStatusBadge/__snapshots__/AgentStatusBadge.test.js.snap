@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/AgentStatusBadge should render AVAILABLE badge 1`] = `"<div><span class=\\"ant-badge ant-badge-status ant-badge-not-a-wrapper\\"><span class=\\"ant-badge-status-dot ant-badge-status-success\\"></span><span class=\\"ant-badge-status-text\\">AVAILABLE</span></span></div>"`;
+exports[`components/AgentStatusBadge should render AVAILABLE badge 1`] = `"<div><span class=\\"ant-badge ant-badge-status ant-badge-not-a-wrapper css-dev-only-do-not-override-nnuwmp\\"><span class=\\"ant-badge-status-dot ant-badge-status-success\\"></span><span class=\\"ant-badge-status-text\\">AVAILABLE</span></span></div>"`;
 
-exports[`components/AgentStatusBadge should render CREATING badge 1`] = `"<div><span class=\\"ant-badge ant-badge-status ant-badge-not-a-wrapper\\"><span class=\\"ant-badge-status-dot ant-badge-status-warning\\"></span><span class=\\"ant-badge-status-text\\">CREATING</span></span></div>"`;
+exports[`components/AgentStatusBadge should render CREATING badge 1`] = `"<div><span class=\\"ant-badge ant-badge-status ant-badge-not-a-wrapper css-dev-only-do-not-override-nnuwmp\\"><span class=\\"ant-badge-status-dot ant-badge-status-warning\\"></span><span class=\\"ant-badge-status-text\\">CREATING</span></span></div>"`;
 
-exports[`components/AgentStatusBadge should render PROCESSING_EVENT badge 1`] = `"<div><span class=\\"ant-badge ant-badge-status ant-badge-not-a-wrapper\\"><span class=\\"ant-badge-status-dot ant-badge-status-processing\\"></span><span class=\\"ant-badge-status-text\\">PROCESSING_EVENT</span></span></div>"`;
+exports[`components/AgentStatusBadge should render PROCESSING_EVENT badge 1`] = `"<div><span class=\\"ant-badge ant-badge-status ant-badge-not-a-wrapper css-dev-only-do-not-override-nnuwmp\\"><span class=\\"ant-badge-status-dot ant-badge-status-processing\\"></span><span class=\\"ant-badge-status-text\\">PROCESSING_EVENT</span></span></div>"`;
 
-exports[`components/AgentStatusBadge should render RUNNING_TEST badge 1`] = `"<div><span class=\\"ant-badge ant-badge-status ant-badge-not-a-wrapper\\"><span class=\\"ant-badge-status-dot ant-badge-status-processing\\"></span><span class=\\"ant-badge-status-text\\">RUNNING_TEST</span></span></div>"`;
+exports[`components/AgentStatusBadge should render RUNNING_TEST badge 1`] = `"<div><span class=\\"ant-badge ant-badge-status ant-badge-not-a-wrapper css-dev-only-do-not-override-nnuwmp\\"><span class=\\"ant-badge-status-dot ant-badge-status-processing\\"></span><span class=\\"ant-badge-status-text\\">RUNNING_TEST</span></span></div>"`;
 
-exports[`components/AgentStatusBadge should render UNAVAILABLE badge 1`] = `"<div><span class=\\"ant-badge ant-badge-status ant-badge-not-a-wrapper\\"><span class=\\"ant-badge-status-dot ant-badge-status-error\\"></span><span class=\\"ant-badge-status-text\\">UNAVAILABLE</span></span></div>"`;
+exports[`components/AgentStatusBadge should render UNAVAILABLE badge 1`] = `"<div><span class=\\"ant-badge ant-badge-status ant-badge-not-a-wrapper css-dev-only-do-not-override-nnuwmp\\"><span class=\\"ant-badge-status-dot ant-badge-status-error\\"></span><span class=\\"ant-badge-status-text\\">UNAVAILABLE</span></span></div>"`;

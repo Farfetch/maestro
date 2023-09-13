@@ -1,4 +1,4 @@
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 
 import { CurrentWorkspaceContextProvider } from "./context/CurrentWorkspace";
@@ -20,7 +20,10 @@ function ErrorFallback({ error }) {
   );
 }
 
-ReactDOM.render(
+const rootElement = document.getElementById("root");
+const root = createRoot(rootElement);
+
+root.render(
   <ErrorBoundary FallbackComponent={ErrorFallback}>
     <UserContextProvider>
       <CurrentWorkspaceContextProvider>
@@ -29,6 +32,5 @@ ReactDOM.render(
         </RunningContextProvider>
       </CurrentWorkspaceContextProvider>
     </UserContextProvider>
-  </ErrorBoundary>,
-  document.getElementById("root")
+  </ErrorBoundary>
 );

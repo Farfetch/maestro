@@ -27,7 +27,7 @@ const EditUserModal = ({
     <Modal
       title="Edit User"
       okText="Save"
-      visible={isVisible}
+      open={isVisible}
       onOk={() => form.submit()}
       onCancel={onCancel}
     >
