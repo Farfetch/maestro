@@ -25,7 +25,7 @@ const EditWorkspaceModal = ({
     <Modal
       title="Edit Workspace"
       okText="Save"
-      visible={isVisible}
+      open={isVisible}
       onOk={() => form.submit()}
       onCancel={onCancel}
     >

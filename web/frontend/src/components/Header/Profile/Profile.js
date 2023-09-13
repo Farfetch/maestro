@@ -3,7 +3,7 @@ import {
   LogoutOutlined,
   UserOutlined
 } from "@ant-design/icons";
-import { Dropdown, Menu, Select, Space } from "antd";
+import { Dropdown, Select, Space } from "antd";
 import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -35,26 +35,31 @@ const Profile = () => {
     setCurrentWorkspace(workspace);
   };
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="me" disabled>
-        {user.email}
-      </Menu.Item>
-      {user.role === userRoleModel.ADMIN ? (
-        <>
-          <Menu.Item key="workspaces" icon={<AppstoreOutlined />}>
-            <Link to={workspacesUrl}>Workspaces</Link>
-          </Menu.Item>
-          <Menu.Item key="users" icon={<UserOutlined />}>
-            <Link to={usersUrl}>Users</Link>
-          </Menu.Item>
-        </>
-      ) : null}
-      <Menu.Item key="logout" icon={<LogoutOutlined />}>
-        <a href={logoutUrl}>Logout</a>
-      </Menu.Item>
-    </Menu>
-  );
+  const items = [
+    {
+      key: "me",
+      label: user.email,
+      disabled: true
+    },
+    {
+      key: "workspaces",
+      label: <Link to={workspacesUrl}>Workspaces</Link>,
+      icon: <AppstoreOutlined />,
+      disabled: user.role !== userRoleModel.ADMIN
+    },
+    {
+      key: "users",
+      label: <Link to={usersUrl}>Users</Link>,
+      icon: <UserOutlined />,
+      disabled: user.role !== userRoleModel.ADMIN
+    },
+    {
+      key: "logout",
+      label: <a href={logoutUrl}>Logout</a>,
+      icon: <LogoutOutlined />,
+      danger: true
+    }
+  ];
 
   return (
     <Space align="center">
@@ -70,7 +75,7 @@ const Profile = () => {
         ))}
       </Select>
       <Dropdown
-        overlay={menu}
+        menu={{ items }}
         placement="bottomRight"
         arrow={{ pointAtCenter: true }}
       >

@@ -1,12 +1,13 @@
 import { MoreOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu } from "antd";
+import { Button, Dropdown } from "antd";
 
 import { runLogDownloadUrl } from "../../../../lib/routes";
 
 const MoreButtonsMenu = ({ runId }) => {
-  const menu = (
-    <Menu>
-      <Menu.Item>
+  const items = [
+    {
+      key: "runId",
+      label: (
         <a
           target="_blank"
           rel="noopener noreferrer"
@@ -14,12 +15,12 @@ const MoreButtonsMenu = ({ runId }) => {
         >
           Download logs
         </a>
-      </Menu.Item>
-    </Menu>
-  );
+      )
+    }
+  ];
 
   return (
-    <Dropdown key="more" overlay={menu} placement="bottomRight">
+    <Dropdown key="more" menu={{ items }} placement="bottomRight">
       <Button type="text" icon={<MoreOutlined style={{ fontSize: 20 }} />} />
     </Dropdown>
   );

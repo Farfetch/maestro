@@ -19,7 +19,7 @@ const CreateWorkspaceModal = ({ isVisible, onSave, onCancel, users }) => {
     <Modal
       title="New Workspace"
       okText="Create"
-      visible={isVisible}
+      open={isVisible}
       onOk={() => form.submit()}
       onCancel={onCancel}
     >
