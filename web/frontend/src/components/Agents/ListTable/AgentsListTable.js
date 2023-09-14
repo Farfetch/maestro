@@ -56,13 +56,13 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
       title: "IP",
       dataIndex: "ip",
       key: "ip",
-      width: 150
+      width: 100
     },
     {
       title: "Status",
       dataIndex: "agentStatus",
       key: "agentStatus",
-      width: 180,
+      width: 160,
       filters: Object.values(agentStatusModel).map((agentStatus) => ({
         text: agentStatus,
         value: agentStatus
@@ -80,7 +80,7 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
       title: "Created at",
       dataIndex: "createdAt",
       key: "createdAt",
-      width: 180,
+      width: 160,
       sorter: {
         compare: (recordA, recordB) => recordB.createdAt.diff(recordA.createdAt)
       },
@@ -90,7 +90,7 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
       title: "Updated at",
       dataIndex: "updatedAt",
       key: "updatedAt",
-      width: 180,
+      width: 160,
       sorter: {
         compare: (recordA, recordB) => recordB.updatedAt.diff(recordA.updatedAt)
       },
@@ -98,7 +98,7 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
     },
     {
       key: "action",
-      width: 100,
+      width: 160,
       render: (text, record) => (
         <Space size="small">
           <Button
