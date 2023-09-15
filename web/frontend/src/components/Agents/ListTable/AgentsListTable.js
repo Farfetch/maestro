@@ -1,10 +1,12 @@
-import { DisconnectOutlined } from "@ant-design/icons";
+import { DisconnectOutlined, FileTextOutlined } from "@ant-design/icons";
 import { Button, Col, message, Row, Space, Switch, Table } from "antd";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import { updateAgent } from "../../../lib/api/endpoints/agent";
 import { agentStatus as agentStatusModel } from "../../../lib/api/models";
+import { agentLogsUrl } from "../../../lib/routes";
 import AgentStatusBadge from "../../badge/AgentStatusBadge";
 
 const agentMapper = ({
@@ -54,13 +56,13 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
       title: "IP",
       dataIndex: "ip",
       key: "ip",
-      width: 150
+      width: 100
     },
     {
       title: "Status",
       dataIndex: "agentStatus",
       key: "agentStatus",
-      width: 180,
+      width: 160,
       filters: Object.values(agentStatusModel).map((agentStatus) => ({
         text: agentStatus,
         value: agentStatus
@@ -78,7 +80,7 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
       title: "Created at",
       dataIndex: "createdAt",
       key: "createdAt",
-      width: 180,
+      width: 160,
       sorter: {
         compare: (recordA, recordB) => recordB.createdAt.diff(recordA.createdAt)
       },
@@ -88,7 +90,7 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
       title: "Updated at",
       dataIndex: "updatedAt",
       key: "updatedAt",
-      width: 180,
+      width: 160,
       sorter: {
         compare: (recordA, recordB) => recordB.updatedAt.diff(recordA.updatedAt)
       },
@@ -96,7 +98,7 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
     },
     {
       key: "action",
-      width: 100,
+      width: 160,
       render: (text, record) => (
         <Space size="small">
           <Button
@@ -113,6 +115,9 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
           >
             Disable
           </Button>
+          <Link to={agentLogsUrl(record.key)}>
+            <Button icon={<FileTextOutlined />}></Button>
+          </Link>{" "}
         </Space>
       )
     }

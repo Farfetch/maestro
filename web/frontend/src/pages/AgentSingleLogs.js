@@ -17,7 +17,7 @@ const AgentSingleLogs = () => {
   const [agent, setAgent] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const defaultDate = moment().add(-10, "minutes");
+  const defaultDate = moment().startOf("day");
   const [selectedLogLevel, setSelectedLogLevel] = useState(
     agentLogLevelModel.DEBUG
   );
@@ -83,6 +83,7 @@ const AgentSingleLogs = () => {
                 onChange={(changedLogLevel) =>
                   setSelectedLogLevel(changedLogLevel)
                 }
+                mode={"single"}
               />
             </div>
           </Space>
