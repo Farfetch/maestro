@@ -9,6 +9,7 @@ from maestro_api.libs.flask.utils import (
 from maestro_api.libs.datetime import strptime
 from maestro_api.libs.utils import str_to_list
 
+
 class AgentLogController:
     def __init__(self, flask_app):
         self.flask_app = flask_app

@@ -363,13 +363,13 @@ agent_log_list_schema = {
         },
         "sort": {"type": "string"},
         "log_levels": {
-        "anyOf": [
-            {
-                "type": "array",
-                "items": {"type": "string", "enum": AgentLogLevel.list()},
-            },
-            {"type": "string", "minLength": 4, "maxLength": 12},
-        ]
+            "anyOf": [
+                {
+                    "type": "array",
+                    "items": {"type": "string", "enum": AgentLogLevel.list()},
+                },
+                {"type": "string", "minLength": 4, "maxLength": 12},
+            ]
         },
     },
     "required": ["date_from"],

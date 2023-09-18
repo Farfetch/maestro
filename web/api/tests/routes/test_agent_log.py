@@ -89,7 +89,8 @@ default_agents_data = [
             "?date_from=2019-01-01 00:00:00&log_levels=ERROR",
             ["6076d69ba216ff15b6e95ea8"],
         ),
-        ("?date_from=2019-01-01 00:00:00&log_levels=ERROR&log_levels=DEBUG",
+        (
+            "?date_from=2019-01-01 00:00:00&log_levels=ERROR&log_levels=DEBUG",
             [
                 "6076d69ba216ff15b6e95ea8",
                 "6076d69ba216ff15b6e95ea2",
