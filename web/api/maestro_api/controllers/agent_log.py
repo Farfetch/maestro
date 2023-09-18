@@ -7,7 +7,7 @@ from maestro_api.libs.flask.utils import (
     jsonify,
 )
 from maestro_api.libs.datetime import strptime
-
+from maestro_api.libs.utils import str_to_list
 
 class AgentLogController:
     def __init__(self, flask_app):
@@ -34,7 +34,7 @@ class AgentLogController:
         """
         date_from = strptime(data.get("date_from"))
         agent_ids = data.get("agent_ids", None)
-        level = data.get("level", None)
+        log_levels = data.get("log_levels", None)
         sort = data.get("sort", "-created_at")
 
         filter_query = Q(created_at__gte=date_from)
@@ -48,10 +48,9 @@ class AgentLogController:
                 agent_id__in=agent_ids_filter,
             )
 
-        if level is not None:
-            filter_query = filter_query & Q(
-                level=level,
-            )
+        if log_levels is not None:
+            filter_query = filter_query & Q(level__in=str_to_list(log_levels))
+
         agent_logs = AgentLog.objects.filter(filter_query).order_by(sort)
 
         return jsonify_list_of_docs(agent_logs)
