@@ -38,11 +38,15 @@ describe("libs/api/endpoints/agentLog", () => {
 
     axiosMock
       .onGet("/api/agent_logs", {
-        params: { date_from: toUtcString(dateFrom), level, agent_ids: [] }
+        params: {
+          date_from: toUtcString(dateFrom),
+          log_levels: [],
+          agent_ids: []
+        }
       })
       .reply(200, [apiResponse]);
 
-    const customDataRes = await fetchAgentLogs({ dateFrom, level });
+    const customDataRes = await fetchAgentLogs({ dateFrom });
 
     expect(customDataRes).toStrictEqual([expectedData]);
   });
@@ -55,13 +59,13 @@ describe("libs/api/endpoints/agentLog", () => {
       .onGet("/api/agent_logs", {
         params: {
           date_from: toUtcString(dateFrom),
-          level,
+          log_levels: [],
           agent_ids: agentIds
         }
       })
       .reply(200, [apiResponse]);
 
-    const customDataRes = await fetchAgentLogs({ dateFrom, level, agentIds });
+    const customDataRes = await fetchAgentLogs({ dateFrom, agentIds });
 
     expect(customDataRes).toStrictEqual([expectedData]);
   });
@@ -71,12 +75,36 @@ describe("libs/api/endpoints/agentLog", () => {
 
     axiosMock
       .onGet("/api/agent_logs", {
-        params: { date_from: toUtcString(dateFrom), level, agent_ids: [] }
+        params: {
+          date_from: toUtcString(dateFrom),
+          log_levels: [],
+          agent_ids: []
+        }
       })
       .reply(200, []);
 
-    const customDataRes = await fetchAgentLogs({ dateFrom, level });
+    const customDataRes = await fetchAgentLogs({ dateFrom });
 
     expect(customDataRes).toStrictEqual([]);
+  });
+
+  test("should return list of agent logs with agentIds filter and level filter", async () => {
+    const dateFrom = moment("2018-05-24T13:48:04.313000");
+    const agentIds = ["6077280d0c739b2adf6e5684"];
+    const levels = ["INFO"];
+
+    axiosMock
+      .onGet("/api/agent_logs", {
+        params: {
+          date_from: toUtcString(dateFrom),
+          log_levels: levels,
+          agent_ids: agentIds
+        }
+      })
+      .reply(200, [apiResponse]);
+
+    const customDataRes = await fetchAgentLogs({ dateFrom, levels, agentIds });
+
+    expect(customDataRes).toStrictEqual([expectedData]);
   });
 });
