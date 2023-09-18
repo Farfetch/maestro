@@ -248,6 +248,11 @@ def init_api_routes(flask_app):
     def agent_log_all(*args, **kwargs):
         return agent_log_controller.all(*args, **kwargs)
 
+    @flask_app.route("/agent_log/<agent_id>", methods=["DELETE"])
+    @requires_auth()
+    def agent_log_delete(*args, **kwargs):
+        return agent_log_controller.delete(*args, **kwargs)
+
     # /custom_data routes
     @flask_app.route("/custom_data", methods=["GET"])
     @requires_auth()
