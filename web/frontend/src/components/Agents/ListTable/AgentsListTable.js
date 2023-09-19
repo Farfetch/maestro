@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { updateAgent } from "../../../lib/api/endpoints/agent";
+import { clearAgentLog } from "../../../lib/api/endpoints/agentLog";
 import { agentStatus as agentStatusModel } from "../../../lib/api/models";
 import { agentLogsUrl } from "../../../lib/routes";
 import AgentStatusBadge from "../../badge/AgentStatusBadge";
@@ -35,7 +36,11 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
     await updateAgent(agentId, {
       agent_status: "DISABLED"
     });
-    message.success({ content: "Agent Disabled", duration: 5 });
+    const deletedLogs = await clearAgentLog(agentId);
+    message.success({
+      content: `Agent Disabled \n${deletedLogs} Log entries cleared`,
+      duration: 3
+    });
     updateTestPlans();
   };
 
@@ -56,7 +61,7 @@ const AgentsListTable = ({ agents, isLoading, updateTestPlans }) => {
       title: "IP",
       dataIndex: "ip",
       key: "ip",
-      width: 100
+      width: 150
     },
     {
       title: "Status",

@@ -163,3 +163,20 @@ def test_create_agent_log_bad_response(client, request_data, expected_error_mess
 
     assert response.status_code == 400
     assert response_text == expected_error_message
+
+
+def test_delete_agent_log(client):
+    agent_log_data = dict(
+        agent_id="6076d69ba216ff15b6e95ea7",
+        log_message="test agent log message",
+        level="INFO",
+    )
+    AgentLog(**agent_log_data).save()
+
+    response = client.delete(f"/agent_log/{agent_log_data['agent_id']}")
+
+    assert response.status_code == 200
+    assert AgentLog.objects(agent_id=agent_log_data["agent_id"]).count() == 0
+
+    res_json = json.loads(response.data)
+    assert res_json == 1

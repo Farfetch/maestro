@@ -36,3 +36,16 @@ export const fetchAgentLogs = async ({ dateFrom, level, agentIds = [] }) => {
     throw error;
   }
 };
+
+export const clearAgentLog = async (agentId) => {
+  try {
+    const res = await maestroClient.delete(`/api/agent_log/${agentId}`);
+
+    const numDeleteLogs = res.data;
+
+    return numDeleteLogs;
+  } catch (error) {
+    ErrorHandler.handleError(error, "agent logs");
+    throw error;
+  }
+};

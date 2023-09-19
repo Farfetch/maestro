@@ -55,3 +55,12 @@ class AgentLogController:
         agent_logs = AgentLog.objects.filter(filter_query).order_by(sort)
 
         return jsonify_list_of_docs(agent_logs)
+
+    def delete(self, agent_id, user):
+        """
+        Delete all AgentLog entries for a specific agent.
+        """
+
+        deleted_count = AgentLog.objects(agent_id=agent_id).delete()
+
+        return jsonify(deleted_count)
