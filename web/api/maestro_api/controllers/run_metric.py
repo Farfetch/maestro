@@ -80,7 +80,7 @@ class RunMetricController:
             csv_info = ZipInfo(filename)
             csv_info.compress_type = ZIP_DEFLATED
             csv_info.date_time = time.localtime(time.time())[:6]
-            
+
             zip_file.writestr(csv_info, binary_file.getvalue())
 
         zip_buffer.seek(0)
