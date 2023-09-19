@@ -18,9 +18,9 @@ const AgentSingleLogs = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const defaultDate = moment().startOf("day");
-  const [selectedLogLevel, setSelectedLogLevel] = useState(
+  const [selectedLogLevels, setSelectedLogLevels] = useState([
     agentLogLevelModel.DEBUG
-  );
+  ]);
   const [selectedDateFrom, setSelectedDateFrom] = useState(defaultDate);
 
   const reloadAgentLogs = async (params, agentData) => {
@@ -51,13 +51,13 @@ const AgentSingleLogs = () => {
       reloadAgentLogs(
         {
           dateFrom: selectedDateFrom,
-          level: selectedLogLevel,
+          levels: selectedLogLevels,
           agentIds: [agent.id]
         },
         agent
       );
     }
-  }, [selectedDateFrom, selectedLogLevel, agent]);
+  }, [selectedDateFrom, selectedLogLevels, agent]);
 
   return (
     <Row gutter={[32, 32]} justify="start" align="middle">
@@ -78,12 +78,11 @@ const AgentSingleLogs = () => {
           </Space>
           <Space size="small" align="left" direction="vertical">
             Level
-            <div style={{ width: "200px" }}>
+            <div style={{ width: "500px" }}>
               <AgentLogLevelsSelect
                 onChange={(changedLogLevel) =>
-                  setSelectedLogLevel(changedLogLevel)
+                  setSelectedLogLevels(changedLogLevel)
                 }
-                mode={"single"}
               />
             </div>
           </Space>

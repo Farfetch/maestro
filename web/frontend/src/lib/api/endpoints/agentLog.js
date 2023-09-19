@@ -18,12 +18,16 @@ const agentLogObjectMapper = (agentLog) => ({
  * @param {Array} agentIds
  * @returns
  */
-export const fetchAgentLogs = async ({ dateFrom, level, agentIds = [] }) => {
+export const fetchAgentLogs = async ({
+  dateFrom,
+  levels = [],
+  agentIds = []
+}) => {
   try {
     const res = await maestroClient.get("/api/agent_logs", {
       params: {
         date_from: toUtcString(dateFrom),
-        level,
+        log_levels: levels,
         agent_ids: agentIds
       }
     });
