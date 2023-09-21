@@ -36,7 +36,7 @@ const RunRunningStatus = ({ run }) => {
   const [isRunMetricsAvailable, setIsRunMetricsAvailable] = useState(false);
   const [labelToShow, setLabelToShow] = useState("");
   const [renderLabel, setRenderLabel] = useState(false);
-  const [activeTabKey, setActiveTabKey] = useState("hits");
+  const [activeTabKey, setActiveTabKey] = useState("overview");
 
   const routes = [
     {
@@ -160,7 +160,7 @@ const RunRunningStatus = ({ run }) => {
             activeKey={activeTabKey}
             onChange={setActiveTabKey}
           >
-            <Tabs.TabPane tab="Hits" key="hits">
+            <Tabs.TabPane tab="Overview" key="overview">
               <RunAnalyticCharts
                 run={run}
                 loadProfile={run.loadProfile}

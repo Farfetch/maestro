@@ -7,9 +7,9 @@ const MetricCard = ({ value, title, unit, borderColor }) => (
     value={value}
     suffix={unit}
     style={{
+      border: `1px solid ${borderColor}` || "#d9d9d9",
       borderRadius: "10px",
-      boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
-      borderColor: borderColor || "#d9d9d9",
+      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
       flex: "1 1 auto",
       margin: "8px",
       textAlign: "center",

@@ -1,5 +1,5 @@
 /* eslint-disable max-statements */
-import { Collapse, Descriptions } from "antd";
+import { Descriptions } from "antd";
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -8,8 +8,6 @@ import { runStatus as runStatusModel } from "../../../../lib/api/models";
 import { avg } from "../../../../lib/utils";
 import PageSpinner from "../../../layout/PageSpinner";
 import MetricCard from "./MetricCard";
-
-const { Panel } = Collapse;
 
 const OverviewMetrics = ({ run }) => {
   const [runMetrics, setrunMetrics] = useState([]);
@@ -21,7 +19,6 @@ const OverviewMetrics = ({ run }) => {
     totalCount: 0,
     totalRpm: 0
   });
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
   const refreshInterval = 3000;
   const timerRef = useRef(null);
 
@@ -144,63 +141,58 @@ const OverviewMetrics = ({ run }) => {
   return isLoading ? (
     <PageSpinner />
   ) : (
-    <Collapse
-      activeKey={isPanelOpen ? ["1"] : []}
-      onChange={(activeKey) => setIsPanelOpen(activeKey.includes("1"))}
+    <div
+      style={{
+        border: "1px solid #fff "
+      }}
     >
-      <Panel header="Overview Metrics" key="1">
-        <Descriptions className="custom-descriptions">
-          <div
-            style={{
-              flexWrap: "wrap"
-            }}
-          >
-            <Descriptions.Item>
-              <MetricCard
-                title="Average Response Time"
-                value={avg(totals.totalLatencyAvg, runMetrics.length).toFixed(
-                  2
-                )}
-                unit="ms"
-                borderColor="#ffd166"
-              />
-            </Descriptions.Item>
-            <Descriptions.Item>
-              <MetricCard
-                title="Latency (p90)"
-                value={avg(totals.totallatencyP90, runMetrics.length).toFixed(
-                  2
-                )}
-                unit="ms"
-                borderColor="#ffab40"
-              />
-            </Descriptions.Item>
-            <Descriptions.Item>
-              <MetricCard
-                title="Errors"
-                value={calculateErrorRate(
-                  totals.totalSuccessCount,
-                  totals.totalCount
-                )}
-                unit="%"
-                borderColor="#ff6b6b"
-              />
-            </Descriptions.Item>
-            <Descriptions.Item>
-              <MetricCard
-                title="Average RPM"
-                value={avg(
-                  parseFloat(totals.totalRpm),
-                  runMetrics.length
-                ).toFixed(0)}
-                unit="req/min"
-                borderColor="#64b5f6"
-              />
-            </Descriptions.Item>
-          </div>
-        </Descriptions>
-      </Panel>
-    </Collapse>
+      <Descriptions>
+        <div
+          style={{
+            flexWrap: "wrap"
+          }}
+        >
+          <Descriptions.Item>
+            <MetricCard
+              title="Average Latency"
+              value={avg(totals.totalLatencyAvg, runMetrics.length).toFixed(2)}
+              unit="ms"
+              borderColor="#ffd166"
+            />
+          </Descriptions.Item>
+          <Descriptions.Item>
+            <MetricCard
+              title="90% Latency"
+              value={avg(totals.totallatencyP90, runMetrics.length).toFixed(2)}
+              unit="ms"
+              borderColor="#ffab40"
+            />
+          </Descriptions.Item>
+          <Descriptions.Item>
+            <MetricCard
+              title="Errors"
+              value={calculateErrorRate(
+                totals.totalSuccessCount,
+                totals.totalCount
+              )}
+              unit="%"
+              borderColor="#ff6b6b"
+            />
+          </Descriptions.Item>
+          <Descriptions.Item>
+            <MetricCard
+              title="Average RPM"
+              value={avg(
+                parseFloat(totals.totalRpm),
+                runMetrics.length
+              ).toFixed(0)}
+              unit="req/min"
+              borderColor="#64b5f6"
+            />
+          </Descriptions.Item>
+        </div>
+      </Descriptions>
+    </div>
   );
 };
 
