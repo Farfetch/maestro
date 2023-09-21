@@ -7,7 +7,6 @@ describe("OverviewMetrics", () => {
   const mockRun = {
     id: "123",
     runStatus: "RUNNING"
-    // You can provide more mock data here as needed
   };
 
   test("should render OverviewMetrics component", () => {
