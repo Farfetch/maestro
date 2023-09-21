@@ -21,6 +21,16 @@ describe("RunRunningStatus", () => {
     startedAt: moment("2018-05-24T13:48:04.313000"),
     finishedAt: null, // Set to a date if the runStatus is not "RUNNING"
     agentIds: ["agent-1", "agent-2"],
+    hosts: [
+      {
+        host: "Host 1",
+        ip: "192.168.1.10"
+      },
+      {
+        host: "Host 2",
+        ip: "192.168.1.20"
+      }
+    ],
     agentsNames: [
       {
         id: "agent-1",
