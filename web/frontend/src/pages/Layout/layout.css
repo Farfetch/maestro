@@ -77,3 +77,6 @@ main {
   text-overflow: ellipsis;
 }
 
+.custom-descriptions {
+  padding-bottom: 0 !important;
+}

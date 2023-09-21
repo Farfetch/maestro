@@ -24,6 +24,7 @@ import RunEndpointCharts from "./EndpointCharts";
 import InitialConfiguration from "./InitialConfiguration";
 import MoreButtonsMenu from "./MoreButtonsMenu";
 import RunNotesInput from "./NotesInput";
+import OverviewMetrics from "./OverviewMetrics";
 import ResponseCodes from "./ResponseCodes";
 import RunRunningTime from "./RunningTime";
 import StopExecutionButton from "./StopExecutionButton";
@@ -35,7 +36,7 @@ const RunRunningStatus = ({ run }) => {
   const [isRunMetricsAvailable, setIsRunMetricsAvailable] = useState(false);
   const [labelToShow, setLabelToShow] = useState("");
   const [renderLabel, setRenderLabel] = useState(false);
-  const [activeTabKey, setActiveTabKey] = useState("overview");
+  const [activeTabKey, setActiveTabKey] = useState("hits");
 
   const routes = [
     {
@@ -150,14 +151,16 @@ const RunRunningStatus = ({ run }) => {
             </>
           ) : null}
         </Col>
-
+        <Col style={{ flex: 1, marginTop: "10px" }}>
+          <OverviewMetrics run={run} />
+        </Col>
         <Col span={24}>
           <Tabs
             defaultActiveKey={activeTabKey}
             activeKey={activeTabKey}
             onChange={setActiveTabKey}
           >
-            <Tabs.TabPane tab="Overview" key="overview">
+            <Tabs.TabPane tab="Hits" key="hits">
               <RunAnalyticCharts
                 run={run}
                 loadProfile={run.loadProfile}
