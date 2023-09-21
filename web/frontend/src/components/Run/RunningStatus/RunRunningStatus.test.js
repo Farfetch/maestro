@@ -43,6 +43,16 @@ describe("RunRunningStatus", () => {
         name: "Agent 2"
       }
     ],
+    customProperties: [
+      {
+        name: "Property 1",
+        value: "Value 1"
+      },
+      {
+        name: "Property 2",
+        value: "Value 2"
+      }
+    ],
     labels: ["Label1", "Label2"],
     notes: "Test notes",
     loadProfile: {},
