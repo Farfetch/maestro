@@ -77,3 +77,14 @@ main {
   text-overflow: ellipsis;
 }
 
+.ant-descriptions-row > td {
+  padding-bottom: 5px;
+}
+
+.ant-statistic-content {
+  font-size: 16px;
+}
+
+.ant-statistic-title {
+  margin-bottom: 0px;
+}
