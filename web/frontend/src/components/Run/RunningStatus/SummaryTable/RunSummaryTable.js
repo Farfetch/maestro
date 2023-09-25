@@ -1,23 +1,16 @@
 import { LineChartOutlined } from "@ant-design/icons";
 import { Button, Table, Typography } from "antd";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
-import { avg } from "../../../../lib/utils";
+import { avg, calculateErrorRate } from "../../../../lib/utils";
 
-const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
-  const [urlMetrics, setUrlMetrics] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const calculateErrorRate = (successCount, totalCount) => {
-    const errorRate = parseFloat((1 - successCount / totalCount) * 100).toFixed(
-      2
-    );
-
-    return errorRate;
-  };
-
+const RunSummaryTable = ({
+  metrics,
+  isLoading,
+  totals,
+  setLabelToShowGraph,
+  setActiveTabKey
+}) => {
   const columns = [
     {
       title: "Label",
@@ -208,148 +201,68 @@ const RunSummaryTable = ({ runId, setLabelToShowGraph, setActiveTabKey }) => {
     );
   };
 
-  const updateUrlMetrics = async (runIdToFetch) => {
-    setIsLoading(true);
-
-    const metricsRes = await fetchMetrics(runIdToFetch, 0, true);
-
-    const getRpm = (minDatetime, maxDatetime, totalCount) => {
-      const dateDuration = moment.duration(maxDatetime.diff(minDatetime));
-      const diffInSeconds =
-        dateDuration.asSeconds() > 0 ? dateDuration.asSeconds() : 1;
-
-      return parseFloat((totalCount / diffInSeconds) * 60).toFixed(0);
-    };
-
-    const formattedUrlMetrics = metricsRes.map(
-      ({
-        minDatetime,
-        maxDatetime,
-        totalCount,
-        successCount,
-        label,
-        latencyAvg,
-        latencyP50,
-        latencyP99,
-        responses
-      }) => {
-        const errorsCount = totalCount - successCount;
-        const errorRate = calculateErrorRate(successCount, totalCount);
-        const rpm = getRpm(minDatetime, maxDatetime, totalCount);
-
-        return {
-          key: label,
-          errorsCount,
-          successCount,
-          errorRate,
-          label,
-          rpm,
-          totalCount,
-          latencyAvg,
-          latencyP50,
-          latencyP99,
-          responses
-        };
-      }
-    );
-
-    setUrlMetrics(formattedUrlMetrics);
-
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    updateUrlMetrics(runId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [runId]);
-
   return (
     <>
       <Table
         size="small"
         loading={isLoading}
-        dataSource={urlMetrics}
+        dataSource={metrics}
         columns={columns}
         pagination={false}
         expandable={{
           expandedRowRender
         }}
-        summary={(pageData) => {
-          let total = 0;
-          let totalLatencyP50 = 0;
-          let totalLatencyP99 = 0;
-          let totalSuccessCount = 0;
-          let totalRpm = 0;
-          let totalErrorsCount = 0;
-          let totalErrorRate = 0;
-          const itemsCount = pageData.length;
-
-          pageData.forEach(
-            ({
-              totalCount,
-              latencyP50,
-              latencyP99,
-              successCount,
-              rpm,
-              // errorRate,
-              errorsCount
-            }) => {
-              total += totalCount;
-              totalLatencyP50 += latencyP50;
-              totalLatencyP99 += latencyP99;
-              totalSuccessCount += successCount;
-              totalRpm += parseFloat(rpm);
-              totalErrorRate = calculateErrorRate(totalSuccessCount, total);
-              totalErrorsCount += errorsCount;
-            }
-          );
-
-          return (
-            <>
-              <Table.Summary.Row>
-                <Table.Summary.Cell />
-                <Table.Summary.Cell>
-                  <Typography.Text strong>Total</Typography.Text>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell>
-                  <Typography.Text>
-                    <Typography.Text strong>
-                      {avg(totalLatencyP50, itemsCount).toFixed(2)}
-                    </Typography.Text>
-                    <span style={{ fontSize: 11 }}> ms</span>
-                  </Typography.Text>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell>
-                  <Typography.Text>
-                    <Typography.Text strong>
-                      {avg(totalLatencyP99, itemsCount).toFixed(2)}
-                    </Typography.Text>
-                    <span style={{ fontSize: 11 }}> ms</span>
-                  </Typography.Text>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell>
-                  <Typography.Text strong>{total}</Typography.Text>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell>
-                  <Typography.Text strong>{totalSuccessCount}</Typography.Text>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell>
-                  <Typography.Text strong>{totalErrorsCount}</Typography.Text>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell>
-                  <Typography.Text strong>{totalErrorRate}</Typography.Text>
-                  <span style={{ fontSize: 11 }}> %</span>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell>
+        summary={() => (
+          <>
+            <Table.Summary.Row>
+              <Table.Summary.Cell />
+              <Table.Summary.Cell>
+                <Typography.Text strong>Total</Typography.Text>
+              </Table.Summary.Cell>
+              <Table.Summary.Cell>
+                <Typography.Text>
                   <Typography.Text strong>
-                    {avg(totalRpm, itemsCount).toFixed(0)}
+                    {avg(totals.totalLatencyP50, metrics.length).toFixed(2)}
                   </Typography.Text>
-                  <span style={{ fontSize: 11 }}> req/min</span>
-                </Table.Summary.Cell>
-              </Table.Summary.Row>
-            </>
-          );
-        }}
+                  <span style={{ fontSize: 11 }}> ms</span>
+                </Typography.Text>
+              </Table.Summary.Cell>
+              <Table.Summary.Cell>
+                <Typography.Text>
+                  <Typography.Text strong>
+                    {avg(totals.totalLatencyP99, metrics.length).toFixed(2)}
+                  </Typography.Text>
+                  <span style={{ fontSize: 11 }}> ms</span>
+                </Typography.Text>
+              </Table.Summary.Cell>
+              <Table.Summary.Cell>
+                <Typography.Text strong>{totals.totalCount}</Typography.Text>
+              </Table.Summary.Cell>
+              <Table.Summary.Cell>
+                <Typography.Text strong>
+                  {totals.totalSuccessCount}
+                </Typography.Text>
+              </Table.Summary.Cell>
+              <Table.Summary.Cell>
+                <Typography.Text strong>
+                  {totals.totalErrorsCount}
+                </Typography.Text>
+              </Table.Summary.Cell>
+              <Table.Summary.Cell>
+                <Typography.Text strong>
+                  {parseFloat(totals.totalErrorsRate)}
+                </Typography.Text>
+                <span style={{ fontSize: 11 }}> %</span>
+              </Table.Summary.Cell>
+              <Table.Summary.Cell>
+                <Typography.Text strong>
+                  {avg(totals.totalRpm, metrics.length).toFixed(0)}
+                </Typography.Text>
+                <span style={{ fontSize: 11 }}> req/min</span>
+              </Table.Summary.Cell>
+            </Table.Summary.Row>
+          </>
+        )}
       />
     </>
   );
