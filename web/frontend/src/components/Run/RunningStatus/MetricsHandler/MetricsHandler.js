@@ -1,5 +1,4 @@
 /* eslint-disable max-statements */
-// MetricManager.js
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
 
@@ -9,6 +8,7 @@ import { calculateErrorRate } from "../../../../lib/utils";
 
 const MetricsHandler = ({ run, children }) => {
   const [runMetrics, setMetrics] = useState([]);
+  const [errorCodes, setErrorCodes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [totals, setTotals] = useState({
     totalLatencyAvg: 0,
@@ -72,7 +72,6 @@ const MetricsHandler = ({ run, children }) => {
     );
 
     setMetrics(formattedUrlMetrics);
-
     setIsLoading(false);
   };
 
@@ -129,6 +128,24 @@ const MetricsHandler = ({ run, children }) => {
     });
   };
 
+  const groupByErrorCode = () => {
+    const responseCodeGroups = {};
+
+    runMetrics.forEach((metric) => {
+      metric.responses.forEach((response) => {
+        const { responseCode } = response;
+
+        if (!responseCodeGroups[responseCode]) {
+          responseCodeGroups[responseCode] = [];
+        }
+
+        responseCodeGroups[responseCode].push(metric);
+      });
+    });
+
+    setErrorCodes(responseCodeGroups);
+  };
+
   const startMetricsRefreshTimer = () => {
     if (run.runStatus === runStatusModel.RUNNING) {
       timerRef.current = setInterval(() => {
@@ -148,6 +165,7 @@ const MetricsHandler = ({ run, children }) => {
 
   useEffect(() => {
     calculateTotals();
+    groupByErrorCode();
     startMetricsRefreshTimer();
     return () => {
       stopMetricsRefreshTimer();
@@ -155,7 +173,7 @@ const MetricsHandler = ({ run, children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [runMetrics, run.runStatus]);
 
-  return children(runMetrics, isLoading, totals);
+  return children(runMetrics, isLoading, totals, errorCodes);
 };
 
 export default MetricsHandler;

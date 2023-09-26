@@ -22,6 +22,7 @@ import RunEditableLabelsGroup from "./EditableLabelsGroup";
 import EditableTitle from "./EditableTitle";
 import RunEndpointCharts from "./EndpointCharts";
 import InitialConfiguration from "./InitialConfiguration";
+import MetricsHandler from "./MetricsHandler";
 import MoreButtonsMenu from "./MoreButtonsMenu";
 import RunNotesInput from "./NotesInput";
 import OverviewMetrics from "./OverviewMetrics";
@@ -98,122 +99,144 @@ const RunRunningStatus = ({ run }) => {
   };
 
   return (
-    <PageHeader
-      ghost={false}
-      onBack={() => navigate(-1)}
-      title={<EditableTitle runId={run.id} currentTitle={run.title} />}
-      subTitle={
-        <RunStatusTag
-          runStatus={run.runStatus}
-          key={`tag-${run.id}-${run.runStatus}`}
-        />
-      }
-      extra={getButtonsByStatus(run.runStatus)}
-      breadcrumb={{
-        routes,
-        itemRender: (route, params, routesToRender) => (
-          <Breadcrumb route={route} routes={routesToRender} />
-        )
-      }}
-      tags={<RunEditableLabelsGroup runId={run.id} defaultValue={run.labels} />}
-    >
-      <Row gutter={[0, 0]} type="flex" align="middle" justify="end">
-        <Col span={16}>
-          <Space direction="vertical" size={0}>
-            <RunNotesInput
-              runId={run.id}
-              defaultValue={run.notes || "Add running test execution notes..."}
+    <MetricsHandler run={run}>
+      {(metrics, isLoading, totals, errorCodes) => (
+        <PageHeader
+          ghost={false}
+          onBack={() => navigate(-1)}
+          title={<EditableTitle runId={run.id} currentTitle={run.title} />}
+          subTitle={
+            <RunStatusTag
+              runStatus={run.runStatus}
+              key={`tag-${run.id}-${run.runStatus}`}
             />
+          }
+          extra={getButtonsByStatus(run.runStatus)}
+          breadcrumb={{
+            routes,
+            itemRender: (route, params, routesToRender) => (
+              <Breadcrumb route={route} routes={routesToRender} />
+            )
+          }}
+          tags={
+            <RunEditableLabelsGroup runId={run.id} defaultValue={run.labels} />
+          }
+        >
+          <Row gutter={[0, 0]} type="flex" align="middle" justify="end">
+            <Col span={16}>
+              <Space direction="vertical" size={0}>
+                <RunNotesInput
+                  runId={run.id}
+                  defaultValue={
+                    run.notes || "Add running test execution notes..."
+                  }
+                />
 
-            <Space size="large">
-              <div>
-                <Typography.Text type="secondary">Started at: </Typography.Text>
-                {run.startedAt ? run.startedAt.format("L HH:mm:ss") : null}
-              </div>
-              <div>
-                <Typography.Text type="secondary">Agents: </Typography.Text>
-                {run.agentIds.length}
-              </div>
-            </Space>
-          </Space>
-        </Col>
-        <Col span={8} style={{ textAlign: "right" }}>
-          {isTimerAvailable ? (
-            <>
-              <RunRunningTime
-                startedAt={run.startedAt}
-                finishedAt={
-                  run.runStatus !== runStatusModel.RUNNING
-                    ? run.finishedAt
-                    : false
-                }
+                <Space size="large">
+                  <div>
+                    <Typography.Text type="secondary">
+                      Started at:{" "}
+                    </Typography.Text>
+                    {run.startedAt ? run.startedAt.format("L HH:mm:ss") : null}
+                  </div>
+                  <div>
+                    <Typography.Text type="secondary">Agents: </Typography.Text>
+                    {run.agentIds.length}
+                  </div>
+                </Space>
+              </Space>
+            </Col>
+            <Col span={8} style={{ textAlign: "right" }}>
+              {isTimerAvailable ? (
+                <>
+                  <RunRunningTime
+                    startedAt={run.startedAt}
+                    finishedAt={
+                      run.runStatus !== runStatusModel.RUNNING
+                        ? run.finishedAt
+                        : false
+                    }
+                  />
+                </>
+              ) : null}
+            </Col>
+            <Col style={{ flex: 1, marginTop: "10px" }}>
+              <OverviewMetrics
+                metrics={metrics}
+                isLoading={isLoading}
+                totals={totals}
               />
-            </>
-          ) : null}
-        </Col>
-        <Col style={{ flex: 1, marginTop: "10px" }}>
-          <OverviewMetrics run={run} />
-        </Col>
-        <Col span={24}>
-          <Tabs
-            defaultActiveKey={activeTabKey}
-            activeKey={activeTabKey}
-            onChange={setActiveTabKey}
-          >
-            <Tabs.TabPane tab="Overview" key="overview">
-              <RunAnalyticCharts
-                run={run}
-                loadProfile={run.loadProfile}
-                isLoadProfileEnabled={run.isLoadProfileEnabled}
-                isRunMetricsAvailable={isRunMetricsAvailable}
-                setIsRunMetricsAvailable={setIsRunMetricsAvailable}
-              />
-            </Tabs.TabPane>
-            <Tabs.TabPane
-              tab="Summary"
-              key="summary"
-              disabled={!isRunMetricsAvailable}
-            >
-              <RunSummaryTable
-                runId={run.id}
-                setLabelToShowGraph={setLabelToShowGraph}
-                setActiveTabKey={setActiveTabKey}
-              />
-            </Tabs.TabPane>
-            <Tabs.TabPane
-              tab="Errors"
-              key="responseCodes"
-              disabled={!isRunMetricsAvailable}
-            >
-              <ResponseCodes runId={run.id} />
-            </Tabs.TabPane>
-            {renderLabel ? (
-              <Tabs.TabPane
-                tab="Endpoints"
-                key="endpoints"
-                disabled={!isRunMetricsAvailable}
+            </Col>
+            <Col span={24}>
+              <Tabs
+                defaultActiveKey={activeTabKey}
+                activeKey={activeTabKey}
+                onChange={setActiveTabKey}
               >
-                <RunEndpointCharts run={run} labelToShowGraph={labelToShow} />
-              </Tabs.TabPane>
-            ) : (
-              <Tabs.TabPane
-                tab="Endpoints"
-                key="endpoints"
-                disabled={!isRunMetricsAvailable}
-              >
-                <RunEndpointCharts run={run} />
-              </Tabs.TabPane>
-            )}
-            <Tabs.TabPane
-              tab="Initial Configuration"
-              key="initialConfiguration"
-            >
-              <InitialConfiguration run={run} />
-            </Tabs.TabPane>
-          </Tabs>
-        </Col>
-      </Row>
-    </PageHeader>
+                <Tabs.TabPane tab="Overview" key="overview">
+                  <RunAnalyticCharts
+                    run={run}
+                    loadProfile={run.loadProfile}
+                    isLoadProfileEnabled={run.isLoadProfileEnabled}
+                    isRunMetricsAvailable={isRunMetricsAvailable}
+                    setIsRunMetricsAvailable={setIsRunMetricsAvailable}
+                  />
+                </Tabs.TabPane>
+                <Tabs.TabPane
+                  tab="Summary"
+                  key="summary"
+                  disabled={!isRunMetricsAvailable}
+                >
+                  <RunSummaryTable
+                    metrics={metrics}
+                    isLoading={isLoading}
+                    totals={totals}
+                    setLabelToShowGraph={setLabelToShowGraph}
+                    setActiveTabKey={setActiveTabKey}
+                  />
+                </Tabs.TabPane>
+                <Tabs.TabPane
+                  tab="Errors"
+                  key="responseCodes"
+                  disabled={!isRunMetricsAvailable}
+                >
+                  <ResponseCodes
+                    errorCodes={errorCodes}
+                    isLoading={isLoading}
+                  />
+                </Tabs.TabPane>
+                {renderLabel ? (
+                  <Tabs.TabPane
+                    tab="Endpoints"
+                    key="endpoints"
+                    disabled={!isRunMetricsAvailable}
+                  >
+                    <RunEndpointCharts
+                      run={run}
+                      labelToShowGraph={labelToShow}
+                    />
+                  </Tabs.TabPane>
+                ) : (
+                  <Tabs.TabPane
+                    tab="Endpoints"
+                    key="endpoints"
+                    disabled={!isRunMetricsAvailable}
+                  >
+                    <RunEndpointCharts run={run} />
+                  </Tabs.TabPane>
+                )}
+                <Tabs.TabPane
+                  tab="Initial Configuration"
+                  key="initialConfiguration"
+                >
+                  <InitialConfiguration run={run} />
+                </Tabs.TabPane>
+              </Tabs>
+            </Col>
+          </Row>
+        </PageHeader>
+      )}
+    </MetricsHandler>
   );
 };
 export default RunRunningStatus;
