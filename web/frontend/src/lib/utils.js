@@ -5,5 +5,6 @@ export const calculateErrorRate = (successCount, totalCount) => {
   const errorRate = parseFloat((1 - successCount / totalCount) * 100).toFixed(
     2
   );
-  return errorRate;
+
+  return errorRate === "NaN" ? 0 : errorRate;
 };
