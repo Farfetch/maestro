@@ -1,63 +1,12 @@
 import { Badge, Collapse, Table, Typography } from "antd";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
 import PageSpinner from "../../../layout/PageSpinner";
 
 const { Panel } = Collapse;
 const { Text } = Typography;
 
-const ResponseCodes = ({ runId }) => {
-  const [errorCodes, setErrorCodes] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const updateUrlMetrics = async (runIdToFetch) => {
-    setIsLoading(true);
-
-    const metricsRes = await fetchMetrics(runIdToFetch, 0, true);
-
-    const filterMetrics = (metricsArray) => {
-      const responseCodeGroups = {};
-
-      metricsArray.forEach((metric) => {
-        metric.responses.forEach((response) => {
-          const { responseCode } = response;
-
-          if (!responseCodeGroups[responseCode]) {
-            responseCodeGroups[responseCode] = [];
-          }
-
-          responseCodeGroups[responseCode].push(metric);
-        });
-      });
-
-      return responseCodeGroups;
-    };
-
-    const formattedUrlMetrics = metricsRes.map(
-      ({ totalCount, successCount, label, responses }) => {
-        const errorsCount = totalCount - successCount;
-
-        return {
-          key: label,
-          errorsCount,
-          responses
-        };
-      }
-    );
-
-    const errorMetrics = filterMetrics(formattedUrlMetrics);
-
-    setErrorCodes(errorMetrics);
-
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    updateUrlMetrics(runId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [runId]);
-
+const ResponseCodes = ({ errorCodes, isLoading }) => {
   const columns = [
     {
       title: "Label",
