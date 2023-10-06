@@ -6,12 +6,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { fetchMetrics } from "../../../../lib/api/endpoints/runMetric";
 import { runStatus as runStatusModel } from "../../../../lib/api/models";
 import { avg } from "../../../../lib/utils";
-import PageSpinner from "../../../layout/PageSpinner";
 import MetricCard from "./MetricCard";
 
 const OverviewMetrics = ({ run }) => {
   const [runMetrics, setrunMetrics] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [totals, setTotals] = useState({
     totalLatencyAvg: 0,
     totallatencyP90: 0,
@@ -27,12 +25,10 @@ const OverviewMetrics = ({ run }) => {
       2
     );
 
-    return errorRate;
+    return errorRate === "NaN" ? 0 : errorRate;
   };
 
   const updaterunMetrics = async (runIdToFetch) => {
-    setIsLoading(true);
-
     const metricsRes = await fetchMetrics(runIdToFetch, 0, true);
 
     const getRpm = (minDatetime, maxDatetime, totalCount) => {
@@ -74,8 +70,6 @@ const OverviewMetrics = ({ run }) => {
     );
 
     setrunMetrics(formattedrunMetrics);
-
-    setIsLoading(false);
   };
 
   const calculateTotals = () => {
@@ -138,9 +132,7 @@ const OverviewMetrics = ({ run }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [runMetrics, run.runStatus]);
 
-  return isLoading ? (
-    <PageSpinner />
-  ) : (
+  return (
     <div
       style={{
         border: "1px solid #fff "

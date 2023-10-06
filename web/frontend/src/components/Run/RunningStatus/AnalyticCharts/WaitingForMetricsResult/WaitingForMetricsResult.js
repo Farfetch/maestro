@@ -10,7 +10,7 @@ const WaitingForMetricsResult = ({ run }) => (
     title="Almost there! Metrics will be available in a minute"
     subTitle={
       <>
-        Test is already started and running. Usualy is takes takes 1-2 minutes,
+        Test has already started and its running. Usually it takes 1-2 minutes,
         please wait...
         <Timer startTime={run.startedAt} defaultTime={run.startedAt}>
           {(time, loading) => (
